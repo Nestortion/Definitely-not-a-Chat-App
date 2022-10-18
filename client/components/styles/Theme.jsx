@@ -24,6 +24,7 @@ const Theme = {
     loginContent: { height: '800px', width: '800px' },
   },
   margin: {
+    marginCardBlock: '0.5rem',
     margin1: '1rem',
     margin2: '2rem',
   },
