@@ -10,7 +10,8 @@
     "lint": "eslint ./**/*.js",
     "lint:fix": "eslint --fix ./**/*.js",
     "prettier": "prettier --check ./**/*.js",
-    "prettier:fix": "prettier --write ./**/*.js"
+    "prettier:fix": "prettier --write ./**/*.js",
+    "format": "npm run lint:fix && npm run prettier:fix"
   },
   "keywords": [],
   "author": "",
