@@ -4,8 +4,8 @@
   "description": "Chat Application System for Polytechnic University of the Philippines Biñan Campus",
   "private": "true",
   "scripts": {
-    "client": "npm run dev --prefix client",
-    "server": "npm run dev --prefix server",
+    "client": "npm run --prefix client",
+    "server": "npm run --prefix server",
     "dev": "concurrently \"npm run client\" \"npm run server\""
   },
   "repository": {

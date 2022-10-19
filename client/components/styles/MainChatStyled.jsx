@@ -2,21 +2,34 @@ import styled from 'styled-components'
 
 const MainChatStyled = styled.div`
   display: flex;
-  width: 100%;
-  & > div {
-    display: flex;
-    flex-direction: column;
-    height: 1000px;
-    border-top: ${({ theme }) => theme.border.border1};
-    border-color: ${({ theme }) => theme.colors.accent};
-  }
-
-  .chatWindow {
-    position: relative;
-    flex-grow: 1;
-    display: flex;
-  }
 `
+
+const ChatListContainerStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-top: ${({ theme }) => theme.border.border1};
+  border-color: ${({ theme }) => theme.colors.accent};
+  max-height: calc(100vh - 80px);
+`
+const ChatFeedContainerStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-top: ${({ theme }) => theme.border.border1};
+  border-color: ${({ theme }) => theme.colors.accent};
+  max-height: calc(100vh - 80px);
+
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+`
+const ChatSettingsContainerStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-top: ${({ theme }) => theme.border.border1};
+  border-color: ${({ theme }) => theme.colors.accent};
+  max-height: calc(100vh - 80px);
+`
+
 const ChatCardStyled = styled.div`
   display: flex;
   align-items: center;
@@ -81,6 +94,7 @@ const MessageConstructorStyled = styled.div`
 
 const RoleListStyled = styled.div`
   border-left: ${({ theme }) => theme.border.border1};
+  border-color: ${({ theme }) => theme.colors.accent};
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -146,6 +160,7 @@ const SettingsStyled = styled.div`
   gap: ${({ theme }) => theme.margin.margin1};
   padding-block: ${({ theme }) => theme.padding.padding2};
   border-left: ${({ theme }) => theme.border.border1};
+  border-color: ${({ theme }) => theme.colors.accent};
 
   .header {
     font-size: ${({ theme }) => theme.font.heading3};
@@ -264,4 +279,7 @@ export {
   SettingsStyled,
   AddFriendModalStyled,
   UserCardStyled,
+  ChatListContainerStyled,
+  ChatFeedContainerStyled,
+  ChatSettingsContainerStyled,
 }
