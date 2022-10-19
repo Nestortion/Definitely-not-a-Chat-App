@@ -8,6 +8,7 @@ const Theme = {
   },
   border: {
     border1: '1px solid',
+    border2: '0.5rem solid',
     radius1: '10px',
     radius2: '20px',
   },

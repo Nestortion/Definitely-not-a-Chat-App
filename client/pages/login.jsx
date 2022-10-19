@@ -11,7 +11,8 @@ export default function Login() {
           <div className="header">
             Tagline
             <div className="description">
-              IDK how to call this? Secondary Tagline?
+              Lorem ipsum dolor sit amet, eu duis gloriatur mnesarchum pri,
+              omnium legendos neglegentur ex sit, qui summo error ne omnis.
             </div>
           </div>
           <form>

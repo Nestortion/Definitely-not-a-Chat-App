@@ -119,6 +119,8 @@ const RoleStyled = styled.div`
   }
   .memberList {
     display: flex;
+    flex-wrap: wrap;
+    max-width: 300px;
     .member {
       height: ${({ theme }) => theme.icon.size1};
       width: ${({ theme }) => theme.icon.size1};
