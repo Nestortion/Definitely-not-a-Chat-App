@@ -1,3 +1,4 @@
+import AddFriendModal from '../components/MainChat/AddFriendModal/AddFriendModal'
 import ChatFeed from '../components/MainChat/ChatFeed'
 import ChatList from '../components/MainChat/ChatList'
 import MessageConstructor from '../components/MainChat/MessageConstructor'
@@ -15,6 +16,7 @@ export default function Home() {
         <ChatList />
       </div>
       <div className="chatWindow">
+        <AddFriendModal />
         <UserHeader />
         <ChatFeed />
         <MessageConstructor />

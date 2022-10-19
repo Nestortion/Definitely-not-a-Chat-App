@@ -22,6 +22,14 @@ const Theme = {
   icon: { size1: '32px', size2: '56px' },
   containers: {
     loginContent: { height: '800px', width: '800px' },
+    container1: {
+      height: '72px',
+      width: '274px',
+    },
+    container2: {
+      height: '72px',
+      width: '360px',
+    },
   },
   margin: {
     marginCardBlock: '0.5rem',
