@@ -19,5 +19,8 @@
       "name": "Josel Catalan",
       "email": "catalanjosel123@gmail.com"
     }
-  ]
+  ],
+  "devDependencies": {
+    "concurrently": "^7.4.0"
+  }
 }
