@@ -1,12 +1,23 @@
 {
   "name": "definitely-not-a-chat-app",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.1.0",
+  "description": "Chat Application System for Polytechnic University of the Philippines Biñan Campus",
+  "private": "true",
   "scripts": {
     "client": "npm run --prefix client"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nestortion/Definitely-not-a-Chat-App"
+  },
+  "author": {
+    "name": "Nestor Gerona",
+    "email": "geronajr.nestor@gmail.com"
+  },
+  "contributors": [
+    {
+      "name": "Josel Catalan",
+      "email": "catalanjosel123@gmail.com"
+    }
+  ]
 }
