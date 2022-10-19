@@ -53,7 +53,6 @@ const BioStyled = styled.div`
 
     &::placeholder {
       text-align: center;
-      vertical-align: middle;
       line-height: 150px;
       font-size: ${({ theme }) => theme.font.heading2};
     }
