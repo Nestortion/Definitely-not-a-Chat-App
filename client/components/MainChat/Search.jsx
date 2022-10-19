@@ -1,5 +1,5 @@
-import SearchStyled from '../styles/MainChatStyles/SearchStyled'
 import { AiFillPlusCircle } from 'react-icons/ai'
+import { SearchStyled } from '../styles/MainChatStyled'
 
 export default function Search() {
   return (

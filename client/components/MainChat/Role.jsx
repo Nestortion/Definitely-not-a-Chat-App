@@ -1,6 +1,6 @@
-import RoleStyled from '../styles/MainChatStyles/RoleStyled'
 import Image from 'next/image'
 import pfp from '../Assets/pfp.jpg'
+import { RoleStyled } from '../styles/MainChatStyled'
 
 export default function Role({ roleType, color }) {
   return (

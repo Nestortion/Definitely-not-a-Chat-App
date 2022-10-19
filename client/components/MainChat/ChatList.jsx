@@ -1,4 +1,4 @@
-import ChatListStyled from '../styles/MainChatStyles/ChatListStyled'
+import { ChatListStyled } from '../styles/MainChatStyled'
 import ChatCard from './ChatCard'
 
 export default function ChatList() {

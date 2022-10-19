@@ -1,6 +1,6 @@
-import UserHeaderStyled from '../styles/MainChatStyles/UserHeaderStyled'
 import Image from 'next/image'
 import pfp from '../Assets/pfp.jpg'
+import { UserHeaderStyled } from '../styles/MainChatStyled'
 
 export default function UserHeader() {
   return (

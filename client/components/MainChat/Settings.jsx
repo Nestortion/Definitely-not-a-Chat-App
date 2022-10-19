@@ -1,4 +1,4 @@
-import SettingsStyled from '../styles/MainChatStyles/SettingsStyled'
+import { SettingsStyled } from '../styles/MainChatStyled'
 
 export default function Settings() {
   return (

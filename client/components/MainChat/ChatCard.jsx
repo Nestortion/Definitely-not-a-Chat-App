@@ -1,6 +1,6 @@
-import ChatCardStyled from '../styles/MainChatStyles/ChatCardStyled'
 import Image from 'next/image'
 import pfp from '../Assets/pfp.jpg'
+import { ChatCardStyled } from '../styles/MainChatStyled'
 
 export default function ChatCard() {
   return (

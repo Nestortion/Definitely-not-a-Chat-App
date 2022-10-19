@@ -1,4 +1,4 @@
-import RoleListStyled from '../styles/MainChatStyles/RoleListStyled'
+import { RoleListStyled } from '../styles/MainChatStyled'
 import Role from './Role'
 
 export default function RoleList() {

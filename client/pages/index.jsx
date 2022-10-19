@@ -5,7 +5,7 @@ import RoleList from '../components/MainChat/RoleList'
 import Search from '../components/MainChat/Search'
 import Settings from '../components/MainChat/Settings'
 import UserHeader from '../components/MainChat/UserHeader'
-import MainChatStyled from '../components/styles/MainChatStyles/MainChatStyled'
+import { MainChatStyled } from '../components/styles/MainChatStyled'
 
 export default function Home() {
   return (
