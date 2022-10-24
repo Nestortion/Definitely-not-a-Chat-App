@@ -92,6 +92,15 @@ const DetailFieldsStyled = styled.div`
         width: 830px;
         height: 45px;
         border-radius: ${({ theme }) => theme.border.radius1};
+        color: ${({ theme }) => theme.colors.foreGround};
+        background-color: ${({ theme }) => theme.colors.active};
+        font-size: ${({ theme }) => theme.font.heading1};
+        border: none;
+        padding-inline-start: ${({ theme }) => theme.padding.padding2};
+
+        &:focus {
+          outline: none;
+        }
       }
     }
     button {
