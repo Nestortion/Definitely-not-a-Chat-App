@@ -15,8 +15,10 @@ const ChatFeedContainerStyled = styled.div`
   display: flex;
   flex-direction: column;
   border-top: ${({ theme }) => theme.border.border1};
+  border-left: ${({ theme }) => theme.border.border1};
   border-color: ${({ theme }) => theme.colors.accent};
   max-height: calc(100vh - 80px);
+  min-height: calc(100vh - 80px);
 
   position: relative;
   flex-grow: 1;
@@ -61,8 +63,8 @@ const ChatCardStyled = styled.div`
     overflow: hidden;
     margin-inline: ${({ theme }) => theme.margin.margin1};
     margin-block: ${({ theme }) => theme.margin.marginCardBlock};
-    height: ${({ theme }) => theme.icon.size2};
-    width: ${({ theme }) => theme.icon.size2};
+    height: ${({ theme }) => theme.icon.size1};
+    width: ${({ theme }) => theme.icon.size1};
     border-radius: 50%;
   }
 `
