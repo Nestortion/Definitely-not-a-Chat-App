@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import LoginLayout from '../components/LoginLayout'
-import LoginStyled from '../components/styles/Login/LoginStyled'
 import sniffa from '../components/Assets/sniffa.jpg'
+import LoginStyled from '../components/styles/LoginStyled'
 
 export default function Login() {
   return (
