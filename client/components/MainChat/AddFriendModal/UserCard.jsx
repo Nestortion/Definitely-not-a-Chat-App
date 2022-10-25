@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { UserCardStyled } from '../../styles/MainChatStyled'
-import pfp from '../../Assets/pfp.jpg'
+import pfp from '../../Assets/profile.svg'
 
 export default function UserCard() {
   return (

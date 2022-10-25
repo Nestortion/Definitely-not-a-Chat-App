@@ -1,7 +1,7 @@
 import logo from './Assets/logo.svg'
 import Image from 'next/image'
 import PageHeaderStyled from './styles/PageHeaderStyled'
-import pfp from './Assets/pfp.jpg'
+import pfp from './Assets/profile.svg'
 
 export default function PageHeader({ type }) {
   if (type === 'login') {

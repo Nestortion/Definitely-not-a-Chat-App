@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import pfp from '../Assets/pfp.jpg'
+import pfp from '../Assets/profile.svg'
 import { UserHeaderStyled } from '../styles/MainChatStyled'
 
 export default function UserHeader() {
