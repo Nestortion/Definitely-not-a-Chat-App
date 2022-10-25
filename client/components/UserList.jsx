@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import pfp from './Assets/pfp.jpg'
+import pfp from './Assets/profile.svg'
 import Card from './Card'
 import { ListContainerStyled, ListStyled } from './styles/UserGroupListStyled'
 

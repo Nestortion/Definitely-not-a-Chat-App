@@ -1,6 +1,6 @@
 import { ChatListStyled } from '../styles/MainChatStyled'
 import ChatCard from '../styles/ChatCard'
-import pfp from '../Assets/pfp.jpg'
+import pfp from '../Assets/profile.svg'
 import { useEffect, useState } from 'react'
 
 export default function ChatList() {
