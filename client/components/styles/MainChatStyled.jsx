@@ -20,7 +20,6 @@ const ChatFeedContainerStyled = styled.div`
   border-color: ${({ theme }) => theme.colors.accent};
   max-height: calc(100vh - 80px);
   min-height: calc(100vh - 80px);
-
   position: relative;
   flex-grow: 1;
   display: flex;
@@ -41,9 +40,11 @@ const ChatCardStyled = styled.div`
   border-bottom: ${({ theme }) => theme.border.border1};
   border-right: ${({ theme }) => theme.border.border1};
   border-color: ${({ theme }) => theme.colors.accent};
+  /* height: ${({ theme }) => theme.containers.container2.height};
+  width: ${({ theme }) => theme.containers.container2.width}; */
   position: relative;
-  height: ${({ theme }) => theme.containers.container2.height};
-  width: ${({ theme }) => theme.containers.container2.width};
+  width: 100%;
+  min-height: ${({ theme }) => theme.containers.container2.height};
 
   &:hover {
     &:before {
