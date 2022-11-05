@@ -9,8 +9,9 @@ const ChatListContainerStyled = styled.div`
   flex-direction: column;
   border-top: ${({ theme }) => theme.border.border1};
   border-color: ${({ theme }) => theme.colors.accent};
-  max-height: calc(100vh - 80px);
+  max-height: calc(100vh - 64px);
 `
+
 const ChatFeedContainerStyled = styled.div`
   display: flex;
   flex-direction: column;
@@ -19,17 +20,18 @@ const ChatFeedContainerStyled = styled.div`
   border-color: ${({ theme }) => theme.colors.accent};
   max-height: calc(100vh - 80px);
   min-height: calc(100vh - 80px);
-
   position: relative;
   flex-grow: 1;
   display: flex;
 `
+
 const ChatSettingsContainerStyled = styled.div`
   display: flex;
   flex-direction: column;
   border-top: ${({ theme }) => theme.border.border1};
   border-color: ${({ theme }) => theme.colors.accent};
-  max-height: calc(100vh - 80px);
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
 `
 
 const ChatCardStyled = styled.div`
@@ -38,9 +40,11 @@ const ChatCardStyled = styled.div`
   border-bottom: ${({ theme }) => theme.border.border1};
   border-right: ${({ theme }) => theme.border.border1};
   border-color: ${({ theme }) => theme.colors.accent};
+  /* height: ${({ theme }) => theme.containers.container2.height};
+  width: ${({ theme }) => theme.containers.container2.width}; */
   position: relative;
-  height: ${({ theme }) => theme.containers.container2.height};
-  width: ${({ theme }) => theme.containers.container2.width};
+  width: 100%;
+  min-height: ${({ theme }) => theme.containers.container2.height};
 
   &:hover {
     &:before {

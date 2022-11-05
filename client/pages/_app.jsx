@@ -2,6 +2,7 @@ import { ThemeProvider } from 'styled-components'
 import MainLayout from '../components/MainLayout'
 import GlobalStyle from '../components/styles/GlobalStyle'
 import Theme from '../components/styles/Theme'
+import '../styles/global.css'
 
 function MyApp({ Component, pageProps }) {
   if (!Component.getLayout) {
