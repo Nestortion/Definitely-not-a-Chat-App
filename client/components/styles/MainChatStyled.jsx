@@ -9,7 +9,7 @@ const ChatListContainerStyled = styled.div`
   flex-direction: column;
   border-top: ${({ theme }) => theme.border.border1};
   border-color: ${({ theme }) => theme.colors.accent};
-  max-height: calc(100vh - 80px);
+  max-height: calc(100vh - 64px);
 `
 const ChatFeedContainerStyled = styled.div`
   display: flex;
