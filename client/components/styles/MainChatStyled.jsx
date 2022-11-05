@@ -12,6 +12,7 @@ const ChatListContainerStyled = styled.div`
   max-height: calc(100vh - 64px);
   overflow-y: auto;
 `
+
 const ChatFeedContainerStyled = styled.div`
   display: flex;
   flex-direction: column;
@@ -25,6 +26,7 @@ const ChatFeedContainerStyled = styled.div`
   flex-grow: 1;
   display: flex;
 `
+
 const ChatSettingsContainerStyled = styled.div`
   display: flex;
   flex-direction: column;
