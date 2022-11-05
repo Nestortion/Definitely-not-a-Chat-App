@@ -10,7 +10,6 @@ const ChatListContainerStyled = styled.div`
   border-top: ${({ theme }) => theme.border.border1};
   border-color: ${({ theme }) => theme.colors.accent};
   max-height: calc(100vh - 64px);
-  overflow-y: auto;
 `
 
 const ChatFeedContainerStyled = styled.div`
