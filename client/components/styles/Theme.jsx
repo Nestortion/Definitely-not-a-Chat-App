@@ -4,7 +4,7 @@ const Theme = {
     heading2: '2rem',
     heading3: '3rem',
     heading4: '4rem',
-    fontFamily: 'Rubik',
+    fontFamily: 'Rubik, Arial, Helvetica, sans-serif',
   },
   border: {
     border1: '1px solid',
