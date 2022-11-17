@@ -10,6 +10,7 @@ export default function NavBar() {
         </Link>
       </div>
       <div className="right">
+        {/* TODO: create UserCard? component */}
         <div>User Image</div>
         <div>John Doe</div>
       </div>
