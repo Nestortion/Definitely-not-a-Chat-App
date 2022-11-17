@@ -18,6 +18,7 @@ export default function LeftBar() {
       </div>
 
       <div className="bottom">
+        {/* TODO: Create ChatListItem component */}
         <div>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure eos eum
           tempora cupiditate dolorem! Blanditiis impedit accusamus expedita
