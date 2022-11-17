@@ -6,19 +6,12 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js",
-    "lint": "eslint ./**/*.js",
-    "lint:fix": "eslint --fix ./**/*.js",
-    "prettier": "prettier --check ./**/*.js",
-    "prettier:fix": "prettier --write ./**/*.js",
-    "format": "npm run lint:fix && npm run prettier:fix"
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^8.25.0",
-    "eslint-config-prettier": "^8.5.0",
     "nodemon": "^2.0.20",
     "prettier": "^2.7.1"
   },
