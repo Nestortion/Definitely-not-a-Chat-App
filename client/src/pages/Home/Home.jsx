@@ -1,3 +1,9 @@
+import './home.scss'
+
 export default function Home() {
-  return <div>Home</div>
+  return (
+    <div className="home">
+      <span>Select a chat or start a new conversation</span>
+    </div>
+  )
 }
