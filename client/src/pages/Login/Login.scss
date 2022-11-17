@@ -1,0 +1,56 @@
+.login {
+  min-height: 100vh;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .card {
+    width: 80%;
+    max-width: 850px;
+    min-height: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+
+    .left {
+      // TODO: add image and gradient background
+      padding: 3rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2rem;
+
+      h1 {
+        font-size: clamp(4rem, 8vw, 6.25rem);
+      }
+
+      p {
+        font-size: 1.25rem;
+      }
+    }
+
+    .right {
+      padding: 3rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      justify-content: center;
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .left,
+      .right {
+        padding: 1rem;
+      }
+    }
+  }
+}
