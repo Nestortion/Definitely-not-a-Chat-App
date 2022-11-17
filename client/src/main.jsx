@@ -7,6 +7,7 @@ import NotFound from './pages/NotFound/NotFound'
 import Home from './pages/Home/Home'
 import Chat from './pages/Chat/Chat'
 import Profile from './pages/Profile/Profile'
+import './globals.scss'
 
 const router = createBrowserRouter([
   {
