@@ -1,16 +1,23 @@
 import './chat.scss'
 import Button from '../../components/UI/Button/Button'
 import Input from '../../components/UI/Input/Input'
+import { useContext } from 'react'
+import ChatContext from '../../contexts/ChatContext'
+import Avatar from '../../components/UI/Avatar/Avatar'
 
 export default function Chat() {
+  const { chat, setChat } = useContext(ChatContext)
+
   return (
     <div className="chat">
       <div className="header">
         <div className="chat-info">
-          <div>
-            <span>Chat image</span>
-            <span>Chat title</span>
-          </div>
+          <Avatar
+            src={chat.profilePicUrl}
+            alt={`${chat.title}'s photo`}
+            size="40"
+          />
+          <span>Chat title</span>
         </div>
         <Button>+</Button>
       </div>
