@@ -17,9 +17,7 @@
   }
 
   .bottom {
-    // 100vh - NavBar height - LeftBar Top height - gap between LetBar Top and LeftBar Bottom
-    height: calc(100vh - 64px - 72px - 1rem);
-    padding-right: 1rem;
-    overflow: scroll;
+    // 100vh - NavBar height - LeftBar Top height - gap between LetBar Top and LeftBar Bottom - main paddings
+    height: calc(100vh - 64px - 72px - 1rem - 1rem);
   }
 }
