@@ -7,7 +7,7 @@ export default function ChatList({ chats }) {
       {chats.map((chat) => (
         <ChatListItem
           key={chat.chatId}
-          chatId={chat.id}
+          chatId={chat.chatId}
           profilePicUrl={chat.profilePicUrl}
           title={chat.title}
         />
