@@ -1,7 +1,11 @@
 import './navbar.scss'
 import { Link } from 'react-router-dom'
+import { useContext } from 'react'
+import AuthContext from '../../contexts/AuthContext'
 
 export default function NavBar() {
+  const { user, setUser } = useContext(AuthContext)
+
   return (
     <div className="navbar">
       <div className="left">
@@ -11,8 +15,10 @@ export default function NavBar() {
       </div>
       <div className="right">
         {/* TODO: create UserCard? component */}
-        <div>User Image</div>
-        <div>John Doe</div>
+        <div className="user-card">
+          <img src={user.profilePic} alt="Profile" />
+          <span>{user.username}</span>
+        </div>
       </div>
     </div>
   )
