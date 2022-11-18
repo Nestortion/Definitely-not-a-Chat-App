@@ -10,11 +10,16 @@ import Profile from './pages/Profile/Profile'
 import './globals.scss'
 import { AuthContextProvider } from './contexts/AuthContext'
 import { ChatContextProvider } from './contexts/ChatContext'
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: (
+      <ProtectedRoute>
+        <App />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: '/',
