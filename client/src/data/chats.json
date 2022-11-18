@@ -1,0 +1,32 @@
+[
+  {
+    "chatId": 1,
+    "title": "Chat 1",
+    "profilePicUrl": "https://images.pexels.com/photos/1174932/pexels-photo-1174932.jpeg?auto=compress&cs=tinysrgb&w=1600"
+  },
+  {
+    "chatId": 2,
+    "title": "Chat 2",
+    "profilePicUrl": "https://images.pexels.com/photos/1174932/pexels-photo-1174932.jpeg?auto=compress&cs=tinysrgb&w=1600"
+  },
+  {
+    "chatId": 3,
+    "title": "Chat 3",
+    "profilePicUrl": "https://images.pexels.com/photos/1174932/pexels-photo-1174932.jpeg?auto=compress&cs=tinysrgb&w=1600"
+  },
+  {
+    "chatId": 4,
+    "title": "Chat 4",
+    "profilePicUrl": "https://images.pexels.com/photos/1174932/pexels-photo-1174932.jpeg?auto=compress&cs=tinysrgb&w=1600"
+  },
+  {
+    "chatId": 5,
+    "title": "Yamagawahamachiyogamizu",
+    "profilePicUrl": "https://images.pexels.com/photos/1174932/pexels-photo-1174932.jpeg?auto=compress&cs=tinysrgb&w=1600"
+  },
+  {
+    "chatId": 6,
+    "title": "Hafnarfjarðarkaupstaður",
+    "profilePicUrl": "https://images.pexels.com/photos/1174932/pexels-photo-1174932.jpeg?auto=compress&cs=tinysrgb&w=1600"
+  }
+]
