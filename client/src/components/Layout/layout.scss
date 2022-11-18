@@ -3,8 +3,9 @@
 
   .main {
     height: calc(100vh - 64px);
-    padding: 0 1rem;
+    padding: 0 1rem 1rem;
     display: flex;
+    gap: 1rem;
 
     .left,
     .right {
