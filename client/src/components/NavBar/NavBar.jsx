@@ -16,7 +16,7 @@ export default function NavBar() {
       <div className="right">
         {/* TODO: create UserCard? component */}
         <div className="user-card">
-          <img src={user.profilePic} alt="Profile" />
+          <img src={user.profilePicUrl} alt="Profile" />
           <span>{user.username}</span>
         </div>
       </div>
