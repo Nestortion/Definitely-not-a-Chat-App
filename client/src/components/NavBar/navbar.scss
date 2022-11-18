@@ -5,22 +5,4 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  .right {
-    // * Temporary style only
-    // TODO: Create UserCard component
-    .user-card {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-
-      img {
-        width: 48px;
-        height: 48px;
-        max-width: 100%;
-        border-radius: 50%;
-        object-fit: cover;
-      }
-    }
-  }
 }
