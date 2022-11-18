@@ -13,7 +13,8 @@
 
   span {
     max-width: 120px;
-    font-size: 1.15rem;
-    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: clamp(1rem, 3vw, 1.25rem);
   }
 }
