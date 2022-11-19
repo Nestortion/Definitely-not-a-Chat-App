@@ -1,0 +1,16 @@
+{
+  "chatId": 1,
+  "title": "Chat 1",
+  "profilePicUrl": "https://images.pexels.com/photos/3802666/pexels-photo-3802666.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "members": {
+    "admins": ["Katahara Metsudo", "Kure Erioh", "Toyoda Idemitsu"],
+    "regulars": [
+      "Tokita Ohma",
+      "Adam Dudley",
+      "Kanoh Agito",
+      "Julius Reinhold",
+      "Kure Raian"
+    ],
+    "worms": ["Naidan Mönkhbat", "Lu Tian", "Xia Ji"]
+  }
+}
