@@ -3,14 +3,66 @@
   "title": "Chat 1",
   "profilePicUrl": "https://images.pexels.com/photos/3802666/pexels-photo-3802666.jpeg?auto=compress&cs=tinysrgb&w=1600",
   "members": {
-    "admins": ["Katahara Metsudo", "Kure Erioh", "Toyoda Idemitsu"],
-    "regulars": [
-      "Tokita Ohma",
-      "Adam Dudley",
-      "Kanoh Agito",
-      "Julius Reinhold",
-      "Kure Raian"
+    "admins": [
+      {
+        "id": 1,
+        "username": "Katahara Metsudo",
+        "profilePicUrl": "https://images.pexels.com/photos/3802666/pexels-photo-3802666.jpeg?auto=compress&cs=tinysrgb&w=1600"
+      },
+      {
+        "id": 2,
+        "username": "Kure Erioh",
+        "profilePicUrl": "https://images.pexels.com/photos/3802666/pexels-photo-3802666.jpeg?auto=compress&cs=tinysrgb&w=1600"
+      },
+      {
+        "id": 3,
+        "username": "Toyoda Idemitsu",
+        "profilePicUrl": "https://images.pexels.com/photos/3802666/pexels-photo-3802666.jpeg?auto=compress&cs=tinysrgb&w=1600"
+      }
     ],
-    "worms": ["Naidan Mönkhbat", "Lu Tian", "Xia Ji"]
+    "regulars": [
+      {
+        "id": 4,
+        "username": "Tokita Ohma",
+        "profilePicUrl": "https://images.pexels.com/photos/3802666/pexels-photo-3802666.jpeg?auto=compress&cs=tinysrgb&w=1600"
+      },
+      {
+        "id": 5,
+        "username": "Adam Dudley",
+        "profilePicUrl": "https://images.pexels.com/photos/3802666/pexels-photo-3802666.jpeg?auto=compress&cs=tinysrgb&w=1600"
+      },
+      {
+        "id": 6,
+        "username": "Kanoh Agito",
+        "profilePicUrl": "https://images.pexels.com/photos/3802666/pexels-photo-3802666.jpeg?auto=compress&cs=tinysrgb&w=1600"
+      },
+      {
+        "id": 7,
+        "username": "Julius Reinhold",
+        "profilePicUrl": "https://images.pexels.com/photos/3802666/pexels-photo-3802666.jpeg?auto=compress&cs=tinysrgb&w=1600"
+      },
+      {
+        "id": 8,
+        "username": "Kure Raian",
+        "profilePicUrl": "https://images.pexels.com/photos/3802666/pexels-photo-3802666.jpeg?auto=compress&cs=tinysrgb&w=1600"
+      }
+    ],
+    "worms": [
+      {
+        "id": 9,
+        "username": "Naidan Mönkhbat",
+        "profilePicUrl": "https://images.pexels.com/photos/3802666/pexels-photo-3802666.jpeg?auto=compress&cs=tinysrgb&w=1600"
+      },
+      {
+        "id": 10,
+        "username": "Lu Tian",
+        "profilePicUrl": "https://images.pexels.com/photos/3802666/pexels-photo-3802666.jpeg?auto=compress&cs=tinysrgb&w=1600"
+      },
+      {
+        "id": 11,
+        "username": "Xia Ji",
+        "profilePicUrl": "https://images.pexels.com/photos/3802666/pexels-photo-3802666.jpeg?auto=compress&cs=tinysrgb&w=1600"
+      }
+    ]
   }
 }
