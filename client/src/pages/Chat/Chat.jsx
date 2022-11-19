@@ -17,7 +17,7 @@ export default function Chat() {
             alt={`${chat.title}'s photo`}
             size="40"
           />
-          <span>Chat title</span>
+          <span>{chat.title}</span>
         </div>
         <Button>+</Button>
       </div>
