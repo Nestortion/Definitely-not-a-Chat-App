@@ -3,25 +3,12 @@ import Avatar from '../UI/Avatar/Avatar'
 import { useContext } from 'react'
 import ChatContext from '../../contexts/ChatContext'
 import Button from '../UI/Button/Button'
+import MemberList from '../MemberList/MemberList'
 
 export default function RightBar() {
   const { chat } = useContext(ChatContext)
 
-  // TODO: Create a component maybe?
-  // * Loop through members property keys
-  // * then loop through its elements
-  const membersList = (
-    <div>
-      {Object.entries(chat.members).map(([memberType, memberTypeMembers]) => (
-        <ul>
-          <span>{memberType}</span>
-          {memberTypeMembers.map((member) => (
-            <li>{member}</li>
-          ))}
-        </ul>
-      ))}
-    </div>
-  )
+  // TODO: Create a way to check if the chat is a group chat or a private chat
 
   return (
     <div className="rightbar">
@@ -34,7 +21,7 @@ export default function RightBar() {
         <span>{chat.title}</span>
       </div>
       <div className="rightbar--main">
-        {membersList}
+        <MemberList chatMembers={chat.members} />
         <div>
           <Button>Add member</Button>
           <Button>Search in Group</Button>
