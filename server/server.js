@@ -7,6 +7,8 @@ import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.mjs'
 import cookieParser from 'cookie-parser'
 import jwt from 'jsonwebtoken'
 import Users from './models/Users.js'
+import { sendRefreshToken } from './auth/sendTokens.js'
+import { signAccessToken, signRefreshToken } from './auth/signTokens.js'
 
 dotenv.config()
 
@@ -37,13 +39,13 @@ app.post('/refresh_token', async (req, res) => {
     throw new Error('Refresh Token does not exist')
   }
 
-  const user = await Users.findOne({ where: { id: data.userId } })
+  const user = await Users.findOne({ where: { id: data.user_id } })
 
   if (!user) {
     throw new Error('User does not exist')
   }
 
-  if (user.token_version !== data.refreshCount) {
+  if (user.token_version !== data.token_version) {
     throw new Error('Token Version does not match')
   }
   sendRefreshToken(res, signRefreshToken(user))
