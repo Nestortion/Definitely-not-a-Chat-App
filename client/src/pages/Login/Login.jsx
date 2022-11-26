@@ -1,8 +1,19 @@
 import styles from './Login.scss'
 import Input from '../../components/UI/Input/Input'
 import Button from '../../components/UI/Button/Button'
+import { useState } from 'react'
+import { useLoginMutation } from '../../graphql/hooks/graphql'
 
 export default function Login() {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [login] = useLoginMutation()
+
+  const loginSubmitHandle = (e) => {
+    e.preventDefault()
+    login({ variables: { username, password } })
+  }
+
   return (
     <div className="login">
       <div className="card">
@@ -17,9 +28,24 @@ export default function Login() {
         <div className="right">
           <h1>Login</h1>
           <form>
-            <Input id="username" type="text" placeholder="Username" />
-            <Input id="password" type="password" placeholder="Password" />
+            <Input
+              id="username"
+              type="text"
+              placeholder="Username"
+              onChange={(e) => {
+                setUsername(e.target.value)
+              }}
+            />
+            <Input
+              id="password"
+              type="password"
+              placeholder="Password"
+              onChange={(e) => {
+                setPassword(e.target.value)
+              }}
+            />
             <Button>Submit</Button>
+            <button onClick={loginSubmitHandle}>Login</button>
           </form>
         </div>
       </div>
