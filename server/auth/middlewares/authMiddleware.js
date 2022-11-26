@@ -6,9 +6,11 @@ const authMiddleware = (context) => {
   const authorization = req.headers.authorization
   let data
 
-  console.log(authorization)
   if (!authorization) {
     data = null
+    throw new Error('not authenticated')
+  }
+  if (authorization.startsWith('bearer') === false) {
     throw new Error('not authenticated')
   }
 
