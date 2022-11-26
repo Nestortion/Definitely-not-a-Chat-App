@@ -1,0 +1,6 @@
+mutation AddUserGroupRole($userGroupId: Int, $groupRoleId: Int) {
+  addUserGroupRole(user_group_id: $userGroupId, group_role_id: $groupRoleId) {
+    group_role_id
+    user_group_id
+  }
+}

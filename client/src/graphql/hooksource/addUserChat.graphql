@@ -1,0 +1,17 @@
+mutation AddUserChat(
+  $file: Upload
+  $message: String
+  $userId: Int
+  $receiver: Int
+) {
+  addUserChat(
+    file: $file
+    message: $message
+    user_id: $userId
+    receiver: $receiver
+  ) {
+    message
+    receiver
+    user_id
+  }
+}

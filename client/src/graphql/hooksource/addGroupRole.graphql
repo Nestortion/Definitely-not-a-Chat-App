@@ -1,0 +1,18 @@
+mutation AddGroupRole(
+  $roleName: String
+  $description: String
+  $emoji: String
+  $groupId: Int
+) {
+  addGroupRole(
+    role_name: $roleName
+    description: $description
+    emoji: $emoji
+    group_id: $groupId
+  ) {
+    role_name
+    emoji
+    description
+    group_id
+  }
+}

@@ -1,0 +1,11 @@
+mutation AddUserChatReaction($reaction: String, $count: Int, $userchatId: Int) {
+  addUserChatReaction(
+    reaction: $reaction
+    count: $count
+    userchat_id: $userchatId
+  ) {
+    reaction
+    count
+    userchat_id
+  }
+}

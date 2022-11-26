@@ -1,0 +1,16 @@
+query CurrentUser {
+  currentUser {
+    id
+    username
+    access_level
+    password
+    token_version
+    first_name
+    last_name
+    address
+    section
+    profile_img
+    age
+    gender
+  }
+}
