@@ -15,7 +15,10 @@ const app = express()
 await server.start()
 
 app.use(
-  cors({ credentials: true, origin: 'http://locahost:5173' }),
+  cors({
+    credentials: true,
+    origin: 'http://127.0.0.1:5173',
+  }),
   cookieParser(),
   json()
 )
@@ -54,23 +57,6 @@ app.use(
 
   expressMiddleware(server, {
     context: ({ req, res }) => {
-      // const authorization = req.headers.authorization
-      // let data
-
-      // console.log(authorization)
-      // if (!authorization) {
-      //   data = null
-      //   throw new Error('not authenticated')
-      // }
-
-      // try {
-      //   const token = authorization.split(' ')[1]
-      //   const tokendata = jwt.verify(token, process.env.ACCESS_SECRET)
-      //   data = tokendata
-      // } catch (err) {
-      //   data = null
-      //   throw new Error('not authenticated')
-      // }
       return { req, res }
     },
   })
