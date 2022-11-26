@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 const DB = new Sequelize('dnca', 'root', `${process.env.DB_PASS}`, {
   host: 'localhost',
+  port: process.env.DB_PORT || 3306,
   dialect: 'mysql',
   logging: false,
 })
