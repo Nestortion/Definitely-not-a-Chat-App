@@ -12,7 +12,7 @@ const typeDefs = `
     last_name: String!
     address: String!
     section: String!
-    section_img: String!
+    profile_img: String!
     age: Int!
     gender: String!
   }
@@ -88,7 +88,6 @@ const typeDefs = `
     addUserGroupRole( user_group_id: Int, group_role_id: Int): UserGroupRole
     addUserChatReaction ( reaction: String, count: Int, userchat_id: Int): UserChatReaction
     login(username: String!, password: String!): AccessToken
-    refreshAccessToken : AccessToken
     revokeRefreshToken(user_id:Int!) : Boolean
   }
 

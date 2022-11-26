@@ -57,13 +57,8 @@ const resolvers = {
     currentUser: async (_, __, context) => {
       const { req, res, data } = authMiddleware(context)
 
-      const accessToken = context.req.header.authorization.split(' ')[1]
-
-      if (accessToken) {
-        const tokenData = jwt.verify(accessToken, process.env.ACCESS_SECRET)
-      }
-
       const currentUser = await Users.findOne({ where: { id: data.user_id } })
+      // console.log('xdddd')
       return currentUser
     },
     isLoggedIn: async (_, __, context) => {
@@ -180,36 +175,36 @@ const resolvers = {
       }
 
       sendRefreshToken(context.res, signRefreshToken(user))
-      return { accessToken: signAccessToken(user) }
+      return { access_token: signAccessToken(user) }
     },
-    refreshAccessToken: async (_, __, { req, res }) => {
-      const token = req.cookies['refresh-token']
-      // console.log(token)
+    // refreshAccessToken: async (_, __, { req, res }) => {
+    //   const token = req.cookies['refresh-token']
+    //   // console.log(token)
 
-      if (!token) {
-        throw new GraphQLError('Refresh Token does not exist')
-      }
+    //   if (!token) {
+    //     throw new GraphQLError('Refresh Token does not exist')
+    //   }
 
-      let data
-      try {
-        data = jwt.verify(token, process.env.REFRESH_SECRET)
-      } catch (err) {
-        throw new GraphQLError('Refresh Token does not exist')
-      }
+    //   let data
+    //   try {
+    //     data = jwt.verify(token, process.env.REFRESH_SECRET)
+    //   } catch (err) {
+    //     throw new GraphQLError('Refresh Token does not exist')
+    //   }
 
-      const user = await Users.findOne({ where: { id: data.user_id } })
+    //   const user = await Users.findOne({ where: { id: data.user_id } })
 
-      if (!user) {
-        throw new GraphQLError('User does not exist')
-      }
+    //   if (!user) {
+    //     throw new GraphQLError('User does not exist')
+    //   }
 
-      if (user.tokenVersion !== data.token_version) {
-        throw new GraphQLError('Token Version does not match')
-      }
-      sendRefreshToken(res, signRefreshToken(user))
+    //   if (user.tokenVersion !== data.token_version) {
+    //     throw new GraphQLError('Token Version does not match')
+    //   }
+    //   sendRefreshToken(res, signRefreshToken(user))
 
-      return { accessToken: signAccessToken(user) }
-    },
+    //   return { accessToken: signAccessToken(user) }
+    // },
     revokeRefreshToken: async (_, { user_id }, context) => {
       const { req, res, data } = authMiddleware(context)
 
