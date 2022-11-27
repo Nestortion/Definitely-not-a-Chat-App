@@ -1,14 +1,13 @@
 import './rightbar.scss'
 import Avatar from '../UI/Avatar/Avatar'
-import { useContext } from 'react'
-import ChatContext from '../../contexts/ChatContext'
 import Button from '../UI/Button/Button'
 import MemberList from '../MemberList/MemberList'
+// ! TEMPORARY DATA ONLY
+import chat from '../../data/chat.json'
 
 export default function RightBar() {
-  const { chat } = useContext(ChatContext)
-
   // TODO: Create a way to check if the chat is a group chat or a private chat
+  // TODO: Use apollo client's useQuery here to fetch the current selected chat/group chat
 
   return (
     <div className="rightbar">
