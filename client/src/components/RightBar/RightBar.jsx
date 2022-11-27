@@ -4,6 +4,7 @@ import Button from '../UI/Button/Button'
 import MemberList from '../MemberList/MemberList'
 // ! TEMPORARY DATA ONLY
 import chat from '../../data/chat.json'
+import SettingsButtons from '../SettingsButtons/SettingsButtons'
 
 export default function RightBar() {
   // TODO: Create a way to check if the chat is a group chat or a private chat
@@ -21,11 +22,7 @@ export default function RightBar() {
       </div>
       <div className="rightbar--main">
         <MemberList chatMembers={chat.members} />
-        <div>
-          <Button>Add member</Button>
-          <Button>Search in Group</Button>
-          <Button>Report Chat</Button>
-        </div>
+        <SettingsButtons />
       </div>
     </div>
   )
