@@ -4,6 +4,7 @@ import Input from '../../components/UI/Input/Input'
 import Avatar from '../../components/UI/Avatar/Avatar'
 // ! DUMMY DATA ONLY
 import chat from '../../data/chat.json'
+import ChatMessages from '../../components/Messages/ChatMessages/ChatMessages'
 
 export default function Chat() {
   return (
@@ -20,8 +21,7 @@ export default function Chat() {
         <Button>+</Button>
       </div>
       <div className="chat-messages-container">
-        <div>Chat 1</div>
-        <div>Chat 2</div>
+        <ChatMessages />
       </div>
       <div className="chat-input-container">
         <form>
