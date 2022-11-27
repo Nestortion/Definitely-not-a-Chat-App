@@ -7,23 +7,34 @@ import {
   useIsLoggedInQuery,
 } from '../../graphql/hooks/graphql'
 import { setAccessToken } from '../../graphql/authStore'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [login, { data, loading, error }] = useLoginMutation()
-  const { data: isLogged } = useIsLoggedInQuery()
+  const [login, { data: loginData, loading: loginLoading, error: loginError }] =
+    useLoginMutation()
+  const {
+    data: isLogged,
+    loading: isLoggedLoading,
+    error: isLoggedError,
+  } = useIsLoggedInQuery()
+  const navigate = useNavigate()
 
   const loginSubmitHandle = (e) => {
-    e.preventDefault()
     login({ variables: { username, password } })
-    setAccessToken(data?.login.access_token)
+
+    if (loginLoading) {
+      setAccessToken('')
+    }
+    if (loginData) {
+      setAccessToken(loginData.login.access_token)
+      navigate('/')
+    }
   }
 
-  // if (isLogged?.isLoggedIn === true) {
-  //   return <Navigate to="/" />
-  // }
+  if (isLoggedLoading) return <div>loading</div>
+  if (isLogged?.isLoggedIn === true) return <Navigate to="/" />
 
   return (
     <div className="login">
