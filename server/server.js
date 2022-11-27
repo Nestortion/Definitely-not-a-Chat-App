@@ -13,13 +13,14 @@ import { signAccessToken, signRefreshToken } from './auth/signTokens.js'
 dotenv.config()
 
 const app = express()
+const PORT = process.env.PORT || 4000
 
 await server.start()
 
 app.use(
   cors({
     credentials: true,
-    origin: 'http://127.0.0.1:5173',
+    origin: ['http://127.0.0.1:5173', 'http://localhost:5173'],
   }),
   cookieParser(),
   json()
@@ -65,5 +66,5 @@ app.use(
 )
 
 app.listen(process.env.PORT, () => {
-  console.log(`listening to ${process.env.PORT}`)
+  console.log(`listening to PORT ${PORT}`)
 })
