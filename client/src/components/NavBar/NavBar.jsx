@@ -4,6 +4,8 @@ import UserCard from '../UserCard/UserCard'
 
 // ! TEMPORARY DATA ONLY
 // data should come from api
+// ! FETCH HERE
+// user from global state
 const user = {
   userId: '1',
   username: 'John Doe',

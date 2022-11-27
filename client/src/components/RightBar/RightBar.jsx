@@ -1,15 +1,19 @@
 import './rightbar.scss'
 import Avatar from '../UI/Avatar/Avatar'
-import Button from '../UI/Button/Button'
 import MemberList from '../MemberList/MemberList'
-// ! TEMPORARY DATA ONLY
-import chat from '../../data/chat.json'
+// TODO: use the global chat data state here
+// import chat from '../../data/chat.json'
 import SettingsButtons from '../SettingsButtons/SettingsButtons'
 
 export default function RightBar() {
-  // TODO: Create a way to check if the chat is a group chat or a private chat
-  // TODO: Use apollo client's useQuery here to fetch the current selected chat/group chat
+  let chat
+  // Check if global chat state is existing
+  // Render nothing if does not exist
+  if (!chat) {
+    return
+  }
 
+  // Render chat state if it exists
   return (
     <div className="rightbar">
       <div className="rightbar--header">

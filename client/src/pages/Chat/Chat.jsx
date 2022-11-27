@@ -2,7 +2,9 @@ import './chat.scss'
 import Button from '../../components/UI/Button/Button'
 import Input from '../../components/UI/Input/Input'
 import Avatar from '../../components/UI/Avatar/Avatar'
-// ! DUMMY DATA ONLY
+// ! FETCH HERE
+// id is from the url parameter (e.g. /chat/:chatId)
+// set global chat state here
 import chat from '../../data/chat.json'
 import ChatMessages from '../../components/Messages/ChatMessages/ChatMessages'
 

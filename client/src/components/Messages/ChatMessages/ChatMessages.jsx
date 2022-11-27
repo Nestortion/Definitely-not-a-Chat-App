@@ -1,8 +1,9 @@
 import ChatMessage from '../ChatMessage/ChatMessage'
 import './chat-messages.scss'
 
-// TODO: fetch chat messages from api
-// TODO: chat id should come from the global state
+// ! FETCH HERE
+// fetch messages from a chat/group chat
+// chat id should come from the global state
 const dummyChatMessages = [
   {
     text: 'hello',

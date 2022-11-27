@@ -3,10 +3,9 @@ import Button from '../UI/Button/Button'
 import Input from '../UI/Input/Input'
 import ChatList from '../ChatList/ChatList'
 import { useState } from 'react'
-// * Dummy data only
+// ! FETCH HERE
+// fetch all the group where the user is a member
 import initialState from '../../data/chats.json'
-
-// TODO: create a fetch hook for fetching data
 
 export default function LeftBar() {
   const [chats, setChats] = useState(initialState)
