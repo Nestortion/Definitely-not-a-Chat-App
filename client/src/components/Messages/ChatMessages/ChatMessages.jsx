@@ -20,6 +20,38 @@ const dummyChatMessages = [
     text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate aperiam amet quia nesciunt blanditiis inventore possimus officiis vitae eaque?',
     sender: 'other',
   },
+  {
+    text: 'hello',
+    sender: 'you',
+  },
+  {
+    text: 'world',
+    sender: 'other',
+  },
+  {
+    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate aperiam amet quia nesciunt blanditiis inventore possimus officiis vitae eaque?',
+    sender: 'you',
+  },
+  {
+    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate aperiam amet quia nesciunt blanditiis inventore possimus officiis vitae eaque?',
+    sender: 'other',
+  },
+  {
+    text: 'hello',
+    sender: 'you',
+  },
+  {
+    text: 'world',
+    sender: 'other',
+  },
+  {
+    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate aperiam amet quia nesciunt blanditiis inventore possimus officiis vitae eaque?',
+    sender: 'you',
+  },
+  {
+    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate aperiam amet quia nesciunt blanditiis inventore possimus officiis vitae eaque?',
+    sender: 'other',
+  },
 ]
 
 export default function ChatMessages() {
