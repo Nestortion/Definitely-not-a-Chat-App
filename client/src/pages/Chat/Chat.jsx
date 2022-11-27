@@ -1,13 +1,11 @@
 import './chat.scss'
 import Button from '../../components/UI/Button/Button'
 import Input from '../../components/UI/Input/Input'
-import { useContext } from 'react'
-import ChatContext from '../../contexts/ChatContext'
 import Avatar from '../../components/UI/Avatar/Avatar'
+// ! DUMMY DATA ONLY
+import chat from '../../data/chat.json'
 
 export default function Chat() {
-  const { chat, setChat } = useContext(ChatContext)
-
   return (
     <div className="chat">
       <div className="header">
