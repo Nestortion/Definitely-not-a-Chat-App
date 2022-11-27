@@ -7,9 +7,11 @@
   border-radius: 0.5rem;
 
   &.you {
+    background-color: aqua;
     margin-left: auto;
   }
 
   &.other {
+    background-color: steelblue;
   }
 }
