@@ -2,13 +2,12 @@ import './rightbar.scss'
 import Avatar from '../UI/Avatar/Avatar'
 import MemberList from '../MemberList/MemberList'
 // TODO: use the global chat data state here
-// import chat from '../../data/chat.json'
+import chat from '../../data/chat.json'
 import SettingsButtons from '../SettingsButtons/SettingsButtons'
 
 export default function RightBar() {
-  let chat
   // Check if global chat state is existing
-  // Render nothing if does not exist
+  // Hide Rightbar if we not on Chat page
   if (!chat) {
     return
   }
