@@ -4,7 +4,7 @@ import Button from '../UI/Button/Button'
 import { useState } from 'react'
 
 export default function UserCard({ profilePicUrl, username }) {
-  const [userSettingsIsShowing, setUserSettingsIsShowing] = useState(true)
+  const [userSettingsIsShowing, setUserSettingsIsShowing] = useState(false)
 
   const toggleUserSettings = () => {
     setUserSettingsIsShowing((prev) => !prev)
