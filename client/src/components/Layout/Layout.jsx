@@ -51,18 +51,13 @@ export default function Layout() {
     }
   }, [])
 
-  // I don't even know anymore
-  // when the logo is clicked it should be okay to show middle
-  // some weird bug that I may* solve
-  useEffect(() => {
-    if (isTabletOrMobile && !isInChatPage) {
-      showOnlyMiddle()
-    }
-  }, [isInChatPage])
-
   return (
     <div className="layout">
-      <NavBar />
+      <NavBar
+        onClick={() => {
+          if (isTabletOrMobile) showOnlyLeft()
+        }}
+      />
       <div className="main">
         {leftShouldShow && (
           <div
