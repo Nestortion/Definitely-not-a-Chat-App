@@ -51,8 +51,6 @@ export default function Layout() {
     }
   }, [])
 
-  console.log(isTabletOrMobile)
-
   return (
     <div className="layout">
       <NavBar />
