@@ -1,12 +1,28 @@
 .user-card {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  position: relative;
 
-  span {
-    max-width: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: clamp(1rem, 3vw, 1.25rem);
+  .user-card__user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+
+    span {
+      max-width: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: clamp(1rem, 3vw, 1.25rem);
+    }
+  }
+
+  .user-card__user-settings {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    position: absolute;
+    bottom: 0;
+    transform: translateY(150%);
   }
 }
