@@ -7,10 +7,13 @@ import Avatar from '../../components/UI/Avatar/Avatar'
 // set global chat state here
 import chat from '../../data/chat.json'
 import ChatMessages from '../../components/Messages/ChatMessages/ChatMessages'
+import { useMediaQuery } from 'react-responsive'
 
 export default function Chat() {
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
+
   return (
-    <div className="chat">
+    <div className={`chat ${isTabletOrMobile && 'small-screen'}`}>
       <div className="header">
         <div className="chat-info">
           <Avatar

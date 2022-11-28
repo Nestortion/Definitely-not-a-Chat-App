@@ -4,6 +4,12 @@
   flex-direction: column;
   justify-content: space-between;
 
+  &.small-screen {
+    // Scuffed method
+    // middle__button-group height + padding-bottom
+    height: calc(100% - 1rem - 0.5rem);
+  }
+
   .header {
     display: flex;
     align-items: center;
