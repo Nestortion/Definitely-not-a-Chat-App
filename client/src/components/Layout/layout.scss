@@ -15,5 +15,12 @@
     .middle {
       flex: 1;
     }
+
+    @media (max-width: 961px) {
+      .left,
+      .right {
+        width: 100%;
+      }
+    }
   }
 }
