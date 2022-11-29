@@ -3,16 +3,23 @@ import './user-card.scss'
 import Button from '../UI/Button/Button'
 import { useState } from 'react'
 import { apiBasePath } from '../../data/config'
+import { useLogoutMutation } from '../../graphql/hooks/graphql'
+import { setAccessToken } from '../../graphql/authStore'
+import { useNavigate } from 'react-router-dom'
 
 export default function UserCard({ profilePicUrl, first_name }) {
   const [userSettingsIsShowing, setUserSettingsIsShowing] = useState(false)
-
+  const [logout] = useLogoutMutation()
   const toggleUserSettings = () => {
     setUserSettingsIsShowing((prev) => !prev)
   }
+  const navigate = useNavigate()
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // ! MUTATION FOR LOGOUT
+    await logout()
+    setAccessToken('')
+    navigate(0)
     console.log('User logged out!')
   }
 
