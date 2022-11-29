@@ -101,7 +101,7 @@ const authLink = new ApolloLink((operation, forward) => {
 })
 
 const uploadlink = createUploadLink({
-  uri: 'http://localhost:4000/graphql',
+  uri: `${apiBasePath}/graphql`,
   credentials: 'include',
 })
 
