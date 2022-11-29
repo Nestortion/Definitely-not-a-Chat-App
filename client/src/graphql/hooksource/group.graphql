@@ -1,0 +1,6 @@
+query Group($groupId: Int!) {
+  group(id: $groupId) {
+    id
+    group_name
+  }
+}

@@ -331,6 +331,15 @@ export type CurrentUserQuery = {
   } | null
 }
 
+export type GroupQueryVariables = Exact<{
+  groupId: Scalars['Int']
+}>
+
+export type GroupQuery = {
+  __typename?: 'Query'
+  group?: { __typename?: 'Group'; id: number; group_name: string } | null
+}
+
 export type GroupsQueryVariables = Exact<{
   userId?: InputMaybe<Scalars['Int']>
 }>
@@ -822,6 +831,55 @@ export type CurrentUserLazyQueryHookResult = ReturnType<
 export type CurrentUserQueryResult = Apollo.QueryResult<
   CurrentUserQuery,
   CurrentUserQueryVariables
+>
+export const GroupDocument = gql`
+  query Group($groupId: Int!) {
+    group(id: $groupId) {
+      id
+      group_name
+    }
+  }
+`
+
+/**
+ * __useGroupQuery__
+ *
+ * To run a query within a React component, call `useGroupQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGroupQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGroupQuery({
+ *   variables: {
+ *      groupId: // value for 'groupId'
+ *   },
+ * });
+ */
+export function useGroupQuery(
+  baseOptions: Apollo.QueryHookOptions<GroupQuery, GroupQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GroupQuery, GroupQueryVariables>(
+    GroupDocument,
+    options
+  )
+}
+export function useGroupLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GroupQuery, GroupQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GroupQuery, GroupQueryVariables>(
+    GroupDocument,
+    options
+  )
+}
+export type GroupQueryHookResult = ReturnType<typeof useGroupQuery>
+export type GroupLazyQueryHookResult = ReturnType<typeof useGroupLazyQuery>
+export type GroupQueryResult = Apollo.QueryResult<
+  GroupQuery,
+  GroupQueryVariables
 >
 export const GroupsDocument = gql`
   query Groups($userId: Int) {
