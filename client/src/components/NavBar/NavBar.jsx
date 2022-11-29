@@ -1,18 +1,17 @@
 import './navbar.scss'
 import { Link } from 'react-router-dom'
 import UserCard from '../UserCard/UserCard'
+import { useCurrentUserQuery } from '../../graphql/hooks/graphql'
 // ! TEMPORARY DATA ONLY
 // data should come from api
 // ! FETCH HERE
 // user from global state
-const user = {
-  userId: '1',
-  username: 'John Doe',
-  profilePicUrl:
-    'https://images.pexels.com/photos/12050399/pexels-photo-12050399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-}
 
 export default function NavBar({ onClick }) {
+  const { data, loading, error } = useCurrentUserQuery()
+
+  if (loading) return <h1>loading...</h1>
+  if (error) return <h1>error...</h1>
   return (
     <div className="navbar">
       <div className="left">
@@ -21,7 +20,7 @@ export default function NavBar({ onClick }) {
         </Link>
       </div>
       <div className="right">
-        <UserCard {...user} />
+        <UserCard {...data.currentUser} />
       </div>
     </div>
   )
