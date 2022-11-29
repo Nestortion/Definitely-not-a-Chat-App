@@ -19,6 +19,7 @@ import { createUploadLink } from 'apollo-upload-client'
 import jwt_decode from 'jwt-decode'
 import { TokenRefreshLink } from 'apollo-link-token-refresh'
 import { getAccessToken, setAccessToken } from './graphql/authStore.js'
+import { apiBasePath } from './data/config'
 
 const router = createBrowserRouter([
   {
@@ -70,7 +71,7 @@ const refreshTokenLink = new TokenRefreshLink({
     }
   },
   fetchAccessToken: () => {
-    return fetch('http://localhost:4000/refresh_token', {
+    return fetch(`${apiBasePath}/refresh_token`, {
       method: 'POST',
       credentials: 'include',
     })

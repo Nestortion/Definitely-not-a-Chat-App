@@ -2,11 +2,12 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import Layout from './components/Layout/Layout'
 import { setAccessToken } from './graphql/authStore'
+import { apiBasePath } from './data/config'
 
 export default function App() {
   const [loading, setLoading] = useState(true)
   useEffect(() => {
-    fetch('http://localhost:4000/refresh_token', {
+    fetch(`${apiBasePath}/refresh_token`, {
       method: 'POST',
       credentials: 'include',
     }).then(async (res) => {
