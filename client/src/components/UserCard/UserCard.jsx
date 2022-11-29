@@ -2,6 +2,7 @@ import Avatar from '../UI/Avatar/Avatar'
 import './user-card.scss'
 import Button from '../UI/Button/Button'
 import { useState } from 'react'
+import { apiBasePath } from '../../data/config'
 
 export default function UserCard({ profilePicUrl, first_name }) {
   const [userSettingsIsShowing, setUserSettingsIsShowing] = useState(false)
@@ -21,7 +22,7 @@ export default function UserCard({ profilePicUrl, first_name }) {
         <Avatar
           src={
             // temporary placeholder
-            `http://localhost:4000/pfp/amogusz.jpg`
+            `${apiBasePath}/pfp/amogusz.jpg`
           }
           alt={`${first_name}'s profile pic`}
           size="48"
