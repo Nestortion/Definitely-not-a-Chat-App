@@ -15,6 +15,10 @@ const Groups = DB.define(
       allowNull: false,
       unique: true,
     },
+    group_picture: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   { timestamps: false }
 )
