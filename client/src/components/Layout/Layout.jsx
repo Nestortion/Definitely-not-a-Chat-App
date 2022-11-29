@@ -60,12 +60,8 @@ export default function Layout() {
       />
       <div className="main">
         {leftShouldShow && (
-          <div
-            className="left"
-            onClick={() => {
-              if (isTabletOrMobile) showOnlyMiddle()
-            }}
-          >
+          <div className="left">
+            {/* TODO: need to prop drill showMiddleOnly to ChatListItem */}
             <LeftBar />
           </div>
         )}
