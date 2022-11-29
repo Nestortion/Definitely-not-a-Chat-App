@@ -45,8 +45,18 @@ const resolvers = {
     users: () => {
       return Users.findAll()
     },
-    userChats: () => {
-      return UserChats.findAll()
+    userChats: async (_, { receiver }, context) => {
+      const { data: user } = authMiddleware(context)
+
+      const validation = await UserGroups.findOne({
+        where: { user_id: user.user_id, group_id: receiver },
+      })
+
+      if (!validation) {
+        throw new GraphQLError('user does not belong to chat')
+      }
+
+      return UserChats.findAll({ where: { receiver } })
     },
     groups: async (_, __, context) => {
       const { data } = authMiddleware(context)
@@ -66,7 +76,7 @@ const resolvers = {
       return UserGroups.findAll()
     },
     currentUser: async (_, __, context) => {
-      const { req, res, data } = authMiddleware(context)
+      const { data } = authMiddleware(context)
 
       const currentUser = await Users.findOne({ where: { id: data.user_id } })
       return currentUser
@@ -114,8 +124,8 @@ const resolvers = {
         gender,
       })
     },
-    addUserChat: async (_, { file, message, user_id, receiver }, context) => {
-      const { req, res } = authMiddleware(context)
+    addUserChat: async (_, { file, message, receiver, user_id }, context) => {
+      // const { req, res, data: user } = authMiddleware(context)
 
       const validation = await UserGroups.findOne({
         where: { user_id, group_id: receiver },
@@ -133,7 +143,11 @@ const resolvers = {
               )
               .on('close', res)
           )
-          return UserChats.create({ message: newFileName, user_id, receiver })
+          return UserChats.create({
+            message: newFileName,
+            user_id,
+            receiver,
+          })
         } else {
           if (message !== '') {
           }
@@ -187,7 +201,7 @@ const resolvers = {
       return { access_token: signAccessToken(user) }
     },
     revokeRefreshToken: async (_, { user_id }, context) => {
-      const { req, res, data } = authMiddleware(context)
+      const { data } = authMiddleware(context)
 
       const increment = await Users.increment(
         { token_version: 1 },

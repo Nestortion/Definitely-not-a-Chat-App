@@ -69,7 +69,7 @@ const typeDefs = `
     group(id: Int!): Group
     userGroup(user_id: Int, group_id: Int): UserGroup
     users: [User]
-    userChats: [UserChat]
+    userChats(receiver:Int): [UserChat]
     groups(user_id: Int): [Group]
     userGroups: [UserGroup]
     groupRoles: [GroupRole]
