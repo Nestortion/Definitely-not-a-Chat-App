@@ -14,6 +14,7 @@ import { signAccessToken, signRefreshToken } from '../auth/signTokens.js'
 import { sendRefreshToken } from '../auth/sendTokens.js'
 import { authMiddleware } from '../auth/middlewares/authMiddleware.js'
 import { createAssociation, syncModels } from '../models/Associations.js'
+import { group } from 'node:console'
 
 createAssociation()
 syncModels()
@@ -48,8 +49,19 @@ const resolvers = {
     userChats: () => {
       return UserChats.findAll()
     },
-    groups: () => {
-      return Groups.findAll()
+    groups: async (_, __, context) => {
+      const { data } = authMiddleware(context)
+
+      const validation = await UserGroups.findAll({
+        where: { user_id: data.user_id },
+      })
+
+      let groups = []
+      validation.forEach(async (usergroup) => {
+        groups.push(usergroup.group_id)
+      })
+
+      return Groups.findAll({ where: { id: groups } })
     },
     userGroups: () => {
       return UserGroups.findAll()

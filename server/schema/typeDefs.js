@@ -70,13 +70,14 @@ const typeDefs = `
     userGroup(user_id: Int, group_id: Int): UserGroup
     users: [User]
     userChats: [UserChat]
-    groups: [Group]
+    groups(user_id: Int): [Group]
     userGroups: [UserGroup]
     groupRoles: [GroupRole]
     userGroupRoles: [UserGroupRole]
     userChatReactions: [UserChatReaction]
     currentUser: User
     isLoggedIn: Boolean
+    
   }
 
   type Mutation {
