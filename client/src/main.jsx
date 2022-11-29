@@ -21,6 +21,8 @@ import { TokenRefreshLink } from 'apollo-link-token-refresh'
 import { getAccessToken, setAccessToken } from './graphql/authStore.js'
 import { apiBasePath } from './data/config'
 
+console.log(apiBasePath)
+
 const router = createBrowserRouter([
   {
     path: '/',
