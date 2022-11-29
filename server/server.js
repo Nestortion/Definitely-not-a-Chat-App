@@ -14,6 +14,8 @@ import path from 'node:path'
 dotenv.config()
 
 const app = express()
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost'
+const CLIENT_PORT = process.env.CLIENT_PORT || '5173'
 const PORT = process.env.PORT || 4000
 
 await server.start()
@@ -23,7 +25,11 @@ app.use(express.static('files'))
 app.use(
   cors({
     credentials: true,
-    origin: ['http://127.0.0.1:5173', 'http://localhost:5173'],
+    origin: [
+      'http://127.0.0.1:5173',
+      'http://localhost:5173',
+      `${CLIENT_URL}:${CLIENT_PORT}`,
+    ],
   }),
   cookieParser(),
   json()
