@@ -32,7 +32,17 @@ const resolvers = {
     user: (_, { id }) => {
       return Users.findOne({ where: { id } })
     },
-    group: (_, { id }) => {
+    group: async (_, { id }, context) => {
+      const { data: user } = authMiddleware(context)
+
+      const validation = await UserGroups.findOne({
+        where: { user_id: user.user_id, group_id: id },
+      })
+
+      if (!validation) {
+        throw new GraphQLError('user does not belong to chat')
+      }
+
       return Groups.findOne({ where: { id } })
     },
     userGroup: (_, { user_id, group_id }) => {

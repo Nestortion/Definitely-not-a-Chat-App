@@ -8,20 +8,30 @@ import Avatar from '../../components/UI/Avatar/Avatar'
 import chat from '../../data/chat.json'
 import ChatMessages from '../../components/Messages/ChatMessages/ChatMessages'
 import { useMediaQuery } from 'react-responsive'
+import { useGroupQuery } from '../../graphql/hooks/graphql'
+import { useParams } from 'react-router-dom'
+import { apiBasePath } from '../../data/config'
 
 export default function Chat() {
+  const { chatId } = useParams()
+  const { data, loading, error } = useGroupQuery({
+    variables: { groupId: parseInt(chatId) },
+  })
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
+
+  if (loading) return <h1>loading</h1>
+  if (error) return <h1>error</h1>
 
   return (
     <div className={`chat ${isTabletOrMobile && 'small-screen'}`}>
       <div className="header">
         <div className="chat-info">
           <Avatar
-            src={chat.profilePicUrl}
-            alt={`${chat.title}'s photo`}
+            src={`${apiBasePath}/pfp/amogusz.jpg`}
+            alt={`${data.group.group_name}'s photo`}
             size="40"
           />
-          <span>{chat.title}</span>
+          <span>{data.group.group_name}</span>
         </div>
         <Button>+</Button>
       </div>
