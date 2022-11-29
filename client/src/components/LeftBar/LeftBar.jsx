@@ -6,9 +6,13 @@ import { useState } from 'react'
 // ! FETCH HERE
 // fetch all the group where the user is a member
 import initialState from '../../data/chats.json'
+import { useGroupsQuery } from '../../graphql/hooks/graphql'
 
 export default function LeftBar() {
   const [chats, setChats] = useState(initialState)
+  const { data: chat, loading, error } = useGroupsQuery()
+  if (loading) return <h1>loading</h1>
+  if (error) return <h1>error</h1>
 
   return (
     <div className="leftbar">
@@ -25,7 +29,7 @@ export default function LeftBar() {
       </div>
 
       <div className="bottom">
-        <ChatList chats={chats} />
+        <ChatList chats={chat.groups} />
       </div>
     </div>
   )

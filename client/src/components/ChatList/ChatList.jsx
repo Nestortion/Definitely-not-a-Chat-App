@@ -6,10 +6,10 @@ export default function ChatList({ chats }) {
     <div className="chat-list">
       {chats.map((chat) => (
         <ChatListItem
-          key={chat.chatId}
-          chatId={chat.chatId}
+          key={chat.id}
+          chatId={chat.id}
           profilePicUrl={chat.profilePicUrl}
-          title={chat.title}
+          title={chat.group_name}
         />
       ))}
     </div>
