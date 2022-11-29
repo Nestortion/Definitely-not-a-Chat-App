@@ -9,10 +9,9 @@ import initialState from '../../data/chats.json'
 import { useGroupsQuery } from '../../graphql/hooks/graphql'
 
 export default function LeftBar() {
-  const [chats, setChats] = useState(initialState)
   const { data: chat, loading, error } = useGroupsQuery()
-  if (loading) return <h1>loading</h1>
-  if (error) return <h1>error</h1>
+  if (loading) return <span>loading</span>
+  if (error) return <span className="text-error-400">error</span>
 
   return (
     <div className="leftbar">
