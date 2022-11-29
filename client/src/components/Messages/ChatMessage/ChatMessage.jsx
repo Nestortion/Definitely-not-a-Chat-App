@@ -1,23 +1,23 @@
 import './chat-message.scss'
+import { apiBasePath } from '../../../data/config'
+import Avatar from '../../UI/Avatar/Avatar'
 
-export default function ChatMessage({
-  text,
-  sender,
-  isImage,
-  isFile,
-  url,
-  fileName,
-  user,
-}) {
-  if (isImage) {
-    return <img src={url} />
+export default function ChatMessage({ text, sender, user, message_type }) {
+  if (message_type === 'IMAGE') {
+    return (
+      <div className={`chat-message ${sender === user ? 'you' : 'other'}`}>
+        <Avatar size={56} src={`${apiBasePath}/message/images/${text}`} />
+      </div>
+    )
   }
 
-  if (isFile) {
+  if (message_type === 'OTHER') {
     return (
-      <a href={url} download>
-        {fileName}
-      </a>
+      <div className={`chat-message ${sender === user ? 'you' : 'other'}`}>
+        <a href={`${apiBasePath}/message/documents/${text}`} download>
+          {text}
+        </a>
+      </div>
     )
   }
 
