@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;700&display=swap');
 :root {
   --clr-primary-400: #676fa3;
+  --clr-error-400: #da3047;
 
   --clr-neutral-100: #ffffff;
   --clr-neutral-200: #eef2ff;
@@ -101,6 +102,10 @@ h6 {
   color: var(--clr-primary-400);
 }
 
+.text-error-400 {
+  color: var(--clr-error-400);
+}
+
 .text-neutral-100 {
   color: var(--clr-neutral-100);
 }
@@ -111,6 +116,10 @@ h6 {
 
 .bg-primary-400 {
   background-color: var(--clr-primary-400);
+}
+
+.bg-error-400 {
+  background-color: var(--clr-error-400);
 }
 
 .bg-neutral-100 {
