@@ -21,6 +21,8 @@ import { TokenRefreshLink } from 'apollo-link-token-refresh'
 import { getAccessToken, setAccessToken } from './graphql/authStore.js'
 import { apiBasePath } from './data/config'
 
+console.log(apiBasePath)
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -101,7 +103,7 @@ const authLink = new ApolloLink((operation, forward) => {
 })
 
 const uploadlink = createUploadLink({
-  uri: 'http://localhost:4000/graphql',
+  uri: `${apiBasePath}/graphql`,
   credentials: 'include',
 })
 
