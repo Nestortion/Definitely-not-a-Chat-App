@@ -15,6 +15,11 @@ const UserChats = DB.define(
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    message_type: {
+      type: DataTypes.ENUM('TEXT', 'IMAGE', 'OTHER'),
+      allowNull: false,
+      defaultValue: 'TEXT',
+    },
   },
   { createdAt: true, updatedAt: false }
 )
