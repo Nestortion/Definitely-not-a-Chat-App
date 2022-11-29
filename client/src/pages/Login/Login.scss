@@ -9,12 +9,18 @@
     width: 80%;
     max-width: 850px;
     min-height: 600px;
+    border-radius: 0.5rem;
     display: flex;
     flex-wrap: wrap;
     overflow: hidden;
 
     .left {
       // TODO: add image and gradient background
+      background: linear-gradient(#676fa3c8, #676fa3c8),
+        url('https://img.freepik.com/free-vector/asian-rice-field-terraces-morning-mountains-landscape-paddy-plantation-cascades-farm-mount-water-channel-with-growing-plants-scenery-meadow-with-green-grass-cartoon-vector-illustration_107791-10452.jpg?w=1380&t=st=1667968804~exp=1667969404~hmac=3aa23342933d60b8d945739223a851d815d534e80dfa205e8c076b92cc6ed0bc')
+          center;
+      background-size: cover;
+
       padding: 3rem;
       flex: 1;
       display: flex;
@@ -27,7 +33,8 @@
       }
 
       p {
-        font-size: 1.25rem;
+        font-size: clamp(1rem, 1.75vw, 1.25rem);
+        line-height: 1.15;
       }
     }
 
@@ -49,8 +56,14 @@
     @media (max-width: 480px) {
       .left,
       .right {
-        padding: 1rem;
+        padding-inline: 1rem;
       }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .card {
+      width: 90%;
     }
   }
 }

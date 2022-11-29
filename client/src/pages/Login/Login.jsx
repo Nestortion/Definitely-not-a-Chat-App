@@ -29,18 +29,17 @@ export default function Login() {
   if (isLogged?.isLoggedIn === true) return <Navigate to="/" />
 
   return (
-    <div className="login">
-      <div className="card">
-        <div className="left">
-          <h1>Hello World</h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cupiditate
-            possimus tempora molestias autem nisi doloremque ipsam labore dolor
-            rerum nihil!
+    <div className="login bg-primary-400">
+      <div className="card bg-neutral-100">
+        <div className="left text-neutral-100">
+          <h1 className="fw-bold">DNCA</h1>
+          <p className="fw-regular">
+            DNCA (Definitely not a chat app) is a Chat Application System for
+            Polytechnic University of the Philippines Biñan Campus
           </p>
         </div>
         <div className="right">
-          <h1>Login</h1>
+          <h1 className="text-primary-400 fw-bold">Login</h1>
           {loginError && <h1>Invalid Username or Password</h1>}
           <form onSubmit={loginSubmitHandle}>
             <Input
