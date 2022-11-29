@@ -9,6 +9,7 @@ import jwt from 'jsonwebtoken'
 import Users from './models/Users.js'
 import { sendRefreshToken } from './auth/sendTokens.js'
 import { signAccessToken, signRefreshToken } from './auth/signTokens.js'
+import path from 'node:path'
 
 dotenv.config()
 
@@ -16,6 +17,8 @@ const app = express()
 const PORT = process.env.PORT || 4000
 
 await server.start()
+
+app.use(express.static('files'))
 
 app.use(
   cors({
