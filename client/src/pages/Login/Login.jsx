@@ -40,7 +40,6 @@ export default function Login() {
         </div>
         <div className="right">
           <h1 className="text-primary-400 fw-bold">Login</h1>
-          {loginError && <h1>Invalid Username or Password</h1>}
           <form onSubmit={loginSubmitHandle}>
             <Input
               id="username"
@@ -58,6 +57,11 @@ export default function Login() {
                 setPassword(e.target.value)
               }}
             />
+            {loginError && (
+              <span className="text-error-400">
+                Invalid Username or Password
+              </span>
+            )}
             <Button>Submit</Button>
           </form>
         </div>
