@@ -25,7 +25,7 @@ const documents = {
     "query IsLoggedIn {\n  isLoggedIn\n}": types.IsLoggedInDocument,
     "mutation Login($username: String!, $password: String!) {\n  login(username: $username, password: $password) {\n    access_token\n  }\n}": types.LoginDocument,
     "mutation Logout {\n  logout\n}": types.LogoutDocument,
-    "query UserChats($receiver: Int) {\n  userChats(receiver: $receiver) {\n    id\n    message\n    user_id\n    receiver\n  }\n}": types.UserChatsDocument,
+    "query UserChats($receiver: Int) {\n  userChats(receiver: $receiver) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}": types.UserChatsDocument,
 };
 
 /**
@@ -79,7 +79,7 @@ export function graphql(source: "mutation Logout {\n  logout\n}"): (typeof docum
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "query UserChats($receiver: Int) {\n  userChats(receiver: $receiver) {\n    id\n    message\n    user_id\n    receiver\n  }\n}"): (typeof documents)["query UserChats($receiver: Int) {\n  userChats(receiver: $receiver) {\n    id\n    message\n    user_id\n    receiver\n  }\n}"];
+export function graphql(source: "query UserChats($receiver: Int) {\n  userChats(receiver: $receiver) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}"): (typeof documents)["query UserChats($receiver: Int) {\n  userChats(receiver: $receiver) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}"];
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

@@ -50,6 +50,12 @@ export type GroupRole = {
   role_name: Scalars['String']
 }
 
+export enum MessageType {
+  Image = 'IMAGE',
+  Other = 'OTHER',
+  Text = 'TEXT',
+}
+
 export type Mutation = {
   __typename?: 'Mutation'
   addGroup?: Maybe<Group>
@@ -91,6 +97,7 @@ export type MutationAddUserArgs = {
 export type MutationAddUserChatArgs = {
   file?: InputMaybe<Scalars['Upload']>
   message?: InputMaybe<Scalars['String']>
+  message_type?: InputMaybe<MessageType>
   receiver?: InputMaybe<Scalars['Int']>
   user_id?: InputMaybe<Scalars['Int']>
 }
@@ -182,6 +189,7 @@ export type UserChat = {
   __typename?: 'UserChat'
   id: Scalars['Int']
   message: Scalars['String']
+  message_type: MessageType
   receiver: Scalars['Int']
   user_id: Scalars['Int']
 }
@@ -390,6 +398,7 @@ export type UserChatsQuery = {
     message: string
     user_id: number
     receiver: number
+    message_type: MessageType
   } | null> | null
 }
 
@@ -1090,6 +1099,7 @@ export const UserChatsDocument = gql`
       message
       user_id
       receiver
+      message_type
     }
   }
 `

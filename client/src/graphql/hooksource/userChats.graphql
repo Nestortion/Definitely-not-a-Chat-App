@@ -4,5 +4,6 @@ query UserChats($receiver: Int) {
     message
     user_id
     receiver
+    message_type
   }
 }
