@@ -37,6 +37,7 @@ export default function ChatMessages() {
           key={chatMessage.id}
           text={chatMessage.message}
           sender={chatMessage.user_id}
+          message_type={chatMessage.message_type}
         />
       ))}
     </div>
