@@ -152,6 +152,10 @@ export type QueryUserChatArgs = {
   id: Scalars['Int']
 }
 
+export type QueryUserChatsArgs = {
+  receiver?: InputMaybe<Scalars['Int']>
+}
+
 export type QueryUserGroupArgs = {
   group_id?: InputMaybe<Scalars['Int']>
   user_id?: InputMaybe<Scalars['Int']>
@@ -355,6 +359,21 @@ export type LoginMutationVariables = Exact<{
 export type LoginMutation = {
   __typename?: 'Mutation'
   login?: { __typename?: 'AccessToken'; access_token: string } | null
+}
+
+export type UserChatsQueryVariables = Exact<{
+  receiver?: InputMaybe<Scalars['Int']>
+}>
+
+export type UserChatsQuery = {
+  __typename?: 'Query'
+  userChats?: Array<{
+    __typename?: 'UserChat'
+    id: number
+    message: string
+    user_id: number
+    receiver: number
+  } | null> | null
 }
 
 export const AddGroupDocument = gql`
@@ -953,4 +972,60 @@ export type LoginMutationResult = Apollo.MutationResult<LoginMutation>
 export type LoginMutationOptions = Apollo.BaseMutationOptions<
   LoginMutation,
   LoginMutationVariables
+>
+export const UserChatsDocument = gql`
+  query UserChats($receiver: Int) {
+    userChats(receiver: $receiver) {
+      id
+      message
+      user_id
+      receiver
+    }
+  }
+`
+
+/**
+ * __useUserChatsQuery__
+ *
+ * To run a query within a React component, call `useUserChatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserChatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserChatsQuery({
+ *   variables: {
+ *      receiver: // value for 'receiver'
+ *   },
+ * });
+ */
+export function useUserChatsQuery(
+  baseOptions?: Apollo.QueryHookOptions<UserChatsQuery, UserChatsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<UserChatsQuery, UserChatsQueryVariables>(
+    UserChatsDocument,
+    options
+  )
+}
+export function useUserChatsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    UserChatsQuery,
+    UserChatsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<UserChatsQuery, UserChatsQueryVariables>(
+    UserChatsDocument,
+    options
+  )
+}
+export type UserChatsQueryHookResult = ReturnType<typeof useUserChatsQuery>
+export type UserChatsLazyQueryHookResult = ReturnType<
+  typeof useUserChatsLazyQuery
+>
+export type UserChatsQueryResult = Apollo.QueryResult<
+  UserChatsQuery,
+  UserChatsQueryVariables
 >

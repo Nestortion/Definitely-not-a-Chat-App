@@ -7,6 +7,7 @@ export default function ChatMessage({
   isFile,
   url,
   fileName,
+  user,
 }) {
   if (isImage) {
     return <img src={url} />
@@ -21,7 +22,7 @@ export default function ChatMessage({
   }
 
   return (
-    <div className={`chat-message ${sender}`}>
+    <div className={`chat-message ${sender === user ? 'you' : 'other'}`}>
       <span>{text}</span>
     </div>
   )

@@ -1,0 +1,8 @@
+query UserChats($receiver: Int) {
+  userChats(receiver: $receiver) {
+    id
+    message
+    user_id
+    receiver
+  }
+}
