@@ -221,6 +221,13 @@ const resolvers = {
       if (increment) return true
       else return false
     },
+    logout: async (_, __, context) => {
+      const { res } = authMiddleware(context)
+
+      res.clearCookie('refresh-token')
+
+      return true
+    },
   },
 }
 

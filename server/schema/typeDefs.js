@@ -90,6 +90,7 @@ const typeDefs = `
     addUserChatReaction ( reaction: String, count: Int, userchat_id: Int): UserChatReaction
     login(username: String!, password: String!): AccessToken
     revokeRefreshToken(user_id:Int!) : Boolean
+    logout : Boolean
   }
 
 `
