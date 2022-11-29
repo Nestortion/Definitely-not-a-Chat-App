@@ -39,28 +39,40 @@ app.post('/refresh_token', async (req, res) => {
   const token = req.cookies['refresh-token']
 
   if (!token) {
-    throw new Error('Refresh Token does not exist')
+    return res.send({
+      message: 'Refresh Token does not exist',
+      accessToken: '',
+    })
   }
 
   let data
   try {
     data = jwt.verify(token, process.env.REFRESH_SECRET)
   } catch (err) {
-    throw new Error('Refresh Token does not exist')
+    return res.send({
+      message: 'Refresh Token does not exist',
+      accessToken: '',
+    })
   }
 
   const user = await Users.findOne({ where: { id: data.user_id } })
 
   if (!user) {
-    throw new Error('User does not exist')
+    res.send({
+      message: 'User does not exist',
+      accessToken: '',
+    })
   }
 
   if (user.token_version !== data.token_version) {
-    throw new Error('Token Version does not match')
+    return res.send({
+      message: 'Token Version does not match',
+      accessToken: '',
+    })
   }
   sendRefreshToken(res, signRefreshToken(user))
 
-  res.send({ accessToken: signAccessToken(user) })
+  return res.send({ accessToken: signAccessToken(user) })
 })
 
 app.use(
