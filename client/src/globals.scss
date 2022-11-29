@@ -1,3 +1,26 @@
+:root {
+  --clr-primary-400: aqua;
+
+  --clr-neutral-100: white;
+  --clr-neutral-900: black;
+
+  --ff-primary: serif;
+
+  --ff-body: var(--ff-primary);
+  --ff-heading: var(--ff-primary);
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-bold: 700;
+
+  --fs-300: 0.812rem;
+  --fs-400: 0.875rem;
+  --fs-500: 0.9375rem;
+
+  --fs-body: var(--fs--400);
+  --fs-nav: var(--fs--500);
+  --fs-button: var(--fs-300);
+}
 // MODERN CSS RESET by Josh Comeau
 /*
   1. Use a more-intuitive box-sizing model.
@@ -68,4 +91,52 @@ h6 {
 #root,
 #__next {
   isolation: isolate;
+}
+
+// Utility classes
+
+.text-primary-400 {
+  color: var(--clr-primary-400);
+}
+
+.text-neutral-100 {
+  color: var(--clr-neutral-100);
+}
+
+.text-neutral-900 {
+  color: var(--clr-neutral-900);
+}
+
+.bg-primary-400 {
+  color: var(--clr-primary-400);
+}
+
+.bg-neutral-100 {
+  color: var(--clr-neutral-100);
+}
+
+.bg-neutral-900 {
+  color: var(--clr-neutral-900);
+}
+
+.fw-regular {
+  font-weight: var(--fw-regular);
+}
+
+.fw-medium {
+  font-weight: var(--fw-medium);
+}
+
+.fw-bold {
+  font-weight: var(--fw-bold);
+}
+
+.fs-300 {
+  font-size: var(--fs-300);
+}
+.fs-400 {
+  font-size: var(--fs-400);
+}
+.fs-500 {
+  font-size: var(--fs-500);
 }
