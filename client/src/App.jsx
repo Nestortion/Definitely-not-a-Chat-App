@@ -12,7 +12,7 @@ export default function App() {
       credentials: 'include',
     }).then(async (res) => {
       const accessToken = await res.json()
-      setAccessToken(accessToken)
+      setAccessToken(accessToken.accessToken)
       setLoading(false)
     })
   }, [])
