@@ -25,6 +25,11 @@ const resolvers = {
     MODERATOR: 'MODERATOR',
     ADMIN: 'ADMIN',
   },
+  MessageType: {
+    TEXT: 'TEXT',
+    IMAGE: 'IMAGE',
+    OTHER: 'OTHER',
+  },
   Query: {
     userChat: (_, { id }) => {
       return UserChats.findOne({ where: { id } })
@@ -134,7 +139,11 @@ const resolvers = {
         gender,
       })
     },
-    addUserChat: async (_, { file, message, receiver, user_id }, context) => {
+    addUserChat: async (
+      _,
+      { file, message, receiver, user_id, message_type },
+      context
+    ) => {
       // const { req, res, data: user } = authMiddleware(context)
 
       const validation = await UserGroups.findOne({
@@ -157,11 +166,12 @@ const resolvers = {
             message: newFileName,
             user_id,
             receiver,
+            message_type,
           })
         } else {
           if (message !== '') {
           }
-          return UserChats.create({ message, user_id, receiver })
+          return UserChats.create({ message, user_id, receiver, message_type })
         }
       } else {
         throw new GraphQLError(

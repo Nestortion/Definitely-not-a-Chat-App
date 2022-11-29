@@ -28,6 +28,13 @@ const typeDefs = `
     message: String!
     user_id: Int!
     receiver: Int!
+    message_type: MessageType!
+  }
+
+  enum MessageType {
+    TEXT
+    IMAGE
+    OTHER
   }
 
   type Group {
@@ -82,7 +89,7 @@ const typeDefs = `
 
   type Mutation {
     addUser( username: String, access_level: AccessLevel, password: String, age: Int, address: String, section: String, first_name: String, last_name: String, profile_img: Upload, gender: String): User
-    addUserChat( file: Upload, message: String, user_id: Int, receiver: Int): UserChat
+    addUserChat( file: Upload, message: String, user_id: Int, receiver: Int, message_type: MessageType): UserChat
     addGroup( group_name: String): Group
     addUserGroup( user_id:Int, group_id: Int): UserGroup
     addGroupRole( role_name: String, emoji: String, description: String, group_id: Int): GroupRole
