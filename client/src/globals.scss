@@ -1,10 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
 :root {
   --clr-primary-400: #b794f6;
 
   --clr-neutral-100: #ededed;
   --clr-neutral-900: #121212;
 
-  --ff-primary: serif;
+  --ff-primary: 'Roboto', sans-serif;
 
   --ff-body: var(--ff-primary);
   --ff-heading: var(--ff-primary);
@@ -139,4 +141,10 @@ h6 {
 }
 .fs-500 {
   font-size: var(--fs-500);
+}
+
+body {
+  background-color: var(--clr-neutral-900);
+  color: var(--clr-neutral-100);
+  font-family: var(--ff-body);
 }
