@@ -1,8 +1,20 @@
 .user-card {
   position: relative;
-  padding: 0.625rem 0.625rem 0rem;
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
+  padding: 0.3125rem;
+  border-radius: 0.3125rem;
+  transition: all 150ms ease-out;
+
+  &:hover {
+    padding: 0.3125rem;
+    border-radius: 0.5rem;
+    background-color: var(--clr-neutral-100);
+  }
+
+  &.clicked {
+    background-color: var(--clr-neutral-100);
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
 
   .user-card__user-info {
     display: flex;

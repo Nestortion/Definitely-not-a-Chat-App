@@ -1,9 +1,16 @@
 .chat-list-item {
-  margin-bottom: 1rem;
+  padding: 0.625rem 0.3125rem;
+  border-radius: 0.5rem;
   display: flex;
   align-items: center;
   gap: 1rem;
   cursor: pointer;
+  transition: all 150ms ease-out;
+
+  &:hover {
+    background-color: var(--clr-primary-400);
+    color: var(--clr-neutral-100);
+  }
 
   .chat-list-item-left {
     flex-shrink: 0;
