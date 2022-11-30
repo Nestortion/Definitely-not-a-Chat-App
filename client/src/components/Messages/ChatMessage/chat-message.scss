@@ -8,11 +8,11 @@
   word-break: break-word;
 
   &.you {
-    background-color: aqua;
+    background-color: var(--clr-primary-400);
     margin-left: auto;
   }
 
   &.other {
-    background-color: steelblue;
+    background-color: var(--clr-secondary-400);
   }
 }
