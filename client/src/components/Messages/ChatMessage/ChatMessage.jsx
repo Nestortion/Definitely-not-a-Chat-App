@@ -1,24 +1,27 @@
 import './chat-message.scss'
 import { apiBasePath } from '../../../data/config'
 import Avatar from '../../UI/Avatar/Avatar'
-import { useParams } from 'react-router-dom'
-import { useGroupQuery } from '../../../graphql/hooks/graphql'
+import LoadingText from '../../Loading/LoadingText'
+import ErrorText from '../../Error/ErrorText'
+import { useUserQuery } from '../../../graphql/hooks/graphql'
 
-export default function ChatMessage({ text, sender, user, message_type }) {
-  const { chatId } = useParams()
+export default function ChatMessage({
+  text,
+  sender,
+  user,
+  message_type,
+  is_group,
+}) {
   const {
-    data: groupData,
-    loading: groupLoading,
-    error: groupError,
-  } = useGroupQuery({
-    variables: { groupId: parseInt(chatId) },
-  })
+    data: userData,
+    loading: userLoading,
+    error: userError,
+  } = useUserQuery({ variables: { userId: sender } })
 
-  if (groupLoading) return <LoadingText>Loading</LoadingText>
-  if (groupError) return <ErrorText>Error</ErrorText>
+  if (userLoading) return <LoadingText>Loading</LoadingText>
+  if (userError) return <ErrorText>Error</ErrorText>
 
-  const senderShouldShow =
-    groupData.group.is_group === 'true' && sender !== user
+  const senderShouldShow = is_group === 'true' && sender !== user
 
   return (
     <div className={`chat-message ${sender === user ? 'you' : 'other'}`}>
@@ -32,7 +35,7 @@ export default function ChatMessage({ text, sender, user, message_type }) {
       <div className="chat-message-container">
         {senderShouldShow && (
           <div className="chat-message-sender__name fs-300">
-            <span>{sender} &#60;-- name of the sender</span>
+            <span>{userData.user.first_name}</span>
           </div>
         )}
 
