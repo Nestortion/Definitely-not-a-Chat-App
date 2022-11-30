@@ -25,7 +25,7 @@ export default function UserCard({ profilePicUrl, first_name }) {
   }
 
   return (
-    <div className={`user-card ${userSettingsIsShowing && 'bg-neutral-100'}`}>
+    <div className={`user-card ${userSettingsIsShowing && 'clicked'}`}>
       <div className="user-card__user-info" onClick={toggleUserSettings}>
         <Avatar
           src={
