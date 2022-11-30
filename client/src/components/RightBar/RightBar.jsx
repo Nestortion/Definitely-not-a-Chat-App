@@ -23,7 +23,6 @@ export default function RightBar() {
 
   if (groupLoading) return <LoadingText>Loading</LoadingText>
   if (groupError) return <ErrorText>Error</ErrorText>
-  console.log(groupData.group.is_group)
 
   return (
     <div className="rightbar">
