@@ -12,6 +12,7 @@ import { useGroupQuery } from '../../graphql/hooks/graphql'
 import { useParams } from 'react-router-dom'
 import { apiBasePath } from '../../data/config'
 import LoadingText from '../../components/Loading/LoadingText'
+import ErrorText from '../../components/Error/ErrorText'
 
 export default function Chat() {
   const { chatId } = useParams()
@@ -21,7 +22,7 @@ export default function Chat() {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
 
   if (loading) return <LoadingText></LoadingText>
-  if (error) return <Error>Something went wrong</Error>
+  if (error) return <ErrorText>Something went wrong</ErrorText>
 
   return (
     <div className={`chat ${isTabletOrMobile && 'small-screen'}`}>
