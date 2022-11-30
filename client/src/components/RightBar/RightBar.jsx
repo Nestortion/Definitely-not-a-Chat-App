@@ -23,6 +23,7 @@ export default function RightBar() {
 
   if (groupLoading) return <LoadingText>Loading</LoadingText>
   if (groupError) return <ErrorText>Error</ErrorText>
+  console.log(groupData.group.is_group)
 
   return (
     <div className="rightbar">
@@ -35,7 +36,11 @@ export default function RightBar() {
         <span>{groupData.group.group_name}</span>
       </div>
       <div className="rightbar--main">
-        <MemberList />
+        {groupData.group.is_group === 'true' ? (
+          <MemberList />
+        ) : (
+          <h1>this chat is only pm</h1>
+        )}
         <SettingsButtons />
       </div>
     </div>
