@@ -23,6 +23,13 @@ export default function ChatMessage({
 
   const senderShouldShow = is_group === 'true' && sender !== user
 
+  let newText = text
+
+  if (message_type === 'OTHER') {
+    let unique = text.split(' ')[0]
+    newText = text.split(`${unique} `)[1]
+  }
+
   return (
     <div className={`chat-message ${sender === user ? 'you' : 'other'}`}>
       {senderShouldShow && (
@@ -53,7 +60,7 @@ export default function ChatMessage({
           {/* If type other */}
           {message_type === 'OTHER' && (
             <a href={`${apiBasePath}/message/documents/${text}`} download>
-              {text}
+              {newText}
             </a>
           )}
 
