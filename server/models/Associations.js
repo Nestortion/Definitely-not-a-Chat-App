@@ -39,11 +39,11 @@ const createAssociation = async () => {
 
   GroupRoles.belongsToMany(UserGroups, {
     through: UserGroupRoles,
-    foreignKey: 'user_group_id',
+    foreignKey: 'group_role_id',
   })
   UserGroups.belongsToMany(GroupRoles, {
     through: UserGroupRoles,
-    foreignKey: 'group_role_id',
+    foreignKey: 'user_group_id',
   })
 }
 
