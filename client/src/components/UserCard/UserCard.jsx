@@ -40,7 +40,6 @@ export default function UserCard({ profilePicUrl, first_name }) {
       {userSettingsIsShowing && (
         <div className="user-card__user-settings bg-neutral-100">
           <Button onClick={handleLogout}>Log out</Button>
-          <Button onClick={handleLogout}>Log out</Button>
         </div>
       )}
     </div>
