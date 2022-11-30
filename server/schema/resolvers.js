@@ -14,7 +14,6 @@ import { signAccessToken, signRefreshToken } from '../auth/signTokens.js'
 import { sendRefreshToken } from '../auth/sendTokens.js'
 import { authMiddleware } from '../auth/middlewares/authMiddleware.js'
 import { createAssociation, syncModels } from '../models/Associations.js'
-import shortid from 'shortid'
 import { v4 as uuid } from 'uuid'
 
 createAssociation()
