@@ -20,7 +20,7 @@ export default function Chat() {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
 
   if (loading) return <h1>loading</h1>
-  if (error) return <h1>error</h1>
+  if (error) return <Error>Something went wrong</Error>
 
   return (
     <div className={`chat ${isTabletOrMobile && 'small-screen'}`}>
