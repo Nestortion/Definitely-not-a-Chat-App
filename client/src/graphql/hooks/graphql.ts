@@ -139,13 +139,17 @@ export type Query = {
   userChatReactions?: Maybe<Array<Maybe<UserChatReaction>>>
   userChats?: Maybe<Array<Maybe<UserChat>>>
   userGroup?: Maybe<UserGroup>
-  userGroupRoles?: Maybe<Array<Maybe<UserGroupRole>>>
   userGroups?: Maybe<Array<Maybe<UserGroup>>>
+  userRoles?: Maybe<Array<Maybe<User>>>
   users?: Maybe<Array<Maybe<User>>>
 }
 
 export type QueryGroupArgs = {
   id: Scalars['Int']
+}
+
+export type QueryGroupRolesArgs = {
+  group_id?: InputMaybe<Scalars['Int']>
 }
 
 export type QueryGroupsArgs = {
@@ -167,6 +171,10 @@ export type QueryUserChatsArgs = {
 export type QueryUserGroupArgs = {
   group_id?: InputMaybe<Scalars['Int']>
   user_id?: InputMaybe<Scalars['Int']>
+}
+
+export type QueryUserRolesArgs = {
+  group_role_id?: InputMaybe<Scalars['Int']>
 }
 
 export type User = {
@@ -349,6 +357,21 @@ export type GroupQuery = {
   group?: { __typename?: 'Group'; id: number; group_name: string } | null
 }
 
+export type GroupRolesQueryVariables = Exact<{
+  groupId?: InputMaybe<Scalars['Int']>
+}>
+
+export type GroupRolesQuery = {
+  __typename?: 'Query'
+  groupRoles?: Array<{
+    __typename?: 'GroupRole'
+    role_name: string
+    emoji: string
+    description: string
+    group_id: string
+  } | null> | null
+}
+
 export type GroupsQueryVariables = Exact<{
   userId?: InputMaybe<Scalars['Int']>
 }>
@@ -399,6 +422,21 @@ export type UserChatsQuery = {
     user_id: number
     receiver: number
     message_type: MessageType
+  } | null> | null
+}
+
+export type UserRolesQueryVariables = Exact<{
+  groupRoleId?: InputMaybe<Scalars['Int']>
+}>
+
+export type UserRolesQuery = {
+  __typename?: 'Query'
+  userRoles?: Array<{
+    __typename?: 'User'
+    first_name: string
+    id: number
+    last_name: string
+    profile_img: string
   } | null> | null
 }
 
@@ -898,6 +936,65 @@ export type GroupQueryResult = Apollo.QueryResult<
   GroupQuery,
   GroupQueryVariables
 >
+export const GroupRolesDocument = gql`
+  query GroupRoles($groupId: Int) {
+    groupRoles(group_id: $groupId) {
+      role_name
+      emoji
+      description
+      group_id
+    }
+  }
+`
+
+/**
+ * __useGroupRolesQuery__
+ *
+ * To run a query within a React component, call `useGroupRolesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGroupRolesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGroupRolesQuery({
+ *   variables: {
+ *      groupId: // value for 'groupId'
+ *   },
+ * });
+ */
+export function useGroupRolesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GroupRolesQuery,
+    GroupRolesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GroupRolesQuery, GroupRolesQueryVariables>(
+    GroupRolesDocument,
+    options
+  )
+}
+export function useGroupRolesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GroupRolesQuery,
+    GroupRolesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GroupRolesQuery, GroupRolesQueryVariables>(
+    GroupRolesDocument,
+    options
+  )
+}
+export type GroupRolesQueryHookResult = ReturnType<typeof useGroupRolesQuery>
+export type GroupRolesLazyQueryHookResult = ReturnType<
+  typeof useGroupRolesLazyQuery
+>
+export type GroupRolesQueryResult = Apollo.QueryResult<
+  GroupRolesQuery,
+  GroupRolesQueryVariables
+>
 export const GroupsDocument = gql`
   query Groups($userId: Int) {
     groups(user_id: $userId) {
@@ -1148,4 +1245,60 @@ export type UserChatsLazyQueryHookResult = ReturnType<
 export type UserChatsQueryResult = Apollo.QueryResult<
   UserChatsQuery,
   UserChatsQueryVariables
+>
+export const UserRolesDocument = gql`
+  query UserRoles($groupRoleId: Int) {
+    userRoles(group_role_id: $groupRoleId) {
+      first_name
+      id
+      last_name
+      profile_img
+    }
+  }
+`
+
+/**
+ * __useUserRolesQuery__
+ *
+ * To run a query within a React component, call `useUserRolesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserRolesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserRolesQuery({
+ *   variables: {
+ *      groupRoleId: // value for 'groupRoleId'
+ *   },
+ * });
+ */
+export function useUserRolesQuery(
+  baseOptions?: Apollo.QueryHookOptions<UserRolesQuery, UserRolesQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<UserRolesQuery, UserRolesQueryVariables>(
+    UserRolesDocument,
+    options
+  )
+}
+export function useUserRolesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    UserRolesQuery,
+    UserRolesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<UserRolesQuery, UserRolesQueryVariables>(
+    UserRolesDocument,
+    options
+  )
+}
+export type UserRolesQueryHookResult = ReturnType<typeof useUserRolesQuery>
+export type UserRolesLazyQueryHookResult = ReturnType<
+  typeof useUserRolesLazyQuery
+>
+export type UserRolesQueryResult = Apollo.QueryResult<
+  UserRolesQuery,
+  UserRolesQueryVariables
 >

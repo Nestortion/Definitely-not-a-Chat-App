@@ -1,0 +1,8 @@
+query UserRoles($groupRoleId: Int) {
+  userRoles(group_role_id: $groupRoleId) {
+    first_name
+    id
+    last_name
+    profile_img
+  }
+}
