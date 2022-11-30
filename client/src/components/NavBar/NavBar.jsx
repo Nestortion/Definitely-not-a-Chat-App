@@ -11,7 +11,7 @@ export default function NavBar({ onClick }) {
   const { data, loading, error } = useCurrentUserQuery()
 
   if (loading) return <h1>loading...</h1>
-  if (error) return <h1>error...</h1>
+  if (error) return <Error>Something went wrong</Error>
   return (
     <div className="navbar">
       <div className="left">
