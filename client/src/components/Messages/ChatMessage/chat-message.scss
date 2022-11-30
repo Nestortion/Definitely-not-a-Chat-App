@@ -1,18 +1,24 @@
 .chat-message {
   width: fit-content;
   max-width: 95%;
-  padding: 1rem;
-  margin-block: 0.8rem;
-  border: 1px solid black;
-  border-radius: 0.5rem;
-  word-break: break-word;
 
-  &.you {
-    background-color: var(--clr-primary-400);
-    margin-left: auto;
+  .chat-message-sender {
   }
 
-  &.other {
-    background-color: var(--clr-secondary-400);
+  .chat-message-message {
+    width: 100%;
+    padding: 1rem;
+    margin-block: 0.8rem;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    word-break: break-word;
+
+    &.you {
+      background-color: var(--clr-primary-400);
+    }
+
+    &.other {
+      background-color: var(--clr-secondary-400);
+    }
   }
 }
