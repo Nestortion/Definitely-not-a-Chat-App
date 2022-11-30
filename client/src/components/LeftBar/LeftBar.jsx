@@ -7,11 +7,12 @@ import { useState } from 'react'
 // fetch all the group where the user is a member
 import initialState from '../../data/chats.json'
 import { useGroupsQuery } from '../../graphql/hooks/graphql'
+import Error from '../Error/Error'
 
 export default function LeftBar() {
   const { data: chat, loading, error } = useGroupsQuery()
   if (loading) return <span>loading</span>
-  if (error) return <span className="text-error-400">error</span>
+  if (error) return <Error>Something went wrong</Error>
 
   return (
     <div className="leftbar">
