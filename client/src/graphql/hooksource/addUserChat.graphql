@@ -11,6 +11,8 @@ mutation AddUserChat(
     receiver: $receiver
   ) {
     message
+    id
+    message_type
     receiver
     user_id
   }

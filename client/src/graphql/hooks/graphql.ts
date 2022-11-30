@@ -295,6 +295,8 @@ export type AddUserChatMutation = {
   addUserChat?: {
     __typename?: 'UserChat'
     message: string
+    id: number
+    message_type: MessageType
     receiver: number
     user_id: number
   } | null
@@ -683,6 +685,8 @@ export const AddUserChatDocument = gql`
       receiver: $receiver
     ) {
       message
+      id
+      message_type
       receiver
       user_id
     }
