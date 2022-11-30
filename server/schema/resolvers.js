@@ -111,6 +111,7 @@ const resolvers = {
       else return false
     },
     userRoles: async (_, { group_role_id }, context) => {
+      const { data } = authMiddleware(context)
       let userGroupIds = []
       let userIds = []
       const userGroupRoles = await UserGroupRoles.findAll({

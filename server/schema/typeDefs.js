@@ -48,6 +48,7 @@ const typeDefs = `
   }
 
   type GroupRole{
+    id: Int!
     role_name: String!
     emoji: String!
     description: String!
