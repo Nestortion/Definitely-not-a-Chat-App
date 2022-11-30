@@ -84,8 +84,7 @@ export default function Chat() {
         })
       }
     }
-    setFileInput(undefined)
-    setMessage('')
+    e.target.reset()
   }
 
   return (
@@ -110,8 +109,8 @@ export default function Chat() {
           onSubmit={sendMessageHandle}
           className="chat-input-container__form"
         >
-          <FileInput value={fileInput} onChange={fileChangeHandle} />
-          <Input value={message} onChange={messageChangeHandle} type="text" />
+          <FileInput onChange={fileChangeHandle} />
+          <Input onChange={messageChangeHandle} type="text" />
           <Button>Send</Button>
         </form>
       </div>
