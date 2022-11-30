@@ -4,24 +4,36 @@ import MemberList from '../MemberList/MemberList'
 // TODO: use the global chat data state here
 import chat from '../../data/chat.json'
 import SettingsButtons from '../SettingsButtons/SettingsButtons'
+import { useParams } from 'react-router-dom'
+import { useGroupQuery } from '../../graphql/hooks/graphql'
+import LoadingText from '../Loading/LoadingText'
+import ErrorText from '../Error/ErrorText'
+import { apiBasePath } from '../../data/config'
 
 export default function RightBar() {
   // Check if global chat state is existing
   // Hide Rightbar if we not on Chat page
-  if (!chat) {
-    return
-  }
+  const { chatId } = useParams()
+  const {
+    data: groupData,
+    loading: groupLoading,
+    error: groupError,
+  } = useGroupQuery({
+    variables: { groupId: parseInt(chatId) },
+  })
 
-  // Render chat state if it exists
+  if (groupLoading) return <LoadingText>Loading</LoadingText>
+  if (groupError) return <ErrorText>Error</ErrorText>
+
   return (
     <div className="rightbar">
       <div className="rightbar--header">
         <Avatar
-          src={chat.profilePicUrl}
-          alt={`${chat.title}'s photo`}
+          src={`${apiBasePath}/pfp/amogusz.jpg`}
+          alt={`${groupData.group.group_name}'s photo`}
           size="80"
         />
-        <span>{chat.title}</span>
+        <span>{groupData.group.group_name}</span>
       </div>
       <div className="rightbar--main">
         <MemberList chatMembers={chat.members} />
