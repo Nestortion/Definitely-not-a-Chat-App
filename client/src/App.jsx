@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import Layout from './components/Layout/Layout'
 import { setAccessToken } from './graphql/authStore'
 import { apiBasePath } from './data/config'
+import LoadingText from './components/Loading/LoadingText'
 
 export default function App() {
   const [loading, setLoading] = useState(true)
@@ -17,7 +18,7 @@ export default function App() {
     })
   }, [])
 
-  if (loading) return <h1>loading...</h1>
+  if (loading) return <LoadingText></LoadingText>
 
   return (
     <>

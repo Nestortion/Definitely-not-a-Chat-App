@@ -8,10 +8,11 @@ import { useState } from 'react'
 import initialState from '../../data/chats.json'
 import { useGroupsQuery } from '../../graphql/hooks/graphql'
 import ErrorText from '../Error/ErrorText'
+import LoadingText from '../Loading/LoadingText'
 
 export default function LeftBar() {
   const { data: chat, loading, error } = useGroupsQuery()
-  if (loading) return <span>loading</span>
+  if (loading) return <LoadingText></LoadingText>
   if (error) return <ErrorText>Something went wrong</ErrorText>
 
   return (

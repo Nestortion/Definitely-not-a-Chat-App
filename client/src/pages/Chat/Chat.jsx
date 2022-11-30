@@ -11,6 +11,7 @@ import { useMediaQuery } from 'react-responsive'
 import { useGroupQuery } from '../../graphql/hooks/graphql'
 import { useParams } from 'react-router-dom'
 import { apiBasePath } from '../../data/config'
+import LoadingText from '../../components/Loading/LoadingText'
 
 export default function Chat() {
   const { chatId } = useParams()
@@ -19,7 +20,7 @@ export default function Chat() {
   })
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
 
-  if (loading) return <h1>loading</h1>
+  if (loading) return <LoadingText></LoadingText>
   if (error) return <Error>Something went wrong</Error>
 
   return (
