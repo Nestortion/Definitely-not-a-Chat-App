@@ -1,10 +1,13 @@
 import { useParams } from 'react-router-dom'
 import {
   useCurrentUserQuery,
+  useGroupQuery,
   useUserChatsQuery,
 } from '../../../graphql/hooks/graphql'
 import ChatMessage from '../ChatMessage/ChatMessage'
 import './chat-messages.scss'
+import LoadingText from '../../Loading/LoadingText'
+import ErrorText from '../../Error/ErrorText'
 
 // ! FETCH HERE
 // fetch messages from a chat/group chat
@@ -24,10 +27,20 @@ export default function ChatMessages() {
     error: chatsError,
   } = useUserChatsQuery({ variables: { receiver: parseInt(chatId) } })
 
-  if (userLoading) return <h1>loading</h1>
-  if (userError) return <h1>error</h1>
-  if (chatsLoading) return <h1>loading</h1>
-  if (chatsError) return <h1>error</h1>
+  const {
+    data: groupData,
+    loading: groupLoading,
+    error: groupError,
+  } = useGroupQuery({
+    variables: { groupId: parseInt(chatId) },
+  })
+
+  if (groupLoading) return <LoadingText>Loading</LoadingText>
+  if (groupError) return <ErrorText>Error</ErrorText>
+  if (userLoading) return <LoadingText>Loading</LoadingText>
+  if (userError) return <ErrorText>Error</ErrorText>
+  if (chatsLoading) return <LoadingText>Loading</LoadingText>
+  if (chatsError) return <ErrorText>Error</ErrorText>
 
   return (
     <div className="chat-messages">
@@ -38,6 +51,7 @@ export default function ChatMessages() {
           text={chatMessage.message}
           sender={chatMessage.user_id}
           message_type={chatMessage.message_type}
+          is_group={groupData.group.is_group}
         />
       ))}
     </div>
