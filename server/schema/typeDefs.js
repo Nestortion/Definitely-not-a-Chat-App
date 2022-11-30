@@ -40,6 +40,8 @@ const typeDefs = `
   type Group {
     id: Int!
     group_name: String!
+    group_picture: String!
+    is_group:String!
   }
 
   type UserGroup {

@@ -19,6 +19,11 @@ const Groups = DB.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    is_group: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   },
   { timestamps: false }
 )
