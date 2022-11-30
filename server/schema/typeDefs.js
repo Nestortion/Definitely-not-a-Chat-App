@@ -69,7 +69,6 @@ const typeDefs = `
     access_token: String!
   }
 
-
   type Query {
     user(id: Int!): User
     userChat(id: Int!): UserChat
@@ -79,8 +78,8 @@ const typeDefs = `
     userChats(receiver:Int): [UserChat]
     groups(user_id: Int): [Group]
     userGroups: [UserGroup]
-    groupRoles: [GroupRole]
-    userGroupRoles: [UserGroupRole]
+    groupRoles(group_id: Int): [GroupRole]
+    userRoles(group_role_id: Int): [User]
     userChatReactions: [UserChatReaction]
     currentUser: User
     isLoggedIn: Boolean

@@ -93,8 +93,7 @@ const resolvers = {
     currentUser: async (_, __, context) => {
       const { data } = authMiddleware(context)
 
-      const currentUser = await Users.findOne({ where: { id: data.user_id } })
-      return currentUser
+      return Users.findOne({ where: { id: data.user_id } })
     },
     isLoggedIn: async (_, __, context) => {
       const refreshToken = context.req.cookies['refresh-token']
@@ -110,6 +109,32 @@ const resolvers = {
 
       if (refreshTokenUser) return true
       else return false
+    },
+    userRoles: async (_, { group_role_id }, context) => {
+      let userGroupIds = []
+      let userIds = []
+      const userGroupRoles = await UserGroupRoles.findAll({
+        where: { group_role_id },
+      })
+
+      userGroupRoles.forEach((usergrouprole) => {
+        userGroupIds.push(usergrouprole.user_group_id)
+      })
+
+      const users = await UserGroups.findAll({
+        where: { id: userGroupIds },
+      })
+
+      users.forEach((user) => {
+        userIds.push(user.user_id)
+      })
+
+      return Users.findAll({ where: { id: userIds } })
+    },
+    groupRoles: async (_, { group_id }, context) => {
+      const { data } = authMiddleware(context)
+
+      return GroupRoles.findAll({ where: { group_id } })
     },
   },
   Mutation: {
