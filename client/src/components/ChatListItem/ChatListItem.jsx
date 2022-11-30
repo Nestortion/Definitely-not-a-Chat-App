@@ -1,6 +1,6 @@
 import './chat-list-item.scss'
 import Avatar from '../UI/Avatar/Avatar'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { apiBasePath } from '../../data/config'
 import { useMediaQuery } from 'react-responsive'
 
@@ -19,9 +19,11 @@ export default function ChatListItem({
   }
 
   return (
-    <Link
+    <NavLink
       to={`/chat/${chatId}`}
-      className="chat-list-item"
+      className={({ isActive }) =>
+        isActive ? 'chat-list-item active' : 'chat-list-item'
+      }
       onClick={handleClick}
     >
       <div className="chat-list-item-left">
@@ -34,6 +36,6 @@ export default function ChatListItem({
       <div className="chat-list-item-right">
         <span className="title">{title}</span>
       </div>
-    </Link>
+    </NavLink>
   )
 }
