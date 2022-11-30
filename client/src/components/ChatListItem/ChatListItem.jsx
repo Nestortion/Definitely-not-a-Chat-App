@@ -1,17 +1,30 @@
 import './chat-list-item.scss'
 import Avatar from '../UI/Avatar/Avatar'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { apiBasePath } from '../../data/config'
+import { useMediaQuery } from 'react-responsive'
 
-export default function ChatListItem({ chatId, title, profilePicUrl }) {
-  const navigate = useNavigate()
+export default function ChatListItem({
+  chatId,
+  title,
+  profilePicUrl,
+  showOnlyMiddle,
+}) {
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
 
   const handleClick = () => {
-    navigate(`/chat/${chatId}`)
+    if (isTabletOrMobile) {
+      showOnlyMiddle()
+    }
   }
 
   return (
-    <div className="chat-list-item" onClick={handleClick}>
+    <Link
+      to={`/chat/${chatId}`}
+      className="chat-list-item"
+      onClick={handleClick}
+      style={{ textDecoration: 'none', color: 'inherit' }}
+    >
       <div className="chat-list-item-left">
         <Avatar
           src={`${apiBasePath}/pfp/amogusz.jpg`}
@@ -22,6 +35,6 @@ export default function ChatListItem({ chatId, title, profilePicUrl }) {
       <div className="chat-list-item-right">
         <span className="title">{title}</span>
       </div>
-    </div>
+    </Link>
   )
 }

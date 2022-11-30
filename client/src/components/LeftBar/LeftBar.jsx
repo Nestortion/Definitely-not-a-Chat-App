@@ -10,7 +10,7 @@ import { useGroupsQuery } from '../../graphql/hooks/graphql'
 import ErrorText from '../Error/ErrorText'
 import LoadingText from '../Loading/LoadingText'
 
-export default function LeftBar() {
+export default function LeftBar({ showOnlyMiddle }) {
   const { data: chat, loading, error } = useGroupsQuery()
   if (loading) return <LoadingText></LoadingText>
   if (error) return <ErrorText>Something went wrong</ErrorText>
@@ -30,7 +30,7 @@ export default function LeftBar() {
       </div>
 
       <div className="bottom">
-        <ChatList chats={chat.groups} />
+        <ChatList chats={chat.groups} showOnlyMiddle={showOnlyMiddle} />
       </div>
     </div>
   )
