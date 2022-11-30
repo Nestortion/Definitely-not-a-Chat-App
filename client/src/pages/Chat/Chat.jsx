@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom'
 import { apiBasePath } from '../../data/config'
 import LoadingText from '../../components/Loading/LoadingText'
 import ErrorText from '../../components/Error/ErrorText'
+import FileInput from '../../components/FileInput/FileInput'
 
 export default function Chat() {
   const { chatId } = useParams()
@@ -41,9 +42,9 @@ export default function Chat() {
         <ChatMessages />
       </div>
       <div className="chat-input-container">
-        <form>
-          {/* TODO: Create FileInput component */}
-          <button>+</button>
+        {/* I dont know what form data should be (multipart, etc..) */}
+        <form className="chat-input-container__form">
+          <FileInput />
           <Input type="text" />
           <Button>Send</Button>
         </form>
