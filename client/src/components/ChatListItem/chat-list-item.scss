@@ -5,6 +5,8 @@
   align-items: center;
   gap: 1rem;
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
   transition: all 150ms ease-out;
 
   &:hover {

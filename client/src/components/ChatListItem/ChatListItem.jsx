@@ -23,7 +23,6 @@ export default function ChatListItem({
       to={`/chat/${chatId}`}
       className="chat-list-item"
       onClick={handleClick}
-      style={{ textDecoration: 'none', color: 'inherit' }}
     >
       <div className="chat-list-item-left">
         <Avatar
