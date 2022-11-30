@@ -106,6 +106,27 @@ h6 {
   isolation: isolate;
 }
 
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #676fa3 #ffffff;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: none;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #676fa3;
+  border-radius: 6px;
+}
+
 // Utility classes
 
 .text-primary-400 {
