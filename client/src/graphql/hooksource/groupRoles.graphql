@@ -1,5 +1,6 @@
 query GroupRoles($groupId: Int) {
   groupRoles(group_id: $groupId) {
+    id
     role_name
     emoji
     description

@@ -47,6 +47,7 @@ export type GroupRole = {
   description: Scalars['String']
   emoji: Scalars['String']
   group_id: Scalars['String']
+  id: Scalars['Int']
   role_name: Scalars['String']
 }
 
@@ -365,6 +366,7 @@ export type GroupRolesQuery = {
   __typename?: 'Query'
   groupRoles?: Array<{
     __typename?: 'GroupRole'
+    id: number
     role_name: string
     emoji: string
     description: string
@@ -939,6 +941,7 @@ export type GroupQueryResult = Apollo.QueryResult<
 export const GroupRolesDocument = gql`
   query GroupRoles($groupId: Int) {
     groupRoles(group_id: $groupId) {
+      id
       role_name
       emoji
       description
