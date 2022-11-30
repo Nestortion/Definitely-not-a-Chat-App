@@ -1,5 +1,8 @@
 .user-card {
   position: relative;
+  padding: 0.625rem 0.625rem 0rem;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
 
   .user-card__user-info {
     display: flex;
@@ -11,18 +14,24 @@
       max-width: 120px;
       overflow: hidden;
       text-overflow: ellipsis;
-      font-size: clamp(1rem, 3vw, 1.25rem);
     }
   }
 
   .user-card__user-settings {
     width: 100%;
+    padding: 0.625rem 0.3125rem;
+    // border: 1px solid var(--clr-primary-400);
+    // border-top: none;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
 
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
 
     position: absolute;
     bottom: 0;
-    transform: translateY(150%);
+    left: 0;
+    transform: translateY(100%);
   }
 }
