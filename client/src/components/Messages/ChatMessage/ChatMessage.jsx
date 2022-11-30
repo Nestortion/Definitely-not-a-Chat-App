@@ -24,7 +24,7 @@ export default function ChatMessage({
   const senderShouldShow = is_group === 'true' && sender !== user
 
   return (
-    <div className={`chat-message ${sender === user ? 'you' : 'other'}`}>
+    <div className={`chat-message fs-400 ${sender === user ? 'you' : 'other'}`}>
       {senderShouldShow && (
         <div className="chat-message-sender__image">
           {/* TODO: src should be dynamic */}
