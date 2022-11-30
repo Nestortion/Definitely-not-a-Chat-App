@@ -2,5 +2,7 @@ query Group($groupId: Int!) {
   group(id: $groupId) {
     id
     group_name
+    group_picture
+    is_group
   }
 }

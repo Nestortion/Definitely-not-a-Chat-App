@@ -39,7 +39,9 @@ export type AccessToken = {
 export type Group = {
   __typename?: 'Group'
   group_name: Scalars['String']
+  group_picture: Scalars['String']
   id: Scalars['Int']
+  is_group: Scalars['String']
 }
 
 export type GroupRole = {
@@ -355,7 +357,13 @@ export type GroupQueryVariables = Exact<{
 
 export type GroupQuery = {
   __typename?: 'Query'
-  group?: { __typename?: 'Group'; id: number; group_name: string } | null
+  group?: {
+    __typename?: 'Group'
+    id: number
+    group_name: string
+    group_picture: string
+    is_group: string
+  } | null
 }
 
 export type GroupRolesQueryVariables = Exact<{
@@ -384,6 +392,8 @@ export type GroupsQuery = {
     __typename?: 'Group'
     group_name: string
     id: number
+    group_picture: string
+    is_group: string
   } | null> | null
 }
 
@@ -894,6 +904,8 @@ export const GroupDocument = gql`
     group(id: $groupId) {
       id
       group_name
+      group_picture
+      is_group
     }
   }
 `
@@ -1003,6 +1015,8 @@ export const GroupsDocument = gql`
     groups(user_id: $userId) {
       group_name
       id
+      group_picture
+      is_group
     }
   }
 `

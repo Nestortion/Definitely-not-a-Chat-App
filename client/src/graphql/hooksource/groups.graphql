@@ -2,5 +2,7 @@ query Groups($userId: Int) {
   groups(user_id: $userId) {
     group_name
     id
+    group_picture
+    is_group
   }
 }
