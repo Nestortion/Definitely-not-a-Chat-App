@@ -62,7 +62,7 @@ export default function Layout() {
         {leftShouldShow && (
           <div className="left">
             {/* TODO: need to prop drill showMiddleOnly to ChatListItem */}
-            <LeftBar />
+            <LeftBar showOnlyMiddle={showOnlyMiddle} />
           </div>
         )}
 
