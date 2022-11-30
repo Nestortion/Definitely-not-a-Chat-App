@@ -5,15 +5,19 @@ import Avatar from '../../components/UI/Avatar/Avatar'
 // ! FETCH HERE
 // id is from the url parameter (e.g. /chat/:chatId)
 // set global chat state here
-import chat from '../../data/chat.json'
 import ChatMessages from '../../components/Messages/ChatMessages/ChatMessages'
 import { useMediaQuery } from 'react-responsive'
-import { useGroupQuery } from '../../graphql/hooks/graphql'
+import {
+  useAddUserChatMutation,
+  useCurrentUserQuery,
+  useGroupQuery,
+} from '../../graphql/hooks/graphql'
 import { useParams } from 'react-router-dom'
 import { apiBasePath } from '../../data/config'
 import LoadingText from '../../components/Loading/LoadingText'
 import ErrorText from '../../components/Error/ErrorText'
 import FileInput from '../../components/FileInput/FileInput'
+import { useState } from 'react'
 
 export default function Chat() {
   const { chatId } = useParams()
@@ -21,9 +25,68 @@ export default function Chat() {
     variables: { groupId: parseInt(chatId) },
   })
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
+  const [fileInput, setFileInput] = useState(null)
+  const [message, setMessage] = useState(null)
+  const [sendMessage] = useAddUserChatMutation()
+  const {
+    data: userData,
+    loading: userLoading,
+    error: userError,
+  } = useCurrentUserQuery()
 
-  if (loading) return <LoadingText></LoadingText>
+  if (userLoading) return <LoadingText>loading</LoadingText>
+  if (userError) return <ErrorText>Something went wrong</ErrorText>
+  if (loading) return <LoadingText>loading</LoadingText>
   if (error) return <ErrorText>Something went wrong</ErrorText>
+
+  const fileChangeHandle = ({
+    target: {
+      validity,
+      files: [file],
+    },
+  }) => {
+    if (validity.valid) setFileInput(file)
+  }
+
+  const messageChangeHandle = (e) => {
+    setMessage(e.target.value)
+  }
+
+  const sendMessageHandle = (e) => {
+    e.preventDefault()
+    if (fileInput && message) {
+      sendMessage({
+        variables: {
+          file: fileInput,
+          receiver: parseInt(chatId),
+        },
+      })
+      sendMessage({
+        variables: {
+          message: message,
+          receiver: parseInt(chatId),
+        },
+      })
+    } else if (fileInput != null) {
+      sendMessage({
+        variables: {
+          file: fileInput,
+          receiver: parseInt(chatId),
+        },
+      })
+    } else {
+      if (message !== '') {
+        sendMessage({
+          variables: {
+            message: message,
+            receiver: parseInt(chatId),
+          },
+        })
+      }
+    }
+    setFileInput(undefined)
+    setMessage('')
+  }
 
   return (
     <div className={`chat ${isTabletOrMobile && 'small-screen'}`}>
@@ -43,9 +106,12 @@ export default function Chat() {
       </div>
       <div className="chat-input-container">
         {/* I dont know what form data should be (multipart, etc..) */}
-        <form className="chat-input-container__form">
-          <FileInput />
-          <Input type="text" />
+        <form
+          onSubmit={sendMessageHandle}
+          className="chat-input-container__form"
+        >
+          <FileInput value={fileInput} onChange={fileChangeHandle} />
+          <Input value={message} onChange={messageChangeHandle} type="text" />
           <Button>Send</Button>
         </form>
       </div>
