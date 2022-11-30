@@ -2,7 +2,6 @@ import './rightbar.scss'
 import Avatar from '../UI/Avatar/Avatar'
 import MemberList from '../MemberList/MemberList'
 // TODO: use the global chat data state here
-import chat from '../../data/chat.json'
 import SettingsButtons from '../SettingsButtons/SettingsButtons'
 import { useParams } from 'react-router-dom'
 import { useGroupQuery } from '../../graphql/hooks/graphql'
@@ -36,7 +35,7 @@ export default function RightBar() {
         <span>{groupData.group.group_name}</span>
       </div>
       <div className="rightbar--main">
-        <MemberList chatMembers={chat.members} />
+        <MemberList />
         <SettingsButtons />
       </div>
     </div>
