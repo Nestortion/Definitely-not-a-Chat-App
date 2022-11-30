@@ -1,11 +1,28 @@
 import './chat-message.scss'
 import { apiBasePath } from '../../../data/config'
 import Avatar from '../../UI/Avatar/Avatar'
+import { useParams } from 'react-router-dom'
+import { useGroupQuery } from '../../../graphql/hooks/graphql'
 
 export default function ChatMessage({ text, sender, user, message_type }) {
+  const { chatId } = useParams()
+  const {
+    data: groupData,
+    loading: groupLoading,
+    error: groupError,
+  } = useGroupQuery({
+    variables: { groupId: parseInt(chatId) },
+  })
+
+  if (groupLoading) return <LoadingText>Loading</LoadingText>
+  if (groupError) return <ErrorText>Error</ErrorText>
+
+  const senderShouldShow =
+    groupData.group.is_group === 'true' && sender !== user
+
   return (
     <div className={`chat-message ${sender === user ? 'you' : 'other'}`}>
-      {sender !== user && (
+      {senderShouldShow && (
         <div className="chat-message-sender__image">
           {/* TODO: src should be dynamic */}
           <Avatar size={16} src={`${apiBasePath}/pfp/amogusz.jpg`} />
@@ -13,7 +30,7 @@ export default function ChatMessage({ text, sender, user, message_type }) {
       )}
 
       <div className="chat-message-container">
-        {sender !== user && (
+        {senderShouldShow && (
           <div className="chat-message-sender__name fs-300">
             <span>{sender} &#60;-- name of the sender</span>
           </div>
