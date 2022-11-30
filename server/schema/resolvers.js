@@ -135,7 +135,26 @@ const resolvers = {
     groupRoles: async (_, { group_id }, context) => {
       const { data } = authMiddleware(context)
 
-      return GroupRoles.findAll({ where: { group_id } })
+      let grouprolesids = []
+      let newgrouprolesids = []
+
+      const grouproles = await GroupRoles.findAll({ where: { group_id } })
+
+      grouproles.forEach((grouprole) => {
+        grouprolesids.push(grouprole.id)
+      })
+
+      const userGroupRoles = await UserGroupRoles.findAll({
+        where: { group_role_id: grouprolesids },
+      })
+
+      userGroupRoles.forEach((usergrouprole) => {
+        if (!newgrouprolesids.includes(usergrouprole.group_role_id)) {
+          newgrouprolesids.push(usergrouprole.group_role_id)
+        }
+      })
+
+      return GroupRoles.findAll({ where: { id: newgrouprolesids } })
     },
   },
   Mutation: {
