@@ -14,6 +14,8 @@ import { signAccessToken, signRefreshToken } from '../auth/signTokens.js'
 import { sendRefreshToken } from '../auth/sendTokens.js'
 import { authMiddleware } from '../auth/middlewares/authMiddleware.js'
 import { createAssociation, syncModels } from '../models/Associations.js'
+import shortid from 'shortid'
+import { v4 as uuid } from 'uuid'
 
 createAssociation()
 syncModels()
@@ -186,41 +188,55 @@ const resolvers = {
     },
     addUserChat: async (
       _,
-      { file, message, receiver, user_id, message_type },
+      { file, message, receiver, message_type },
       context
     ) => {
-      // const { req, res, data: user } = authMiddleware(context)
+      const { data: user } = authMiddleware(context)
 
       const validation = await UserGroups.findOne({
-        where: { user_id, group_id: receiver },
+        where: { user_id: user.user_id, group_id: receiver },
       })
       if (validation) {
+        let messageType = ''
         if (file) {
-          const { createReadStream, filename } = await file
-          let newFileName = `dnca${filename}`
+          const { createReadStream, filename, mimetype } = await file
+          let filepath = '../files'
+          console.log(mimetype)
+          if (mimetype.includes('image')) {
+            filepath = '../files/message/images'
+            messageType = 'IMAGE'
+          } else {
+            filepath = '../files/message/documents'
+            messageType = 'OTHER'
+          }
+
+          let newFileName = `${uuid()} ${filename}`
+
           await new Promise((res) =>
             createReadStream()
               .pipe(
-                createWriteStream(
-                  path.join('__dirname', '../images', newFileName)
-                )
+                createWriteStream(path.join('__dirname', filepath, newFileName))
               )
               .on('close', res)
           )
           return UserChats.create({
             message: newFileName,
-            user_id,
+            user_id: user.user_id,
             receiver,
-            message_type,
+            message_type: messageType,
           })
         } else {
           if (message !== '') {
           }
-          return UserChats.create({ message, user_id, receiver, message_type })
+          return UserChats.create({
+            message,
+            user_id: user.user_id,
+            receiver,
+          })
         }
       } else {
         throw new GraphQLError(
-          `userId ${user_id} does not belong to groupId ${receiver}`
+          `userId ${user.user_id} does not belong to groupId ${receiver}`
         )
       }
     },
