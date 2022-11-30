@@ -4,6 +4,7 @@ import Avatar from '../../UI/Avatar/Avatar'
 import LoadingText from '../../Loading/LoadingText'
 import ErrorText from '../../Error/ErrorText'
 import { useUserQuery } from '../../../graphql/hooks/graphql'
+import { useEffect, useRef } from 'react'
 
 export default function ChatMessage({
   text,
@@ -17,6 +18,10 @@ export default function ChatMessage({
     loading: userLoading,
     error: userError,
   } = useUserQuery({ variables: { userId: sender } })
+  const messageDiv = useRef(null)
+  useEffect(() => {
+    messageDiv.current?.scrollIntoView()
+  }, [text])
 
   if (userLoading) return <LoadingText>Loading</LoadingText>
   if (userError) return <ErrorText>Error</ErrorText>
@@ -31,7 +36,10 @@ export default function ChatMessage({
   }
 
   return (
-    <div className={`chat-message fs-400 ${sender === user ? 'you' : 'other'}`}>
+    <div
+      ref={messageDiv}
+      className={`chat-message fs-400 ${sender === user ? 'you' : 'other'}`}
+    >
       {senderShouldShow && (
         <div className="chat-message-sender__image">
           {/* TODO: src should be dynamic */}
