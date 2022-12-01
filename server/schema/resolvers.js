@@ -16,8 +16,12 @@ import { authMiddleware } from '../auth/middlewares/authMiddleware.js'
 import { createAssociation, syncModels } from '../models/Associations.js'
 import { v4 as uuid } from 'uuid'
 
-createAssociation()
-syncModels()
+try {
+  await createAssociation()
+  await syncModels()
+} catch (error) {
+  console.log(error)
+}
 
 const resolvers = {
   Upload: GraphQLUpload,
