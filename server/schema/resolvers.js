@@ -200,7 +200,6 @@ const resolvers = {
         if (file) {
           const { createReadStream, filename, mimetype } = await file
           let filepath = '../files'
-          console.log(mimetype)
           if (mimetype.includes('image')) {
             filepath = '../files/message/images'
             messageType = 'IMAGE'
