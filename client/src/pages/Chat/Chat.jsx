@@ -9,8 +9,8 @@ import ChatMessages from '../../components/Messages/ChatMessages/ChatMessages'
 import { useMediaQuery } from 'react-responsive'
 import {
   useAddUserChatMutation,
-  useCurrentUserQuery,
   useGroupQuery,
+  UserChatsDocument,
 } from '../../graphql/hooks/graphql'
 import { useParams } from 'react-router-dom'
 import { apiBasePath } from '../../data/config'
@@ -27,15 +27,19 @@ export default function Chat() {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
   const [fileInput, setFileInput] = useState(null)
   const [message, setMessage] = useState(null)
-  const [sendMessage] = useAddUserChatMutation()
-  const {
-    data: userData,
-    loading: userLoading,
-    error: userError,
-  } = useCurrentUserQuery()
-
-  if (userLoading) return <LoadingText>loading</LoadingText>
-  if (userError) return <ErrorText>Something went wrong</ErrorText>
+  const [sendMessage] = useAddUserChatMutation({
+    update(cache, { data: { addUserChat } }) {
+      const { userChats } = cache.readQuery({
+        query: UserChatsDocument,
+        variables: { receiver: parseInt(chatId) },
+      })
+      cache.writeQuery({
+        query: UserChatsDocument,
+        variables: { receiver: parseInt(chatId) },
+        data: { userChats: [...userChats, addUserChat] },
+      })
+    },
+  })
   if (loading) return <LoadingText>loading</LoadingText>
   if (error) return <ErrorText>Something went wrong</ErrorText>
 
