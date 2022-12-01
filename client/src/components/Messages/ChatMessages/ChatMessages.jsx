@@ -6,7 +6,7 @@ import {
 } from '../../../graphql/hooks/graphql'
 import ChatMessage from '../ChatMessage/ChatMessage'
 import './chat-messages.scss'
-import LoadingText from '../../Loading/LoadingText'
+import LoadingText from '../../Loading/LoadingText/LoadingText'
 import ErrorText from '../../Error/ErrorText'
 
 // ! FETCH HERE

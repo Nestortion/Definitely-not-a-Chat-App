@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import Layout from './components/Layout/Layout'
 import { setAccessToken } from './graphql/authStore'
 import { apiBasePath } from './data/config'
-import LoadingText from './components/Loading/LoadingText'
+import LoadingText from './components/Loading/LoadingText/LoadingText'
 
 export default function App() {
   const [loading, setLoading] = useState(true)

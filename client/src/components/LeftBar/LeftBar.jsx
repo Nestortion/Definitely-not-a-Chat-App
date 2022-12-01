@@ -5,7 +5,7 @@ import ChatList from '../ChatList/ChatList'
 import { useState } from 'react'
 import { useGroupsQuery } from '../../graphql/hooks/graphql'
 import ErrorText from '../Error/ErrorText'
-import LoadingText from '../Loading/LoadingText'
+import LoadingText from '../Loading/LoadingText/LoadingText'
 
 export default function LeftBar({ showOnlyMiddle }) {
   const { data: chat, loading, error } = useGroupsQuery()

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import UserCard from '../UserCard/UserCard'
 import { useCurrentUserQuery } from '../../graphql/hooks/graphql'
 import ErrorText from '../Error/ErrorText'
-import LoadingText from '../Loading/LoadingText'
+import LoadingText from '../Loading/LoadingText/LoadingText'
 // ! TEMPORARY DATA ONLY
 // data should come from api
 // ! FETCH HERE

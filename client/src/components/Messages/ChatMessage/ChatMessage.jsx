@@ -1,7 +1,7 @@
 import './chat-message.scss'
 import { apiBasePath } from '../../../data/config'
 import Avatar from '../../UI/Avatar/Avatar'
-import LoadingText from '../../Loading/LoadingText'
+import LoadingText from '../../Loading/LoadingText/LoadingText'
 import ErrorText from '../../Error/ErrorText'
 import { useUserQuery } from '../../../graphql/hooks/graphql'
 import { useEffect, useRef } from 'react'

@@ -5,7 +5,7 @@ import MemberList from '../MemberList/MemberList'
 import SettingsButtons from '../SettingsButtons/SettingsButtons'
 import { useParams } from 'react-router-dom'
 import { useGroupQuery } from '../../graphql/hooks/graphql'
-import LoadingText from '../Loading/LoadingText'
+import LoadingText from '../Loading/LoadingText/LoadingText'
 import ErrorText from '../Error/ErrorText'
 import { apiBasePath } from '../../data/config'
 

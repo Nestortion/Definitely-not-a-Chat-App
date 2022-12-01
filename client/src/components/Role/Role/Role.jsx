@@ -1,6 +1,6 @@
 import { useUserRolesQuery } from '../../../graphql/hooks/graphql'
 import ErrorText from '../../Error/ErrorText'
-import LoadingText from '../../Loading/LoadingText'
+import LoadingText from '../../Loading/LoadingText/LoadingText'
 import RoleMember from '../RoleMembers/RoleMember'
 import './role.scss'
 

@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useGroupRolesQuery } from '../../graphql/hooks/graphql'
 import ErrorText from '../Error/ErrorText'
-import LoadingText from '../Loading/LoadingText'
+import LoadingText from '../Loading/LoadingText/LoadingText'
 import Role from '../Role/Role/Role'
 import './memberlist.scss'
 

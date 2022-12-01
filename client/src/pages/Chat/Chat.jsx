@@ -14,7 +14,7 @@ import {
 } from '../../graphql/hooks/graphql'
 import { useParams } from 'react-router-dom'
 import { apiBasePath } from '../../data/config'
-import LoadingText from '../../components/Loading/LoadingText'
+import LoadingText from '../../components/Loading/LoadingText/LoadingText'
 import ErrorText from '../../components/Error/ErrorText'
 import FileInput from '../../components/FileInput/FileInput'
 import { useState } from 'react'

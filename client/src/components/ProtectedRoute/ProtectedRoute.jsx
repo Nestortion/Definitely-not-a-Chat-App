@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom'
 import { useIsLoggedInQuery } from '../../graphql/hooks/graphql'
-import LoadingText from '../Loading/LoadingText'
+import LoadingText from '../Loading/LoadingText/LoadingText'
 
 export default function ProtectedRoute({ children }) {
   const { data: isLogged, loading, error } = useIsLoggedInQuery()
