@@ -86,7 +86,7 @@ const typeDefs = `
     userChatReactions: [UserChatReaction]
     currentUser: User
     isLoggedIn: Boolean
-    
+    searchGroups(group_name: String, group_id: Int): [Group]
   }
 
   type Mutation {
