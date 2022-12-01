@@ -15,6 +15,7 @@ import { sendRefreshToken } from '../auth/sendTokens.js'
 import { authMiddleware } from '../auth/middlewares/authMiddleware.js'
 import { createAssociation, syncModels } from '../models/Associations.js'
 import { v4 as uuid } from 'uuid'
+import { Op } from 'sequelize'
 
 try {
   await createAssociation()
@@ -79,10 +80,10 @@ const resolvers = {
       return UserChats.findAll({ where: { receiver } })
     },
     groups: async (_, __, context) => {
-      const { data } = authMiddleware(context)
+      const { data: user } = authMiddleware(context)
 
       const validation = await UserGroups.findAll({
-        where: { user_id: data.user_id },
+        where: { user_id: user.user_id },
       })
 
       let groups = []
@@ -161,6 +162,33 @@ const resolvers = {
 
       return GroupRoles.findAll({ where: { id: newgrouprolesids } })
     },
+    searchGroups: async (_, { group_name, group_id }, context) => {
+      const { data: user } = authMiddleware(context)
+
+      const validation = await UserGroups.findAll({
+        where: { user_id: user.user_id },
+      })
+
+      let groupsId = []
+
+      if (validation) {
+        validation.forEach((usergroup) => {
+          groupsId.push(usergroup.group_id)
+        })
+      }
+      const xddd = await Groups.findAll({
+        where: { group_name: { [Op.like]: `%${group_name}%` } },
+      })
+
+      if (group_name) {
+        return Groups.findAll({
+          where: { group_name: { [Op.like]: `%${group_name}%` } },
+        })
+      }
+      if (group_id) {
+        return Groups.findAll({ where: { id: group_id } })
+      }
+    },
   },
   Mutation: {
     addUser: async (
@@ -200,7 +228,6 @@ const resolvers = {
         if (file) {
           const { createReadStream, filename, mimetype } = await file
           let filepath = '../files'
-          console.log(mimetype)
           if (mimetype.includes('image')) {
             filepath = '../files/message/images'
             messageType = 'IMAGE'

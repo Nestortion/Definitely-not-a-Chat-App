@@ -26,6 +26,7 @@ const documents = {
     "query IsLoggedIn {\n  isLoggedIn\n}": types.IsLoggedInDocument,
     "mutation Login($username: String!, $password: String!) {\n  login(username: $username, password: $password) {\n    access_token\n  }\n}": types.LoginDocument,
     "mutation Logout {\n  logout\n}": types.LogoutDocument,
+    "query SearchGroups($groupName: String, $groupId: Int) {\n  searchGroups(group_name: $groupName, group_id: $groupId) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}": types.SearchGroupsDocument,
     "query User($userId: Int!) {\n  user(id: $userId) {\n    first_name\n    last_name\n    profile_img\n    id\n  }\n}": types.UserDocument,
     "query UserChats($receiver: Int) {\n  userChats(receiver: $receiver) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}": types.UserChatsDocument,
     "query UserRoles($groupRoleId: Int) {\n  userRoles(group_role_id: $groupRoleId) {\n    first_name\n    id\n    last_name\n    profile_img\n  }\n}": types.UserRolesDocument,
@@ -83,6 +84,10 @@ export function graphql(source: "mutation Login($username: String!, $password: S
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "mutation Logout {\n  logout\n}"): (typeof documents)["mutation Logout {\n  logout\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "query SearchGroups($groupName: String, $groupId: Int) {\n  searchGroups(group_name: $groupName, group_id: $groupId) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}"): (typeof documents)["query SearchGroups($groupName: String, $groupId: Int) {\n  searchGroups(group_name: $groupName, group_id: $groupId) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

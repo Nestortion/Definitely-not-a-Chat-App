@@ -137,6 +137,7 @@ export type Query = {
   groupRoles?: Maybe<Array<Maybe<GroupRole>>>
   groups?: Maybe<Array<Maybe<Group>>>
   isLoggedIn?: Maybe<Scalars['Boolean']>
+  searchGroups?: Maybe<Array<Maybe<Group>>>
   user?: Maybe<User>
   userChat?: Maybe<UserChat>
   userChatReactions?: Maybe<Array<Maybe<UserChatReaction>>>
@@ -157,6 +158,11 @@ export type QueryGroupRolesArgs = {
 
 export type QueryGroupsArgs = {
   user_id?: InputMaybe<Scalars['Int']>
+}
+
+export type QuerySearchGroupsArgs = {
+  group_id?: InputMaybe<Scalars['Int']>
+  group_name?: InputMaybe<Scalars['String']>
 }
 
 export type QueryUserArgs = {
@@ -421,6 +427,22 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never }>
 export type LogoutMutation = {
   __typename?: 'Mutation'
   logout?: boolean | null
+}
+
+export type SearchGroupsQueryVariables = Exact<{
+  groupName?: InputMaybe<Scalars['String']>
+  groupId?: InputMaybe<Scalars['Int']>
+}>
+
+export type SearchGroupsQuery = {
+  __typename?: 'Query'
+  searchGroups?: Array<{
+    __typename?: 'Group'
+    group_name: string
+    group_picture: string
+    id: number
+    is_group: string
+  } | null> | null
 }
 
 export type UserQueryVariables = Exact<{
@@ -1224,6 +1246,68 @@ export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<
   LogoutMutation,
   LogoutMutationVariables
+>
+export const SearchGroupsDocument = gql`
+  query SearchGroups($groupName: String, $groupId: Int) {
+    searchGroups(group_name: $groupName, group_id: $groupId) {
+      group_name
+      group_picture
+      id
+      is_group
+    }
+  }
+`
+
+/**
+ * __useSearchGroupsQuery__
+ *
+ * To run a query within a React component, call `useSearchGroupsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchGroupsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchGroupsQuery({
+ *   variables: {
+ *      groupName: // value for 'groupName'
+ *      groupId: // value for 'groupId'
+ *   },
+ * });
+ */
+export function useSearchGroupsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    SearchGroupsQuery,
+    SearchGroupsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<SearchGroupsQuery, SearchGroupsQueryVariables>(
+    SearchGroupsDocument,
+    options
+  )
+}
+export function useSearchGroupsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    SearchGroupsQuery,
+    SearchGroupsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<SearchGroupsQuery, SearchGroupsQueryVariables>(
+    SearchGroupsDocument,
+    options
+  )
+}
+export type SearchGroupsQueryHookResult = ReturnType<
+  typeof useSearchGroupsQuery
+>
+export type SearchGroupsLazyQueryHookResult = ReturnType<
+  typeof useSearchGroupsLazyQuery
+>
+export type SearchGroupsQueryResult = Apollo.QueryResult<
+  SearchGroupsQuery,
+  SearchGroupsQueryVariables
 >
 export const UserDocument = gql`
   query User($userId: Int!) {
