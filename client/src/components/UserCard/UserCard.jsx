@@ -7,7 +7,7 @@ import { useLogoutMutation } from '../../graphql/hooks/graphql'
 import { setAccessToken } from '../../graphql/authStore'
 import { useNavigate } from 'react-router-dom'
 
-export default function UserCard({ profilePicUrl, first_name }) {
+export default function UserCard({ profile_img, first_name }) {
   const [userSettingsIsShowing, setUserSettingsIsShowing] = useState(false)
   const [logout] = useLogoutMutation()
   const navigate = useNavigate()
@@ -28,10 +28,7 @@ export default function UserCard({ profilePicUrl, first_name }) {
     <div className={`user-card ${userSettingsIsShowing && 'clicked'}`}>
       <div className="user-card__user-info" onClick={toggleUserSettings}>
         <Avatar
-          src={
-            // temporary placeholder
-            `${apiBasePath}/pfp/amogusz.jpg`
-          }
+          src={`${apiBasePath}/pfp/${profile_img}`}
           alt={`${first_name}'s profile pic`}
           size="48"
         />

@@ -8,7 +8,7 @@ export default function ChatList({ chats, showOnlyMiddle }) {
         <ChatListItem
           key={chat.id}
           chatId={chat.id}
-          profilePicUrl={chat.profilePicUrl}
+          profilePicUrl={chat.group_picture}
           title={chat.group_name}
           showOnlyMiddle={showOnlyMiddle}
         />

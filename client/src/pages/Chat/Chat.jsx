@@ -92,7 +92,7 @@ export default function Chat() {
       <div className="header">
         <div className="chat-info">
           <Avatar
-            src={`${apiBasePath}/pfp/amogusz.jpg`}
+            src={`${apiBasePath}/pfp/${data.group.group_picture}`}
             alt={`${data.group.group_name}'s photo`}
             size="40"
           />

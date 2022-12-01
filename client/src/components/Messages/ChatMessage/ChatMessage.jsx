@@ -43,7 +43,10 @@ export default function ChatMessage({
       {senderShouldShow && (
         <div className="chat-message-sender__image">
           {/* TODO: src should be dynamic */}
-          <Avatar size={16} src={`${apiBasePath}/pfp/amogusz.jpg`} />
+          <Avatar
+            size={16}
+            src={`${apiBasePath}/pfp/${userData.user.profile_img}`}
+          />
         </div>
       )}
 

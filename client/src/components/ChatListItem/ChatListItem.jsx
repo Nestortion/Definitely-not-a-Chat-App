@@ -1,6 +1,6 @@
 import './chat-list-item.scss'
 import Avatar from '../UI/Avatar/Avatar'
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { apiBasePath } from '../../data/config'
 import { useMediaQuery } from 'react-responsive'
 
@@ -28,7 +28,8 @@ export default function ChatListItem({
     >
       <div className="chat-list-item-left">
         <Avatar
-          src={`${apiBasePath}/pfp/amogusz.jpg`}
+          // TODO: add default
+          src={`${apiBasePath}/pfp/${profilePicUrl}`}
           alt={`${title}'s photo`}
           size="56"
         />

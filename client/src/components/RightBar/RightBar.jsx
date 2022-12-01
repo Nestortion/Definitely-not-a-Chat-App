@@ -28,7 +28,7 @@ export default function RightBar() {
     <div className="rightbar">
       <div className="rightbar--header">
         <Avatar
-          src={`${apiBasePath}/pfp/amogusz.jpg`}
+          src={`${apiBasePath}/pfp/${groupData.group.group_picture}`}
           alt={`${groupData.group.group_name}'s photo`}
           size="80"
         />

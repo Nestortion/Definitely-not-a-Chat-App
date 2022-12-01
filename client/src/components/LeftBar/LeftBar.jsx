@@ -3,9 +3,6 @@ import Button from '../UI/Button/Button'
 import Input from '../UI/Input/Input'
 import ChatList from '../ChatList/ChatList'
 import { useState } from 'react'
-// ! FETCH HERE
-// fetch all the group where the user is a member
-import initialState from '../../data/chats.json'
 import { useGroupsQuery } from '../../graphql/hooks/graphql'
 import ErrorText from '../Error/ErrorText'
 import LoadingText from '../Loading/LoadingText'
