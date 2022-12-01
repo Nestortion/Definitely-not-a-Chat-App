@@ -2,14 +2,20 @@ import express, { json } from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import { expressMiddleware } from '@apollo/server/express4'
-import server from './config/apolloServer.js'
 import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.mjs'
 import cookieParser from 'cookie-parser'
 import jwt from 'jsonwebtoken'
 import Users from './models/Users.js'
 import { sendRefreshToken } from './auth/sendTokens.js'
 import { signAccessToken, signRefreshToken } from './auth/signTokens.js'
-import path from 'node:path'
+import { createServer } from 'node:http'
+import { WebSocketServer } from 'ws'
+import { ApolloServer } from '@apollo/server'
+import typeDefs from './schema/typeDefs.js'
+import resolvers from './schema/resolvers.js'
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
+import { useServer } from 'graphql-ws/lib/use/ws'
+import { makeExecutableSchema } from '@graphql-tools/schema'
 
 dotenv.config()
 
@@ -17,6 +23,32 @@ const app = express()
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost'
 const CLIENT_PORT = process.env.CLIENT_PORT || '5173'
 const PORT = process.env.PORT || 4000
+const httpServer = createServer(app)
+
+const wsServer = new WebSocketServer({
+  server: httpServer,
+  path: '/graphql',
+})
+
+const schema = makeExecutableSchema({ typeDefs, resolvers })
+const serverCleanup = useServer({ schema }, wsServer)
+
+const server = new ApolloServer({
+  schema,
+  csrfPrevention: false,
+  plugins: [
+    ApolloServerPluginDrainHttpServer({ httpServer }),
+    {
+      async serverWillStart() {
+        return {
+          async drainServer() {
+            await serverCleanup.dispose()
+          },
+        }
+      },
+    },
+  ],
+})
 
 await server.start()
 
@@ -86,6 +118,6 @@ app.use(
   })
 )
 
-app.listen(process.env.PORT, () => {
+httpServer.listen(process.env.PORT, () => {
   console.log(`listening to PORT ${PORT}`)
 })
