@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 
 function signAccessToken(user) {
   return jwt.sign({ user_id: user.id }, process.env.ACCESS_SECRET, {
-    expiresIn: '1s',
+    expiresIn: '120s',
   })
 }
 function signRefreshToken(user) {
