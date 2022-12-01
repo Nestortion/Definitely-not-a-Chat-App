@@ -14,7 +14,7 @@ import {
 } from '../../graphql/hooks/graphql'
 import { useParams } from 'react-router-dom'
 import { apiBasePath } from '../../data/config'
-import LoadingText from '../../components/Loading/LoadingText/LoadingText'
+import LoadingSpinner from '../../components/Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../../components/Error/ErrorText'
 import FileInput from '../../components/FileInput/FileInput'
 import { useState } from 'react'
@@ -40,7 +40,7 @@ export default function Chat() {
       })
     },
   })
-  if (loading) return <LoadingText>loading</LoadingText>
+  if (loading) return <LoadingSpinner>loading</LoadingSpinner>
   if (error) return <ErrorText>Something went wrong</ErrorText>
 
   const fileChangeHandle = ({

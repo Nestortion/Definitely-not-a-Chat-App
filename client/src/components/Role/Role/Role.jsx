@@ -1,6 +1,6 @@
 import { useUserRolesQuery } from '../../../graphql/hooks/graphql'
 import ErrorText from '../../Error/ErrorText'
-import LoadingText from '../../Loading/LoadingText/LoadingText'
+import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'
 import RoleMember from '../RoleMembers/RoleMember'
 import './role.scss'
 
@@ -12,7 +12,7 @@ export default function Role({ id, name }) {
     error,
   } = useUserRolesQuery({ variables: { groupRoleId: id } })
 
-  if (loading) return <LoadingText>Loading</LoadingText>
+  if (loading) return <LoadingSpinner>Loading</LoadingSpinner>
   if (error) return <ErrorText>Error</ErrorText>
 
   return (

@@ -5,11 +5,11 @@ import ChatList from '../ChatList/ChatList'
 import { useState } from 'react'
 import { useGroupsQuery } from '../../graphql/hooks/graphql'
 import ErrorText from '../Error/ErrorText'
-import LoadingText from '../Loading/LoadingText/LoadingText'
+import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 
 export default function LeftBar({ showOnlyMiddle }) {
   const { data: chat, loading, error } = useGroupsQuery()
-  if (loading) return <LoadingText></LoadingText>
+  if (loading) return <LoadingSpinner></LoadingSpinner>
   if (error) return <ErrorText>Something went wrong</ErrorText>
 
   return (

@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useGroupRolesQuery } from '../../graphql/hooks/graphql'
 import ErrorText from '../Error/ErrorText'
-import LoadingText from '../Loading/LoadingText/LoadingText'
+import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import Role from '../Role/Role/Role'
 import './memberlist.scss'
 
@@ -14,7 +14,7 @@ export default function MemberList() {
     error,
   } = useGroupRolesQuery({ variables: { groupId: parseInt(chatId) } })
 
-  if (loading) return <LoadingText>Loading</LoadingText>
+  if (loading) return <LoadingSpinner>Loading</LoadingSpinner>
   if (error) return <ErrorText>Error</ErrorText>
 
   return (

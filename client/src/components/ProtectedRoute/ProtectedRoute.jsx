@@ -1,11 +1,11 @@
 import { Navigate } from 'react-router-dom'
 import { useIsLoggedInQuery } from '../../graphql/hooks/graphql'
-import LoadingText from '../Loading/LoadingText/LoadingText'
+import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 
 export default function ProtectedRoute({ children }) {
   const { data: isLogged, loading, error } = useIsLoggedInQuery()
 
-  if (loading) return <LoadingText></LoadingText>
+  if (loading) return <LoadingSpinner></LoadingSpinner>
   if (error) return <Navigate to="/login" />
 
   if (isLogged?.isLoggedIn === false) {

@@ -5,7 +5,7 @@ import MemberList from '../MemberList/MemberList'
 import SettingsButtons from '../SettingsButtons/SettingsButtons'
 import { useParams } from 'react-router-dom'
 import { useGroupQuery } from '../../graphql/hooks/graphql'
-import LoadingText from '../Loading/LoadingText/LoadingText'
+import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../Error/ErrorText'
 import { apiBasePath } from '../../data/config'
 
@@ -21,7 +21,7 @@ export default function RightBar() {
     variables: { groupId: parseInt(chatId) },
   })
 
-  if (groupLoading) return <LoadingText>Loading</LoadingText>
+  if (groupLoading) return <LoadingSpinner>Loading</LoadingSpinner>
   if (groupError) return <ErrorText>Error</ErrorText>
 
   return (

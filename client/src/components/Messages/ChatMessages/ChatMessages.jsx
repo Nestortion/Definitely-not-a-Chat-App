@@ -6,7 +6,7 @@ import {
 } from '../../../graphql/hooks/graphql'
 import ChatMessage from '../ChatMessage/ChatMessage'
 import './chat-messages.scss'
-import LoadingText from '../../Loading/LoadingText/LoadingText'
+import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../../Error/ErrorText'
 
 // ! FETCH HERE
@@ -35,11 +35,11 @@ export default function ChatMessages() {
     variables: { groupId: parseInt(chatId) },
   })
 
-  if (groupLoading) return <LoadingText>Loading</LoadingText>
+  if (groupLoading) return <LoadingSpinner>Loading</LoadingSpinner>
   if (groupError) return <ErrorText>Error</ErrorText>
-  if (userLoading) return <LoadingText>Loading</LoadingText>
+  if (userLoading) return <LoadingSpinner>Loading</LoadingSpinner>
   if (userError) return <ErrorText>Error</ErrorText>
-  if (chatsLoading) return <LoadingText>Loading</LoadingText>
+  if (chatsLoading) return <LoadingSpinner>Loading</LoadingSpinner>
   if (chatsError) return <ErrorText>Error</ErrorText>
 
   return (

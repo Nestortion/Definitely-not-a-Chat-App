@@ -1,7 +1,7 @@
 import './chat-message.scss'
 import { apiBasePath } from '../../../data/config'
 import Avatar from '../../UI/Avatar/Avatar'
-import LoadingText from '../../Loading/LoadingText/LoadingText'
+import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../../Error/ErrorText'
 import { useUserQuery } from '../../../graphql/hooks/graphql'
 import { useEffect, useRef } from 'react'
@@ -23,7 +23,7 @@ export default function ChatMessage({
     messageDiv.current?.scrollIntoView()
   }, [text])
 
-  if (userLoading) return <LoadingText>Loading</LoadingText>
+  if (userLoading) return <LoadingSpinner>Loading</LoadingSpinner>
   if (userError) return <ErrorText>Error</ErrorText>
 
   const senderShouldShow = is_group === 'true' && sender !== user

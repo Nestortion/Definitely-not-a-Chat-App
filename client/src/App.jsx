@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import Layout from './components/Layout/Layout'
 import { setAccessToken } from './graphql/authStore'
 import { apiBasePath } from './data/config'
-import LoadingText from './components/Loading/LoadingText/LoadingText'
+import LoadingSpinner from './components/Loading/LoadingSpinner/LoadingSpinner'
 
 export default function App() {
   const [loading, setLoading] = useState(true)
@@ -18,7 +18,7 @@ export default function App() {
     })
   }, [])
 
-  if (loading) return <LoadingText></LoadingText>
+  if (loading) return <LoadingSpinner></LoadingSpinner>
 
   return (
     <>
