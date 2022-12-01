@@ -18,6 +18,7 @@ import LoadingSpinner from '../../components/Loading/LoadingSpinner/LoadingSpinn
 import ErrorText from '../../components/Error/ErrorText'
 import FileInput from '../../components/FileInput/FileInput'
 import { useState } from 'react'
+import { MdAdd } from 'react-icons/md'
 
 export default function Chat() {
   const { chatId } = useParams()
@@ -102,7 +103,9 @@ export default function Chat() {
           />
           <span>{data.group.group_name}</span>
         </div>
-        <Button>+</Button>
+        <Button>
+          <MdAdd />
+        </Button>
       </div>
       <div className="chat-messages-container">
         <ChatMessages />

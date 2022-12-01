@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { useGroupsQuery } from '../../graphql/hooks/graphql'
 import ErrorText from '../Error/ErrorText'
 import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
+import { MdAdd } from 'react-icons/md'
 
 export default function LeftBar({ showOnlyMiddle }) {
   const { data: chat, loading, error } = useGroupsQuery()
@@ -17,7 +18,9 @@ export default function LeftBar({ showOnlyMiddle }) {
       <div className="top">
         <div className="header">
           <h1>Chats</h1>
-          <Button>+</Button>
+          <Button>
+            <MdAdd />
+          </Button>
         </div>
         <div className="search">
           <form>
