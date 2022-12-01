@@ -10,11 +10,13 @@ function Backdrop({ children, closeModal }) {
 }
 
 function Modal({ title, children, closeModal }) {
-  ;<div className="modal">
-    <h1>{title}</h1>
-    {children}
-    <button onClick={closeModal}>Okay</button>
-  </div>
+  return (
+    <div className="modal">
+      <h1>{title}</h1>
+      {children}
+      <button onClick={closeModal}>Okay</button>
+    </div>
+  )
 }
 
 export default function SpawnModal({ title, children, closeModal }) {
