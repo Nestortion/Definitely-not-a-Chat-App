@@ -17,17 +17,18 @@ import { apiBasePath } from '../../data/config'
 import LoadingSpinner from '../../components/Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../../components/Error/ErrorText'
 import FileInput from '../../components/FileInput/FileInput'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { MdAdd } from 'react-icons/md'
 
 export default function Chat() {
   const { chatId } = useParams()
+  const formRef = useRef()
   const { data, loading, error } = useGroupQuery({
     variables: { groupId: parseInt(chatId) },
   })
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
   const [fileInput, setFileInput] = useState(null)
-  const [message, setMessage] = useState(null)
+  const [message, setMessage] = useState('')
   const [sendMessage] = useAddUserChatMutation({
     update(cache, { data: { addUserChat } }) {
       const { userChats } = cache.readQuery({
@@ -89,7 +90,8 @@ export default function Chat() {
         })
       }
     }
-    e.target.reset()
+    setFileInput(null)
+    setMessage('')
   }
 
   return (
@@ -113,11 +115,12 @@ export default function Chat() {
       <div className="chat-input-container">
         {/* I dont know what form data should be (multipart, etc..) */}
         <form
+          ref={formRef}
           onSubmit={sendMessageHandle}
           className="chat-input-container__form"
         >
           <FileInput onChange={fileChangeHandle} />
-          <Input onChange={messageChangeHandle} type="text" />
+          <Input value={message} onChange={messageChangeHandle} type="text" />
           <Button>Send</Button>
         </form>
       </div>
