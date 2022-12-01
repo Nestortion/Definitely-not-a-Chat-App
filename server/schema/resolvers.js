@@ -176,13 +176,10 @@ const resolvers = {
           groupsId.push(usergroup.group_id)
         })
       }
-      const xddd = await Groups.findAll({
-        where: { group_name: { [Op.like]: `%${group_name}%` } },
-      })
 
       if (group_name) {
         return Groups.findAll({
-          where: { group_name: { [Op.like]: `%${group_name}%` } },
+          where: { group_name: { [Op.like]: `%${group_name}%` }, id: groupsId },
         })
       }
       if (group_id) {
