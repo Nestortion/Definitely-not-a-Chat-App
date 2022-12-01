@@ -86,7 +86,7 @@ const resolvers = {
       })
 
       let groups = []
-      validation.forEach(async (usergroup) => {
+      validation.forEach((usergroup) => {
         groups.push(usergroup.group_id)
       })
 
@@ -189,11 +189,7 @@ const resolvers = {
         gender,
       })
     },
-    addUserChat: async (
-      _,
-      { file, message, receiver, message_type },
-      context
-    ) => {
+    addUserChat: async (_, { file, message, receiver }, context) => {
       const { data: user } = authMiddleware(context)
 
       const validation = await UserGroups.findOne({
