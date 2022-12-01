@@ -5,6 +5,7 @@ import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../../Error/ErrorText'
 import { useUserQuery } from '../../../graphql/hooks/graphql'
 import { useEffect, useRef } from 'react'
+import CustomImage from '../../UI/Image/CustomImage'
 
 export default function ChatMessage({
   text,
@@ -65,7 +66,7 @@ export default function ChatMessage({
           {/* If type image */}
           {message_type === 'IMAGE' && (
             // TODO: create an image component
-            <Avatar size={56} src={`${apiBasePath}/message/images/${text}`} />
+            <CustomImage src={`${apiBasePath}/message/images/${text}`} />
           )}
 
           {/* If type other */}
