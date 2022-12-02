@@ -102,6 +102,10 @@ const typeDefs = `
     logout : Boolean
   }
 
+  type Subscription{
+    chatAdded: UserChat
+  }
+
 `
 
 export default typeDefs

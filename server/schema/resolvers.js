@@ -215,7 +215,7 @@ const resolvers = {
       })
     },
     addUserChat: async (_, { file, message, receiver }, context) => {
-      const { data: user } = authMiddleware(context)
+      const { data: user, pubsub } = authMiddleware(context)
 
       const validation = await UserGroups.findOne({
         where: { user_id: user.user_id, group_id: receiver },
@@ -242,20 +242,42 @@ const resolvers = {
               )
               .on('close', res)
           )
-          return UserChats.create({
+
+          const userChat = await UserChats.create({
             message: newFileName,
             user_id: user.user_id,
             receiver,
             message_type: messageType,
           })
+
+          pubsub.publish('CHAT_ADDED', {
+            chatAdded: {
+              id: userChat.dataValues.id,
+              message: userChat.dataValues.message,
+              receiver: userChat.dataValues.receiver,
+              user_id: userChat.dataValues.user_id,
+              message_type: userChat.dataValues.message_type,
+            },
+          })
+          return userChat
         } else {
           if (message !== '') {
           }
-          return UserChats.create({
+          const userChat = await UserChats.create({
             message,
             user_id: user.user_id,
             receiver,
           })
+          pubsub.publish('CHAT_ADDED', {
+            chatAdded: {
+              id: userChat.dataValues.id,
+              message: userChat.dataValues.message,
+              receiver: userChat.dataValues.receiver,
+              user_id: userChat.dataValues.user_id,
+              message_type: userChat.dataValues.message_type,
+            },
+          })
+          return userChat
         }
       } else {
         throw new GraphQLError(
@@ -321,6 +343,11 @@ const resolvers = {
       res.clearCookie('refresh-token')
 
       return true
+    },
+  },
+  Subscription: {
+    chatAdded: {
+      subscribe: (_, __, { pubsub }) => pubsub.asyncIterator('CHAT_ADDED'),
     },
   },
 }
