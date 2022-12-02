@@ -14,12 +14,16 @@ import {
   InMemoryCache,
   ApolloClient,
   ApolloLink,
+  split,
 } from '@apollo/client'
 import { createUploadLink } from 'apollo-upload-client'
 import jwt_decode from 'jwt-decode'
 import { TokenRefreshLink } from 'apollo-link-token-refresh'
 import { getAccessToken, setAccessToken } from './graphql/authStore.js'
 import { apiBasePath } from './data/config'
+import { getMainDefinition } from '@apollo/client/utilities'
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
+import { createClient } from 'graphql-ws'
 
 const router = createBrowserRouter([
   {
@@ -71,13 +75,6 @@ const refreshTokenLink = new TokenRefreshLink({
     }
   },
   fetchAccessToken: () => {
-    const x = fetch(`${apiBasePath}/refresh_token`, {
-      method: 'POST',
-      credentials: 'include',
-    }).then(async (x) => {
-      console.log(await x.json())
-    })
-
     return fetch(`${apiBasePath}/refresh_token`, {
       method: 'POST',
       credentials: 'include',
@@ -112,8 +109,26 @@ const uploadlink = createUploadLink({
   credentials: 'include',
 })
 
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: 'ws://localhost:4000/subscriptions',
+  })
+)
+
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query)
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    )
+  },
+  wsLink,
+  ApolloLink.from([refreshTokenLink, authLink, uploadlink])
+)
+
 const client = new ApolloClient({
-  link: ApolloLink.from([refreshTokenLink, authLink, uploadlink]),
+  link: splitLink,
   cache: new InMemoryCache(),
 })
 
