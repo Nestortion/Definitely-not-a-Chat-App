@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom'
 import {
+  useChatAddedSubscription,
   useCurrentUserQuery,
   useGroupQuery,
   useUserChatsQuery,
@@ -34,7 +35,14 @@ export default function ChatMessages() {
   } = useGroupQuery({
     variables: { groupId: parseInt(chatId) },
   })
-
+  const { data: subData, loading: subLoading } = useChatAddedSubscription({
+    onData: (data) => {
+      console.log('wow new data xdd')
+    },
+  })
+  if (!subLoading) {
+    console.log(subData)
+  }
   if (groupLoading) return <LoadingSpinner>Loading</LoadingSpinner>
   if (groupError) return <ErrorText>Error</ErrorText>
   if (userLoading) return <LoadingSpinner>Loading</LoadingSpinner>
