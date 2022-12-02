@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 
 const authMiddleware = (context) => {
-  const { req, res } = context
+  const { req, res, pubsub } = context
 
   const authorization = req.headers.authorization
   let data
@@ -23,7 +23,7 @@ const authMiddleware = (context) => {
     throw new Error('not authenticated')
   }
 
-  return { req, res, data }
+  return { req, res, data, pubsub }
 }
 
 export { authMiddleware }
