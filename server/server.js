@@ -16,6 +16,7 @@ import resolvers from './schema/resolvers.js'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import { useServer } from 'graphql-ws/lib/use/ws'
 import { makeExecutableSchema } from '@graphql-tools/schema'
+import { PubSub } from 'graphql-subscriptions'
 
 dotenv.config()
 
@@ -24,6 +25,7 @@ const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost'
 const CLIENT_PORT = process.env.CLIENT_PORT || '5173'
 const PORT = process.env.PORT || 4000
 const httpServer = createServer(app)
+const pubsub = new PubSub()
 
 const wsServer = new WebSocketServer({
   server: httpServer,
@@ -31,7 +33,17 @@ const wsServer = new WebSocketServer({
 })
 
 const schema = makeExecutableSchema({ typeDefs, resolvers })
-const serverCleanup = useServer({ schema }, wsServer)
+const serverCleanup = useServer(
+  {
+    schema,
+    context: ({ req, res }) => ({
+      req,
+      res,
+      pubsub,
+    }),
+  },
+  wsServer
+)
 
 const server = new ApolloServer({
   schema,
