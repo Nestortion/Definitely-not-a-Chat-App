@@ -1,0 +1,9 @@
+subscription ChatAdded {
+  chatAdded {
+    id
+    message
+    user_id
+    receiver
+    message_type
+  }
+}

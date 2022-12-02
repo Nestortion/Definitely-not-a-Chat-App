@@ -186,6 +186,11 @@ export type QueryUserRolesArgs = {
   group_role_id?: InputMaybe<Scalars['Int']>
 }
 
+export type Subscription = {
+  __typename?: 'Subscription'
+  chatAdded?: Maybe<UserChat>
+}
+
 export type User = {
   __typename?: 'User'
   access_level: AccessLevel
@@ -335,6 +340,20 @@ export type AddUserGroupRoleMutation = {
     __typename?: 'UserGroupRole'
     group_role_id: number
     user_group_id: number
+  } | null
+}
+
+export type ChatAddedSubscriptionVariables = Exact<{ [key: string]: never }>
+
+export type ChatAddedSubscription = {
+  __typename?: 'Subscription'
+  chatAdded?: {
+    __typename?: 'UserChat'
+    id: number
+    message: string
+    user_id: number
+    receiver: number
+    message_type: MessageType
   } | null
 }
 
@@ -874,6 +893,50 @@ export type AddUserGroupRoleMutationOptions = Apollo.BaseMutationOptions<
   AddUserGroupRoleMutation,
   AddUserGroupRoleMutationVariables
 >
+export const ChatAddedDocument = gql`
+  subscription ChatAdded {
+    chatAdded {
+      id
+      message
+      user_id
+      receiver
+      message_type
+    }
+  }
+`
+
+/**
+ * __useChatAddedSubscription__
+ *
+ * To run a query within a React component, call `useChatAddedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useChatAddedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChatAddedSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useChatAddedSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    ChatAddedSubscription,
+    ChatAddedSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSubscription<
+    ChatAddedSubscription,
+    ChatAddedSubscriptionVariables
+  >(ChatAddedDocument, options)
+}
+export type ChatAddedSubscriptionHookResult = ReturnType<
+  typeof useChatAddedSubscription
+>
+export type ChatAddedSubscriptionResult =
+  Apollo.SubscriptionResult<ChatAddedSubscription>
 export const CurrentUserDocument = gql`
   query CurrentUser {
     currentUser {
