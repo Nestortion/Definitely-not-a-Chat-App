@@ -20,7 +20,7 @@ import { createUploadLink } from 'apollo-upload-client'
 import jwt_decode from 'jwt-decode'
 import { TokenRefreshLink } from 'apollo-link-token-refresh'
 import { getAccessToken, setAccessToken } from './graphql/authStore.js'
-import { apiBasePath } from './data/config'
+import { apiBasePath, wsBasePath } from './data/config'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { createClient } from 'graphql-ws'
@@ -111,7 +111,7 @@ const uploadlink = createUploadLink({
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: 'ws://localhost:4000/graphql',
+    url: `${wsBasePath}/graphql`,
   })
 )
 
