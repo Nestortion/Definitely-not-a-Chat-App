@@ -125,7 +125,7 @@ app.use(
 
   expressMiddleware(server, {
     context: ({ req, res }) => {
-      return { req, res }
+      return { req, res, pubsub }
     },
   })
 )
