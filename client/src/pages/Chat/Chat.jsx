@@ -18,7 +18,7 @@ import ErrorText from '../../components/Error/ErrorText'
 import FileInput from '../../components/FileInput/FileInput'
 import { useState, useRef } from 'react'
 import { MdAdd } from 'react-icons/md'
-import ChatMessagesContainer from '../../components/Messages/ChatMessagesContainer/ChatMessagesContainer'
+import ChatMessages from '../../components/Messages/ChatMessages/ChatMessages'
 
 export default function Chat() {
   const { chatId } = useParams()
@@ -110,7 +110,7 @@ export default function Chat() {
         </Button>
       </div>
       <div className="chat-messages-container">
-        <ChatMessagesContainer />
+        <ChatMessages />
       </div>
       <div className="chat-input-container">
         {/* I dont know what form data should be (multipart, etc..) */}

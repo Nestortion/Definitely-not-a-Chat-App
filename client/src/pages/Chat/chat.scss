@@ -27,6 +27,10 @@
     }
   }
 
+  .chat-messages-container {
+    height: 100%;
+    overflow: hidden;
+  }
   .chat-input-container {
     padding-top: 0.5rem;
 
