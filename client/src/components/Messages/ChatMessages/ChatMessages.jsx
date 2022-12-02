@@ -47,7 +47,7 @@ export default function ChatMessages() {
       },
     })
     return () => chatsQuery
-  }, [user])
+  }, [])
 
   if (groupLoading) return <LoadingSpinner>Loading</LoadingSpinner>
   if (groupError) return <ErrorText>Error</ErrorText>
