@@ -1,9 +1,5 @@
 import { useParams } from 'react-router-dom'
-import {
-  useCurrentUserQuery,
-  useGroupQuery,
-  useUserChatsQuery,
-} from '../../../graphql/hooks/graphql'
+import { useGroupQuery } from '../../../graphql/hooks/graphql'
 import ChatMessage from '../ChatMessage/ChatMessage'
 import './chat-messages.scss'
 import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'

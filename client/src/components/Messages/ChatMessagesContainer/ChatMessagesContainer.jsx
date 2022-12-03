@@ -8,11 +8,8 @@ import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'
 import ChatMessages from '../ChatMessages/ChatMessages'
 import './chat-messages-container.scss'
 import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import { useState } from 'react'
 
 export default function ChatMessagesContainer() {
-  const { chatId } = useParams()
   const chatsQuery = useUserChatsQuery()
 
   const {
@@ -27,9 +24,6 @@ export default function ChatMessagesContainer() {
       variables: { user: user.currentUser.id },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev
-        if (subscriptionData.data.chatAdded.receiver !== parseInt(chatId))
-          return prev
-        console.log('sent')
         let previousChats = prev.userChats
         return {
           userChats: [...previousChats, subscriptionData.data.chatAdded],
