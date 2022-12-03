@@ -1,4 +1,9 @@
-.custom-image {
-  max-width: 100%;
-  object-fit: contain;
+.custom-image__container {
+  width: 100%;
+  max-width: 350px;
+
+  .custom-image {
+    max-width: 100%;
+    object-fit: contain;
+  }
 }
