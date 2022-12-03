@@ -6,6 +6,7 @@ import ErrorText from '../../Error/ErrorText'
 import { useUserQuery } from '../../../graphql/hooks/graphql'
 import { useEffect, useRef } from 'react'
 import CustomImage from '../../UI/Image/CustomImage'
+import { MdDownload } from 'react-icons/md'
 
 export default function ChatMessage({
   text,
@@ -72,7 +73,8 @@ export default function ChatMessage({
           {/* If type other */}
           {message_type === 'OTHER' && (
             <a href={`${apiBasePath}/message/documents/${text}`} download>
-              {newText}
+              <MdDownload style={{ display: 'inline-block' }} />
+              <span>{newText}</span>
             </a>
           )}
 

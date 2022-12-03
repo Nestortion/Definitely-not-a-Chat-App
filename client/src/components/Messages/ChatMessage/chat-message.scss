@@ -36,6 +36,11 @@
         background-color: var(--clr-secondary-400);
       }
 
+      a {
+        text-decoration: none;
+        color: var(--clr-neutral-100);
+      }
+
       .chat-message-message__text {
         line-height: 1.5;
       }
