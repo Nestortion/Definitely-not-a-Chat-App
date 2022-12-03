@@ -2,9 +2,6 @@ import './chat.scss'
 import Button from '../../components/UI/Button/Button'
 import Input from '../../components/UI/Input/Input'
 import Avatar from '../../components/UI/Avatar/Avatar'
-// ! FETCH HERE
-// id is from the url parameter (e.g. /chat/:chatId)
-// set global chat state here
 import { useMediaQuery } from 'react-responsive'
 import {
   useAddUserChatMutation,
@@ -18,7 +15,7 @@ import ErrorText from '../../components/Error/ErrorText'
 import FileInput from '../../components/FileInput/FileInput'
 import { useState, useRef } from 'react'
 import { MdAdd } from 'react-icons/md'
-import ChatMessages from '../../components/Messages/ChatMessages/ChatMessages'
+import ChatMessagesContainer from '../../components/Messages/ChatMessagesContainer/ChatMessagesContainer'
 
 export default function Chat() {
   const { chatId } = useParams()
@@ -97,9 +94,7 @@ export default function Chat() {
           <MdAdd />
         </Button>
       </div>
-      <div className="chat-messages-container">
-        <ChatMessages />
-      </div>
+      <ChatMessagesContainer />
       <div className="chat-input-container">
         {/* I dont know what form data should be (multipart, etc..) */}
         <form
