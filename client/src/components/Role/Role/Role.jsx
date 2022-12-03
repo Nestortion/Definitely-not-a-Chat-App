@@ -4,7 +4,7 @@ import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'
 import RoleMember from '../RoleMembers/RoleMember'
 import './role.scss'
 
-export default function Role({ id, name }) {
+export default function Role({ id, name, emoji }) {
   // fetch member here base on role
   const {
     data: members,
@@ -17,7 +17,9 @@ export default function Role({ id, name }) {
 
   return (
     <div className="role__container">
-      <h1 className="fs-500">{name}</h1>
+      <h1 className="fs-500">
+        {name} {emoji}
+      </h1>
       <div className="role__role-members">
         {members.userRoles.map((member) => (
           <RoleMember

@@ -20,7 +20,12 @@ export default function MemberList() {
   return (
     <div className="member-list">
       {roles.groupRoles.map((role) => (
-        <Role key={role.id} id={role.id} name={role.role_name} />
+        <Role
+          key={role.id}
+          id={role.id}
+          name={role.role_name}
+          emoji={role.emoji}
+        />
       ))}
     </div>
   )
