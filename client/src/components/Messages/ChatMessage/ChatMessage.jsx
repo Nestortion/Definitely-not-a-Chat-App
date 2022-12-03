@@ -4,9 +4,10 @@ import Avatar from '../../UI/Avatar/Avatar'
 import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../../Error/ErrorText'
 import { useUserQuery } from '../../../graphql/hooks/graphql'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import CustomImage from '../../UI/Image/CustomImage'
 import { MdDownload } from 'react-icons/md'
+import SpawnModal from '../../UI/Modal/SpawnModal'
 
 export default function ChatMessage({
   text,
@@ -15,12 +16,14 @@ export default function ChatMessage({
   message_type,
   is_group,
 }) {
+  const [shouldShowModal, setShouldShowModal] = useState(false)
+  const messageDiv = useRef(null)
+
   const {
     data: userData,
     loading: userLoading,
     error: userError,
   } = useUserQuery({ variables: { userId: sender } })
-  const messageDiv = useRef(null)
   useEffect(() => {
     messageDiv.current?.scrollIntoView()
   }, [text])
@@ -37,53 +40,71 @@ export default function ChatMessage({
     newText = text.split(`${unique} `)[1]
   }
 
-  return (
-    <div
-      ref={messageDiv}
-      className={`chat-message fs-400 ${sender === user ? 'you' : 'other'}`}
-    >
-      {senderShouldShow && (
-        <div className="chat-message-sender__image">
-          {/* TODO: src should be dynamic */}
-          <Avatar
-            size={16}
-            src={`${apiBasePath}/pfp/${userData.user.profile_img}`}
-          />
-        </div>
-      )}
+  const handleShowModal = () => {
+    setShouldShowModal(true)
+  }
 
-      <div className="chat-message-container">
+  const handleHideModal = () => {
+    setShouldShowModal(false)
+  }
+
+  return (
+    <>
+      {shouldShowModal && (
+        <SpawnModal closeModal={handleHideModal}>
+          <img src={`${apiBasePath}/message/images/${text}`} />
+        </SpawnModal>
+      )}
+      <div
+        ref={messageDiv}
+        className={`chat-message fs-400 ${sender === user ? 'you' : 'other'}`}
+      >
         {senderShouldShow && (
-          <div className="chat-message-sender__name fs-300">
-            <span>{userData.user.first_name}</span>
+          <div className="chat-message-sender__image">
+            {/* TODO: src should be dynamic */}
+            <Avatar
+              size={16}
+              src={`${apiBasePath}/pfp/${userData.user.profile_img}`}
+            />
           </div>
         )}
 
-        <div
-          className={`chat-message-message text-neutral-100 ${
-            sender === user ? 'you' : 'other'
-          }`}
-        >
-          {/* If type image */}
-          {message_type === 'IMAGE' && (
-            // TODO: create an image component
-            <CustomImage src={`${apiBasePath}/message/images/${text}`} />
+        <div className="chat-message-container">
+          {senderShouldShow && (
+            <div className="chat-message-sender__name fs-300">
+              <span>{userData.user.first_name}</span>
+            </div>
           )}
 
-          {/* If type other */}
-          {message_type === 'OTHER' && (
-            <a href={`${apiBasePath}/message/documents/${text}`} download>
-              <MdDownload style={{ display: 'inline-block' }} />
-              <span>{newText}</span>
-            </a>
-          )}
+          <div
+            className={`chat-message-message text-neutral-100 ${
+              sender === user ? 'you' : 'other'
+            }`}
+          >
+            {/* If type image */}
+            {message_type === 'IMAGE' && (
+              // TODO: create an image component
+              <CustomImage
+                src={`${apiBasePath}/message/images/${text}`}
+                onClick={handleShowModal}
+              />
+            )}
 
-          {/* If type text */}
-          {message_type === 'TEXT' && (
-            <span className="chat-message-message__text">{text}</span>
-          )}
+            {/* If type other */}
+            {message_type === 'OTHER' && (
+              <a href={`${apiBasePath}/message/documents/${text}`} download>
+                <MdDownload style={{ display: 'inline-block' }} />
+                <span>{newText}</span>
+              </a>
+            )}
+
+            {/* If type text */}
+            {message_type === 'TEXT' && (
+              <span className="chat-message-message__text">{text}</span>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
