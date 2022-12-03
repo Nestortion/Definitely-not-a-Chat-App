@@ -16,6 +16,7 @@ import { authMiddleware } from '../auth/middlewares/authMiddleware.js'
 import { createAssociation, syncModels } from '../models/Associations.js'
 import { v4 as uuid } from 'uuid'
 import { Op } from 'sequelize'
+import { withFilter } from 'graphql-subscriptions'
 
 try {
   await createAssociation()
@@ -250,8 +251,6 @@ const resolvers = {
             message_type: messageType,
           })
 
-          console.log(userChat)
-
           pubsub.publish('CHAT_ADDED', {
             chatAdded: userChat.dataValues,
           })
@@ -264,7 +263,6 @@ const resolvers = {
             user_id: user.user_id,
             receiver,
           })
-          console.log(userChat.dataValues)
 
           pubsub.publish('CHAT_ADDED', {
             chatAdded: userChat.dataValues,
@@ -339,7 +337,22 @@ const resolvers = {
   },
   Subscription: {
     chatAdded: {
-      subscribe: (_, __, { pubsub }) => pubsub.asyncIterator('CHAT_ADDED'),
+      subscribe: withFilter(
+        (_, __, { pubsub }) => pubsub.asyncIterator('CHAT_ADDED'),
+        async (payload, variables) => {
+          const userGroup = await UserGroups.findOne({
+            where: {
+              user_id: variables.user,
+              group_id: payload.chatAdded.receiver,
+            },
+          })
+
+          if (userGroup) {
+            return true
+          }
+          return false
+        }
+      ),
     },
   },
 }
