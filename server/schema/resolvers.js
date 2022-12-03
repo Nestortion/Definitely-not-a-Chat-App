@@ -67,18 +67,18 @@ const resolvers = {
     users: () => {
       return Users.findAll()
     },
-    userChats: async (_, { receiver }, context) => {
+    userChats: async (_, __, context) => {
       const { data: user } = authMiddleware(context)
 
-      const validation = await UserGroups.findOne({
-        where: { user_id: user.user_id, group_id: receiver },
+      const validation = await Users.findOne({
+        where: { id: user.user_id },
       })
 
       if (!validation) {
-        throw new GraphQLError('user does not belong to chat')
+        throw new GraphQLError('user does not exist')
       }
 
-      return UserChats.findAll({ where: { receiver } })
+      return UserChats.findAll()
     },
     groups: async (_, __, context) => {
       const { data: user } = authMiddleware(context)
