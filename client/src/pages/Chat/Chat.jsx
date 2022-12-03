@@ -26,7 +26,9 @@ export default function Chat() {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
   const [fileInput, setFileInput] = useState(null)
   const [message, setMessage] = useState('')
-  const [sendMessage] = useAddUserChatMutation()
+  const [sendMessage] = useAddUserChatMutation({
+    refetchQueries: [{ query: UserChatsDocument }],
+  })
   if (loading) return <LoadingSpinner>loading</LoadingSpinner>
   if (error) return <ErrorText>Something went wrong</ErrorText>
 

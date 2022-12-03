@@ -29,7 +29,7 @@ const documents = {
     "mutation Logout {\n  logout\n}": types.LogoutDocument,
     "query SearchGroups($groupName: String, $groupId: Int) {\n  searchGroups(group_name: $groupName, group_id: $groupId) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}": types.SearchGroupsDocument,
     "query User($userId: Int!) {\n  user(id: $userId) {\n    first_name\n    last_name\n    profile_img\n    id\n  }\n}": types.UserDocument,
-    "query UserChats($receiver: Int) {\n  userChats(receiver: $receiver) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}": types.UserChatsDocument,
+    "query UserChats {\n  userChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}": types.UserChatsDocument,
     "query UserRoles($groupRoleId: Int) {\n  userRoles(group_role_id: $groupRoleId) {\n    first_name\n    id\n    last_name\n    profile_img\n  }\n}": types.UserRolesDocument,
 };
 
@@ -100,7 +100,7 @@ export function graphql(source: "query User($userId: Int!) {\n  user(id: $userId
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "query UserChats($receiver: Int) {\n  userChats(receiver: $receiver) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}"): (typeof documents)["query UserChats($receiver: Int) {\n  userChats(receiver: $receiver) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}"];
+export function graphql(source: "query UserChats {\n  userChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}"): (typeof documents)["query UserChats {\n  userChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

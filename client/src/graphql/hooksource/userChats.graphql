@@ -1,5 +1,5 @@
-query UserChats($receiver: Int) {
-  userChats(receiver: $receiver) {
+query UserChats {
+  userChats {
     id
     message
     user_id

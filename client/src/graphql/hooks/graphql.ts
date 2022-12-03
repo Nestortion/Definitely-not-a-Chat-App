@@ -485,9 +485,7 @@ export type UserQuery = {
   } | null
 }
 
-export type UserChatsQueryVariables = Exact<{
-  receiver?: InputMaybe<Scalars['Int']>
-}>
+export type UserChatsQueryVariables = Exact<{ [key: string]: never }>
 
 export type UserChatsQuery = {
   __typename?: 'Query'
@@ -1425,8 +1423,8 @@ export type UserQueryHookResult = ReturnType<typeof useUserQuery>
 export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>
 export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>
 export const UserChatsDocument = gql`
-  query UserChats($receiver: Int) {
-    userChats(receiver: $receiver) {
+  query UserChats {
+    userChats {
       id
       message
       user_id
@@ -1448,7 +1446,6 @@ export const UserChatsDocument = gql`
  * @example
  * const { data, loading, error } = useUserChatsQuery({
  *   variables: {
- *      receiver: // value for 'receiver'
  *   },
  * });
  */
