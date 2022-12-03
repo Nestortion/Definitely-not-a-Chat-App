@@ -191,6 +191,10 @@ export type Subscription = {
   chatAdded?: Maybe<UserChat>
 }
 
+export type SubscriptionChatAddedArgs = {
+  user?: InputMaybe<Scalars['Int']>
+}
+
 export type User = {
   __typename?: 'User'
   access_level: AccessLevel
@@ -343,7 +347,9 @@ export type AddUserGroupRoleMutation = {
   } | null
 }
 
-export type ChatAddedSubscriptionVariables = Exact<{ [key: string]: never }>
+export type ChatAddedSubscriptionVariables = Exact<{
+  user?: InputMaybe<Scalars['Int']>
+}>
 
 export type ChatAddedSubscription = {
   __typename?: 'Subscription'
@@ -894,8 +900,8 @@ export type AddUserGroupRoleMutationOptions = Apollo.BaseMutationOptions<
   AddUserGroupRoleMutationVariables
 >
 export const ChatAddedDocument = gql`
-  subscription ChatAdded {
-    chatAdded {
+  subscription ChatAdded($user: Int) {
+    chatAdded(user: $user) {
       id
       message
       user_id
@@ -917,6 +923,7 @@ export const ChatAddedDocument = gql`
  * @example
  * const { data, loading, error } = useChatAddedSubscription({
  *   variables: {
+ *      user: // value for 'user'
  *   },
  * });
  */

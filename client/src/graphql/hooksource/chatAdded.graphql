@@ -1,5 +1,5 @@
-subscription ChatAdded {
-  chatAdded {
+subscription ChatAdded($user: Int) {
+  chatAdded(user: $user) {
     id
     message
     user_id

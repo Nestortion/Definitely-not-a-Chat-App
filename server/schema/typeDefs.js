@@ -103,7 +103,7 @@ const typeDefs = `
   }
 
   type Subscription{
-    chatAdded: UserChat
+    chatAdded(user: Int): UserChat
   }
 
 `
