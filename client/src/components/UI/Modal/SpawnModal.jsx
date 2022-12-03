@@ -13,15 +13,17 @@ function Backdrop({ children, closeModal }) {
 
 function Modal({ title, children, closeModal }) {
   return (
-    <Card onClick={(e) => e.stopPropagation()}>
-      <div className="modal">
-        <div className="modal__title">
-          <span>{title}</span>
-          <MdClose cursor="pointer" onClick={closeModal} />
+    <div className="modal">
+      <Card onClick={(e) => e.stopPropagation()}>
+        <div className="modal__container">
+          <div className="modal__title">
+            <span>{title}</span>
+            <MdClose cursor="pointer" onClick={closeModal} />
+          </div>
+          <div className="modal__body">{children}</div>
         </div>
-        <div className="modal__body">{children}</div>
-      </div>
-    </Card>
+      </Card>
+    </div>
   )
 }
 
