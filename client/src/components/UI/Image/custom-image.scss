@@ -1,8 +1,10 @@
 .custom-image__container {
   max-width: 350px;
+  cursor: pointer;
 
   .custom-image {
     max-width: 100%;
+    max-height: 350px;
     object-fit: contain;
   }
 }
