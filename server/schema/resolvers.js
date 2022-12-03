@@ -250,14 +250,10 @@ const resolvers = {
             message_type: messageType,
           })
 
+          console.log(userChat)
+
           pubsub.publish('CHAT_ADDED', {
-            chatAdded: {
-              id: userChat.dataValues.id,
-              message: userChat.dataValues.message,
-              receiver: userChat.dataValues.receiver,
-              user_id: userChat.dataValues.user_id,
-              message_type: userChat.dataValues.message_type,
-            },
+            chatAdded: userChat.dataValues,
           })
           return userChat
         } else {
@@ -268,14 +264,10 @@ const resolvers = {
             user_id: user.user_id,
             receiver,
           })
+          console.log(userChat.dataValues)
+
           pubsub.publish('CHAT_ADDED', {
-            chatAdded: {
-              id: userChat.dataValues.id,
-              message: userChat.dataValues.message,
-              receiver: userChat.dataValues.receiver,
-              user_id: userChat.dataValues.user_id,
-              message_type: userChat.dataValues.message_type,
-            },
+            chatAdded: userChat.dataValues,
           })
           return userChat
         }
