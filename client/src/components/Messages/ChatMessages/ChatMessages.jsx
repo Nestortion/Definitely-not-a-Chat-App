@@ -38,15 +38,18 @@ export default function ChatMessages() {
   useEffect(() => {
     chatsQuery.subscribeToMore({
       document: ChatAddedDocument,
+      variables: { user: user.currentUser.id },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev
+        if (subscriptionData.data.chatAdded.receiver !== parseInt(chatId))
+          return prev
         let previousChats = prev.userChats
+
         return {
           userChats: [...previousChats, subscriptionData.data.chatAdded],
         }
       },
     })
-    return () => chatsQuery
   }, [])
 
   if (groupLoading) return <LoadingSpinner>Loading</LoadingSpinner>
