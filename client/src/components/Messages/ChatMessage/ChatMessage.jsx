@@ -35,7 +35,7 @@ export default function ChatMessage({
 
   let newText = text
 
-  if (message_type === 'OTHER') {
+  if (message_type === 'OTHER' || message_type === 'IMAGE') {
     let unique = text.split(' ')[0]
     newText = text.split(`${unique} `)[1]
   }
@@ -51,7 +51,7 @@ export default function ChatMessage({
   return (
     <>
       {shouldShowModal && (
-        <SpawnModal title={text} closeModal={handleHideModal}>
+        <SpawnModal title={newText} closeModal={handleHideModal}>
           <img src={`${apiBasePath}/message/images/${text}`} />
         </SpawnModal>
       )}
