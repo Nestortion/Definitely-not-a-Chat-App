@@ -4,6 +4,7 @@ import Button from '../../UI/Button/Button'
 import { useState } from 'react'
 
 // ! FETCH ALL MEMBERS
+// ! value and id should be unique
 const members = [
   { id: 1, value: 'Nestor', label: 'Nestor' },
   { id: 2, value: 'Josel', label: 'Josel' },
