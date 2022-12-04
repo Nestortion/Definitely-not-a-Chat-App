@@ -16,9 +16,6 @@
 }
 
 .modal {
-  max-height: 100vh;
-  overflow: auto;
-
   .modal__container {
     display: flex;
     flex-direction: column;
@@ -40,6 +37,8 @@
     }
 
     .modal__body {
+      overflow: auto;
+      max-height: 600px;
     }
   }
 }
