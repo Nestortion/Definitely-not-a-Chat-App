@@ -37,8 +37,10 @@
     }
 
     .modal__body {
-      overflow: auto;
       max-height: 600px;
+      min-width: 200px;
+
+      overflow: auto;
     }
   }
 }
