@@ -10,4 +10,8 @@
   align-items: center;
   justify-content: center;
   gap: 0.625rem;
+
+  &.secondary-btn {
+    background-color: var(--clr-error-400);
+  }
 }
