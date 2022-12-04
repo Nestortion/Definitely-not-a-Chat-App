@@ -9,6 +9,7 @@ import { useEffect } from 'react'
 export default function SettingsButtons() {
   const [shouldShowModal, setShouldShowModal] = useState(false)
   const [shouldShowAddMembers, setShouldShowAddMembers] = useState(false)
+  const [shouldShowAddRoles, setShouldShowAddRoles] = useState(false)
   const [shouldShowSearchInGroup, setShouldShowSearchInGroup] = useState(false)
   const [shouldShowReportChat, setShouldShowReportChat] = useState(false)
   const [currentTitle, setCurrentTitle] = useState()
@@ -20,6 +21,7 @@ export default function SettingsButtons() {
   const handleHideModal = () => {
     setShouldShowModal(false)
     setShouldShowAddMembers(false)
+    setShouldShowAddRoles(false)
     setShouldShowSearchInGroup(false)
     setShouldShowReportChat(false)
   }
@@ -27,6 +29,12 @@ export default function SettingsButtons() {
   const showAddMembers = () => {
     setShouldShowAddMembers(true)
     setCurrentTitle('Add Members')
+    handleShowModal()
+  }
+
+  const showAddRoles = () => {
+    setShouldShowAddRoles(true)
+    setCurrentTitle('Add Roles')
     handleShowModal()
   }
 
@@ -47,6 +55,7 @@ export default function SettingsButtons() {
       {shouldShowModal && (
         <SpawnModal title={currentTitle} closeModal={handleHideModal}>
           {shouldShowAddMembers && <AddMembers />}
+          {shouldShowAddRoles && <span>Add Roles</span>}
           {shouldShowSearchInGroup && <span>Search</span>}
           {shouldShowReportChat && <span>Report</span>}
         </SpawnModal>
@@ -55,6 +64,10 @@ export default function SettingsButtons() {
         <Button onClick={showAddMembers}>
           <MdAdd style={{ display: 'inline-block' }} />
           <span>Add Members</span>
+        </Button>
+        <Button onClick={showAddRoles}>
+          <MdAdd style={{ display: 'inline-block' }} />
+          <span>Add Roles</span>
         </Button>
         <Button onClick={showSearchInGroup}>
           <MdSearch style={{ display: 'inline-block' }} />
