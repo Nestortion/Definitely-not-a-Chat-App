@@ -38,7 +38,7 @@ export default function RightBar() {
         {groupData.group.is_group === 'true' ? (
           <MemberList />
         ) : (
-          <h1>this chat is only pm</h1>
+          <span>Direct Message</span>
         )}
         <SettingsButtons />
       </div>
