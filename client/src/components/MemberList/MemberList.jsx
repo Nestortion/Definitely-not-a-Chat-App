@@ -5,7 +5,7 @@ import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import Role from '../Role/Role/Role'
 import './memberlist.scss'
 
-export default function MemberList() {
+export default function MemberList({ showOnlyMiddle }) {
   // fetch roles here
   const { chatId } = useParams()
   const {
@@ -25,6 +25,7 @@ export default function MemberList() {
           id={role.id}
           name={role.role_name}
           emoji={role.emoji}
+          showOnlyMiddle={showOnlyMiddle}
         />
       ))}
     </div>

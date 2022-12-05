@@ -12,6 +12,7 @@ export default function Layout() {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
 
   const isInChatPage = location.pathname.split('/')[1] === 'chat'
+  const isInProfilePage = location.pathname.split('/')[1] === 'profile'
 
   const [leftShouldShow, setLeftShouldShow] = useState(true)
   const [middleShouldShow, setMiddleShouldShow] = useState(true)
@@ -68,7 +69,7 @@ export default function Layout() {
 
         {middleShouldShow && (
           <div className="middle">
-            {isTabletOrMobile && (
+            {isTabletOrMobile && isInChatPage && (
               <div className="middle__button-group">
                 <Button onClick={showOnlyLeft}>back</Button>
                 <Button onClick={showOnlyRight}>settings</Button>
@@ -85,7 +86,7 @@ export default function Layout() {
                 <Button onClick={showOnlyMiddle}>back</Button>
               </div>
             )}
-            <RightBar />
+            <RightBar showOnlyMiddle={showOnlyMiddle} />
           </div>
         )}
       </div>

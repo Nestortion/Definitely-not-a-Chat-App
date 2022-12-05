@@ -3,10 +3,11 @@ import { apiBasePath } from '../../../data/config'
 import Avatar from '../../UI/Avatar/Avatar'
 import './role-member.scss'
 
-export default function RoleMember({ id, name, pfp }) {
+export default function RoleMember({ id, name, pfp, showOnlyMiddle }) {
   const navigate = useNavigate()
 
   const navigateToProfile = () => {
+    showOnlyMiddle()
     navigate(`/profile/${id}`)
   }
 

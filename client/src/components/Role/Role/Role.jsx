@@ -4,7 +4,7 @@ import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'
 import RoleMember from '../RoleMembers/RoleMember'
 import './role.scss'
 
-export default function Role({ id, name, emoji }) {
+export default function Role({ id, name, emoji, showOnlyMiddle }) {
   // fetch member here base on role
   const {
     data: members,
@@ -27,6 +27,7 @@ export default function Role({ id, name, emoji }) {
             id={member.id}
             name={member.first_name}
             pfp={member.profile_img}
+            showOnlyMiddle={showOnlyMiddle}
           />
         ))}
       </div>

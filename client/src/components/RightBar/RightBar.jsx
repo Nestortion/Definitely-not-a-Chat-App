@@ -10,7 +10,7 @@ import ErrorText from '../Error/ErrorText'
 import { apiBasePath } from '../../data/config'
 import RoleMember from '../Role/RoleMembers/RoleMember'
 
-export default function RightBar() {
+export default function RightBar({ showOnlyMiddle }) {
   // Check if global chat state is existing
   // Hide Rightbar if we not on Chat page
   const { chatId } = useParams()
@@ -37,7 +37,7 @@ export default function RightBar() {
       </div>
       <div className="rightbar--main">
         {groupData.group.is_group === 'true' ? (
-          <MemberList />
+          <MemberList showOnlyMiddle={showOnlyMiddle} />
         ) : (
           <span className="text-error-400">
             This should be the avatar of the other person
