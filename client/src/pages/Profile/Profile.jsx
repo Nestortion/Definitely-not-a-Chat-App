@@ -10,7 +10,7 @@ export default function Profile() {
     gender: 'Male',
     section: 'BSIT 4-1',
     username: 'johndoe',
-    profilePicUrl: `${apiBasePath}/message/images/amogusz.jpg`,
+    profilePicUrl: `${apiBasePath}/pfp/default-icon.png`,
   }
 
   return (
