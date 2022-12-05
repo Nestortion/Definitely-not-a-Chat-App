@@ -24,6 +24,7 @@ import { apiBasePath, wsBasePath } from './data/config'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { createClient } from 'graphql-ws'
+import ProfileSettings from './pages/ProfileSettings/ProfileSettings'
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
       {
         path: '/profile/:profileId',
         element: <Profile />,
+      },
+      {
+        path: '/profile-settings',
+        element: <ProfileSettings />,
       },
     ],
   },
