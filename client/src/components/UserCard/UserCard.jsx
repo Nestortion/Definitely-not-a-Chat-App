@@ -6,9 +6,11 @@ import { apiBasePath } from '../../data/config'
 import { useLogoutMutation } from '../../graphql/hooks/graphql'
 import { setAccessToken } from '../../graphql/authStore'
 import { useNavigate } from 'react-router-dom'
+import { useMediaQuery } from 'react-responsive'
 
-export default function UserCard({ profile_img, first_name }) {
+export default function UserCard({ profile_img, first_name, showOnlyMiddle }) {
   const [userSettingsIsShowing, setUserSettingsIsShowing] = useState(false)
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
   const [logout] = useLogoutMutation()
   const navigate = useNavigate()
 
@@ -17,6 +19,9 @@ export default function UserCard({ profile_img, first_name }) {
   }
 
   const handleSettings = async () => {
+    if (isTabletOrMobile) {
+      showOnlyMiddle()
+    }
     navigate('/profile-settings')
   }
 

@@ -58,6 +58,7 @@ export default function Layout() {
         onClick={() => {
           if (isTabletOrMobile) showOnlyLeft()
         }}
+        showOnlyMiddle={showOnlyMiddle}
       />
       <div className="main">
         {leftShouldShow && (
@@ -75,7 +76,7 @@ export default function Layout() {
                 <Button onClick={showOnlyRight}>settings</Button>
               </div>
             )}
-            <Outlet />
+            <Outlet context={showOnlyMiddle} />
           </div>
         )}
 

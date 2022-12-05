@@ -9,7 +9,7 @@ import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 // ! FETCH HERE
 // user from global state
 
-export default function NavBar({ onClick }) {
+export default function NavBar({ onClick, showOnlyMiddle }) {
   const { data, loading, error } = useCurrentUserQuery()
 
   if (loading) return <LoadingSpinner></LoadingSpinner>
@@ -22,7 +22,7 @@ export default function NavBar({ onClick }) {
         </Link>
       </div>
       <div className="right">
-        <UserCard {...data.currentUser} />
+        <UserCard showOnlyMiddle={showOnlyMiddle} {...data.currentUser} />
       </div>
     </div>
   )
