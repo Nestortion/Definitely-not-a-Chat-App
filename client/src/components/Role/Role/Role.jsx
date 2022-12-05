@@ -18,14 +18,14 @@ export default function Role({ id, name, emoji }) {
   return (
     <div className="role__container">
       <h1 className="fs-500">
-        {name} {emoji}
+        {name} {emoji ? emoji : ''}
       </h1>
       <div className="role__role-members">
         {members.userRoles.map((member) => (
           <RoleMember
             key={member.id}
             id={member.id}
-            member={member.first_name}
+            name={member.first_name}
             pfp={member.profile_img}
           />
         ))}

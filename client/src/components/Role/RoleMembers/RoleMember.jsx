@@ -3,7 +3,7 @@ import { apiBasePath } from '../../../data/config'
 import Avatar from '../../UI/Avatar/Avatar'
 import './role-member.scss'
 
-export default function RoleMember({ id, member, pfp }) {
+export default function RoleMember({ id, name, pfp }) {
   const navigate = useNavigate()
 
   const navigateToProfile = () => {
@@ -17,7 +17,7 @@ export default function RoleMember({ id, member, pfp }) {
         src={`${apiBasePath}/pfp/${pfp}`}
         onClick={navigateToProfile}
       />
-      <span className="fs-400">{member}</span>
+      <span className="fs-400">{name}</span>
     </div>
   )
 }
