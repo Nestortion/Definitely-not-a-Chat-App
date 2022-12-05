@@ -1,4 +1,4 @@
-.add-members {
+.edit-members {
   height: 100%;
 
   form {
@@ -7,12 +7,12 @@
     align-items: center;
     gap: 1.5rem;
 
-    .add-members__select {
+    .edit-members__select {
       flex: 1;
       width: 100%;
     }
 
-    .add-members__button {
+    .edit-members__button {
       display: flex;
       align-items: center;
       gap: 1rem;
