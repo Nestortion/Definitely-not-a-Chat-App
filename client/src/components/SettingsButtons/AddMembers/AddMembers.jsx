@@ -102,7 +102,7 @@ export default function AddMembers() {
         </div>
         <div className="add-members__button">
           <Button type="submit">Add</Button>
-          <Button onClick={handleReset} secondary type="submit">
+          <Button onClick={handleReset} secondary type="reset">
             Cancel
           </Button>
         </div>
