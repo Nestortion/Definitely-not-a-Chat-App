@@ -27,12 +27,24 @@
 
   .chat-list-item-right {
     max-width: 100%;
-    white-space: nowrap;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+
     overflow: hidden;
-    text-overflow: ellipsis;
 
     .title {
       font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .latest-message {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 }
