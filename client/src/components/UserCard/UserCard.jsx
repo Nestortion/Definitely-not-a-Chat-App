@@ -17,7 +17,7 @@ export default function UserCard({ profile_img, first_name }) {
   }
 
   const handleSettings = async () => {
-    console.log('User logged out!')
+    navigate('/profile-settings')
   }
 
   const handleLogout = async () => {
