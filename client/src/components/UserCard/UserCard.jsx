@@ -16,8 +16,11 @@ export default function UserCard({ profile_img, first_name }) {
     setUserSettingsIsShowing((prev) => !prev)
   }
 
+  const handleSettings = async () => {
+    console.log('User logged out!')
+  }
+
   const handleLogout = async () => {
-    // ! MUTATION FOR LOGOUT
     await logout()
     setAccessToken('')
     navigate(0)
@@ -36,6 +39,7 @@ export default function UserCard({ profile_img, first_name }) {
       </div>
       {userSettingsIsShowing && (
         <div className="user-card__user-settings bg-neutral-100">
+          <Button onClick={handleSettings}>Settings</Button>
           <Button onClick={handleLogout}>Log out</Button>
         </div>
       )}
