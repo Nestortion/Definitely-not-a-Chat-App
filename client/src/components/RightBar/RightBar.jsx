@@ -8,6 +8,7 @@ import { useGroupQuery } from '../../graphql/hooks/graphql'
 import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../Error/ErrorText'
 import { apiBasePath } from '../../data/config'
+import RoleMember from '../Role/RoleMembers/RoleMember'
 
 export default function RightBar() {
   // Check if global chat state is existing
@@ -38,7 +39,11 @@ export default function RightBar() {
         {groupData.group.is_group === 'true' ? (
           <MemberList />
         ) : (
-          <span>Direct Message</span>
+          <span className="text-error-400">
+            This should be the avatar of the other person
+            {/* TODO: fetch the info of the other person in this chatId */}
+            {/* <RoleMember id={} name={} pfp={} /> */}
+          </span>
         )}
         <SettingsButtons />
       </div>
