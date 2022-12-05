@@ -24,6 +24,7 @@ export default function Role({ id, name, emoji }) {
         {members.userRoles.map((member) => (
           <RoleMember
             key={member.id}
+            id={member.id}
             member={member.first_name}
             pfp={member.profile_img}
           />
