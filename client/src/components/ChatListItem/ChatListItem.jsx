@@ -9,9 +9,12 @@ export default function ChatListItem({
   title,
   profilePicUrl,
   showOnlyMiddle,
+  latest,
 }) {
   // ! FETCH HERE
   // fetch the latest conversation for each group chat where the current user is a member
+
+  console.log(latest)
   const latestMessage = 'This is the latest message from the conversation'
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
 
@@ -39,7 +42,7 @@ export default function ChatListItem({
       </div>
       <div className="chat-list-item-right">
         <span className="title">{title}</span>
-        <span className="latest-message fs-400">{latestMessage}</span>
+        <span className="latest-message fs-400">{latest[0].message}</span>
       </div>
     </NavLink>
   )

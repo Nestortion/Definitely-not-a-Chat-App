@@ -5,6 +5,7 @@ import ChatList from '../ChatList/ChatList'
 import { useState } from 'react'
 import {
   useGroupsQuery,
+  useLatestChatsQuery,
   useSearchGroupsLazyQuery,
 } from '../../graphql/hooks/graphql'
 import ErrorText from '../Error/ErrorText'
@@ -16,8 +17,15 @@ export default function LeftBar({ showOnlyMiddle }) {
   const [searchData, setSearchData] = useState()
   const [searchGroups] = useSearchGroupsLazyQuery()
   const [isSearching, setIsSearching] = useState(false)
+  const {
+    data: latestChats,
+    loading: latestLoading,
+    error: latestError,
+  } = useLatestChatsQuery()
 
-  if (loading) return <LoadingSpinner></LoadingSpinner>
+  if (latestLoading) return <LoadingSpinner />
+  if (latestError) return <ErrorText>Something went wrong</ErrorText>
+  if (loading) return <LoadingSpinner />
   if (error) return <ErrorText>Something went wrong</ErrorText>
 
   const searchValueHandle = async (e) => {
@@ -55,6 +63,7 @@ export default function LeftBar({ showOnlyMiddle }) {
       <div className="bottom">
         <ChatList
           chats={isSearching ? searchData.searchGroups : chat.groups}
+          latest={latestChats.latestChats}
           showOnlyMiddle={showOnlyMiddle}
         />
       </div>
