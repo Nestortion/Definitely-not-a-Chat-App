@@ -22,6 +22,16 @@ export default function ChatListItem({
     }
   }
 
+  const displayLatest = (message) => {
+    if (message.message_type === 'IMAGE') {
+      return 'Sent an image'
+    } else if (message.message_type === 'OTHER') {
+      return 'Sent a file'
+    } else {
+      return `${message.message}`
+    }
+  }
+
   return (
     <NavLink
       to={`/chat/${chatId}`}
@@ -41,7 +51,7 @@ export default function ChatListItem({
       <div className="chat-list-item-right">
         <span className="title">{title}</span>
         <span className="latest-message fs-400">
-          {latest[0] && latest[0].message}
+          {latest[0] ? displayLatest(latest[0]) : null}
         </span>
       </div>
     </NavLink>
