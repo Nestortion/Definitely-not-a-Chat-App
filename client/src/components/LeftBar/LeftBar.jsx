@@ -26,6 +26,7 @@ export default function LeftBar({ showOnlyMiddle }) {
     loading: latestLoading,
     error: latestError,
     subscribeToMore,
+    refetch,
   } = useLatestChatsQuery()
   const {
     data: user,
@@ -41,11 +42,12 @@ export default function LeftBar({ showOnlyMiddle }) {
         if (!subscriptionData.data) return prev
 
         const updatedChats = prev.latestChats.map((chat) => {
-          if (chat.receiver === subscriptionData.data.chatAdded.receiver) {
+          if (chat?.receiver === subscriptionData.data.chatAdded.receiver) {
             return subscriptionData.data.chatAdded
           }
           return chat
         })
+        refetch()
 
         return {
           latestChats: [...updatedChats],
