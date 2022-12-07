@@ -8,9 +8,12 @@ export default function ChatList({ chats, showOnlyMiddle, latest }) {
         <ChatListItem
           key={chat.id}
           chatId={chat.id}
-          latest={latest.filter(
-            (latestChat) => latestChat.receiver === chat.id
-          )}
+          latest={
+            latest &&
+            latest.filter(
+              (latestChat) => latestChat && latestChat.receiver === chat.id
+            )
+          }
           profilePicUrl={chat.group_picture}
           title={chat.group_name}
           showOnlyMiddle={showOnlyMiddle}

@@ -40,7 +40,9 @@ export default function ChatListItem({
       </div>
       <div className="chat-list-item-right">
         <span className="title">{title}</span>
-        <span className="latest-message fs-400">{latest[0].message}</span>
+        <span className="latest-message fs-400">
+          {latest[0] && latest[0].message}
+        </span>
       </div>
     </NavLink>
   )
