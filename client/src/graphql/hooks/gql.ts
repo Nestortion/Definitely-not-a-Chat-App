@@ -25,6 +25,7 @@ const documents = {
     "query GroupRoles($groupId: Int) {\n  groupRoles(group_id: $groupId) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n  }\n}": types.GroupRolesDocument,
     "query Groups($userId: Int) {\n  groups(user_id: $userId) {\n    group_name\n    id\n    group_picture\n    is_group\n  }\n}": types.GroupsDocument,
     "query IsLoggedIn {\n  isLoggedIn\n}": types.IsLoggedInDocument,
+    "query LatestChats {\n  latestChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}": types.LatestChatsDocument,
     "mutation Login($username: String!, $password: String!) {\n  login(username: $username, password: $password) {\n    access_token\n  }\n}": types.LoginDocument,
     "mutation Logout {\n  logout\n}": types.LogoutDocument,
     "query SearchGroups($groupName: String, $groupId: Int) {\n  searchGroups(group_name: $groupName, group_id: $groupId) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}": types.SearchGroupsDocument,
@@ -81,6 +82,10 @@ export function graphql(source: "query Groups($userId: Int) {\n  groups(user_id:
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "query IsLoggedIn {\n  isLoggedIn\n}"): (typeof documents)["query IsLoggedIn {\n  isLoggedIn\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "query LatestChats {\n  latestChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}"): (typeof documents)["query LatestChats {\n  latestChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

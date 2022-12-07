@@ -137,6 +137,7 @@ export type Query = {
   groupRoles?: Maybe<Array<Maybe<GroupRole>>>
   groups?: Maybe<Array<Maybe<Group>>>
   isLoggedIn?: Maybe<Scalars['Boolean']>
+  latestChats?: Maybe<Array<Maybe<UserChat>>>
   searchGroups?: Maybe<Array<Maybe<Group>>>
   user?: Maybe<User>
   userChat?: Maybe<UserChat>
@@ -435,6 +436,20 @@ export type IsLoggedInQueryVariables = Exact<{ [key: string]: never }>
 export type IsLoggedInQuery = {
   __typename?: 'Query'
   isLoggedIn?: boolean | null
+}
+
+export type LatestChatsQueryVariables = Exact<{ [key: string]: never }>
+
+export type LatestChatsQuery = {
+  __typename?: 'Query'
+  latestChats?: Array<{
+    __typename?: 'UserChat'
+    id: number
+    message: string
+    user_id: number
+    receiver: number
+    message_type: MessageType
+  } | null> | null
 }
 
 export type LoginMutationVariables = Exact<{
@@ -1222,6 +1237,65 @@ export type IsLoggedInLazyQueryHookResult = ReturnType<
 export type IsLoggedInQueryResult = Apollo.QueryResult<
   IsLoggedInQuery,
   IsLoggedInQueryVariables
+>
+export const LatestChatsDocument = gql`
+  query LatestChats {
+    latestChats {
+      id
+      message
+      user_id
+      receiver
+      message_type
+    }
+  }
+`
+
+/**
+ * __useLatestChatsQuery__
+ *
+ * To run a query within a React component, call `useLatestChatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLatestChatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLatestChatsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLatestChatsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    LatestChatsQuery,
+    LatestChatsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<LatestChatsQuery, LatestChatsQueryVariables>(
+    LatestChatsDocument,
+    options
+  )
+}
+export function useLatestChatsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    LatestChatsQuery,
+    LatestChatsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<LatestChatsQuery, LatestChatsQueryVariables>(
+    LatestChatsDocument,
+    options
+  )
+}
+export type LatestChatsQueryHookResult = ReturnType<typeof useLatestChatsQuery>
+export type LatestChatsLazyQueryHookResult = ReturnType<
+  typeof useLatestChatsLazyQuery
+>
+export type LatestChatsQueryResult = Apollo.QueryResult<
+  LatestChatsQuery,
+  LatestChatsQueryVariables
 >
 export const LoginDocument = gql`
   mutation Login($username: String!, $password: String!) {

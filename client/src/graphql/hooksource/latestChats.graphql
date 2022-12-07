@@ -1,0 +1,9 @@
+query LatestChats {
+  latestChats {
+    id
+    message
+    user_id
+    receiver
+    message_type
+  }
+}
