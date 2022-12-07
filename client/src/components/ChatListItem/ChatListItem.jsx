@@ -14,7 +14,6 @@ export default function ChatListItem({
   // ! FETCH HERE
   // fetch the latest conversation for each group chat where the current user is a member
 
-  console.log(latest)
   const latestMessage = 'This is the latest message from the conversation'
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
 
