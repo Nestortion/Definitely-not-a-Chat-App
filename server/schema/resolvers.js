@@ -187,6 +187,28 @@ const resolvers = {
         return Groups.findAll({ where: { id: group_id } })
       }
     },
+    latestChats: async (_, __, context) => {
+      const { data: user } = authMiddleware(context)
+
+      const groups = await UserGroups.findAll({
+        where: { user_id: user.user_id },
+      })
+
+      let latestChats = []
+
+      groups.forEach((group) => {
+        const latestGroupChat = UserChats.findOne({
+          where: {
+            receiver: group.group_id,
+          },
+          order: [['createdAt', 'DESC']],
+        })
+
+        latestChats.push(latestGroupChat)
+      })
+
+      return latestChats
+    },
   },
   Mutation: {
     addUser: async (
