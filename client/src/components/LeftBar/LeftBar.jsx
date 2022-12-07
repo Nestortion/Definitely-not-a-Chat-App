@@ -4,6 +4,8 @@ import Input from '../UI/Input/Input'
 import ChatList from '../ChatList/ChatList'
 import { useState } from 'react'
 import {
+  ChatAddedDocument,
+  useCurrentUserQuery,
   useGroupsQuery,
   useLatestChatsQuery,
   useSearchGroupsLazyQuery,
@@ -11,18 +13,49 @@ import {
 import ErrorText from '../Error/ErrorText'
 import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import { MdAdd } from 'react-icons/md'
+import { useEffect } from 'react'
 
 export default function LeftBar({ showOnlyMiddle }) {
-  const { data: chat, loading, error } = useGroupsQuery()
   const [searchData, setSearchData] = useState()
-  const [searchGroups] = useSearchGroupsLazyQuery()
   const [isSearching, setIsSearching] = useState(false)
+  const { data: chat, loading, error } = useGroupsQuery()
+  const [searchGroups] = useSearchGroupsLazyQuery()
+
   const {
     data: latestChats,
     loading: latestLoading,
     error: latestError,
+    subscribeToMore,
   } = useLatestChatsQuery()
+  const {
+    data: user,
+    loading: userLoading,
+    error: userError,
+  } = useCurrentUserQuery()
 
+  useEffect(() => {
+    subscribeToMore({
+      document: ChatAddedDocument,
+      variables: { user: user?.currentUser.id },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev
+
+        const updatedChats = prev.latestChats.map((chat) => {
+          if (chat.receiver === subscriptionData.data.chatAdded.receiver) {
+            return subscriptionData.data.chatAdded
+          }
+          return chat
+        })
+
+        return {
+          latestChats: [...updatedChats],
+        }
+      },
+    })
+  }, [])
+
+  if (userLoading) return <LoadingSpinner />
+  if (userError) return <ErrorText>Something went wrong</ErrorText>
   if (latestLoading) return <LoadingSpinner />
   if (latestError) return <ErrorText>Something went wrong</ErrorText>
   if (loading) return <LoadingSpinner />
