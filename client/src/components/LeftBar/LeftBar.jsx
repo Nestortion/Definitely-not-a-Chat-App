@@ -18,7 +18,12 @@ import { useEffect } from 'react'
 export default function LeftBar({ showOnlyMiddle }) {
   const [searchData, setSearchData] = useState()
   const [isSearching, setIsSearching] = useState(false)
-  const { data: chat, loading, error } = useGroupsQuery()
+  const {
+    data: chat,
+    loading,
+    error,
+    refetch: refetchGroups,
+  } = useGroupsQuery()
   const [searchGroups] = useSearchGroupsLazyQuery()
 
   const {
@@ -26,7 +31,7 @@ export default function LeftBar({ showOnlyMiddle }) {
     loading: latestLoading,
     error: latestError,
     subscribeToMore,
-    refetch,
+    refetch: refetchLatestChat,
   } = useLatestChatsQuery()
   const {
     data: user,
@@ -47,7 +52,8 @@ export default function LeftBar({ showOnlyMiddle }) {
           }
           return chat
         })
-        refetch()
+        refetchLatestChat()
+        refetchGroups()
 
         return {
           latestChats: [...updatedChats],

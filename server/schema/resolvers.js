@@ -86,11 +86,16 @@ const resolvers = {
       const validation = await UserGroups.findAll({
         where: { user_id: user.user_id },
       })
-
       let groups = []
-      validation.forEach((usergroup) => {
-        groups.push(usergroup.group_id)
-      })
+
+      for (const usergroup of validation) {
+        const hasChat = await UserChats.findAll({
+          where: { receiver: usergroup.group_id },
+        })
+        if (hasChat.length > 0) {
+          groups.push(usergroup.group_id)
+        }
+      }
 
       return Groups.findAll({ where: { id: groups } })
     },
