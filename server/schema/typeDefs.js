@@ -88,6 +88,7 @@ const typeDefs = `
     isLoggedIn: Boolean
     searchGroups(group_name: String, group_id: Int): [Group]
     latestChats: [UserChat]
+    userProfile(id: Int!): User
   }
 
   type Mutation {

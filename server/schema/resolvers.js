@@ -41,7 +41,13 @@ const resolvers = {
     userChat: (_, { id }) => {
       return UserChats.findOne({ where: { id } })
     },
-    user: (_, { id }) => {
+    user: (_, { id }, context) => {
+      authMiddleware(context)
+
+      return Users.findOne({ where: { id } })
+    },
+    userProfile: (_, { id }, context) => {
+      authMiddleware(context)
       return Users.findOne({ where: { id } })
     },
     group: async (_, { id }, context) => {
