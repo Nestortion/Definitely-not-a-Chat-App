@@ -41,10 +41,10 @@ const resolvers = {
     userChat: (_, { id }) => {
       return UserChats.findOne({ where: { id } })
     },
-    user: (_, { id }, context) => {
-      authMiddleware(context)
+    user: (_, __, context) => {
+      const { data: user } = authMiddleware(context)
 
-      return Users.findOne({ where: { id } })
+      return Users.findOne({ where: { id: user.user_id } })
     },
     userProfile: (_, { id }, context) => {
       authMiddleware(context)

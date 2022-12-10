@@ -73,7 +73,7 @@ const typeDefs = `
   }
 
   type Query {
-    user(id: Int!): User
+    user: User
     userChat(id: Int!): UserChat
     group(id: Int!): Group
     userGroup(user_id: Int, group_id: Int): UserGroup
