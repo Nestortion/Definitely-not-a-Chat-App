@@ -123,7 +123,7 @@ const resolvers = {
       else return false
     },
     userRoles: async (_, { group_role_id }, context) => {
-      const { data } = authMiddleware(context)
+      authMiddleware(context)
       let userGroupIds = []
       let userIds = []
       const userGroupRoles = await UserGroupRoles.findAll({
@@ -145,7 +145,7 @@ const resolvers = {
       return Users.findAll({ where: { id: userIds } })
     },
     groupRoles: async (_, { group_id }, context) => {
-      const { data } = authMiddleware(context)
+      authMiddleware(context)
 
       let grouprolesids = []
       let newgrouprolesids = []
@@ -177,10 +177,13 @@ const resolvers = {
 
       let groupsId = []
 
-      if (validation) {
-        validation.forEach((usergroup) => {
-          groupsId.push(usergroup.group_id)
+      for (const usergroup of validation) {
+        const hasChat = await UserChats.findAll({
+          where: { receiver: usergroup.group_id },
         })
+        if (hasChat.length > 0) {
+          groupsId.push(usergroup.group_id)
+        }
       }
 
       if (group_name) {
@@ -344,7 +347,7 @@ const resolvers = {
       return { access_token: signAccessToken(user) }
     },
     revokeRefreshToken: async (_, { user_id }, context) => {
-      const { data } = authMiddleware(context)
+      authMiddleware(context)
 
       const increment = await Users.increment(
         { token_version: 1 },
