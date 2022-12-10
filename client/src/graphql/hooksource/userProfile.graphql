@@ -1,0 +1,11 @@
+query UserProfile($userProfileId: Int!) {
+  userProfile(id: $userProfileId) {
+    address
+    age
+    first_name
+    gender
+    last_name
+    profile_img
+    section
+  }
+}
