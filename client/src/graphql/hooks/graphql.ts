@@ -145,7 +145,7 @@ export type Query = {
   userChats?: Maybe<Array<Maybe<UserChat>>>
   userGroup?: Maybe<UserGroup>
   userGroups?: Maybe<Array<Maybe<UserGroup>>>
-  userProfile?: Maybe<Array<Maybe<User>>>
+  userProfile?: Maybe<User>
   userRoles?: Maybe<Array<Maybe<User>>>
   users?: Maybe<Array<Maybe<User>>>
 }
@@ -165,10 +165,6 @@ export type QueryGroupsArgs = {
 export type QuerySearchGroupsArgs = {
   group_id?: InputMaybe<Scalars['Int']>
   group_name?: InputMaybe<Scalars['String']>
-}
-
-export type QueryUserArgs = {
-  id: Scalars['Int']
 }
 
 export type QueryUserChatArgs = {
@@ -490,18 +486,24 @@ export type SearchGroupsQuery = {
   } | null> | null
 }
 
-export type UserQueryVariables = Exact<{
-  userId: Scalars['Int']
-}>
+export type UserQueryVariables = Exact<{ [key: string]: never }>
 
 export type UserQuery = {
   __typename?: 'Query'
   user?: {
     __typename?: 'User'
+    id: number
+    username: string
+    access_level: AccessLevel
+    password: string
+    token_version: string
     first_name: string
     last_name: string
+    address: string
+    section: string
     profile_img: string
-    id: number
+    age: number
+    gender: string
   } | null
 }
 
@@ -525,7 +527,7 @@ export type UserProfileQueryVariables = Exact<{
 
 export type UserProfileQuery = {
   __typename?: 'Query'
-  userProfile?: Array<{
+  userProfile?: {
     __typename?: 'User'
     address: string
     age: number
@@ -534,7 +536,7 @@ export type UserProfileQuery = {
     last_name: string
     profile_img: string
     section: string
-  } | null> | null
+  } | null
 }
 
 export type UserRolesQueryVariables = Exact<{
@@ -1475,12 +1477,20 @@ export type SearchGroupsQueryResult = Apollo.QueryResult<
   SearchGroupsQueryVariables
 >
 export const UserDocument = gql`
-  query User($userId: Int!) {
-    user(id: $userId) {
+  query User {
+    user {
+      id
+      username
+      access_level
+      password
+      token_version
       first_name
       last_name
+      address
+      section
       profile_img
-      id
+      age
+      gender
     }
   }
 `
@@ -1497,12 +1507,11 @@ export const UserDocument = gql`
  * @example
  * const { data, loading, error } = useUserQuery({
  *   variables: {
- *      userId: // value for 'userId'
  *   },
  * });
  */
 export function useUserQuery(
-  baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>
+  baseOptions?: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options)
