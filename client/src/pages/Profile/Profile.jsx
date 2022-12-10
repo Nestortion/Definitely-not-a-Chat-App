@@ -1,33 +1,41 @@
+import { useParams } from 'react-router-dom'
+import ErrorText from '../../components/Error/ErrorText'
+import LoadingSpinner from '../../components/Loading/LoadingSpinner/LoadingSpinner'
 import Avatar from '../../components/UI/Avatar/Avatar'
 import { apiBasePath } from '../../data/config'
+import { useUserProfileQuery } from '../../graphql/hooks/graphql'
 import './profile.scss'
 
 export default function Profile() {
-  const currentProfile = {
-    firstName: 'John',
-    lastName: 'Doe',
-    age: 21,
-    gender: 'Male',
-    section: 'BSIT 4-1',
-    username: 'johndoe',
-    profilePicUrl: `${apiBasePath}/pfp/default-icon.png`,
-  }
+  const { profileId } = useParams()
+  const {
+    data: profileData,
+    loading: profileLoading,
+    error: profileError,
+  } = useUserProfileQuery({ variables: { userProfileId: parseInt(profileId) } })
+
+  if (profileLoading) return <LoadingSpinner />
+  if (profileError) return <ErrorText />
 
   return (
     <div className="profile">
       <div className="profile__header">
         <div className="profile__image">
-          <Avatar src={currentProfile.profilePicUrl} size={256} />
+          <Avatar
+            src={`${apiBasePath}/pfp/${profileData.userProfile.profile_img}`}
+            size={256}
+          />
         </div>
         <h1 className="text-primary-400">
-          {currentProfile.firstName} {currentProfile.lastName}
+          {profileData.userProfile.first_name}{' '}
+          {profileData.userProfile.last_name}
         </h1>
-        <span>{currentProfile.username}</span>
+        <span>{profileData.userProfile.username}</span>
       </div>
       <div className="profile__info">
-        <span>Age: {currentProfile.age}</span>
-        <span>Gender: {currentProfile.gender}</span>
-        <span>Section: {currentProfile.section}</span>
+        <span>Age: {profileData.userProfile.age}</span>
+        <span>Gender: {profileData.userProfile.gender}</span>
+        <span>Section: {profileData.userProfile.section}</span>
       </div>
     </div>
   )
