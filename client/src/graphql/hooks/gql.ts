@@ -31,6 +31,7 @@ const documents = {
     "query SearchGroups($groupName: String, $groupId: Int) {\n  searchGroups(group_name: $groupName, group_id: $groupId) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}": types.SearchGroupsDocument,
     "query User {\n  user {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.UserDocument,
     "query UserChats {\n  userChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}": types.UserChatsDocument,
+    "query UserGroupRoles($groupId: Int!) {\n  userGroupRoles(group_id: $groupId) {\n    role_type\n    role_name\n  }\n}": types.UserGroupRolesDocument,
     "query UserProfile($userProfileId: Int!) {\n  userProfile(id: $userProfileId) {\n    address\n    age\n    first_name\n    gender\n    last_name\n    profile_img\n    section\n  }\n}": types.UserProfileDocument,
     "query UserRoles($groupRoleId: Int) {\n  userRoles(group_role_id: $groupRoleId) {\n    first_name\n    id\n    last_name\n    profile_img\n  }\n}": types.UserRolesDocument,
 };
@@ -107,6 +108,10 @@ export function graphql(source: "query User {\n  user {\n    id\n    username\n 
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "query UserChats {\n  userChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}"): (typeof documents)["query UserChats {\n  userChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "query UserGroupRoles($groupId: Int!) {\n  userGroupRoles(group_id: $groupId) {\n    role_type\n    role_name\n  }\n}"): (typeof documents)["query UserGroupRoles($groupId: Int!) {\n  userGroupRoles(group_id: $groupId) {\n    role_type\n    role_name\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
