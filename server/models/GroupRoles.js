@@ -22,6 +22,11 @@ const GroupRoles = DB.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    role_type: {
+      type: DataTypes.ENUM('MODERATOR', 'LEADER', 'MEMBER'),
+      allowNull: false,
+      defaultValue: 'MEMBER',
+    },
   },
   { timestamps: false }
 )
