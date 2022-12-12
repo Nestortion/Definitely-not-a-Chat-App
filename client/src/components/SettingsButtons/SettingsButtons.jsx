@@ -62,22 +62,19 @@ export default function SettingsButtons({ roles, isGroup }) {
         </SpawnModal>
       )}
       <div className="settings-buttons">
-        {isGroup === 'true' && (
-          <>
-            {roles.userGroupRoles.some((e) => e.role_type === 'MODERATOR') && (
-              <>
-                <Button onClick={showEditMembers}>
-                  <MdAdd style={{ display: 'inline-block' }} />
-                  <span>Edit Members</span>
-                </Button>
-                <Button onClick={showEditRoles}>
-                  <MdAdd style={{ display: 'inline-block' }} />
-                  <span>Edit Roles</span>
-                </Button>
-              </>
-            )}
-          </>
-        )}
+        {isGroup === 'true' &&
+          roles.userGroupRoles.some((e) => e.role_type === 'MODERATOR') && (
+            <>
+              <Button onClick={showEditMembers}>
+                <MdAdd style={{ display: 'inline-block' }} />
+                <span>Edit Members</span>
+              </Button>
+              <Button onClick={showEditRoles}>
+                <MdAdd style={{ display: 'inline-block' }} />
+                <span>Edit Roles</span>
+              </Button>
+            </>
+          )}
 
         <Button onClick={showSearchInGroup}>
           <MdSearch style={{ display: 'inline-block' }} />
