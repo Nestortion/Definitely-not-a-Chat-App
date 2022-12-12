@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { apiBasePath } from '../../../data/config'
 import Avatar from '../../UI/Avatar/Avatar'
 import './role-member.scss'
+import { MdClose } from 'react-icons/md'
 
 export default function RoleMember({ id, name, pfp, showOnlyMiddle }) {
   const navigate = useNavigate()
@@ -32,8 +33,18 @@ export default function RoleMember({ id, name, pfp, showOnlyMiddle }) {
         />
         <span className="fs-400">{name}</span>
       </div>
-      <span onClick={handleEditRole}>Edit Role</span>
-      <span onClick={handleRemoveMember}>X</span>
+      <button
+        className="fs-300 bg-secondary-400 text-neutral-100 role-member__button"
+        onClick={handleEditRole}
+      >
+        Edit Role
+      </button>
+      <button
+        className="fs-300 bg-error-400 text-neutral-100 role-member__button"
+        onClick={handleRemoveMember}
+      >
+        <MdClose />
+      </button>
     </div>
   )
 }
