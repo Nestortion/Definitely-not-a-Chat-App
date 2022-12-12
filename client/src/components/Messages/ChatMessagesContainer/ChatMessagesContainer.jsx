@@ -30,7 +30,7 @@ export default function ChatMessagesContainer() {
         }
       },
     })
-  }, [chatsQuery.data])
+  }, [])
 
   if (userLoading) return <LoadingSpinner />
   if (userError) return <ErrorText>Error</ErrorText>
