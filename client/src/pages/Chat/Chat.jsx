@@ -15,7 +15,7 @@ import LoadingSpinner from '../../components/Loading/LoadingSpinner/LoadingSpinn
 import ErrorText from '../../components/Error/ErrorText'
 import FileInput from '../../components/FileInput/FileInput'
 import { useState, useRef } from 'react'
-import { MdAdd } from 'react-icons/md'
+import { MdAdd, MdClose } from 'react-icons/md'
 import ChatMessagesContainer from '../../components/Messages/ChatMessagesContainer/ChatMessagesContainer'
 
 export default function Chat() {
@@ -47,7 +47,10 @@ export default function Chat() {
       files: [file],
     },
   }) => {
-    if (validity.valid) setFileInput(file)
+    // 2e9 is 2GB
+    if (validity.valid && file?.size < 2e9) {
+      setFileInput(file)
+    }
   }
 
   const messageChangeHandle = (e) => {
@@ -118,7 +121,15 @@ export default function Chat() {
           <FileInput onChange={fileChangeHandle} />
           {fileInput && (
             <div className="chat-input-container__selected-file fs-300">
-              <span>{fileInput.name}</span>
+              <span>
+                {fileInput.name}{' '}
+                <span
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => setFileInput(null)}
+                >
+                  <MdClose />
+                </span>
+              </span>
             </div>
           )}
           <Input value={message} onChange={messageChangeHandle} type="text" />

@@ -63,6 +63,9 @@
         background-color: var(--clr-neutral-100);
         border: 1px solid var(--clr-primary-400);
 
+        display: flex;
+        align-items: center;
+
         position: absolute;
         top: -100%;
       }
