@@ -11,6 +11,7 @@ import {
 import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../Error/ErrorText'
 import { apiBasePath } from '../../data/config'
+import RoleMember from '../Role/RoleMembers/RoleMember'
 
 export default function RightBar({ showOnlyMiddle }) {
   // Check if global chat state is existing
@@ -49,11 +50,7 @@ export default function RightBar({ showOnlyMiddle }) {
         {groupData.group.is_group === 'true' ? (
           <MemberList showOnlyMiddle={showOnlyMiddle} />
         ) : (
-          <span className="text-error-400">
-            This should be the avatar of the other person
-            {/* TODO: fetch the info of the other person in this chatId */}
-            {/* <RoleMember id={} name={} pfp={} /> */}
-          </span>
+          <RoleMember id={1} name={'The other person'} pfp={'/images/pfp'} />
         )}
         <SettingsButtons isGroup={groupData.group.is_group} roles={roles} />
       </div>
