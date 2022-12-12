@@ -4,11 +4,13 @@ import MemberList from '../MemberList/MemberList'
 // TODO: use the global chat data state here
 import SettingsButtons from '../SettingsButtons/SettingsButtons'
 import { useParams } from 'react-router-dom'
-import { useGroupQuery } from '../../graphql/hooks/graphql'
+import {
+  useGroupQuery,
+  useUserGroupRolesQuery,
+} from '../../graphql/hooks/graphql'
 import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../Error/ErrorText'
 import { apiBasePath } from '../../data/config'
-import RoleMember from '../Role/RoleMembers/RoleMember'
 
 export default function RightBar({ showOnlyMiddle }) {
   // Check if global chat state is existing
@@ -22,7 +24,15 @@ export default function RightBar({ showOnlyMiddle }) {
     variables: { groupId: parseInt(chatId) },
   })
 
-  if (groupLoading) return <LoadingSpinner>Loading</LoadingSpinner>
+  const {
+    data: roles,
+    loading: rolesLoading,
+    error: rolesError,
+  } = useUserGroupRolesQuery({ variables: { groupId: parseInt(chatId) } })
+
+  if (rolesLoading) return <LoadingSpinner />
+  if (rolesError) return <ErrorText>Error</ErrorText>
+  if (groupLoading) return <LoadingSpinner />
   if (groupError) return <ErrorText>Error</ErrorText>
 
   return (
@@ -45,7 +55,7 @@ export default function RightBar({ showOnlyMiddle }) {
             {/* <RoleMember id={} name={} pfp={} /> */}
           </span>
         )}
-        <SettingsButtons />
+        <SettingsButtons isGroup={groupData.group.is_group} roles={roles} />
       </div>
     </div>
   )
