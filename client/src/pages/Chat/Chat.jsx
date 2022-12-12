@@ -117,8 +117,8 @@ export default function Chat() {
         >
           <FileInput onChange={fileChangeHandle} />
           {fileInput && (
-            <div className="chat-input-container__selected-file">
-              <span title={fileInput.name}>1 file selected</span>
+            <div className="chat-input-container__selected-file fs-300">
+              <span>{fileInput.name}</span>
             </div>
           )}
           <Input value={message} onChange={messageChangeHandle} type="text" />

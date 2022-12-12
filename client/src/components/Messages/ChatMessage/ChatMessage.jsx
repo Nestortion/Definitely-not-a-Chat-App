@@ -83,7 +83,6 @@ export default function ChatMessage({
           >
             {/* If type image */}
             {message_type === 'IMAGE' && (
-              // TODO: create an image component
               <CustomImage
                 src={`${apiBasePath}/message/images/${text}`}
                 onClick={handleShowModal}
