@@ -4,9 +4,8 @@ import { MdAdd, MdSearch, MdReport } from 'react-icons/md'
 import SpawnModal from '../UI/Modal/SpawnModal'
 import EditMembers from './AddMembers/EditMembers'
 import { useState } from 'react'
-import { useEffect } from 'react'
 
-export default function SettingsButtons() {
+export default function SettingsButtons({ roles, isGroup }) {
   const [shouldShowModal, setShouldShowModal] = useState(false)
   const [shouldShowEditMembers, setShouldShowEditMembers] = useState(false)
   const [shouldShowEditRoles, setShouldShowEditRoles] = useState(false)
@@ -50,6 +49,8 @@ export default function SettingsButtons() {
     handleShowModal()
   }
 
+  console.log()
+
   return (
     <>
       {shouldShowModal && (
@@ -61,14 +62,23 @@ export default function SettingsButtons() {
         </SpawnModal>
       )}
       <div className="settings-buttons">
-        <Button onClick={showEditMembers}>
-          <MdAdd style={{ display: 'inline-block' }} />
-          <span>Edit Members</span>
-        </Button>
-        <Button onClick={showEditRoles}>
-          <MdAdd style={{ display: 'inline-block' }} />
-          <span>Edit Roles</span>
-        </Button>
+        {isGroup === 'true' && (
+          <>
+            {roles.userGroupRoles.some((e) => e.role_type === 'MODERATOR') && (
+              <>
+                <Button onClick={showEditMembers}>
+                  <MdAdd style={{ display: 'inline-block' }} />
+                  <span>Edit Members</span>
+                </Button>
+                <Button onClick={showEditRoles}>
+                  <MdAdd style={{ display: 'inline-block' }} />
+                  <span>Edit Roles</span>
+                </Button>
+              </>
+            )}
+          </>
+        )}
+
         <Button onClick={showSearchInGroup}>
           <MdSearch style={{ display: 'inline-block' }} />
           <span>Search in Group</span>
