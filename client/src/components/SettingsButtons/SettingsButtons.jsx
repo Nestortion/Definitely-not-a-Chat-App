@@ -1,14 +1,14 @@
 import './settings-buttons.scss'
 import Button from '../UI/Button/Button'
-import { MdAdd, MdSearch, MdReport } from 'react-icons/md'
+import { MdAdd, MdSearch, MdReport, MdTextFields } from 'react-icons/md'
 import SpawnModal from '../UI/Modal/SpawnModal'
 import EditMembers from './AddMembers/EditMembers'
 import { useState } from 'react'
 
 export default function SettingsButtons({ roles, isGroup }) {
   const [shouldShowModal, setShouldShowModal] = useState(false)
-  const [shouldShowEditMembers, setShouldShowEditMembers] = useState(false)
-  const [shouldShowEditRoles, setShouldShowEditRoles] = useState(false)
+  const [shouldShowAddMembers, setShouldShowAddMembers] = useState(false)
+  const [shouldShowEditGroupName, setShouldShowEditGroupName] = useState(false)
   const [shouldShowSearchInGroup, setShouldShowSearchInGroup] = useState(false)
   const [shouldShowReportChat, setShouldShowReportChat] = useState(false)
   const [currentTitle, setCurrentTitle] = useState()
@@ -19,21 +19,21 @@ export default function SettingsButtons({ roles, isGroup }) {
 
   const handleHideModal = () => {
     setShouldShowModal(false)
-    setShouldShowEditMembers(false)
-    setShouldShowEditRoles(false)
+    setShouldShowAddMembers(false)
+    setShouldShowEditGroupName(false)
     setShouldShowSearchInGroup(false)
     setShouldShowReportChat(false)
   }
 
   const showEditMembers = () => {
-    setShouldShowEditMembers(true)
-    setCurrentTitle('Edit Members')
+    setShouldShowAddMembers(true)
+    setCurrentTitle('Add Members')
     handleShowModal()
   }
 
   const showEditRoles = () => {
-    setShouldShowEditRoles(true)
-    setCurrentTitle('Edit Roles')
+    setShouldShowEditGroupName(true)
+    setCurrentTitle('Edit Group Name')
     handleShowModal()
   }
 
@@ -55,8 +55,8 @@ export default function SettingsButtons({ roles, isGroup }) {
     <>
       {shouldShowModal && (
         <SpawnModal title={currentTitle} closeModal={handleHideModal}>
-          {shouldShowEditMembers && <EditMembers />}
-          {shouldShowEditRoles && <span>Edit Roles</span>}
+          {shouldShowAddMembers && <EditMembers />}
+          {shouldShowEditGroupName && <span>Edit Group Name</span>}
           {shouldShowSearchInGroup && <span>Search</span>}
           {shouldShowReportChat && <span>Report</span>}
         </SpawnModal>
@@ -67,11 +67,11 @@ export default function SettingsButtons({ roles, isGroup }) {
             <>
               <Button onClick={showEditMembers}>
                 <MdAdd style={{ display: 'inline-block' }} />
-                <span>Edit Members</span>
+                <span>Add Members</span>
               </Button>
               <Button onClick={showEditRoles}>
-                <MdAdd style={{ display: 'inline-block' }} />
-                <span>Edit Roles</span>
+                <MdTextFields style={{ display: 'inline-block' }} />
+                <span>Edit Group Name</span>
               </Button>
             </>
           )}
