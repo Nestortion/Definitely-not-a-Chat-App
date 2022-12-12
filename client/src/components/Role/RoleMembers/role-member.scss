@@ -5,7 +5,14 @@
   align-items: center;
   gap: 0.625rem;
 
-  img {
-    cursor: pointer;
+  .role-member__info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+
+    img {
+      cursor: pointer;
+    }
   }
 }

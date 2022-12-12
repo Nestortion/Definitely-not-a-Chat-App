@@ -15,14 +15,25 @@ export default function RoleMember({ id, name, pfp, showOnlyMiddle }) {
     navigate(`/profile/${id}`)
   }
 
+  const handleEditRole = () => {
+    console.log(id)
+  }
+  const handleRemoveMember = () => {
+    console.log(id)
+  }
+
   return (
     <div className="role-member">
-      <Avatar
-        size={20}
-        src={`${apiBasePath}/pfp/${pfp}`}
-        onClick={navigateToProfile}
-      />
-      <span className="fs-400">{name}</span>
+      <div className="role-member__info">
+        <Avatar
+          size={20}
+          src={`${apiBasePath}/pfp/${pfp}`}
+          onClick={navigateToProfile}
+        />
+        <span className="fs-400">{name}</span>
+      </div>
+      <span onClick={handleEditRole}>Edit Role</span>
+      <span onClick={handleRemoveMember}>X</span>
     </div>
   )
 }
