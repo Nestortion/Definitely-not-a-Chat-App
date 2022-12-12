@@ -16,15 +16,11 @@ import { MdAdd } from 'react-icons/md'
 import { useEffect } from 'react'
 
 export default function LeftBar({ showOnlyMiddle }) {
-  const [searchData, setSearchData] = useState()
-  const [isSearching, setIsSearching] = useState(false)
   const {
-    data: chat,
-    loading,
-    error,
-    refetch: refetchGroups,
-  } = useGroupsQuery()
-  const [searchGroups] = useSearchGroupsLazyQuery()
+    data: user,
+    loading: userLoading,
+    error: userError,
+  } = useCurrentUserQuery()
 
   const {
     data: latestChats,
@@ -33,11 +29,14 @@ export default function LeftBar({ showOnlyMiddle }) {
     subscribeToMore,
     refetch: refetchLatestChat,
   } = useLatestChatsQuery()
+
   const {
-    data: user,
-    loading: userLoading,
-    error: userError,
-  } = useCurrentUserQuery()
+    data: chat,
+    loading,
+    error,
+    refetch: refetchGroups,
+  } = useGroupsQuery()
+  const [searchGroups] = useSearchGroupsLazyQuery()
 
   useEffect(() => {
     subscribeToMore({
@@ -60,14 +59,16 @@ export default function LeftBar({ showOnlyMiddle }) {
         }
       },
     })
-  }, [])
+  })
+  const [searchData, setSearchData] = useState()
+  const [isSearching, setIsSearching] = useState(false)
 
-  if (userLoading) return <LoadingSpinner />
-  if (userError) return <ErrorText>Something went wrong</ErrorText>
-  if (latestLoading) return <LoadingSpinner />
-  if (latestError) return <ErrorText>Something went wrong</ErrorText>
   if (loading) return <LoadingSpinner />
   if (error) return <ErrorText>Something went wrong</ErrorText>
+  if (latestLoading) return <LoadingSpinner />
+  if (latestError) return <ErrorText>Something went wrong</ErrorText>
+  if (userLoading) return <LoadingSpinner />
+  if (userError) return <ErrorText>Something went wrong</ErrorText>
 
   const searchValueHandle = async (e) => {
     if (e.target.value) {
