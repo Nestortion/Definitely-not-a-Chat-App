@@ -59,7 +59,7 @@ export default function LeftBar({ showOnlyMiddle }) {
         }
       },
     })
-  })
+  }, [latestChats])
   const [searchData, setSearchData] = useState()
   const [isSearching, setIsSearching] = useState(false)
 
