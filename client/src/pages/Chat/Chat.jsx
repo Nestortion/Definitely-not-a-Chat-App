@@ -7,6 +7,7 @@ import {
   useAddUserChatMutation,
   useGroupQuery,
   UserChatsDocument,
+  useUserGroupRolesQuery,
 } from '../../graphql/hooks/graphql'
 import { useParams } from 'react-router-dom'
 import { apiBasePath } from '../../data/config'
@@ -29,7 +30,15 @@ export default function Chat() {
   const [sendMessage] = useAddUserChatMutation({
     refetchQueries: [{ query: UserChatsDocument }],
   })
-  if (loading) return <LoadingSpinner>loading</LoadingSpinner>
+  const {
+    data: roles,
+    loading: rolesLoading,
+    error: rolesError,
+  } = useUserGroupRolesQuery({ variables: { groupId: parseInt(chatId) } })
+
+  if (rolesLoading) return <LoadingSpinner />
+  if (rolesError) return <ErrorText>Error</ErrorText>
+  if (loading) return <LoadingSpinner />
   if (error) return <ErrorText>Something went wrong</ErrorText>
 
   const fileChangeHandle = ({
@@ -92,9 +101,12 @@ export default function Chat() {
           />
           <span>{data.group.group_name}</span>
         </div>
-        <Button>
-          <MdAdd />
-        </Button>
+        {(data.group.is_group === 'false' ||
+          roles.userGroupRoles?.some((e) => e.role_type === 'MODERATOR')) && (
+          <Button>
+            <MdAdd />
+          </Button>
+        )}
       </div>
       <ChatMessagesContainer />
       <div className="chat-input-container">
