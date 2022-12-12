@@ -37,6 +37,11 @@ const resolvers = {
     IMAGE: 'IMAGE',
     OTHER: 'OTHER',
   },
+  RoleType: {
+    MODERATOR: 'MODERATOR',
+    LEADER: 'LEADER',
+    MEMBER: 'MEMBER',
+  },
   Query: {
     userChat: (_, { id }) => {
       return UserChats.findOne({ where: { id } })
@@ -222,6 +227,35 @@ const resolvers = {
       })
 
       return latestChats
+    },
+    userGroupRoles: async (_, { group_id }, context) => {
+      const { data } = authMiddleware(context)
+
+      const validation = await Groups.findOne({ where: { id: group_id } })
+
+      console.log(validation.dataValues.is_group)
+
+      if (validation.dataValues.is_group === false) {
+        return null
+      }
+
+      const userGroup = await UserGroups.findOne({
+        where: { user_id: data.user_id, group_id },
+      })
+
+      const userGroupRole = await UserGroupRoles.findAll({
+        where: { user_group_id: userGroup.id },
+      })
+
+      const groupRoleIds = userGroupRole.map(
+        (usergrouprole) => usergrouprole.group_role_id
+      )
+
+      const groupRoles = await GroupRoles.findAll({
+        where: { id: groupRoleIds },
+      })
+
+      return groupRoles
     },
   },
   Mutation: {

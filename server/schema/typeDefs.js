@@ -55,6 +55,13 @@ const typeDefs = `
     emoji: String!
     description: String!
     group_id: String!
+    role_type: RoleType!
+  }
+
+  enum RoleType {
+    MODERATOR
+    LEADER
+    MEMBER
   }
 
   type UserGroupRole{
@@ -89,6 +96,7 @@ const typeDefs = `
     searchGroups(group_name: String, group_id: Int): [Group]
     latestChats: [UserChat]
     userProfile(id: Int!): User
+    userGroupRoles(group_id: Int!): [GroupRole]
   }
 
   type Mutation {
