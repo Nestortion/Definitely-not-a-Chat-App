@@ -93,8 +93,9 @@ export default function ChatMessage({
             {/* If type other */}
             {message_type === 'OTHER' && (
               <a href={`${apiBasePath}/message/documents/${text}`} download>
-                <MdDownload style={{ display: 'inline-block' }} />
-                <span>{newText}</span>
+                <span>
+                  {newText} <MdDownload style={{ display: 'inline-block' }} />
+                </span>
               </a>
             )}
 
