@@ -110,13 +110,17 @@ export default function Chat() {
       </div>
       <ChatMessagesContainer />
       <div className="chat-input-container">
-        {/* I dont know what form data should be (multipart, etc..) */}
         <form
           ref={formRef}
           onSubmit={sendMessageHandle}
           className="chat-input-container__form"
         >
           <FileInput onChange={fileChangeHandle} />
+          {fileInput && (
+            <div className="chat-input-container__selected-file">
+              <span title={fileInput.name}>1 file selected</span>
+            </div>
+          )}
           <Input value={message} onChange={messageChangeHandle} type="text" />
           <Button>Send</Button>
         </form>
