@@ -17,6 +17,8 @@ import FileInput from '../../components/FileInput/FileInput'
 import { useState, useRef } from 'react'
 import { MdAdd, MdClose } from 'react-icons/md'
 import ChatMessagesContainer from '../../components/Messages/ChatMessagesContainer/ChatMessagesContainer'
+import SpawnModal from '../../components/UI/Modal/SpawnModal'
+import AddMembers from '../../components/SettingsButtons/AddMembers/AddMembers'
 
 export default function Chat() {
   const { chatId } = useParams()
@@ -27,6 +29,8 @@ export default function Chat() {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
   const [fileInput, setFileInput] = useState(null)
   const [message, setMessage] = useState('')
+  const [isModalShowing, setIsModalShowing] = useState(false)
+
   const [sendMessage] = useAddUserChatMutation({
     refetchQueries: [{ query: UserChatsDocument }],
   })
@@ -93,6 +97,14 @@ export default function Chat() {
     setMessage('')
   }
 
+  const showModal = () => {
+    setIsModalShowing(true)
+  }
+
+  const closeModal = () => {
+    setIsModalShowing(false)
+  }
+
   return (
     <div className={`chat ${isTabletOrMobile && 'small-screen'}`}>
       <div className="header">
@@ -104,9 +116,14 @@ export default function Chat() {
           />
           <span>{data.group.group_name}</span>
         </div>
+        {isModalShowing && (
+          <SpawnModal title="Add members" closeModal={closeModal}>
+            <AddMembers />
+          </SpawnModal>
+        )}
         {(data.group.is_group === 'false' ||
           roles.userGroupRoles?.some((e) => e.role_type === 'MODERATOR')) && (
-          <Button>
+          <Button onClick={showModal}>
             <MdAdd />
           </Button>
         )}

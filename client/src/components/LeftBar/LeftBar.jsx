@@ -14,6 +14,7 @@ import ErrorText from '../Error/ErrorText'
 import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import { MdAdd } from 'react-icons/md'
 import { useEffect } from 'react'
+import SpawnModal from '../UI/Modal/SpawnModal'
 
 export default function LeftBar({ showOnlyMiddle }) {
   const {
@@ -62,6 +63,7 @@ export default function LeftBar({ showOnlyMiddle }) {
   }, [latestChats])
   const [searchData, setSearchData] = useState()
   const [isSearching, setIsSearching] = useState(false)
+  const [isModalShowing, setIsModalShowing] = useState(false)
 
   if (loading) return <LoadingSpinner />
   if (error) return <ErrorText>Something went wrong</ErrorText>
@@ -82,12 +84,25 @@ export default function LeftBar({ showOnlyMiddle }) {
     }
   }
 
+  const showModal = () => {
+    setIsModalShowing(true)
+  }
+
+  const closeModal = () => {
+    setIsModalShowing(false)
+  }
+
   return (
     <div className="leftbar">
       <div className="top">
         <div className="header">
           <h1>Chats</h1>
-          <Button>
+          {isModalShowing && (
+            <SpawnModal title="Join or Create" closeModal={closeModal}>
+              <span>Join or Create</span>
+            </SpawnModal>
+          )}
+          <Button onClick={showModal}>
             <MdAdd />
           </Button>
         </div>
