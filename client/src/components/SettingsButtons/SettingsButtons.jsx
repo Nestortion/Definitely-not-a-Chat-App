@@ -4,6 +4,7 @@ import { MdAdd, MdSearch, MdReport, MdTextFields } from 'react-icons/md'
 import SpawnModal from '../UI/Modal/SpawnModal'
 import { useState } from 'react'
 import AddMembers from './AddMembers/AddMembers'
+import EditGroupName from './EditGroupName/EditGroupName'
 
 export default function SettingsButtons({ roles, isGroup }) {
   const [shouldShowModal, setShouldShowModal] = useState(false)
@@ -56,7 +57,7 @@ export default function SettingsButtons({ roles, isGroup }) {
       {shouldShowModal && (
         <SpawnModal title={currentTitle} closeModal={handleHideModal}>
           {shouldShowAddMembers && <AddMembers />}
-          {shouldShowEditGroupName && <span>Edit Group Name</span>}
+          {shouldShowEditGroupName && <EditGroupName />}
           {shouldShowSearchInGroup && <span>Search</span>}
           {shouldShowReportChat && <span>Report</span>}
         </SpawnModal>
