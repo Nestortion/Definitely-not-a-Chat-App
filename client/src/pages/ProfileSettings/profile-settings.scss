@@ -1,0 +1,78 @@
+.profile-settings {
+  height: 100%;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    .profile-settings__header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+
+      .profile-settings__image {
+        max-width: 256px;
+        position: relative;
+      }
+
+      .profile-settings__file-input {
+        display: flex;
+        justify-content: center;
+
+        position: absolute;
+        bottom: 0;
+        right: 0;
+
+        .profile-settings__file-input__label {
+          min-width: 50px;
+          min-height: 35px;
+          border: none;
+          border-radius: 999999px;
+
+          background-color: var(--clr-secondary-400);
+          color: var(--clr-neutral-100);
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          cursor: pointer;
+        }
+
+        .profile-settings__file-input__input {
+          display: none;
+        }
+      }
+
+      h1 {
+        font-size: clamp(2rem, 8vw, 5rem);
+      }
+
+      span {
+        font-size: clamp(1rem, 3vw, 2rem);
+      }
+    }
+
+    .profile-settings__info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 300px));
+      gap: 1rem;
+
+      span {
+        font-size: clamp(0.8rem, 2vw, 1.5rem);
+      }
+    }
+  }
+}
+
+.profile-settings-input {
+  width: 100%;
+  background: none;
+  border: none;
+
+  text-align: center;
+
+  display: inline-block;
+}
