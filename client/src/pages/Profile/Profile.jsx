@@ -36,6 +36,7 @@ export default function Profile() {
         <span>Age: {profileData.userProfile.age}</span>
         <span>Gender: {profileData.userProfile.gender}</span>
         <span>Section: {profileData.userProfile.section}</span>
+        <span>Address: {profileData.userProfile.address}</span>
       </div>
     </div>
   )
