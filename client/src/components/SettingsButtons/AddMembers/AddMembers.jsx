@@ -109,7 +109,7 @@ export default function AddMembers() {
         />
       </div>
       <div className="add-members__member-list">
-        <h3>Selected Members: </h3>
+        {selectedMembers.length > 0 && <h3>Selected Members: </h3>}
         <ul>
           {selectedMembers.map((member) => (
             <li key={member.key}>
