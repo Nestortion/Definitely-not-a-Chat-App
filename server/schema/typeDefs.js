@@ -79,7 +79,21 @@ const typeDefs = `
     access_token: String!
   }
 
+  type KvUser{
+    key: Int!
+    value: String!
+  }
+
+  type MemberAddedResponse{
+    users: [User]
+    group: Group
+    group_roles: [GroupRole]
+    user_groups: [UserGroup]
+    usergroup_roles: [UserGroupRole]
+  }
+
   type Query {
+    userChatSender(user_id: Int): User
     user: User
     userChat(id: Int!): UserChat
     group(id: Int!): Group
@@ -97,6 +111,7 @@ const typeDefs = `
     latestChats: [UserChat]
     userProfile(id: Int!): User
     userGroupRoles(group_id: Int!): [GroupRole]
+    addMemberList(group_id: Int): [KvUser]
   }
 
   type Mutation {
@@ -110,10 +125,14 @@ const typeDefs = `
     login(username: String!, password: String!): AccessToken
     revokeRefreshToken(user_id:Int!) : Boolean
     logout : Boolean
+    addMember(group_id: Int!, user_id: [Int!]) : [UserGroup]
   }
+
+  
 
   type Subscription{
     chatAdded(user: Int): UserChat
+    memberAdded(user: Int, group_id: Int): MemberAddedResponse
   }
 
 `
