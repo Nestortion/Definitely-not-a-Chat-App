@@ -60,6 +60,12 @@ export type KvUser = {
   value: Scalars['String']
 }
 
+export type MemberAddedResponse = {
+  __typename?: 'MemberAddedResponse'
+  group?: Maybe<Group>
+  user?: Maybe<User>
+}
+
 export enum MessageType {
   Image = 'IMAGE',
   Other = 'OTHER',
@@ -166,6 +172,10 @@ export type Query = {
   users?: Maybe<Array<Maybe<User>>>
 }
 
+export type QueryAddMemberListArgs = {
+  group_id?: InputMaybe<Scalars['Int']>
+}
+
 export type QueryGroupArgs = {
   id: Scalars['Int']
 }
@@ -221,9 +231,15 @@ export enum RoleType {
 export type Subscription = {
   __typename?: 'Subscription'
   chatAdded?: Maybe<UserChat>
+  memberAdded?: Maybe<User>
 }
 
 export type SubscriptionChatAddedArgs = {
+  user?: InputMaybe<Scalars['Int']>
+}
+
+export type SubscriptionMemberAddedArgs = {
+  group_id?: InputMaybe<Scalars['Int']>
   user?: InputMaybe<Scalars['Int']>
 }
 
@@ -298,7 +314,9 @@ export type AddGroupRoleMutation = {
   } | null
 }
 
-export type AddMemberListQueryVariables = Exact<{ [key: string]: never }>
+export type AddMemberListQueryVariables = Exact<{
+  groupId?: InputMaybe<Scalars['Int']>
+}>
 
 export type AddMemberListQuery = {
   __typename?: 'Query'
@@ -752,8 +770,8 @@ export type AddGroupRoleMutationOptions = Apollo.BaseMutationOptions<
   AddGroupRoleMutationVariables
 >
 export const AddMemberListDocument = gql`
-  query AddMemberList {
-    addMemberList {
+  query AddMemberList($groupId: Int) {
+    addMemberList(group_id: $groupId) {
       key
       value
     }
@@ -772,6 +790,7 @@ export const AddMemberListDocument = gql`
  * @example
  * const { data, loading, error } = useAddMemberListQuery({
  *   variables: {
+ *      groupId: // value for 'groupId'
  *   },
  * });
  */

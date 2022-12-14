@@ -1,5 +1,5 @@
-query AddMemberList {
-  addMemberList {
+query AddMemberList($groupId: Int) {
+  addMemberList(group_id: $groupId) {
     key
     value
   }
