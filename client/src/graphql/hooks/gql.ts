@@ -24,6 +24,7 @@ const documents = {
     "subscription ChatAdded($user: Int) {\n  chatAdded(user: $user) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}": types.ChatAddedDocument,
     "query CurrentUser {\n  currentUser {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.CurrentUserDocument,
     "query Group($groupId: Int!) {\n  group(id: $groupId) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}": types.GroupDocument,
+    "subscription GroupNameUpdate($user: Int) {\n  groupNameUpdate(user: $user) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}": types.GroupNameUpdateDocument,
     "query GroupRoles($groupId: Int) {\n  groupRoles(group_id: $groupId) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n  }\n}": types.GroupRolesDocument,
     "query Groups($userId: Int) {\n  groups(user_id: $userId) {\n    group_name\n    id\n    group_picture\n    is_group\n  }\n}": types.GroupsDocument,
     "query IsLoggedIn {\n  isLoggedIn\n}": types.IsLoggedInDocument,
@@ -85,6 +86,10 @@ export function graphql(source: "query CurrentUser {\n  currentUser {\n    id\n 
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "query Group($groupId: Int!) {\n  group(id: $groupId) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}"): (typeof documents)["query Group($groupId: Int!) {\n  group(id: $groupId) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "subscription GroupNameUpdate($user: Int) {\n  groupNameUpdate(user: $user) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}"): (typeof documents)["subscription GroupNameUpdate($user: Int) {\n  groupNameUpdate(user: $user) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -488,6 +488,21 @@ export type GroupQuery = {
   } | null
 }
 
+export type GroupNameUpdateSubscriptionVariables = Exact<{
+  user?: InputMaybe<Scalars['Int']>
+}>
+
+export type GroupNameUpdateSubscription = {
+  __typename?: 'Subscription'
+  groupNameUpdate?: {
+    __typename?: 'Group'
+    id: number
+    group_name: string
+    group_picture: string
+    is_group: string
+  } | null
+}
+
 export type GroupRolesQueryVariables = Exact<{
   groupId?: InputMaybe<Scalars['Int']>
 }>
@@ -1389,6 +1404,50 @@ export type GroupQueryResult = Apollo.QueryResult<
   GroupQuery,
   GroupQueryVariables
 >
+export const GroupNameUpdateDocument = gql`
+  subscription GroupNameUpdate($user: Int) {
+    groupNameUpdate(user: $user) {
+      id
+      group_name
+      group_picture
+      is_group
+    }
+  }
+`
+
+/**
+ * __useGroupNameUpdateSubscription__
+ *
+ * To run a query within a React component, call `useGroupNameUpdateSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGroupNameUpdateSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGroupNameUpdateSubscription({
+ *   variables: {
+ *      user: // value for 'user'
+ *   },
+ * });
+ */
+export function useGroupNameUpdateSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    GroupNameUpdateSubscription,
+    GroupNameUpdateSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSubscription<
+    GroupNameUpdateSubscription,
+    GroupNameUpdateSubscriptionVariables
+  >(GroupNameUpdateDocument, options)
+}
+export type GroupNameUpdateSubscriptionHookResult = ReturnType<
+  typeof useGroupNameUpdateSubscription
+>
+export type GroupNameUpdateSubscriptionResult =
+  Apollo.SubscriptionResult<GroupNameUpdateSubscription>
 export const GroupRolesDocument = gql`
   query GroupRoles($groupId: Int) {
     groupRoles(group_id: $groupId) {
