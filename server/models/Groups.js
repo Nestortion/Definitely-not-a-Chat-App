@@ -13,11 +13,11 @@ const Groups = DB.define(
     group_name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
     group_picture: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: 'default-icon.png',
     },
     is_group: {
       type: DataTypes.BOOLEAN,
