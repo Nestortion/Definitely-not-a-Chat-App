@@ -70,7 +70,7 @@ export type Mutation = {
   __typename?: 'Mutation'
   addGroup?: Maybe<Group>
   addGroupRole?: Maybe<GroupRole>
-  addMember?: Maybe<UserGroup>
+  addMember?: Maybe<Array<Maybe<UserGroup>>>
   addUser?: Maybe<User>
   addUserChat?: Maybe<UserChat>
   addUserChatReaction?: Maybe<UserChatReaction>
@@ -156,6 +156,7 @@ export type Query = {
   user?: Maybe<User>
   userChat?: Maybe<UserChat>
   userChatReactions?: Maybe<Array<Maybe<UserChatReaction>>>
+  userChatSender?: Maybe<User>
   userChats?: Maybe<Array<Maybe<UserChat>>>
   userGroup?: Maybe<UserGroup>
   userGroupRoles?: Maybe<Array<Maybe<GroupRole>>>
@@ -184,6 +185,10 @@ export type QuerySearchGroupsArgs = {
 
 export type QueryUserChatArgs = {
   id: Scalars['Int']
+}
+
+export type QueryUserChatSenderArgs = {
+  user_id?: InputMaybe<Scalars['Int']>
 }
 
 export type QueryUserChatsArgs = {
@@ -311,11 +316,11 @@ export type AddMemberMutationVariables = Exact<{
 
 export type AddMemberMutation = {
   __typename?: 'Mutation'
-  addMember?: {
+  addMember?: Array<{
     __typename?: 'UserGroup'
     group_id: number
     user_id: number
-  } | null
+  } | null> | null
 }
 
 export type AddUserMutationVariables = Exact<{
@@ -554,6 +559,22 @@ export type UserQuery = {
     profile_img: string
     age: number
     gender: string
+  } | null
+}
+
+export type UserChatSenderQueryVariables = Exact<{
+  userId?: InputMaybe<Scalars['Int']>
+}>
+
+export type UserChatSenderQuery = {
+  __typename?: 'Query'
+  userChatSender?: {
+    __typename?: 'User'
+    first_name: string
+    last_name: string
+    username: string
+    profile_img: string
+    id: number
   } | null
 }
 
@@ -1700,6 +1721,68 @@ export function useUserLazyQuery(
 export type UserQueryHookResult = ReturnType<typeof useUserQuery>
 export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>
 export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>
+export const UserChatSenderDocument = gql`
+  query UserChatSender($userId: Int) {
+    userChatSender(user_id: $userId) {
+      first_name
+      last_name
+      username
+      profile_img
+      id
+    }
+  }
+`
+
+/**
+ * __useUserChatSenderQuery__
+ *
+ * To run a query within a React component, call `useUserChatSenderQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserChatSenderQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserChatSenderQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUserChatSenderQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    UserChatSenderQuery,
+    UserChatSenderQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<UserChatSenderQuery, UserChatSenderQueryVariables>(
+    UserChatSenderDocument,
+    options
+  )
+}
+export function useUserChatSenderLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    UserChatSenderQuery,
+    UserChatSenderQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<UserChatSenderQuery, UserChatSenderQueryVariables>(
+    UserChatSenderDocument,
+    options
+  )
+}
+export type UserChatSenderQueryHookResult = ReturnType<
+  typeof useUserChatSenderQuery
+>
+export type UserChatSenderLazyQueryHookResult = ReturnType<
+  typeof useUserChatSenderLazyQuery
+>
+export type UserChatSenderQueryResult = Apollo.QueryResult<
+  UserChatSenderQuery,
+  UserChatSenderQueryVariables
+>
 export const UserChatsDocument = gql`
   query UserChats {
     userChats {
