@@ -2,23 +2,28 @@ import { useState } from 'react'
 import ReactSearchBox from 'react-search-box'
 import Button from '../../UI/Button/Button'
 import './add-members.scss'
-import { useAddMemberListQuery } from '../../../graphql/hooks/graphql'
+import {
+  useAddMemberListQuery,
+  useAddMemberMutation,
+} from '../../../graphql/hooks/graphql'
 import ErrorText from '../../Error/ErrorText'
 import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'
+import { useParams } from 'react-router-dom'
 
 // Transform the data like this first
 // { key: id, value: 'first_name last_name'}
 
 export default function AddMembers() {
+  const { chatId } = useParams()
   const {
     data: allMembers,
     loading: usersLoading,
     error: usersError,
-  } = useAddMemberListQuery()
+  } = useAddMemberListQuery({ variables: { groupId: parseInt(chatId) } })
 
   // const [searchInput, setSearchInput] = useState('')
   const [selectedMembers, setSelectedMembers] = useState([])
-
+  const [addMembers] = useAddMemberMutation()
   if (usersLoading) return <LoadingSpinner />
   if (usersError) return <ErrorText>Error</ErrorText>
 
@@ -54,8 +59,9 @@ export default function AddMembers() {
     if (selectedMembers.length === 0) return
 
     // do the logic here
-    console.log(selectedMembers.map((member) => member.key))
 
+    const memberIds = selectedMembers.map((member) => member.key)
+    addMembers({ variables: { groupId: parseInt(chatId), userId: memberIds } })
     // reset selectedMembers
     setSelectedMembers([])
   }
