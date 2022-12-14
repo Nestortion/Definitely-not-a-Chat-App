@@ -27,7 +27,7 @@ const typeDefs = `
     id: Int!
     message: String!
     user_id: Int!
-    receiver: Int!
+    receiver: Int
     message_type: MessageType!
   }
 
@@ -126,11 +126,13 @@ const typeDefs = `
     revokeRefreshToken(user_id:Int!) : Boolean
     logout : Boolean
     addMember(group_id: Int!, user_id: [Int!]) : [UserGroup]
+    updateGroupName(group_name: String!, group_id: Int): Group
   }
 
   
 
   type Subscription{
+    groupNameUpdate(user:Int): Group
     chatAdded(user: Int): UserChat
     memberAdded(user: Int, group_id: Int): MemberAddedResponse
   }

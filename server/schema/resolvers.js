@@ -423,7 +423,10 @@ const resolvers = {
       return true
     },
     addMember: async (_, { group_id, user_id }, context) => {
-      const { pubsub } = authMiddleware(context)
+      const { pubsub, data: user } = authMiddleware(context)
+
+      const usersAdded = await Users.findAll({ where: { id: user_id } })
+      const group = await Groups.findOne({ where: { id: group_id } })
 
       const userIds = await Promise.all(
         user_id.map(async (id) => {
@@ -437,46 +440,143 @@ const resolvers = {
           }
         })
       )
+      if (group.is_group === true) {
+        if (userIds.length > 0) {
+          const bulkUserGroups = await Promise.all(
+            userIds.map(async (user) => {
+              if (user !== null) {
+                const userGroup = await UserGroups.create(user)
+                return userGroup
+              }
+            })
+          )
 
-      if (userIds.length > 0) {
-        const bulkUserGroups = await Promise.all(
-          userIds.map(async (user) => {
-            if (user !== null) {
-              const userGroup = await UserGroups.create(user)
-              return userGroup
+          const defaultRole = await GroupRoles.findOne({
+            where: { role_name: 'Member', group_id },
+          })
+
+          const usergroup_roles = await Promise.all(
+            bulkUserGroups.map(async (user_group_id) => {
+              const usergroup_role = await UserGroupRoles.create({
+                user_group_id: user_group_id.id,
+                group_role_id: defaultRole.id,
+              })
+              return usergroup_role
+            })
+          )
+
+          pubsub.publish('MEMBER_ADDED', {
+            memberAdded: {
+              users: usersAdded,
+              group,
+              group_roles: [defaultRole],
+              usergroups: bulkUserGroups,
+              usergroup_roles,
+            },
+          })
+
+          return bulkUserGroups
+        }
+      } else {
+        const userGroup = await UserGroups.findAll({ where: { group_id } })
+        const pmUsers = userGroup.map((user) => user.user_id)
+
+        const newGroupUsers = pmUsers.concat(user_id)
+
+        const newGroupUsersData = await Users.findAll({
+          where: { id: newGroupUsers },
+        })
+
+        let newGroupName = ''
+
+        newGroupUsersData.forEach((userdata) => {
+          newGroupName = newGroupName.concat(userdata.username)
+        })
+
+        const newGroup = await Groups.create({
+          group_name: newGroupName,
+          is_group: true,
+        })
+
+        const createUserGroups = await Promise.all(
+          newGroupUsersData.map(async (userdata) => {
+            const createUserGroup = await UserGroups.create({
+              group_id: newGroup.id,
+              user_id: userdata.id,
+            })
+
+            return createUserGroup
+          })
+        )
+
+        const defaultGroupRole = await GroupRoles.create({
+          role_name: 'Member',
+          emoji: ' ',
+          description: ' ',
+          group_id: newGroup.id,
+        })
+
+        const defaultCreatorRole = await GroupRoles.create({
+          role_name: 'Group Creator',
+          emoji: ' ',
+          description: 'Group Creator',
+          group_id: newGroup.id,
+          role_type: 'MODERATOR',
+        })
+
+        const createDefaultUserGroupRoles = await Promise.all(
+          createUserGroups.map(async (usergroup) => {
+            if (usergroup.user_id === user.user_id) {
+              const createDefaultUserGroupRole = await UserGroupRoles.create({
+                user_group_id: usergroup.id,
+                group_role_id: defaultCreatorRole.id,
+              })
+              return createDefaultUserGroupRole
+            } else {
+              const createDefaultUserGroupRole = await UserGroupRoles.create({
+                user_group_id: usergroup.id,
+                group_role_id: defaultGroupRole.id,
+              })
+              return createDefaultUserGroupRole
             }
           })
         )
 
-        const defaultRole = await GroupRoles.findOne({
-          where: { role_name: 'Member', group_id },
-        })
-
-        const usergroup_roles = await Promise.all(
-          bulkUserGroups.map(async (user_group_id) => {
-            const usergroup_role = await UserGroupRoles.create({
-              user_group_id: user_group_id.id,
-              group_role_id: defaultRole.id,
-            })
-            return usergroup_role
-          })
-        )
-
-        const usersAdded = await Users.findAll({ where: { id: user_id } })
-        const group = await Groups.findOne({ where: { id: group_id } })
-
         pubsub.publish('MEMBER_ADDED', {
           memberAdded: {
-            users: usersAdded,
-            group,
-            group_roles: [defaultRole],
-            usergroups: bulkUserGroups,
-            usergroup_roles,
+            users: newGroupUsersData,
+            group: newGroup,
+            group_roles: [defaultCreatorRole, defaultGroupRole],
+            usergroups: createUserGroups,
+            usergroup_roles: createDefaultUserGroupRoles,
           },
         })
 
-        return bulkUserGroups
+        // pubsub.publish('MEMBER_ADDED', {
+        //   memberAdded: {
+        //     users: usersAdded,
+        //     group,
+        //     group_roles: [defaultRole],
+        //     usergroups: bulkUserGroups,
+        //     usergroup_roles,
+        //   },
+        // })
+
+        return createUserGroups
       }
+    },
+    updateGroupName: async (_, { group_name, group_id }, context) => {
+      const { pubsub } = authMiddleware(context)
+
+      await Groups.update({ group_name }, { where: { id: group_id } })
+
+      const updatedGroup = await Groups.findOne({ where: { id: group_id } })
+
+      pubsub.publish('GROUP_NAME_UPDATE', {
+        groupNameUpdate: updatedGroup,
+      })
+
+      return updatedGroup
     },
   },
   Subscription: {
@@ -506,6 +606,24 @@ const resolvers = {
             where: {
               user_id: variables.user,
               group_id: payload.chatAdded.receiver,
+            },
+          })
+
+          if (userGroup) {
+            return true
+          }
+          return false
+        }
+      ),
+    },
+    groupNameUpdate: {
+      subscribe: withFilter(
+        (_, __, { pubsub }) => pubsub.asyncIterator('GROUP_NAME_UPDATE'),
+        async (payload, variables) => {
+          const userGroup = await UserGroups.findOne({
+            where: {
+              user_id: variables.user,
+              group_id: payload.groupNameUpdate.id,
             },
           })
 
