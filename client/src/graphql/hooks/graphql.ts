@@ -63,7 +63,10 @@ export type KvUser = {
 export type MemberAddedResponse = {
   __typename?: 'MemberAddedResponse'
   group?: Maybe<Group>
-  user?: Maybe<User>
+  group_roles?: Maybe<Array<Maybe<GroupRole>>>
+  user_groups?: Maybe<Array<Maybe<UserGroup>>>
+  usergroup_roles?: Maybe<Array<Maybe<UserGroupRole>>>
+  users?: Maybe<Array<Maybe<User>>>
 }
 
 export enum MessageType {
@@ -231,7 +234,7 @@ export enum RoleType {
 export type Subscription = {
   __typename?: 'Subscription'
   chatAdded?: Maybe<UserChat>
-  memberAdded?: Maybe<User>
+  memberAdded?: Maybe<MemberAddedResponse>
 }
 
 export type SubscriptionChatAddedArgs = {
@@ -541,6 +544,54 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never }>
 export type LogoutMutation = {
   __typename?: 'Mutation'
   logout?: boolean | null
+}
+
+export type MemberAddedSubscriptionVariables = Exact<{
+  user?: InputMaybe<Scalars['Int']>
+  groupId?: InputMaybe<Scalars['Int']>
+}>
+
+export type MemberAddedSubscription = {
+  __typename?: 'Subscription'
+  memberAdded?: {
+    __typename?: 'MemberAddedResponse'
+    users?: Array<{
+      __typename?: 'User'
+      age: number
+      first_name: string
+      id: number
+      last_name: string
+      profile_img: string
+      username: string
+      section: string
+    } | null> | null
+    group?: {
+      __typename?: 'Group'
+      group_name: string
+      group_picture: string
+      id: number
+      is_group: string
+    } | null
+    group_roles?: Array<{
+      __typename?: 'GroupRole'
+      description: string
+      emoji: string
+      group_id: string
+      id: number
+      role_name: string
+      role_type: RoleType
+    } | null> | null
+    usergroup_roles?: Array<{
+      __typename?: 'UserGroupRole'
+      group_role_id: number
+      user_group_id: number
+    } | null> | null
+    user_groups?: Array<{
+      __typename?: 'UserGroup'
+      group_id: number
+      user_id: number
+    } | null> | null
+  } | null
 }
 
 export type SearchGroupsQueryVariables = Exact<{
@@ -1626,6 +1677,78 @@ export type LogoutMutationOptions = Apollo.BaseMutationOptions<
   LogoutMutation,
   LogoutMutationVariables
 >
+export const MemberAddedDocument = gql`
+  subscription MemberAdded($user: Int, $groupId: Int) {
+    memberAdded(user: $user, group_id: $groupId) {
+      users {
+        age
+        first_name
+        id
+        last_name
+        profile_img
+        username
+        section
+      }
+      group {
+        group_name
+        group_picture
+        id
+        is_group
+      }
+      group_roles {
+        description
+        emoji
+        group_id
+        id
+        role_name
+        role_type
+      }
+      usergroup_roles {
+        group_role_id
+        user_group_id
+      }
+      user_groups {
+        group_id
+        user_id
+      }
+    }
+  }
+`
+
+/**
+ * __useMemberAddedSubscription__
+ *
+ * To run a query within a React component, call `useMemberAddedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useMemberAddedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMemberAddedSubscription({
+ *   variables: {
+ *      user: // value for 'user'
+ *      groupId: // value for 'groupId'
+ *   },
+ * });
+ */
+export function useMemberAddedSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    MemberAddedSubscription,
+    MemberAddedSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSubscription<
+    MemberAddedSubscription,
+    MemberAddedSubscriptionVariables
+  >(MemberAddedDocument, options)
+}
+export type MemberAddedSubscriptionHookResult = ReturnType<
+  typeof useMemberAddedSubscription
+>
+export type MemberAddedSubscriptionResult =
+  Apollo.SubscriptionResult<MemberAddedSubscription>
 export const SearchGroupsDocument = gql`
   query SearchGroups($groupName: String, $groupId: Int) {
     searchGroups(group_name: $groupName, group_id: $groupId) {

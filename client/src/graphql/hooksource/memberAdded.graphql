@@ -1,0 +1,35 @@
+subscription MemberAdded($user: Int, $groupId: Int) {
+  memberAdded(user: $user, group_id: $groupId) {
+    users {
+      age
+      first_name
+      id
+      last_name
+      profile_img
+      username
+      section
+    }
+    group {
+      group_name
+      group_picture
+      id
+      is_group
+    }
+    group_roles {
+      description
+      emoji
+      group_id
+      id
+      role_name
+      role_type
+    }
+    usergroup_roles {
+      group_role_id
+      user_group_id
+    }
+    user_groups {
+      group_id
+      user_id
+    }
+  }
+}
