@@ -26,7 +26,7 @@ const Users = DB.define(
     profile_img: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 'profile',
+      defaultValue: 'default-icon.png',
     },
     token_version: {
       type: DataTypes.INTEGER,
