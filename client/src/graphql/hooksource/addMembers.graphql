@@ -1,0 +1,6 @@
+mutation AddMember($groupId: Int!, $userId: [Int!]) {
+  addMember(group_id: $groupId, user_id: $userId) {
+    group_id
+    user_id
+  }
+}

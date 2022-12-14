@@ -94,7 +94,7 @@ export type MutationAddGroupRoleArgs = {
 
 export type MutationAddMemberArgs = {
   group_id: Scalars['Int']
-  user_id: Scalars['Int']
+  user_id?: InputMaybe<Array<Scalars['Int']>>
 }
 
 export type MutationAddUserArgs = {
@@ -302,6 +302,20 @@ export type AddMemberListQuery = {
     key: number
     value: string
   } | null> | null
+}
+
+export type AddMemberMutationVariables = Exact<{
+  groupId: Scalars['Int']
+  userId?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>
+}>
+
+export type AddMemberMutation = {
+  __typename?: 'Mutation'
+  addMember?: {
+    __typename?: 'UserGroup'
+    group_id: number
+    user_id: number
+  } | null
 }
 
 export type AddUserMutationVariables = Exact<{
@@ -773,6 +787,57 @@ export type AddMemberListLazyQueryHookResult = ReturnType<
 export type AddMemberListQueryResult = Apollo.QueryResult<
   AddMemberListQuery,
   AddMemberListQueryVariables
+>
+export const AddMemberDocument = gql`
+  mutation AddMember($groupId: Int!, $userId: [Int!]) {
+    addMember(group_id: $groupId, user_id: $userId) {
+      group_id
+      user_id
+    }
+  }
+`
+export type AddMemberMutationFn = Apollo.MutationFunction<
+  AddMemberMutation,
+  AddMemberMutationVariables
+>
+
+/**
+ * __useAddMemberMutation__
+ *
+ * To run a mutation, you first call `useAddMemberMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddMemberMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addMemberMutation, { data, loading, error }] = useAddMemberMutation({
+ *   variables: {
+ *      groupId: // value for 'groupId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useAddMemberMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddMemberMutation,
+    AddMemberMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<AddMemberMutation, AddMemberMutationVariables>(
+    AddMemberDocument,
+    options
+  )
+}
+export type AddMemberMutationHookResult = ReturnType<
+  typeof useAddMemberMutation
+>
+export type AddMemberMutationResult = Apollo.MutationResult<AddMemberMutation>
+export type AddMemberMutationOptions = Apollo.BaseMutationOptions<
+  AddMemberMutation,
+  AddMemberMutationVariables
 >
 export const AddUserDocument = gql`
   mutation AddUser(

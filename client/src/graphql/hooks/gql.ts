@@ -16,6 +16,7 @@ const documents = {
     "mutation AddGroup($groupName: String) {\n  addGroup(group_name: $groupName) {\n    group_name\n  }\n}": types.AddGroupDocument,
     "mutation AddGroupRole($roleName: String, $description: String, $emoji: String, $groupId: Int) {\n  addGroupRole(\n    role_name: $roleName\n    description: $description\n    emoji: $emoji\n    group_id: $groupId\n  ) {\n    role_name\n    emoji\n    description\n    group_id\n  }\n}": types.AddGroupRoleDocument,
     "query AddMemberList {\n  addMemberList {\n    key\n    value\n  }\n}": types.AddMemberListDocument,
+    "mutation AddMember($groupId: Int!, $userId: [Int!]) {\n  addMember(group_id: $groupId, user_id: $userId) {\n    group_id\n    user_id\n  }\n}": types.AddMemberDocument,
     "mutation AddUser($username: String, $age: Int, $accessLevel: AccessLevel, $password: String, $address: String, $section: String, $firstName: String, $lastName: String, $profileImg: Upload, $gender: String) {\n  addUser(\n    username: $username\n    age: $age\n    access_level: $accessLevel\n    password: $password\n    address: $address\n    section: $section\n    first_name: $firstName\n    last_name: $lastName\n    profile_img: $profileImg\n    gender: $gender\n  ) {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.AddUserDocument,
     "mutation AddUserChat($file: Upload, $message: String, $userId: Int, $receiver: Int) {\n  addUserChat(\n    file: $file\n    message: $message\n    user_id: $userId\n    receiver: $receiver\n  ) {\n    message\n    id\n    message_type\n    receiver\n    user_id\n  }\n}": types.AddUserChatDocument,
     "mutation AddUserChatReaction($reaction: String, $count: Int, $userchatId: Int) {\n  addUserChatReaction(\n    reaction: $reaction\n    count: $count\n    userchat_id: $userchatId\n  ) {\n    reaction\n    count\n    userchat_id\n  }\n}": types.AddUserChatReactionDocument,
@@ -49,6 +50,10 @@ export function graphql(source: "mutation AddGroupRole($roleName: String, $descr
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "query AddMemberList {\n  addMemberList {\n    key\n    value\n  }\n}"): (typeof documents)["query AddMemberList {\n  addMemberList {\n    key\n    value\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation AddMember($groupId: Int!, $userId: [Int!]) {\n  addMember(group_id: $groupId, user_id: $userId) {\n    group_id\n    user_id\n  }\n}"): (typeof documents)["mutation AddMember($groupId: Int!, $userId: [Int!]) {\n  addMember(group_id: $groupId, user_id: $userId) {\n    group_id\n    user_id\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
