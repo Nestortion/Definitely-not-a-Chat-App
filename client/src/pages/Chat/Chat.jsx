@@ -4,12 +4,13 @@ import Input from '../../components/UI/Input/Input'
 import Avatar from '../../components/UI/Avatar/Avatar'
 import { useMediaQuery } from 'react-responsive'
 import {
+  GroupNameUpdateDocument,
   useAddUserChatMutation,
   useGroupQuery,
   UserChatsDocument,
   useUserGroupRolesQuery,
 } from '../../graphql/hooks/graphql'
-import { useParams } from 'react-router-dom'
+import { useOutletContext, useParams } from 'react-router-dom'
 import { apiBasePath } from '../../data/config'
 import LoadingSpinner from '../../components/Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../../components/Error/ErrorText'
@@ -19,11 +20,13 @@ import { MdAdd, MdClose } from 'react-icons/md'
 import ChatMessagesContainer from '../../components/Messages/ChatMessagesContainer/ChatMessagesContainer'
 import SpawnModal from '../../components/UI/Modal/SpawnModal'
 import AddMembers from '../../components/SettingsButtons/AddMembers/AddMembers'
+import { useEffect } from 'react'
 
 export default function Chat() {
   const { chatId } = useParams()
+  const user = useOutletContext()
   const formRef = useRef()
-  const { data, loading, error } = useGroupQuery({
+  const { data, loading, error, subscribeToMore } = useGroupQuery({
     variables: { groupId: parseInt(chatId) },
   })
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
@@ -39,6 +42,13 @@ export default function Chat() {
     loading: rolesLoading,
     error: rolesError,
   } = useUserGroupRolesQuery({ variables: { groupId: parseInt(chatId) } })
+
+  useEffect(() => {
+    subscribeToMore({
+      document: GroupNameUpdateDocument,
+      variables: { user: user.currentUser.id },
+    })
+  }, [])
 
   if (rolesLoading) return <LoadingSpinner />
   if (rolesError) return <ErrorText>Error</ErrorText>
