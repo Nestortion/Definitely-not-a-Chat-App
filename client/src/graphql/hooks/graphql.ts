@@ -54,6 +54,12 @@ export type GroupRole = {
   role_type: RoleType
 }
 
+export type KvUser = {
+  __typename?: 'KvUser'
+  key: Scalars['Int']
+  value: Scalars['String']
+}
+
 export enum MessageType {
   Image = 'IMAGE',
   Other = 'OTHER',
@@ -64,6 +70,7 @@ export type Mutation = {
   __typename?: 'Mutation'
   addGroup?: Maybe<Group>
   addGroupRole?: Maybe<GroupRole>
+  addMember?: Maybe<UserGroup>
   addUser?: Maybe<User>
   addUserChat?: Maybe<UserChat>
   addUserChatReaction?: Maybe<UserChatReaction>
@@ -83,6 +90,11 @@ export type MutationAddGroupRoleArgs = {
   emoji?: InputMaybe<Scalars['String']>
   group_id?: InputMaybe<Scalars['Int']>
   role_name?: InputMaybe<Scalars['String']>
+}
+
+export type MutationAddMemberArgs = {
+  group_id: Scalars['Int']
+  user_id: Scalars['Int']
 }
 
 export type MutationAddUserArgs = {
@@ -133,6 +145,7 @@ export type MutationRevokeRefreshTokenArgs = {
 
 export type Query = {
   __typename?: 'Query'
+  addMemberList?: Maybe<Array<Maybe<KvUser>>>
   currentUser?: Maybe<User>
   group?: Maybe<Group>
   groupRoles?: Maybe<Array<Maybe<GroupRole>>>
@@ -278,6 +291,17 @@ export type AddGroupRoleMutation = {
     description: string
     group_id: string
   } | null
+}
+
+export type AddMemberListQueryVariables = Exact<{ [key: string]: never }>
+
+export type AddMemberListQuery = {
+  __typename?: 'Query'
+  addMemberList?: Array<{
+    __typename?: 'KvUser'
+    key: number
+    value: string
+  } | null> | null
 }
 
 export type AddUserMutationVariables = Exact<{
@@ -691,6 +715,64 @@ export type AddGroupRoleMutationResult =
 export type AddGroupRoleMutationOptions = Apollo.BaseMutationOptions<
   AddGroupRoleMutation,
   AddGroupRoleMutationVariables
+>
+export const AddMemberListDocument = gql`
+  query AddMemberList {
+    addMemberList {
+      key
+      value
+    }
+  }
+`
+
+/**
+ * __useAddMemberListQuery__
+ *
+ * To run a query within a React component, call `useAddMemberListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAddMemberListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAddMemberListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAddMemberListQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    AddMemberListQuery,
+    AddMemberListQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<AddMemberListQuery, AddMemberListQueryVariables>(
+    AddMemberListDocument,
+    options
+  )
+}
+export function useAddMemberListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AddMemberListQuery,
+    AddMemberListQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<AddMemberListQuery, AddMemberListQueryVariables>(
+    AddMemberListDocument,
+    options
+  )
+}
+export type AddMemberListQueryHookResult = ReturnType<
+  typeof useAddMemberListQuery
+>
+export type AddMemberListLazyQueryHookResult = ReturnType<
+  typeof useAddMemberListLazyQuery
+>
+export type AddMemberListQueryResult = Apollo.QueryResult<
+  AddMemberListQuery,
+  AddMemberListQueryVariables
 >
 export const AddUserDocument = gql`
   mutation AddUser(

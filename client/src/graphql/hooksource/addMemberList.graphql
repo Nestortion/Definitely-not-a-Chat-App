@@ -1,0 +1,6 @@
+query AddMemberList {
+  addMemberList {
+    key
+    value
+  }
+}
