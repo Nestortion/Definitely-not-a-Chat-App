@@ -3,7 +3,7 @@ import { apiBasePath } from '../../../data/config'
 import Avatar from '../../UI/Avatar/Avatar'
 import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../../Error/ErrorText'
-import { useUserQuery } from '../../../graphql/hooks/graphql'
+import { useUserChatSenderQuery } from '../../../graphql/hooks/graphql'
 import { useEffect, useRef, useState } from 'react'
 import CustomImage from '../../UI/Image/CustomImage'
 import { MdDownload } from 'react-icons/md'
@@ -23,13 +23,15 @@ export default function ChatMessage({
     data: userData,
     loading: userLoading,
     error: userError,
-  } = useUserQuery({ variables: { userId: sender } })
+  } = useUserChatSenderQuery({ variables: { userId: sender } })
   useEffect(() => {
     messageDiv.current?.scrollIntoView()
   }, [text])
 
   if (userLoading) return <LoadingSpinner>Loading</LoadingSpinner>
   if (userError) return <ErrorText>Error</ErrorText>
+
+  console.log(userData.user)
 
   const senderShouldShow = is_group === 'true' && sender !== user
 
@@ -64,7 +66,7 @@ export default function ChatMessage({
             {/* TODO: src should be dynamic */}
             <Avatar
               size={16}
-              src={`${apiBasePath}/pfp/${userData.user.profile_img}`}
+              src={`${apiBasePath}/pfp/${userData.userChatSender.profile_img}`}
             />
           </div>
         )}
@@ -72,7 +74,7 @@ export default function ChatMessage({
         <div className="chat-message-container">
           {senderShouldShow && (
             <div className="chat-message-sender__name fs-300">
-              <span>{userData.user.first_name}</span>
+              <span>{userData.userChatSender.first_name}</span>
             </div>
           )}
 
