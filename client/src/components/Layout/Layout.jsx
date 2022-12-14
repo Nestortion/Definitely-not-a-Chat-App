@@ -88,7 +88,7 @@ export default function Layout() {
                 <Button onClick={showOnlyRight}>settings</Button>
               </div>
             )}
-            <Outlet context={showOnlyMiddle} />
+            <Outlet context={user} />
           </div>
         )}
 

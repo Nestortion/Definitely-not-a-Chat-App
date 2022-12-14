@@ -2,25 +2,25 @@ import ErrorText from '../../components/Error/ErrorText'
 import LoadingSpinner from '../../components/Loading/LoadingSpinner/LoadingSpinner'
 import Avatar from '../../components/UI/Avatar/Avatar'
 import { apiBasePath } from '../../data/config'
-import { useUserQuery } from '../../graphql/hooks/graphql'
 import { MdUpload } from 'react-icons/md'
 import './profile-settings.scss'
 import { useState } from 'react'
+import { useOutletContext } from 'react-router-dom'
 
 export default function ProfileSettings() {
-  const { data: userData, userLoading, error: userError } = useUserQuery()
+  const user = useOutletContext()
 
   if (userLoading) return <LoadingSpinner />
   if (userError) return <ErrorText />
 
   const [fileInput, setFileInput] = useState(null)
-  const [firstName, setFirstName] = useState(userData.user.first_name)
-  const [lastName, setLastName] = useState(userData.user.last_name)
-  const [username, setUsername] = useState(userData.user.username)
-  const [age, setAge] = useState(userData.user.age)
-  const [gender, setGender] = useState(userData.user.gender)
-  const [section, setSection] = useState(userData.user.section)
-  const [address, setAddress] = useState(userData.user.address)
+  const [firstName, setFirstName] = useState(user.currentUser.first_name)
+  const [lastName, setLastName] = useState(user.currentUser.last_name)
+  const [username, setUsername] = useState(user.currentUser.username)
+  const [age, setAge] = useState(user.currentUser.age)
+  const [gender, setGender] = useState(user.currentUser.gender)
+  const [section, setSection] = useState(user.currentUser.section)
+  const [address, setAddress] = useState(user.currentUser.address)
 
   const handleChange = (e) => {}
 
@@ -30,7 +30,7 @@ export default function ProfileSettings() {
         <div className="profile-settings__header">
           <div className="profile-settings__image">
             <Avatar
-              src={`${apiBasePath}/pfp/${userData.user.profile_img}`}
+              src={`${apiBasePath}/pfp/${user.currentUser.profile_img}`}
               size={256}
             />
             <div className="profile-settings__file-input">
