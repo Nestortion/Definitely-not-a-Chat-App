@@ -2,55 +2,25 @@ import { useState } from 'react'
 import ReactSearchBox from 'react-search-box'
 import Button from '../../UI/Button/Button'
 import './add-members.scss'
+import { useAddMemberListQuery } from '../../../graphql/hooks/graphql'
+import ErrorText from '../../Error/ErrorText'
+import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'
 
 // Transform the data like this first
 // { key: id, value: 'first_name last_name'}
-const allMembers = [
-  {
-    key: 1,
-    value: 'Josel Catalan',
-  },
-  {
-    key: 2,
-    value: 'Jane Doe',
-  },
-  {
-    key: 3,
-    value: 'John Doe',
-  },
-  {
-    key: 4,
-    value: 'Nestor Gerona',
-  },
-  {
-    key: 5,
-    value: 'Nig Future',
-  },
-  {
-    key: 6,
-    value: 'Gaolang Wongsawat',
-  },
-  {
-    key: 7,
-    value: 'Tokita Ohma',
-  },
-  {
-    key: 8,
-    value: 'Kanoh Agito',
-  },
-  {
-    key: 9,
-    value: 'Kanoh Agito',
-  },
-  {
-    key: 10,
-    value: 'Among Amongus',
-  },
-]
 
 export default function AddMembers() {
+  const {
+    data: allMembers,
+    loading: usersLoading,
+    error: usersError,
+  } = useAddMemberListQuery()
+
   // const [searchInput, setSearchInput] = useState('')
   const [selectedMembers, setSelectedMembers] = useState([])
+
+  if (usersLoading) return <LoadingSpinner />
+  if (usersError) return <ErrorText>Error</ErrorText>
 
   // const handleSearchChange = (e) => {
   //   setSearchInput(e.target.value)
@@ -84,7 +54,7 @@ export default function AddMembers() {
     if (selectedMembers.length === 0) return
 
     // do the logic here
-    console.log(selectedMembers)
+    console.log(selectedMembers.map((member) => member.key))
 
     // reset selectedMembers
     setSelectedMembers([])
@@ -101,7 +71,7 @@ export default function AddMembers() {
           /> */}
         <ReactSearchBox
           placeholder="Search member"
-          data={allMembers}
+          data={allMembers.addMemberList}
           onSelect={(member) => handleAddMember(member.item)}
           clearOnSelect
           inputFontSize="0.8rem"
