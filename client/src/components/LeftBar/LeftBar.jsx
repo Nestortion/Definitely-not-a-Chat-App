@@ -16,13 +16,7 @@ import { MdAdd } from 'react-icons/md'
 import { useEffect } from 'react'
 import SpawnModal from '../UI/Modal/SpawnModal'
 
-export default function LeftBar({ showOnlyMiddle }) {
-  const {
-    data: user,
-    loading: userLoading,
-    error: userError,
-  } = useCurrentUserQuery()
-
+export default function LeftBar({ user, showOnlyMiddle }) {
   const {
     data: latestChats,
     loading: latestLoading,
@@ -42,7 +36,7 @@ export default function LeftBar({ showOnlyMiddle }) {
   useEffect(() => {
     subscribeToMore({
       document: ChatAddedDocument,
-      variables: { user: user?.currentUser.id },
+      variables: { user: user.currentUser.id },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev
 
@@ -60,7 +54,7 @@ export default function LeftBar({ showOnlyMiddle }) {
         }
       },
     })
-  }, [latestChats])
+  }, [])
   const [searchData, setSearchData] = useState()
   const [isSearching, setIsSearching] = useState(false)
   const [isModalShowing, setIsModalShowing] = useState(false)
@@ -69,8 +63,6 @@ export default function LeftBar({ showOnlyMiddle }) {
   if (error) return <ErrorText>Something went wrong</ErrorText>
   if (latestLoading) return <LoadingSpinner />
   if (latestError) return <ErrorText>Something went wrong</ErrorText>
-  if (userLoading) return <LoadingSpinner />
-  if (userError) return <ErrorText>Something went wrong</ErrorText>
 
   const searchValueHandle = async (e) => {
     if (e.target.value) {
