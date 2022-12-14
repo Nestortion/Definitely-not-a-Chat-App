@@ -6,6 +6,9 @@ import RightBar from '../RightBar/RightBar'
 import './layout.scss'
 import { useMediaQuery } from 'react-responsive'
 import Button from '../UI/Button/Button'
+import { useCurrentUserQuery } from '../../graphql/hooks/graphql'
+import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
+import ErrorText from '../Error/ErrorText'
 
 export default function Layout() {
   const location = useLocation()
@@ -52,6 +55,15 @@ export default function Layout() {
     }
   }, [])
 
+  const {
+    data: user,
+    loading: userLoading,
+    error: userError,
+  } = useCurrentUserQuery()
+
+  if (userLoading) return <LoadingSpinner />
+  if (userError) return <ErrorText>Something went wrong</ErrorText>
+
   return (
     <div className="layout">
       <NavBar
@@ -64,7 +76,7 @@ export default function Layout() {
         {leftShouldShow && (
           <div className="left">
             {/* TODO: need to prop drill showMiddleOnly to ChatListItem */}
-            <LeftBar showOnlyMiddle={showOnlyMiddle} />
+            <LeftBar user={user} showOnlyMiddle={showOnlyMiddle} />
           </div>
         )}
 
