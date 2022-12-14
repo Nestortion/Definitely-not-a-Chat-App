@@ -31,8 +31,6 @@ export default function ChatMessage({
   if (userLoading) return <LoadingSpinner>Loading</LoadingSpinner>
   if (userError) return <ErrorText>Error</ErrorText>
 
-  console.log(userData.user)
-
   const senderShouldShow = is_group === 'true' && sender !== user
 
   let newText = text
