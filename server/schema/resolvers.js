@@ -233,8 +233,6 @@ const resolvers = {
 
       const validation = await Groups.findOne({ where: { id: group_id } })
 
-      console.log(validation.dataValues.is_group)
-
       if (validation.dataValues.is_group === false) {
         return null
       }
