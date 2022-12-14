@@ -2,10 +2,12 @@ import { useState } from 'react'
 import Button from '../../UI/Button/Button'
 import './edit-group-name.scss'
 import { useParams } from 'react-router-dom'
+import { useUpdateGroupNameMutation } from '../../../graphql/hooks/graphql'
 
 export default function EditGroupName() {
   const [newName, setNewName] = useState('')
   const { chatId } = useParams()
+  const [updateGroupName] = useUpdateGroupNameMutation()
 
   const handleChange = (e) => {
     setNewName(e.target.value)
@@ -13,8 +15,10 @@ export default function EditGroupName() {
 
   const handleSave = (e) => {
     e.preventDefault()
-    // logic here
-    console.log(chatId)
+
+    updateGroupName({
+      variables: { groupName: newName, groupId: parseInt(chatId) },
+    })
   }
 
   const handleReset = () => {
