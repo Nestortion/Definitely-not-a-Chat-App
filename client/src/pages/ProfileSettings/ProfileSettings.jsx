@@ -10,9 +10,6 @@ import { useOutletContext } from 'react-router-dom'
 export default function ProfileSettings() {
   const user = useOutletContext()
 
-  if (userLoading) return <LoadingSpinner />
-  if (userError) return <ErrorText />
-
   const [fileInput, setFileInput] = useState(null)
   const [firstName, setFirstName] = useState(user.currentUser.first_name)
   const [lastName, setLastName] = useState(user.currentUser.last_name)
