@@ -1,5 +1,8 @@
 import { useParams } from 'react-router-dom'
-import { useGroupRolesQuery } from '../../graphql/hooks/graphql'
+import {
+  useCurrentUserQuery,
+  useGroupRolesQuery,
+} from '../../graphql/hooks/graphql'
 import ErrorText from '../Error/ErrorText'
 import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import Role from '../Role/Role/Role'
@@ -12,9 +15,18 @@ export default function MemberList({ showOnlyMiddle }) {
     data: roles,
     loading,
     error,
+    refetch,
   } = useGroupRolesQuery({ variables: { groupId: parseInt(chatId) } })
 
-  if (loading) return <LoadingSpinner>Loading</LoadingSpinner>
+  const {
+    data: user,
+    loading: userLoading,
+    error: userError,
+  } = useCurrentUserQuery()
+
+  if (userLoading) return <LoadingSpinner />
+  if (userError) return <ErrorText>Error</ErrorText>
+  if (loading) return <LoadingSpinner />
   if (error) return <ErrorText>Error</ErrorText>
 
   return (
@@ -26,6 +38,8 @@ export default function MemberList({ showOnlyMiddle }) {
           name={role.role_name}
           emoji={role.emoji}
           showOnlyMiddle={showOnlyMiddle}
+          rolesRefetch={refetch}
+          user={user.currentUser}
         />
       ))}
     </div>
