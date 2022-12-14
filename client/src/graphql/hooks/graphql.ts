@@ -88,6 +88,7 @@ export type Mutation = {
   login?: Maybe<AccessToken>
   logout?: Maybe<Scalars['Boolean']>
   revokeRefreshToken?: Maybe<Scalars['Boolean']>
+  updateGroupName?: Maybe<Group>
 }
 
 export type MutationAddGroupArgs = {
@@ -150,6 +151,11 @@ export type MutationLoginArgs = {
 
 export type MutationRevokeRefreshTokenArgs = {
   user_id: Scalars['Int']
+}
+
+export type MutationUpdateGroupNameArgs = {
+  group_id?: InputMaybe<Scalars['Int']>
+  group_name: Scalars['String']
 }
 
 export type Query = {
@@ -234,10 +240,15 @@ export enum RoleType {
 export type Subscription = {
   __typename?: 'Subscription'
   chatAdded?: Maybe<UserChat>
+  groupNameUpdate?: Maybe<Group>
   memberAdded?: Maybe<MemberAddedResponse>
 }
 
 export type SubscriptionChatAddedArgs = {
+  user?: InputMaybe<Scalars['Int']>
+}
+
+export type SubscriptionGroupNameUpdateArgs = {
   user?: InputMaybe<Scalars['Int']>
 }
 
@@ -608,6 +619,22 @@ export type SearchGroupsQuery = {
     id: number
     is_group: string
   } | null> | null
+}
+
+export type UpdateGroupNameMutationVariables = Exact<{
+  groupName: Scalars['String']
+  groupId?: InputMaybe<Scalars['Int']>
+}>
+
+export type UpdateGroupNameMutation = {
+  __typename?: 'Mutation'
+  updateGroupName?: {
+    __typename?: 'Group'
+    id: number
+    group_name: string
+    group_picture: string
+    is_group: string
+  } | null
 }
 
 export type UserQueryVariables = Exact<{ [key: string]: never }>
@@ -1810,6 +1837,60 @@ export type SearchGroupsLazyQueryHookResult = ReturnType<
 export type SearchGroupsQueryResult = Apollo.QueryResult<
   SearchGroupsQuery,
   SearchGroupsQueryVariables
+>
+export const UpdateGroupNameDocument = gql`
+  mutation UpdateGroupName($groupName: String!, $groupId: Int) {
+    updateGroupName(group_name: $groupName, group_id: $groupId) {
+      id
+      group_name
+      group_picture
+      is_group
+    }
+  }
+`
+export type UpdateGroupNameMutationFn = Apollo.MutationFunction<
+  UpdateGroupNameMutation,
+  UpdateGroupNameMutationVariables
+>
+
+/**
+ * __useUpdateGroupNameMutation__
+ *
+ * To run a mutation, you first call `useUpdateGroupNameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateGroupNameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateGroupNameMutation, { data, loading, error }] = useUpdateGroupNameMutation({
+ *   variables: {
+ *      groupName: // value for 'groupName'
+ *      groupId: // value for 'groupId'
+ *   },
+ * });
+ */
+export function useUpdateGroupNameMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateGroupNameMutation,
+    UpdateGroupNameMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    UpdateGroupNameMutation,
+    UpdateGroupNameMutationVariables
+  >(UpdateGroupNameDocument, options)
+}
+export type UpdateGroupNameMutationHookResult = ReturnType<
+  typeof useUpdateGroupNameMutation
+>
+export type UpdateGroupNameMutationResult =
+  Apollo.MutationResult<UpdateGroupNameMutation>
+export type UpdateGroupNameMutationOptions = Apollo.BaseMutationOptions<
+  UpdateGroupNameMutation,
+  UpdateGroupNameMutationVariables
 >
 export const UserDocument = gql`
   query User {

@@ -32,6 +32,7 @@ const documents = {
     "mutation Logout {\n  logout\n}": types.LogoutDocument,
     "subscription MemberAdded($user: Int, $groupId: Int) {\n  memberAdded(user: $user, group_id: $groupId) {\n    users {\n      age\n      first_name\n      id\n      last_name\n      profile_img\n      username\n      section\n    }\n    group {\n      group_name\n      group_picture\n      id\n      is_group\n    }\n    group_roles {\n      description\n      emoji\n      group_id\n      id\n      role_name\n      role_type\n    }\n    usergroup_roles {\n      group_role_id\n      user_group_id\n    }\n    user_groups {\n      group_id\n      user_id\n    }\n  }\n}": types.MemberAddedDocument,
     "query SearchGroups($groupName: String, $groupId: Int) {\n  searchGroups(group_name: $groupName, group_id: $groupId) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}": types.SearchGroupsDocument,
+    "mutation UpdateGroupName($groupName: String!, $groupId: Int) {\n  updateGroupName(group_name: $groupName, group_id: $groupId) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}": types.UpdateGroupNameDocument,
     "query User {\n  user {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.UserDocument,
     "query UserChatSender($userId: Int) {\n  userChatSender(user_id: $userId) {\n    first_name\n    last_name\n    username\n    profile_img\n    id\n  }\n}": types.UserChatSenderDocument,
     "query UserChats {\n  userChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}": types.UserChatsDocument,
@@ -116,6 +117,10 @@ export function graphql(source: "subscription MemberAdded($user: Int, $groupId: 
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "query SearchGroups($groupName: String, $groupId: Int) {\n  searchGroups(group_name: $groupName, group_id: $groupId) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}"): (typeof documents)["query SearchGroups($groupName: String, $groupId: Int) {\n  searchGroups(group_name: $groupName, group_id: $groupId) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation UpdateGroupName($groupName: String!, $groupId: Int) {\n  updateGroupName(group_name: $groupName, group_id: $groupId) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}"): (typeof documents)["mutation UpdateGroupName($groupName: String!, $groupId: Int) {\n  updateGroupName(group_name: $groupName, group_id: $groupId) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
