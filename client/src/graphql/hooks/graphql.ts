@@ -62,6 +62,7 @@ export type KvUser = {
 
 export type MemberAddedResponse = {
   __typename?: 'MemberAddedResponse'
+  blame?: Maybe<User>
   group?: Maybe<Group>
   group_roles?: Maybe<Array<Maybe<GroupRole>>>
   user_groups?: Maybe<Array<Maybe<UserGroup>>>
@@ -278,7 +279,7 @@ export type UserChat = {
   id: Scalars['Int']
   message: Scalars['String']
   message_type: MessageType
-  receiver: Scalars['Int']
+  receiver?: Maybe<Scalars['Int']>
   user_id: Scalars['Int']
 }
 
@@ -401,7 +402,7 @@ export type AddUserChatMutation = {
     message: string
     id: number
     message_type: MessageType
-    receiver: number
+    receiver?: number | null
     user_id: number
   } | null
 }
@@ -447,7 +448,7 @@ export type ChatAddedSubscription = {
     id: number
     message: string
     user_id: number
-    receiver: number
+    receiver?: number | null
     message_type: MessageType
   } | null
 }
@@ -550,7 +551,7 @@ export type LatestChatsQuery = {
     id: number
     message: string
     user_id: number
-    receiver: number
+    receiver?: number | null
     message_type: MessageType
   } | null> | null
 }
@@ -617,6 +618,7 @@ export type MemberAddedSubscription = {
       group_id: number
       user_id: number
     } | null> | null
+    blame?: { __typename?: 'User'; id: number } | null
   } | null
 }
 
@@ -698,7 +700,7 @@ export type UserChatsQuery = {
     id: number
     message: string
     user_id: number
-    receiver: number
+    receiver?: number | null
     message_type: MessageType
   } | null> | null
 }
@@ -1796,6 +1798,9 @@ export const MemberAddedDocument = gql`
       user_groups {
         group_id
         user_id
+      }
+      blame {
+        id
       }
     }
   }

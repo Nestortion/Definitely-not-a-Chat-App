@@ -31,5 +31,8 @@ subscription MemberAdded($user: Int, $groupId: Int) {
       group_id
       user_id
     }
+    blame {
+      id
+    }
   }
 }
