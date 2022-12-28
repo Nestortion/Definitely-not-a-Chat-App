@@ -132,9 +132,23 @@ const splitLink = split(
   ApolloLink.from([refreshTokenLink, authLink, uploadlink])
 )
 
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        userRoles: {
+          merge(existing, incoming) {
+            return incoming
+          },
+        },
+      },
+    },
+  },
+})
+
 const client = new ApolloClient({
   link: splitLink,
-  cache: new InMemoryCache(),
+  cache,
 })
 
 ReactDOM.createRoot(document.getElementById('root')).render(
