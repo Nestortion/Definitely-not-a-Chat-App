@@ -1,0 +1,11 @@
+mutation RemoveMember($groupId: Int, $userId: Int) {
+  removeMember(group_id: $groupId, user_id: $userId) {
+    id
+    first_name
+    last_name
+    section
+    profile_img
+    age
+    gender
+  }
+}

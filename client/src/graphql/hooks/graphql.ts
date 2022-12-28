@@ -88,6 +88,7 @@ export type Mutation = {
   addUserGroupRole?: Maybe<UserGroupRole>
   login?: Maybe<AccessToken>
   logout?: Maybe<Scalars['Boolean']>
+  removeMember?: Maybe<User>
   revokeRefreshToken?: Maybe<Scalars['Boolean']>
   updateGroupName?: Maybe<Group>
 }
@@ -148,6 +149,11 @@ export type MutationAddUserGroupRoleArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String']
   username: Scalars['String']
+}
+
+export type MutationRemoveMemberArgs = {
+  group_id?: InputMaybe<Scalars['Int']>
+  user_id?: InputMaybe<Scalars['Int']>
 }
 
 export type MutationRevokeRefreshTokenArgs = {
@@ -619,6 +625,25 @@ export type MemberAddedSubscription = {
       user_id: number
     } | null> | null
     blame?: { __typename?: 'User'; id: number } | null
+  } | null
+}
+
+export type RemoveMemberMutationVariables = Exact<{
+  groupId?: InputMaybe<Scalars['Int']>
+  userId?: InputMaybe<Scalars['Int']>
+}>
+
+export type RemoveMemberMutation = {
+  __typename?: 'Mutation'
+  removeMember?: {
+    __typename?: 'User'
+    id: number
+    first_name: string
+    last_name: string
+    section: string
+    profile_img: string
+    age: number
+    gender: string
   } | null
 }
 
@@ -1840,6 +1865,63 @@ export type MemberAddedSubscriptionHookResult = ReturnType<
 >
 export type MemberAddedSubscriptionResult =
   Apollo.SubscriptionResult<MemberAddedSubscription>
+export const RemoveMemberDocument = gql`
+  mutation RemoveMember($groupId: Int, $userId: Int) {
+    removeMember(group_id: $groupId, user_id: $userId) {
+      id
+      first_name
+      last_name
+      section
+      profile_img
+      age
+      gender
+    }
+  }
+`
+export type RemoveMemberMutationFn = Apollo.MutationFunction<
+  RemoveMemberMutation,
+  RemoveMemberMutationVariables
+>
+
+/**
+ * __useRemoveMemberMutation__
+ *
+ * To run a mutation, you first call `useRemoveMemberMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveMemberMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeMemberMutation, { data, loading, error }] = useRemoveMemberMutation({
+ *   variables: {
+ *      groupId: // value for 'groupId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useRemoveMemberMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveMemberMutation,
+    RemoveMemberMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    RemoveMemberMutation,
+    RemoveMemberMutationVariables
+  >(RemoveMemberDocument, options)
+}
+export type RemoveMemberMutationHookResult = ReturnType<
+  typeof useRemoveMemberMutation
+>
+export type RemoveMemberMutationResult =
+  Apollo.MutationResult<RemoveMemberMutation>
+export type RemoveMemberMutationOptions = Apollo.BaseMutationOptions<
+  RemoveMemberMutation,
+  RemoveMemberMutationVariables
+>
 export const SearchGroupsDocument = gql`
   query SearchGroups($groupName: String, $groupId: Int) {
     searchGroups(group_name: $groupName, group_id: $groupId) {
