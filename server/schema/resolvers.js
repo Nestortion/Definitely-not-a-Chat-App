@@ -101,14 +101,36 @@ const resolvers = {
       const validation = await UserGroups.findAll({
         where: { user_id: user.user_id },
       })
+
+      const userGroupIds = validation.map((usergroup) => usergroup.id)
+
+      const userGroupRoles = await UserGroupRoles.findAll({
+        where: { user_group_id: userGroupIds },
+      })
+
+      const groupRolesIds = userGroupRoles.map(
+        (usergrouprole) => usergrouprole.group_role_id
+      )
+
+      const groupRoles = await GroupRoles.findAll({
+        where: { id: groupRolesIds },
+      })
+
       let groups = []
 
       for (const usergroup of validation) {
         const hasChat = await UserChats.findAll({
           where: { receiver: usergroup.group_id },
         })
+
         if (hasChat.length > 0) {
           groups.push(usergroup.group_id)
+        }
+      }
+
+      for (const groupRole of groupRoles) {
+        if (groupRole.role_type === 'MODERATOR') {
+          groups.push(groupRole.group_id)
         }
       }
 
@@ -464,6 +486,7 @@ const resolvers = {
               return usergroup_role
             })
           )
+          const blame = await Users.findOne({ where: { id: user.user_id } })
 
           pubsub.publish('MEMBER_ADDED', {
             memberAdded: {
@@ -472,6 +495,7 @@ const resolvers = {
               group_roles: [defaultRole],
               usergroups: bulkUserGroups,
               usergroup_roles,
+              blame,
             },
           })
 
@@ -542,6 +566,7 @@ const resolvers = {
           })
         )
 
+        const blame = await Users.findOne({ where: { id: user.user_id } })
         pubsub.publish('MEMBER_ADDED', {
           memberAdded: {
             users: newGroupUsersData,
@@ -549,6 +574,7 @@ const resolvers = {
             group_roles: [defaultCreatorRole, defaultGroupRole],
             usergroups: createUserGroups,
             usergroup_roles: createDefaultUserGroupRoles,
+            blame,
           },
         })
 

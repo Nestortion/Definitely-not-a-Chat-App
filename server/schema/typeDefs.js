@@ -90,6 +90,7 @@ const typeDefs = `
     group_roles: [GroupRole]
     user_groups: [UserGroup]
     usergroup_roles: [UserGroupRole]
+    blame: User
   }
 
   type Query {
