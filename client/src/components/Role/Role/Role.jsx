@@ -22,6 +22,7 @@ export default function Role({
     loading,
     error,
     subscribeToMore,
+    refetch,
   } = useUserRolesQuery({ variables: { groupRoleId: id } })
 
   useEffect(() => {
@@ -31,6 +32,7 @@ export default function Role({
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev
         rolesRefetch()
+        refetch()
       },
     })
   }, [])
