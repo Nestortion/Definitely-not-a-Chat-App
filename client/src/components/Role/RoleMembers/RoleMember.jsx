@@ -1,13 +1,16 @@
 import { useMediaQuery } from 'react-responsive'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { apiBasePath } from '../../../data/config'
 import Avatar from '../../UI/Avatar/Avatar'
 import './role-member.scss'
 import { MdClose } from 'react-icons/md'
+import { useRemoveMemberMutation } from '../../../graphql/hooks/graphql'
 
 export default function RoleMember({ id, name, pfp, showOnlyMiddle }) {
+  const { chatId } = useParams()
   const navigate = useNavigate()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
+  const [removeMember] = useRemoveMemberMutation()
 
   const navigateToProfile = () => {
     if (isTabletOrMobile) {
@@ -20,7 +23,7 @@ export default function RoleMember({ id, name, pfp, showOnlyMiddle }) {
     console.log(id)
   }
   const handleRemoveMember = () => {
-    console.log(id)
+    removeMember({ variables: { userId: id, groupId: parseInt(chatId) } })
   }
 
   return (
