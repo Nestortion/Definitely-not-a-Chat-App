@@ -61,7 +61,13 @@ export default function LeftBar({ user, showOnlyMiddle }) {
       variables: { user: user.currentUser.id },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev
-
+        console.log(
+          subscriptionData.data.memberAdded.blame.id === user.currentUser.id
+        )
+        if (
+          !(subscriptionData.data.memberAdded.blame.id === user.currentUser.id)
+        )
+          return prev
         if (
           !prev.groups.some(
             (group) => group.id === subscriptionData.data.memberAdded.group.id
