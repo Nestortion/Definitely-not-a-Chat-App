@@ -67,7 +67,14 @@ export type MemberAddedResponse = {
   group_roles?: Maybe<Array<Maybe<GroupRole>>>
   user_groups?: Maybe<Array<Maybe<UserGroup>>>
   usergroup_roles?: Maybe<Array<Maybe<UserGroupRole>>>
-  users?: Maybe<Array<Maybe<User>>>
+  users?: Maybe<Array<Maybe<UserRole>>>
+}
+
+export type MemberRemovedResponse = {
+  __typename?: 'MemberRemovedResponse'
+  blame?: Maybe<User>
+  group?: Maybe<Group>
+  user?: Maybe<User>
 }
 
 export enum MessageType {
@@ -249,6 +256,7 @@ export type Subscription = {
   chatAdded?: Maybe<UserChat>
   groupNameUpdate?: Maybe<Group>
   memberAdded?: Maybe<MemberAddedResponse>
+  memberRemoved?: Maybe<MemberRemovedResponse>
 }
 
 export type SubscriptionChatAddedArgs = {
@@ -260,6 +268,11 @@ export type SubscriptionGroupNameUpdateArgs = {
 }
 
 export type SubscriptionMemberAddedArgs = {
+  group_id?: InputMaybe<Scalars['Int']>
+  user?: InputMaybe<Scalars['Int']>
+}
+
+export type SubscriptionMemberRemovedArgs = {
   group_id?: InputMaybe<Scalars['Int']>
   user?: InputMaybe<Scalars['Int']>
 }
@@ -306,6 +319,12 @@ export type UserGroupRole = {
   __typename?: 'UserGroupRole'
   group_role_id: Scalars['Int']
   user_group_id: Scalars['Int']
+}
+
+export type UserRole = {
+  __typename?: 'UserRole'
+  role?: Maybe<GroupRole>
+  user?: Maybe<User>
 }
 
 export type AddGroupMutationVariables = Exact<{
@@ -588,16 +607,64 @@ export type MemberAddedSubscription = {
   __typename?: 'Subscription'
   memberAdded?: {
     __typename?: 'MemberAddedResponse'
+    blame?: { __typename?: 'User'; id: number } | null
     users?: Array<{
-      __typename?: 'User'
-      age: number
-      first_name: string
-      id: number
-      last_name: string
-      profile_img: string
-      username: string
-      section: string
+      __typename?: 'UserRole'
+      role?: {
+        __typename?: 'GroupRole'
+        id: number
+        group_id: string
+        role_name: string
+        role_type: RoleType
+      } | null
+      user?: {
+        __typename?: 'User'
+        age: number
+        first_name: string
+        id: number
+        last_name: string
+        profile_img: string
+        username: string
+        section: string
+      } | null
     } | null> | null
+    group?: {
+      __typename?: 'Group'
+      id: number
+      group_name: string
+      group_picture: string
+      is_group: string
+    } | null
+    group_roles?: Array<{
+      __typename?: 'GroupRole'
+      id: number
+      role_name: string
+      group_id: string
+      role_type: RoleType
+    } | null> | null
+    usergroup_roles?: Array<{
+      __typename?: 'UserGroupRole'
+      user_group_id: number
+      group_role_id: number
+    } | null> | null
+    user_groups?: Array<{
+      __typename?: 'UserGroup'
+      user_id: number
+      group_id: number
+    } | null> | null
+  } | null
+}
+
+export type MemberRemovedSubscriptionVariables = Exact<{
+  user?: InputMaybe<Scalars['Int']>
+  groupId?: InputMaybe<Scalars['Int']>
+}>
+
+export type MemberRemovedSubscription = {
+  __typename?: 'Subscription'
+  memberRemoved?: {
+    __typename?: 'MemberRemovedResponse'
+    blame?: { __typename?: 'User'; id: number } | null
     group?: {
       __typename?: 'Group'
       group_name: string
@@ -605,26 +672,15 @@ export type MemberAddedSubscription = {
       id: number
       is_group: string
     } | null
-    group_roles?: Array<{
-      __typename?: 'GroupRole'
-      description: string
-      emoji: string
-      group_id: string
+    user?: {
+      __typename?: 'User'
+      first_name: string
       id: number
-      role_name: string
-      role_type: RoleType
-    } | null> | null
-    usergroup_roles?: Array<{
-      __typename?: 'UserGroupRole'
-      group_role_id: number
-      user_group_id: number
-    } | null> | null
-    user_groups?: Array<{
-      __typename?: 'UserGroup'
-      group_id: number
-      user_id: number
-    } | null> | null
-    blame?: { __typename?: 'User'; id: number } | null
+      last_name: string
+      profile_img: string
+      username: string
+      section: string
+    } | null
   } | null
 }
 
@@ -1793,39 +1849,45 @@ export type LogoutMutationOptions = Apollo.BaseMutationOptions<
 export const MemberAddedDocument = gql`
   subscription MemberAdded($user: Int, $groupId: Int) {
     memberAdded(user: $user, group_id: $groupId) {
-      users {
-        age
-        first_name
+      blame {
         id
-        last_name
-        profile_img
-        username
-        section
+      }
+      users {
+        role {
+          id
+          group_id
+          role_name
+          role_type
+        }
+        user {
+          age
+          first_name
+          id
+          last_name
+          profile_img
+          username
+          section
+        }
       }
       group {
+        id
         group_name
         group_picture
-        id
         is_group
       }
       group_roles {
-        description
-        emoji
-        group_id
         id
         role_name
+        group_id
         role_type
       }
       usergroup_roles {
-        group_role_id
         user_group_id
+        group_role_id
       }
       user_groups {
-        group_id
         user_id
-      }
-      blame {
-        id
+        group_id
       }
     }
   }
@@ -1865,6 +1927,64 @@ export type MemberAddedSubscriptionHookResult = ReturnType<
 >
 export type MemberAddedSubscriptionResult =
   Apollo.SubscriptionResult<MemberAddedSubscription>
+export const MemberRemovedDocument = gql`
+  subscription MemberRemoved($user: Int, $groupId: Int) {
+    memberRemoved(user: $user, group_id: $groupId) {
+      blame {
+        id
+      }
+      group {
+        group_name
+        group_picture
+        id
+        is_group
+      }
+      user {
+        first_name
+        id
+        last_name
+        profile_img
+        username
+        section
+      }
+    }
+  }
+`
+
+/**
+ * __useMemberRemovedSubscription__
+ *
+ * To run a query within a React component, call `useMemberRemovedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useMemberRemovedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMemberRemovedSubscription({
+ *   variables: {
+ *      user: // value for 'user'
+ *      groupId: // value for 'groupId'
+ *   },
+ * });
+ */
+export function useMemberRemovedSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    MemberRemovedSubscription,
+    MemberRemovedSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSubscription<
+    MemberRemovedSubscription,
+    MemberRemovedSubscriptionVariables
+  >(MemberRemovedDocument, options)
+}
+export type MemberRemovedSubscriptionHookResult = ReturnType<
+  typeof useMemberRemovedSubscription
+>
+export type MemberRemovedSubscriptionResult =
+  Apollo.SubscriptionResult<MemberRemovedSubscription>
 export const RemoveMemberDocument = gql`
   mutation RemoveMember($groupId: Int, $userId: Int) {
     removeMember(group_id: $groupId, user_id: $userId) {

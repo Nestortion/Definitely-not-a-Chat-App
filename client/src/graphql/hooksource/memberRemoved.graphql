@@ -1,0 +1,21 @@
+subscription MemberRemoved($user: Int, $groupId: Int) {
+  memberRemoved(user: $user, group_id: $groupId) {
+    blame {
+      id
+    }
+    group {
+      group_name
+      group_picture
+      id
+      is_group
+    }
+    user {
+      first_name
+      id
+      last_name
+      profile_img
+      username
+      section
+    }
+  }
+}
