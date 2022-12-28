@@ -477,11 +477,21 @@ const resolvers = {
             where: { role_name: 'Member', group_id },
           })
 
+          let users = []
           const usergroup_roles = await Promise.all(
             bulkUserGroups.map(async (user_group_id) => {
               const usergroup_role = await UserGroupRoles.create({
                 user_group_id: user_group_id.id,
                 group_role_id: defaultRole.id,
+              })
+
+              const user = await Users.findOne({
+                where: { id: user_group_id.user_id },
+              })
+
+              users.push({
+                user,
+                role: defaultRole,
               })
               return usergroup_role
             })
@@ -490,7 +500,7 @@ const resolvers = {
 
           pubsub.publish('MEMBER_ADDED', {
             memberAdded: {
-              users: usersAdded,
+              users,
               group,
               group_roles: [defaultRole],
               usergroups: bulkUserGroups,
@@ -604,6 +614,25 @@ const resolvers = {
 
       return updatedGroup
     },
+    removeMember: async (_, { group_id, user_id }, context) => {
+      const { pubsub, data: user } = authMiddleware(context)
+
+      await UserGroups.destroy({ where: { group_id, user_id } })
+
+      const removedUser = await Users.findOne({ where: { id: user_id } })
+      const group = await Groups.findOne({ where: { id: group_id } })
+      const blame = await Users.findOne({ where: { id: user.user_id } })
+
+      pubsub.publish('MEMBER_REMOVED', {
+        memberRemoved: {
+          blame,
+          group,
+          user: removedUser,
+        },
+      })
+
+      return removedUser
+    },
   },
   Subscription: {
     memberAdded: {
@@ -650,6 +679,24 @@ const resolvers = {
             where: {
               user_id: variables.user,
               group_id: payload.groupNameUpdate.id,
+            },
+          })
+
+          if (userGroup) {
+            return true
+          }
+          return false
+        }
+      ),
+    },
+    memberRemoved: {
+      subscribe: withFilter(
+        (_, __, { pubsub }) => pubsub.asyncIterator('MEMBER_REMOVED'),
+        async (payload, variables) => {
+          const userGroup = await UserGroups.findOne({
+            where: {
+              user_id: variables.user,
+              group_id: payload.memberRemoved.group.id,
             },
           })
 

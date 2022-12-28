@@ -85,11 +85,22 @@ const typeDefs = `
   }
 
   type MemberAddedResponse{
-    users: [User]
+    users: [UserRole]
     group: Group
     group_roles: [GroupRole]
     user_groups: [UserGroup]
     usergroup_roles: [UserGroupRole]
+    blame: User
+  }
+
+  type UserRole{
+    user: User
+    role: GroupRole
+  }
+
+  type MemberRemovedResponse{
+    user: User
+    group: Group
     blame: User
   }
 
@@ -128,6 +139,7 @@ const typeDefs = `
     logout : Boolean
     addMember(group_id: Int!, user_id: [Int!]) : [UserGroup]
     updateGroupName(group_name: String!, group_id: Int): Group
+    removeMember(group_id: Int, user_id: Int): User
   }
 
   
@@ -136,6 +148,7 @@ const typeDefs = `
     groupNameUpdate(user:Int): Group
     chatAdded(user: Int): UserChat
     memberAdded(user: Int, group_id: Int): MemberAddedResponse
+    memberRemoved(user: Int, group_id: Int): MemberRemovedResponse
   }
 
 `
