@@ -28,7 +28,5 @@
   "devDependencies": {
     "concurrently": "^7.4.0"
   },
-  "dependencies": {
-    "react-search-box": "^2.3.0"
-  }
+  "dependencies": {}
 }
