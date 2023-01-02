@@ -77,6 +77,23 @@ const typeDefs = `
     userchat_id: Int!
   }
 
+  type UserLog{
+    id: Int!
+    user_id: Int!
+    action_description: String!
+    full_name: String!
+    createdAt: DateTime!
+  }
+
+  type AdminLog{
+    id: Int!
+    user_id: Int!
+    action_description: String!
+    full_name: String!
+    section: String!
+    createdAt: DateTime!
+  }
+
   type AccessToken{
     access_token: String!
   }
@@ -126,6 +143,8 @@ const typeDefs = `
     userProfile(id: Int!): User
     userGroupRoles(group_id: Int!): [GroupRole]
     addMemberList(group_id: Int): [KvUser]
+    userLogs: [UserLog]
+    adminLogs: [AdminLog]
   }
 
   type Mutation {

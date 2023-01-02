@@ -5,6 +5,8 @@ import Users from '../models/Users.js'
 import UserChatReactions from '../models/UserChatReactions.js'
 import GroupRoles from '../models/GroupRoles.js'
 import UserGroupRoles from '../models/UserGroupRoles.js'
+import AdminLogs from '../models/AdminLogs.js'
+import UserLogs from '../models/UserLogs.js'
 import GraphQLUpload from 'graphql-upload/GraphQLUpload.mjs'
 import { createWriteStream } from 'node:fs'
 import path from 'node:path'
@@ -299,6 +301,20 @@ const resolvers = {
 
       return kvUsers
     },
+    adminLogs: async (_, __, context) => {
+      const { data: user } = authMiddleware(context)
+
+      const adminLogs = await AdminLogs.findAll()
+
+      return adminLogs
+    },
+    userLogs: async (_, __, context) => {
+      const { data: user } = authMiddleware(context)
+
+      const userLogs = await UserLogs.findAll()
+
+      return userLogs
+    },
   },
   Mutation: {
     addUser: async (
@@ -329,6 +345,9 @@ const resolvers = {
     },
     addUserChat: async (_, { file, message, receiver }, context) => {
       const { data: user, pubsub } = authMiddleware(context)
+
+      const actionUser = await Users.findOne({ where: { id: user.user_id } })
+      const group = await Groups.findOne({ where: { id: receiver } })
 
       const validation = await UserGroups.findOne({
         where: { user_id: user.user_id, group_id: receiver },
@@ -363,6 +382,13 @@ const resolvers = {
             message_type: messageType,
           })
 
+          await UserLogs.create({
+            full_name: `${actionUser.first_name} ${actionUser.last_name}`,
+            section: `${actionUser.section}`,
+            action_description: `sent file: ${filename} to group ${group.group_name}`,
+            user_id: user.user_id,
+          })
+
           pubsub.publish('CHAT_ADDED', {
             chatAdded: userChat.dataValues,
           })
@@ -374,6 +400,13 @@ const resolvers = {
             message,
             user_id: user.user_id,
             receiver,
+          })
+
+          await UserLogs.create({
+            full_name: `${actionUser.first_name} ${actionUser.last_name}`,
+            section: `${actionUser.section}`,
+            action_description: `sent file: "${message}" to group ${group.group_name}`,
+            user_id: user.user_id,
           })
 
           pubsub.publish('CHAT_ADDED', {
@@ -390,6 +423,8 @@ const resolvers = {
     createGroup: async (_, { user_id }, context) => {
       const { data: user } = authMiddleware(context)
 
+      const actionUser = await Users.findOne({ where: { id: user.user_id } })
+
       const otherUser = await Users.findOne({ where: { id: user_id } })
 
       const otherUserFullName = `${otherUser.first_name} ${otherUser.last_name}`
@@ -403,6 +438,13 @@ const resolvers = {
           await UserGroups.create({ user_id: user, group_id: group.id })
         })
       )
+
+      await UserLogs.create({
+        full_name: `${actionUser.first_name} ${actionUser.last_name}`,
+        section: `${actionUser.section}`,
+        action_description: `Started a new conversaion with ${otherUser.first_name} ${otherUser.last_name}`,
+        user_id: user.user_id,
+      })
 
       return group
     },
@@ -442,6 +484,14 @@ const resolvers = {
       }
 
       sendRefreshToken(context.res, signRefreshToken(user))
+
+      await UserLogs.create({
+        full_name: `${user.first_name} ${user.last_name}`,
+        section: `${user.section}`,
+        action_description: `Has logged in`,
+        user_id: user.id,
+      })
+
       return { access_token: signAccessToken(user) }
     },
     revokeRefreshToken: async (_, { user_id }, context) => {
@@ -456,8 +506,16 @@ const resolvers = {
       else return false
     },
     logout: async (_, __, context) => {
-      const { res } = authMiddleware(context)
+      const { res, data: user } = authMiddleware(context)
 
+      const actionUser = await Users.findOne({ where: { id: user.user_id } })
+
+      await UserLogs.create({
+        full_name: `${actionUser.first_name} ${actionUser.last_name}`,
+        section: `${actionUser.section}`,
+        action_description: `Has logged out`,
+        user_id: user.user_id,
+      })
       res.clearCookie('refresh-token')
 
       return true
@@ -516,6 +574,18 @@ const resolvers = {
           )
           const blame = await Users.findOne({ where: { id: user.user_id } })
 
+          const addedUsers = usersAdded.map((user) => {
+            return `${user.first_name} ${user.last_name}`
+          })
+
+          await UserLogs.create({
+            full_name: `${blame.first_name} ${blame.last_name}`,
+            section: `${blame.section}`,
+            action_description: `Added ${addedUsers.toString()} to ${
+              group.group_name
+            }`,
+            user_id: blame.user_id,
+          })
           pubsub.publish('MEMBER_ADDED', {
             memberAdded: {
               users,
@@ -595,6 +665,19 @@ const resolvers = {
         )
 
         const blame = await Users.findOne({ where: { id: user.user_id } })
+
+        const addedUsers = usersAdded.map((user) => {
+          return `${user.first_name} ${user.last_name}`
+        })
+
+        await UserLogs.create({
+          full_name: `${blame.first_name} ${blame.last_name}`,
+          section: `${blame.section}`,
+          action_description: `Added ${addedUsers.toString()} to ${
+            newGroup.group_name
+          }`,
+          user_id: blame.id,
+        })
         pubsub.publish('MEMBER_ADDED', {
           memberAdded: {
             users: newGroupUsersData,
@@ -605,26 +688,24 @@ const resolvers = {
             blame,
           },
         })
-
-        // pubsub.publish('MEMBER_ADDED', {
-        //   memberAdded: {
-        //     users: usersAdded,
-        //     group,
-        //     group_roles: [defaultRole],
-        //     usergroups: bulkUserGroups,
-        //     usergroup_roles,
-        //   },
-        // })
-
         return createUserGroups
       }
     },
     updateGroupName: async (_, { group_name, group_id }, context) => {
-      const { pubsub } = authMiddleware(context)
+      const { pubsub, data: user } = authMiddleware(context)
 
       await Groups.update({ group_name }, { where: { id: group_id } })
 
       const updatedGroup = await Groups.findOne({ where: { id: group_id } })
+
+      const actionUser = await Users.findOne({ where: { id: user.user_id } })
+
+      await UserLogs.create({
+        full_name: `${actionUser.first_name} ${actionUser.last_name}`,
+        section: `${actionUser.section}`,
+        action_description: `Updated the group_name of group ${updatedGroup.id} from ${group_name} to ${updatedGroup.group_name}`,
+        user_id: user.user_id,
+      })
 
       pubsub.publish('GROUP_NAME_UPDATE', {
         groupNameUpdate: updatedGroup,
@@ -640,6 +721,13 @@ const resolvers = {
       const removedUser = await Users.findOne({ where: { id: user_id } })
       const group = await Groups.findOne({ where: { id: group_id } })
       const blame = await Users.findOne({ where: { id: user.user_id } })
+
+      await UserLogs.create({
+        full_name: `${blame.first_name} ${blame.last_name}`,
+        section: `${blame.section}`,
+        action_description: `Removed ${removedUser.first_name} ${removedUser.last_name} from group ${group.id}`,
+        user_id: blame.user_id,
+      })
 
       pubsub.publish('MEMBER_REMOVED', {
         memberRemoved: {
