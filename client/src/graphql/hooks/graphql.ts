@@ -21,6 +21,8 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
+  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
+  DateTime: any
   /** The `Upload` scalar type represents a file upload. */
   Upload: any
 }
@@ -85,7 +87,6 @@ export enum MessageType {
 
 export type Mutation = {
   __typename?: 'Mutation'
-  addGroup?: Maybe<Group>
   addGroupRole?: Maybe<GroupRole>
   addMember?: Maybe<Array<Maybe<UserGroup>>>
   addUser?: Maybe<User>
@@ -93,15 +94,12 @@ export type Mutation = {
   addUserChatReaction?: Maybe<UserChatReaction>
   addUserGroup?: Maybe<UserGroup>
   addUserGroupRole?: Maybe<UserGroupRole>
+  createGroup?: Maybe<Group>
   login?: Maybe<AccessToken>
   logout?: Maybe<Scalars['Boolean']>
   removeMember?: Maybe<User>
   revokeRefreshToken?: Maybe<Scalars['Boolean']>
   updateGroupName?: Maybe<Group>
-}
-
-export type MutationAddGroupArgs = {
-  group_name?: InputMaybe<Scalars['String']>
 }
 
 export type MutationAddGroupRoleArgs = {
@@ -151,6 +149,10 @@ export type MutationAddUserGroupArgs = {
 export type MutationAddUserGroupRoleArgs = {
   group_role_id?: InputMaybe<Scalars['Int']>
   user_group_id?: InputMaybe<Scalars['Int']>
+}
+
+export type MutationCreateGroupArgs = {
+  user_id: Scalars['Int']
 }
 
 export type MutationLoginArgs = {
@@ -295,6 +297,7 @@ export type User = {
 
 export type UserChat = {
   __typename?: 'UserChat'
+  createdAt: Scalars['DateTime']
   id: Scalars['Int']
   message: Scalars['String']
   message_type: MessageType
@@ -325,15 +328,6 @@ export type UserRole = {
   __typename?: 'UserRole'
   role?: Maybe<GroupRole>
   user?: Maybe<User>
-}
-
-export type AddGroupMutationVariables = Exact<{
-  groupName?: InputMaybe<Scalars['String']>
-}>
-
-export type AddGroupMutation = {
-  __typename?: 'Mutation'
-  addGroup?: { __typename?: 'Group'; group_name: string } | null
 }
 
 export type AddGroupRoleMutationVariables = Exact<{
@@ -783,6 +777,7 @@ export type UserChatsQuery = {
     user_id: number
     receiver?: number | null
     message_type: MessageType
+    createdAt: any
   } | null> | null
 }
 
@@ -832,53 +827,6 @@ export type UserRolesQuery = {
   } | null> | null
 }
 
-export const AddGroupDocument = gql`
-  mutation AddGroup($groupName: String) {
-    addGroup(group_name: $groupName) {
-      group_name
-    }
-  }
-`
-export type AddGroupMutationFn = Apollo.MutationFunction<
-  AddGroupMutation,
-  AddGroupMutationVariables
->
-
-/**
- * __useAddGroupMutation__
- *
- * To run a mutation, you first call `useAddGroupMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddGroupMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [addGroupMutation, { data, loading, error }] = useAddGroupMutation({
- *   variables: {
- *      groupName: // value for 'groupName'
- *   },
- * });
- */
-export function useAddGroupMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    AddGroupMutation,
-    AddGroupMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<AddGroupMutation, AddGroupMutationVariables>(
-    AddGroupDocument,
-    options
-  )
-}
-export type AddGroupMutationHookResult = ReturnType<typeof useAddGroupMutation>
-export type AddGroupMutationResult = Apollo.MutationResult<AddGroupMutation>
-export type AddGroupMutationOptions = Apollo.BaseMutationOptions<
-  AddGroupMutation,
-  AddGroupMutationVariables
->
 export const AddGroupRoleDocument = gql`
   mutation AddGroupRole(
     $roleName: String
@@ -2280,6 +2228,7 @@ export const UserChatsDocument = gql`
       user_id
       receiver
       message_type
+      createdAt
     }
   }
 `
