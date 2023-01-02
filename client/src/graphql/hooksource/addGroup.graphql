@@ -1,5 +1,0 @@
-mutation AddGroup($groupName: String) {
-  addGroup(group_name: $groupName) {
-    group_name
-  }
-}
