@@ -1,6 +1,7 @@
 const typeDefs = `
 
   scalar Upload
+  scalar DateTime
 
   type User {
     id: Int!
@@ -29,6 +30,7 @@ const typeDefs = `
     user_id: Int!
     receiver: Int
     message_type: MessageType!
+    createdAt: DateTime!
   }
 
   enum MessageType {

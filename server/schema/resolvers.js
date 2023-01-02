@@ -17,6 +17,7 @@ import { createAssociation, syncModels } from '../models/Associations.js'
 import { v4 as uuid } from 'uuid'
 import { Op } from 'sequelize'
 import { withFilter } from 'graphql-subscriptions'
+import { DateTimeResolver } from 'graphql-scalars'
 
 try {
   await createAssociation()
@@ -27,6 +28,7 @@ try {
 
 const resolvers = {
   Upload: GraphQLUpload,
+  DateTime: DateTimeResolver,
   AccessLevel: {
     USER: 'USER',
     MODERATOR: 'MODERATOR',
