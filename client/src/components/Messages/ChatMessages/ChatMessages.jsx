@@ -35,6 +35,7 @@ export default function ChatMessages({ userChats, user }) {
               sender={chatMessage.user_id}
               message_type={chatMessage.message_type}
               is_group={groupData.group.is_group}
+              messageDate={chatMessage.createdAt}
             />
           )
         }

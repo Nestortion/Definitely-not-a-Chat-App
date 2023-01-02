@@ -15,6 +15,7 @@ export default function ChatMessage({
   user,
   message_type,
   is_group,
+  messageDate,
 }) {
   const [shouldShowModal, setShouldShowModal] = useState(false)
   const messageDiv = useRef(null)
