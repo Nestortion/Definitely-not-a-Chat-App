@@ -385,8 +385,24 @@ const resolvers = {
         )
       }
     },
-    addGroup: (_, { group_name }) => {
-      return Groups.create({ group_name })
+    createGroup: async (_, { user_id }, context) => {
+      const { data: user } = authMiddleware(context)
+
+      const otherUser = await Users.findOne({ where: { id: user_id } })
+
+      const otherUserFullName = `${otherUser.first_name} ${otherUser.last_name}`
+
+      const users = [user.user_id, user_id]
+
+      const group = await Groups.create({ group_name: otherUserFullName })
+
+      await Promise.all(
+        users.forEach(async (user) => {
+          await UserGroups.create({ user_id: user, group_id: group.id })
+        })
+      )
+
+      return group
     },
     addUserGroup: (_, { user_id, group_id }) => {
       return UserGroups.create({ user_id, group_id })

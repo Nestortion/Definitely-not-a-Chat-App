@@ -129,7 +129,6 @@ const typeDefs = `
   type Mutation {
     addUser( username: String, access_level: AccessLevel, password: String, age: Int, address: String, section: String, first_name: String, last_name: String, profile_img: Upload, gender: String): User
     addUserChat( file: Upload, message: String, user_id: Int, receiver: Int, message_type: MessageType): UserChat
-    addGroup( group_name: String): Group
     addUserGroup( user_id:Int, group_id: Int): UserGroup
     addGroupRole( role_name: String, emoji: String, description: String, group_id: Int): GroupRole
     addUserGroupRole( user_group_id: Int, group_role_id: Int): UserGroupRole
@@ -140,6 +139,7 @@ const typeDefs = `
     addMember(group_id: Int!, user_id: [Int!]) : [UserGroup]
     updateGroupName(group_name: String!, group_id: Int): Group
     removeMember(group_id: Int, user_id: Int): User
+    createGroup(user_id: Int!): Group
   }
 
   
