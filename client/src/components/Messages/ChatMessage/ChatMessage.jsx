@@ -36,6 +36,8 @@ export default function ChatMessage({
 
   let newText = text
 
+  const convertMessageDate = new Date(messageDate)
+
   if (message_type === 'OTHER' || message_type === 'IMAGE') {
     let unique = text.split(' ')[0]
     newText = text.split(`${unique} `)[1]
@@ -76,6 +78,8 @@ export default function ChatMessage({
               <span>{userData.userChatSender.first_name}</span>
             </div>
           )}
+
+          <span>{convertMessageDate.toLocaleString()}</span>
 
           <div
             className={`chat-message-message text-neutral-100 ${
