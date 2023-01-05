@@ -6,12 +6,12 @@ import SettingsButtons from '../SettingsButtons/SettingsButtons'
 import { useParams } from 'react-router-dom'
 import {
   useGroupQuery,
+  useOtherUserQuery,
   useUserGroupRolesQuery,
 } from '../../graphql/hooks/graphql'
 import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../Error/ErrorText'
 import { apiBasePath } from '../../data/config'
-import RoleMember from '../Role/RoleMembers/RoleMember'
 
 export default function RightBar({ showOnlyMiddle }) {
   // Check if global chat state is existing
@@ -26,6 +26,12 @@ export default function RightBar({ showOnlyMiddle }) {
   })
 
   const {
+    data: otherUser,
+    loading: otherUserLoading,
+    error: otherUserError,
+  } = useOtherUserQuery({ variables: { groupId: parseInt(chatId) } })
+
+  const {
     data: roles,
     loading: rolesLoading,
     error: rolesError,
@@ -33,18 +39,33 @@ export default function RightBar({ showOnlyMiddle }) {
 
   if (rolesLoading) return <LoadingSpinner />
   if (rolesError) return <ErrorText>Error</ErrorText>
+  if (otherUserLoading) return <LoadingSpinner />
+  if (otherUserError) return <ErrorText>Error</ErrorText>
   if (groupLoading) return <LoadingSpinner />
   if (groupError) return <ErrorText>Error</ErrorText>
 
   return (
     <div className="rightbar">
       <div className="rightbar--header">
-        <Avatar
-          src={`${apiBasePath}/pfp/${groupData.group.group_picture}`}
-          alt={`${groupData.group.group_name}'s photo`}
-          size="80"
-        />
-        <span>{groupData.group.group_name}</span>
+        {groupData.group.is_group === 'true' ? (
+          <>
+            <Avatar
+              src={`${apiBasePath}/pfp/${groupData.group.group_picture}`}
+              alt={`${groupData.group.group_name}'s photo`}
+              size="80"
+            />
+            <span>{groupData.group.group_name}</span>
+          </>
+        ) : (
+          <>
+            <Avatar
+              src={`${apiBasePath}/pfp/${otherUser.otherUser.profile_img}`}
+              alt={`${groupData.group.group_name}'s photo`}
+              size="80"
+            />
+            <span>{`${otherUser.otherUser.first_name} ${otherUser.otherUser.last_name}`}</span>
+          </>
+        )}
       </div>
       <div className="rightbar--main">
         {groupData.group.is_group === 'true' && (
