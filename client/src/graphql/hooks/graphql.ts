@@ -200,6 +200,7 @@ export type Query = {
   groups?: Maybe<Array<Maybe<Group>>>
   isLoggedIn?: Maybe<Scalars['Boolean']>
   latestChats?: Maybe<Array<Maybe<UserChat>>>
+  otherUser?: Maybe<User>
   searchGroups?: Maybe<Array<Maybe<Group>>>
   user?: Maybe<User>
   userChat?: Maybe<UserChat>
@@ -233,6 +234,10 @@ export type QueryGroupRolesArgs = {
 
 export type QueryGroupsArgs = {
   user_id?: InputMaybe<Scalars['Int']>
+}
+
+export type QueryOtherUserArgs = {
+  group_id?: InputMaybe<Scalars['Int']>
 }
 
 export type QuerySearchGroupsArgs = {
@@ -719,6 +724,25 @@ export type MemberRemovedSubscription = {
       username: string
       section: string
     } | null
+  } | null
+}
+
+export type OtherUserQueryVariables = Exact<{
+  groupId?: InputMaybe<Scalars['Int']>
+}>
+
+export type OtherUserQuery = {
+  __typename?: 'Query'
+  otherUser?: {
+    __typename?: 'User'
+    id: number
+    first_name: string
+    last_name: string
+    address: string
+    section: string
+    profile_img: string
+    age: number
+    gender: string
   } | null
 }
 
@@ -2036,6 +2060,66 @@ export type MemberRemovedSubscriptionHookResult = ReturnType<
 >
 export type MemberRemovedSubscriptionResult =
   Apollo.SubscriptionResult<MemberRemovedSubscription>
+export const OtherUserDocument = gql`
+  query OtherUser($groupId: Int) {
+    otherUser(group_id: $groupId) {
+      id
+      first_name
+      last_name
+      address
+      section
+      profile_img
+      age
+      gender
+    }
+  }
+`
+
+/**
+ * __useOtherUserQuery__
+ *
+ * To run a query within a React component, call `useOtherUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOtherUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOtherUserQuery({
+ *   variables: {
+ *      groupId: // value for 'groupId'
+ *   },
+ * });
+ */
+export function useOtherUserQuery(
+  baseOptions?: Apollo.QueryHookOptions<OtherUserQuery, OtherUserQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<OtherUserQuery, OtherUserQueryVariables>(
+    OtherUserDocument,
+    options
+  )
+}
+export function useOtherUserLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    OtherUserQuery,
+    OtherUserQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<OtherUserQuery, OtherUserQueryVariables>(
+    OtherUserDocument,
+    options
+  )
+}
+export type OtherUserQueryHookResult = ReturnType<typeof useOtherUserQuery>
+export type OtherUserLazyQueryHookResult = ReturnType<
+  typeof useOtherUserLazyQuery
+>
+export type OtherUserQueryResult = Apollo.QueryResult<
+  OtherUserQuery,
+  OtherUserQueryVariables
+>
 export const RemoveMemberDocument = gql`
   mutation RemoveMember($groupId: Int, $userId: Int) {
     removeMember(group_id: $groupId, user_id: $userId) {

@@ -1,0 +1,12 @@
+query OtherUser($groupId: Int) {
+  otherUser(group_id: $groupId) {
+    id
+    first_name
+    last_name
+    address
+    section
+    profile_img
+    age
+    gender
+  }
+}
