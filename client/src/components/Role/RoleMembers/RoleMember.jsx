@@ -26,7 +26,6 @@ export default function RoleMember({ id, name, pfp, showOnlyMiddle, isGroup }) {
 
   if (loading) return <LoadingSpinner />
   if (error) return <ErrorText>Error</ErrorText>
-  console.log(userRoles.currentUserGroupRoles.roles)
 
   const navigateToProfile = () => {
     if (isTabletOrMobile) {
