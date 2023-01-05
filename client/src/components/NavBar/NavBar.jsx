@@ -4,10 +4,7 @@ import UserCard from '../UserCard/UserCard'
 import { useCurrentUserQuery } from '../../graphql/hooks/graphql'
 import ErrorText from '../Error/ErrorText'
 import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
-// ! TEMPORARY DATA ONLY
-// data should come from api
-// ! FETCH HERE
-// user from global state
+import logo from '../../assets/logo.png'
 
 export default function NavBar({ onClick, showOnlyMiddle }) {
   const { data, loading, error } = useCurrentUserQuery()
@@ -18,7 +15,8 @@ export default function NavBar({ onClick, showOnlyMiddle }) {
     <div className="navbar">
       <div className="left">
         <Link to="/" onClick={onClick}>
-          <span>DNCA</span>
+          <img src={logo} alt="DNCA's logo" />
+          <span className="fw-bold fs-500 text-primary-400">DNCA</span>
         </Link>
       </div>
       <div className="right">

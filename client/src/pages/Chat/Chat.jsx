@@ -61,8 +61,9 @@ export default function Chat() {
       files: [file],
     },
   }) => {
-    // 2e9 is 2GB
-    if (validity.valid && file?.size < 2e9) {
+    const MAX_FILE_SIZE = 2e7 // 20MB
+
+    if (validity.valid && file?.size < MAX_FILE_SIZE) {
       setFileInput(file)
     }
   }
