@@ -346,6 +346,25 @@ const resolvers = {
 
       return { roles }
     },
+    otherUser: async (_, { group_id }, context) => {
+      const { data: user } = authMiddleware(context)
+
+      const group = await Groups.findOne({ where: { id: group_id } })
+
+      const userGroup = await UserGroups.findAll({
+        where: { group_id: group.id },
+      })
+
+      const userGroupFilter = userGroup.filter(
+        (usergroup) => usergroup.user_id !== user.user_id
+      )
+
+      const otherUser = await Users.findOne({
+        where: { id: userGroupFilter[0].user_id },
+      })
+
+      return otherUser
+    },
   },
   Mutation: {
     addUser: async (

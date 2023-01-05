@@ -150,6 +150,7 @@ const typeDefs = `
     userLogs: [UserLog]
     adminLogs: [AdminLog]
     currentUserGroupRoles(group_id:Int): CurrentUserGroupRoles
+    otherUser(group_id: Int): User
   }
 
   
