@@ -315,6 +315,37 @@ const resolvers = {
 
       return userLogs
     },
+    currentUserGroupRoles: async (_, { group_id }, context) => {
+      const { data } = authMiddleware(context)
+
+      const user = await Users.findOne({ where: { id: data.user_id } })
+
+      const userGroups = await UserGroups.findAll({
+        where: { user_id: user.id },
+      })
+
+      const userGroupIds = userGroups.map((usergroup) => usergroup.id)
+
+      const userGroupRoles = await UserGroupRoles.findAll({
+        where: { user_group_id: userGroupIds },
+      })
+
+      const groupRoleIds = userGroupRoles.map(
+        (usergrouprole) => usergrouprole.group_role_id
+      )
+
+      const groupRoles = await GroupRoles.findAll({
+        where: { id: groupRoleIds },
+      })
+
+      const rolesInGroup = groupRoles.filter(
+        (grouprole) => grouprole.group_id === group_id
+      )
+
+      const roles = rolesInGroup.map((rolesingroup) => rolesingroup.role_type)
+
+      return { roles }
+    },
   },
   Mutation: {
     addUser: async (

@@ -123,6 +123,10 @@ const typeDefs = `
     blame: User
   }
 
+  type CurrentUserGroupRoles{
+    roles: [String]
+  }
+
   type Query {
     userChatSender(user_id: Int): User
     user: User
@@ -145,7 +149,10 @@ const typeDefs = `
     addMemberList(group_id: Int): [KvUser]
     userLogs: [UserLog]
     adminLogs: [AdminLog]
+    currentUserGroupRoles(group_id:Int): CurrentUserGroupRoles
   }
+
+  
 
   type Mutation {
     addUser( username: String, access_level: AccessLevel, password: String, age: Int, address: String, section: String, first_name: String, last_name: String, profile_img: Upload, gender: String): User
