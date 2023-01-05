@@ -50,7 +50,12 @@ export default function RightBar({ showOnlyMiddle }) {
         {groupData.group.is_group === 'true' ? (
           <MemberList showOnlyMiddle={showOnlyMiddle} />
         ) : (
-          <RoleMember id={1} name={'The other person'} pfp={'/images/pfp'} />
+          <RoleMember
+            isGroup={groupData.group.is_group}
+            id={1}
+            name={'The other person'}
+            pfp={'/images/pfp'}
+          />
         )}
         <SettingsButtons isGroup={groupData.group.is_group} roles={roles} />
       </div>

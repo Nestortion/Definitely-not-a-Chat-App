@@ -81,6 +81,7 @@ export default function Role({
             {members.userRoles.map((member, index) => (
               <RoleMember
                 key={index}
+                isGroup="true"
                 id={member.id}
                 name={member.first_name}
                 pfp={member.profile_img}
