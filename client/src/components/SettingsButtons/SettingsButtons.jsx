@@ -79,7 +79,7 @@ export default function SettingsButtons({ roles, isGroup }) {
 
         <Button onClick={showSearchInGroup}>
           <MdSearch style={{ display: 'inline-block' }} />
-          <span>Search in Group</span>
+          <span>Search in Chat</span>
         </Button>
         <Button onClick={showReportChat}>
           <MdReport style={{ display: 'inline-block' }} />
