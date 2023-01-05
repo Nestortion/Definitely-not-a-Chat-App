@@ -38,6 +38,21 @@ export type AccessToken = {
   access_token: Scalars['String']
 }
 
+export type AdminLog = {
+  __typename?: 'AdminLog'
+  action_description: Scalars['String']
+  createdAt: Scalars['DateTime']
+  full_name: Scalars['String']
+  id: Scalars['Int']
+  section: Scalars['String']
+  user_id: Scalars['Int']
+}
+
+export type CurrentUserGroupRoles = {
+  __typename?: 'CurrentUserGroupRoles'
+  roles?: Maybe<Array<Maybe<Scalars['String']>>>
+}
+
 export type Group = {
   __typename?: 'Group'
   group_name: Scalars['String']
@@ -177,7 +192,9 @@ export type MutationUpdateGroupNameArgs = {
 export type Query = {
   __typename?: 'Query'
   addMemberList?: Maybe<Array<Maybe<KvUser>>>
+  adminLogs?: Maybe<Array<Maybe<AdminLog>>>
   currentUser?: Maybe<User>
+  currentUserGroupRoles?: Maybe<CurrentUserGroupRoles>
   group?: Maybe<Group>
   groupRoles?: Maybe<Array<Maybe<GroupRole>>>
   groups?: Maybe<Array<Maybe<Group>>>
@@ -192,12 +209,17 @@ export type Query = {
   userGroup?: Maybe<UserGroup>
   userGroupRoles?: Maybe<Array<Maybe<GroupRole>>>
   userGroups?: Maybe<Array<Maybe<UserGroup>>>
+  userLogs?: Maybe<Array<Maybe<UserLog>>>
   userProfile?: Maybe<User>
   userRoles?: Maybe<Array<Maybe<User>>>
   users?: Maybe<Array<Maybe<User>>>
 }
 
 export type QueryAddMemberListArgs = {
+  group_id?: InputMaybe<Scalars['Int']>
+}
+
+export type QueryCurrentUserGroupRolesArgs = {
   group_id?: InputMaybe<Scalars['Int']>
 }
 
@@ -322,6 +344,15 @@ export type UserGroupRole = {
   __typename?: 'UserGroupRole'
   group_role_id: Scalars['Int']
   user_group_id: Scalars['Int']
+}
+
+export type UserLog = {
+  __typename?: 'UserLog'
+  action_description: Scalars['String']
+  createdAt: Scalars['DateTime']
+  full_name: Scalars['String']
+  id: Scalars['Int']
+  user_id: Scalars['Int']
 }
 
 export type UserRole = {
@@ -493,6 +524,18 @@ export type CurrentUserQuery = {
   } | null
 }
 
+export type CurrentUserGroupRolesQueryVariables = Exact<{
+  groupId?: InputMaybe<Scalars['Int']>
+}>
+
+export type CurrentUserGroupRolesQuery = {
+  __typename?: 'Query'
+  currentUserGroupRoles?: {
+    __typename?: 'CurrentUserGroupRoles'
+    roles?: Array<string | null> | null
+  } | null
+}
+
 export type GroupQueryVariables = Exact<{
   groupId: Scalars['Int']
 }>
@@ -536,6 +579,7 @@ export type GroupRolesQuery = {
     emoji: string
     description: string
     group_id: string
+    role_type: RoleType
   } | null> | null
 }
 
@@ -1384,6 +1428,64 @@ export type CurrentUserQueryResult = Apollo.QueryResult<
   CurrentUserQuery,
   CurrentUserQueryVariables
 >
+export const CurrentUserGroupRolesDocument = gql`
+  query CurrentUserGroupRoles($groupId: Int) {
+    currentUserGroupRoles(group_id: $groupId) {
+      roles
+    }
+  }
+`
+
+/**
+ * __useCurrentUserGroupRolesQuery__
+ *
+ * To run a query within a React component, call `useCurrentUserGroupRolesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCurrentUserGroupRolesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCurrentUserGroupRolesQuery({
+ *   variables: {
+ *      groupId: // value for 'groupId'
+ *   },
+ * });
+ */
+export function useCurrentUserGroupRolesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    CurrentUserGroupRolesQuery,
+    CurrentUserGroupRolesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    CurrentUserGroupRolesQuery,
+    CurrentUserGroupRolesQueryVariables
+  >(CurrentUserGroupRolesDocument, options)
+}
+export function useCurrentUserGroupRolesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    CurrentUserGroupRolesQuery,
+    CurrentUserGroupRolesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    CurrentUserGroupRolesQuery,
+    CurrentUserGroupRolesQueryVariables
+  >(CurrentUserGroupRolesDocument, options)
+}
+export type CurrentUserGroupRolesQueryHookResult = ReturnType<
+  typeof useCurrentUserGroupRolesQuery
+>
+export type CurrentUserGroupRolesLazyQueryHookResult = ReturnType<
+  typeof useCurrentUserGroupRolesLazyQuery
+>
+export type CurrentUserGroupRolesQueryResult = Apollo.QueryResult<
+  CurrentUserGroupRolesQuery,
+  CurrentUserGroupRolesQueryVariables
+>
 export const GroupDocument = gql`
   query Group($groupId: Int!) {
     group(id: $groupId) {
@@ -1487,6 +1589,7 @@ export const GroupRolesDocument = gql`
       emoji
       description
       group_id
+      role_type
     }
   }
 `

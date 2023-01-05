@@ -1,0 +1,5 @@
+query CurrentUserGroupRoles($groupId: Int) {
+  currentUserGroupRoles(group_id: $groupId) {
+    roles
+  }
+}
