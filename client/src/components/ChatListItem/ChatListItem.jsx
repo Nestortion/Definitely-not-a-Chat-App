@@ -32,6 +32,30 @@ export default function ChatListItem({
     }
   }
 
+  const displayMessageAge = (message) => {
+    const messageDate = new Date(message.createdAt)
+
+    const timeDiff = Math.abs(Date.now() - messageDate)
+
+    let newTime = timeDiff / (1000 * 24 * 60 * 60)
+
+    if (newTime < 1) {
+      newTime = Math.abs((newTime *= 24))
+      if (newTime < 1) {
+        newTime = Math.ceil((newTime *= 60))
+        return `${newTime}m`
+      }
+
+      return `${Math.floor(newTime)}h`
+    } else if (newTime >= 1 && newTime < 7) {
+      return `${Math.ceil(newTime)}d`
+    } else if (newTime >= 7 && newTime <= 28) {
+      newTime = Math.abs((newTime /= 7))
+
+      return `${Math.floor(newTime)}w`
+    }
+  }
+
   return (
     <NavLink
       to={`/chat/${chatId}`}
@@ -51,7 +75,9 @@ export default function ChatListItem({
       <div className="chat-list-item-right">
         <span className="title">{title}</span>
         <span className="latest-message fs-400">
-          {latest[0] ? displayLatest(latest[0]) : null}
+          <span>{latest[0] ? displayLatest(latest[0]) : null}</span>
+          {latest[0] && ` ● `}
+          <span>{latest[0] && displayMessageAge(latest[0])}</span>
         </span>
       </div>
     </NavLink>
