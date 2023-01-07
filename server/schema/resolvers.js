@@ -138,7 +138,12 @@ const resolvers = {
         }
       }
 
-      return Groups.findAll({ where: { id: groups } })
+      const returnVal = await Groups.findAll({
+        where: { id: groups },
+        order: [['last_message_date', 'DESC']],
+      })
+
+      return returnVal
     },
     userGroups: () => {
       return UserGroups.findAll()
@@ -432,6 +437,15 @@ const resolvers = {
             message_type: messageType,
           })
 
+          await Groups.update(
+            { last_message_date: Date.now() },
+            {
+              where: {
+                id: receiver,
+              },
+            }
+          )
+
           await UserLogs.create({
             full_name: `${actionUser.first_name} ${actionUser.last_name}`,
             section: `${actionUser.section}`,
@@ -451,6 +465,15 @@ const resolvers = {
             user_id: user.user_id,
             receiver,
           })
+
+          await Groups.update(
+            { last_message_date: Date.now() },
+            {
+              where: {
+                id: receiver,
+              },
+            }
+          )
 
           await UserLogs.create({
             full_name: `${actionUser.first_name} ${actionUser.last_name}`,
