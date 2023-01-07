@@ -621,6 +621,7 @@ export type LatestChatsQuery = {
     user_id: number
     receiver?: number | null
     message_type: MessageType
+    createdAt: any
   } | null> | null
 }
 
@@ -1778,6 +1779,7 @@ export const LatestChatsDocument = gql`
       user_id
       receiver
       message_type
+      createdAt
     }
   }
 `

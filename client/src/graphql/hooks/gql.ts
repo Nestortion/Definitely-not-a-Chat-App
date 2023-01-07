@@ -28,7 +28,7 @@ const documents = {
     "query GroupRoles($groupId: Int) {\n  groupRoles(group_id: $groupId) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n  }\n}": types.GroupRolesDocument,
     "query Groups($userId: Int) {\n  groups(user_id: $userId) {\n    group_name\n    id\n    group_picture\n    is_group\n  }\n}": types.GroupsDocument,
     "query IsLoggedIn {\n  isLoggedIn\n}": types.IsLoggedInDocument,
-    "query LatestChats {\n  latestChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}": types.LatestChatsDocument,
+    "query LatestChats {\n  latestChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n    createdAt\n  }\n}": types.LatestChatsDocument,
     "mutation Login($username: String!, $password: String!) {\n  login(username: $username, password: $password) {\n    access_token\n  }\n}": types.LoginDocument,
     "mutation Logout {\n  logout\n}": types.LogoutDocument,
     "subscription MemberAdded($user: Int, $groupId: Int) {\n  memberAdded(user: $user, group_id: $groupId) {\n    blame {\n      id\n    }\n    users {\n      role {\n        id\n        group_id\n        role_name\n        role_type\n      }\n      user {\n        age\n        first_name\n        id\n        last_name\n        profile_img\n        username\n        section\n      }\n    }\n    group {\n      id\n      group_name\n      group_picture\n      is_group\n    }\n    group_roles {\n      id\n      role_name\n      group_id\n      role_type\n    }\n    usergroup_roles {\n      user_group_id\n      group_role_id\n    }\n    user_groups {\n      user_id\n      group_id\n    }\n  }\n}": types.MemberAddedDocument,
@@ -108,7 +108,7 @@ export function graphql(source: "query IsLoggedIn {\n  isLoggedIn\n}"): (typeof 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "query LatestChats {\n  latestChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}"): (typeof documents)["query LatestChats {\n  latestChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}"];
+export function graphql(source: "query LatestChats {\n  latestChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n    createdAt\n  }\n}"): (typeof documents)["query LatestChats {\n  latestChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n    createdAt\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
