@@ -24,6 +24,10 @@ const Groups = DB.define(
       allowNull: false,
       defaultValue: false,
     },
+    last_message_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
   },
   { timestamps: false }
 )
