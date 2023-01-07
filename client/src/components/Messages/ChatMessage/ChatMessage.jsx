@@ -72,7 +72,11 @@ export default function ChatMessage({
           </div>
         )}
 
-        <div className="chat-message-container">
+        <div
+          className={`chat-message-container ${
+            sender === user ? 'you' : 'other'
+          }`}
+        >
           {senderShouldShow && (
             <div className="chat-message-sender__name fs-300">
               <span>{userData.userChatSender.first_name}</span>

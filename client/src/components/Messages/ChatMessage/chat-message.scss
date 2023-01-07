@@ -19,8 +19,19 @@
     flex-direction: column;
     gap: 0.625rem;
 
-    .chat-message-sender__name {
+    &.you {
+      align-items: flex-end;
     }
+    &.other {
+      align-items: flex-start;
+    }
+
+    &.chat-message-message.you {
+      align-items: flex-end;
+    }
+    // &.chat-message-message.other {
+    //   align-items: flex-start;
+    // }
 
     .chat-message-message {
       width: fit-content;
