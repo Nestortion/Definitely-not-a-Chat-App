@@ -83,7 +83,12 @@ export default function ChatMessage({
             </div>
           )}
 
-          <span>{convertMessageDate.toLocaleString()}</span>
+          <span>
+            {Intl.DateTimeFormat('en-US', {
+              dateStyle: 'long',
+              timeStyle: 'short',
+            }).format(convertMessageDate)}
+          </span>
 
           <div
             className={`chat-message-message text-neutral-100 ${
