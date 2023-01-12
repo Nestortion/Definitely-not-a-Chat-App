@@ -146,7 +146,7 @@ const typeDefs = `
     latestChats: [UserChat]
     userProfile(id: Int!): User
     userGroupRoles(group_id: Int!): [GroupRole]
-    addMemberList(group_id: Int): [KvUser]
+    addMemberList(group_id: Int, form: String): [KvUser]
     userLogs: [UserLog]
     adminLogs: [AdminLog]
     currentUserGroupRoles(group_id:Int): CurrentUserGroupRoles

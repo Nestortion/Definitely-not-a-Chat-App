@@ -290,8 +290,8 @@ const resolvers = {
 
       return groupRoles
     },
-    addMemberList: async (_, { group_id }, context) => {
-      authMiddleware(context)
+    addMemberList: async (_, { group_id, form }, context) => {
+      const { data: currUser } = authMiddleware(context)
 
       const userGroups = await (
         await UserGroups.findAll({ where: { group_id } })
@@ -299,12 +299,28 @@ const resolvers = {
 
       const users = await Users.findAll()
 
-      const kvUsers = users.map((user) => {
-        if (!userGroups.includes(user.id))
-          return { key: user.id, value: `${user.first_name} ${user.last_name}` }
-      })
+      if (form === 'memberList') {
+        const kvUsers = users.map((user) => {
+          if (!userGroups.includes(user.id))
+            return {
+              key: user.id,
+              value: `${user.first_name} ${user.last_name}`,
+            }
+        })
+        return kvUsers
+      } else if (form === 'userList') {
+        const filteredUser = users.filter(
+          (user) => user.id !== currUser.user_id
+        )
 
-      return kvUsers
+        const kvUsers = filteredUser.map((user) => {
+          return {
+            key: user.id,
+            value: `${user.first_name} ${user.last_name}`,
+          }
+        })
+        return kvUsers
+      }
     },
     adminLogs: async (_, __, context) => {
       const { data: user } = authMiddleware(context)
