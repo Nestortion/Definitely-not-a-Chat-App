@@ -3,16 +3,33 @@ import Button from '../UI/Button/Button'
 import ReactSearchBox from 'react-search-box'
 import './join-chat.scss'
 import Input from '../UI/Input/Input'
+import { useAddMemberListQuery } from '../../graphql/hooks/graphql'
+import { useParams } from 'react-router-dom'
+import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
+import ErrorText from '../Error/ErrorText'
 
 const DUMMY_USERS = [
-  { key: 1, value: 'Nestor', label: 'Nestor' },
-  { key: 2, value: 'Josel', label: 'Josel' },
-  { key: 3, value: 'John Doe', label: 'John Doe' },
+  { key: 1, value: 'Nestor' },
+  { key: 2, value: 'Josel' },
+  { key: 3, value: 'John Doe' },
 ]
 
 export default function JoinChat() {
+  const { chatId } = useParams()
   const [joinChatId, setJoinChatId] = useState('')
   const [selectedMembers, setSelectedMembers] = useState([])
+  const {
+    data: users,
+    loading,
+    error,
+  } = useAddMemberListQuery({
+    variables: { groupId: parseInt(chatId), form: 'userList' },
+  })
+
+  console.log(users)
+
+  if (loading) return <LoadingSpinner />
+  if (error) return <ErrorText>Error</ErrorText>
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -63,7 +80,7 @@ export default function JoinChat() {
           <span>Create a Conversation</span>
           <ReactSearchBox
             placeholder="Search member"
-            data={DUMMY_USERS}
+            data={users.addMemberList}
             onSelect={(member) => handleAddMember(member.item)}
             clearOnSelect
             inputFontSize="0.8rem"
