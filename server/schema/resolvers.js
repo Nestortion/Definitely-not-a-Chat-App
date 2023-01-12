@@ -74,7 +74,26 @@ const resolvers = {
         throw new GraphQLError('user does not belong to chat')
       }
 
-      return Groups.findOne({ where: { id } })
+      let group = await Groups.findOne({ where: { id } })
+
+      if (group.is_group === true) return group
+
+      const userGroups = await UserGroups.findAll({ where: { group_id: id } })
+
+      const otherUserId = userGroups.filter(
+        (usergroup) => usergroup.user_id !== user.user_id
+      )
+
+      const otherUser = await Users.findOne({
+        where: { id: otherUserId[0].user_id },
+      })
+
+      const otherUserFullName = `${otherUser.first_name} ${otherUser.last_name}`
+
+      group.group_name = otherUserFullName
+      group.group_picture = otherUser.profile_img
+
+      return group
     },
     userGroup: (_, { user_id, group_id }) => {
       if (user_id) {
@@ -143,7 +162,34 @@ const resolvers = {
         order: [['last_message_date', 'DESC']],
       })
 
-      return returnVal
+      const updatedList = await Promise.all(
+        returnVal.map(async (group) => {
+          if (group.is_group === true) return group
+
+          let newGroup = group
+
+          const userGroups = await UserGroups.findAll({
+            where: { group_id: newGroup.id },
+          })
+
+          const otherUserId = userGroups.filter(
+            (usergroup) => usergroup.user_id !== user.user_id
+          )
+
+          const otherUser = await Users.findOne({
+            where: { id: otherUserId[0].user_id },
+          })
+
+          const otherUserFullName = `${otherUser.first_name} ${otherUser.last_name}`
+
+          newGroup.group_name = otherUserFullName
+          newGroup.group_picture = otherUser.profile_img
+
+          return newGroup
+        })
+      )
+
+      return updatedList
     },
     userGroups: () => {
       return UserGroups.findAll()
@@ -510,36 +556,57 @@ const resolvers = {
       }
     },
     createGroup: async (_, { user_id }, context) => {
-      const { data: user } = authMiddleware(context)
+      const { data: user, pubsub } = authMiddleware(context)
       const actionUser = await Users.findOne({ where: { id: user.user_id } })
 
       if (user_id.length === 1) {
         const otherUser = await Users.findOne({ where: { id: user_id[0] } })
 
-        const otherUserFullName = `${otherUser.first_name} ${otherUser.last_name}`
+        const checkGroup = await Groups.findOne({
+          where: {
+            [Op.or]: [
+              { group_name: `${otherUser.username}${actionUser.username}` },
+              { group_name: `${actionUser.username}${otherUser.username}` },
+            ],
+          },
+        })
+
+        if (checkGroup) return checkGroup
 
         const users = [user.user_id, user_id[0]]
 
-        const group = await Groups.create({
-          group_name: otherUserFullName,
+        const pmGroup = await Groups.create({
+          group_name: `${actionUser.username}${otherUser.username}`,
+          group_picture: `${otherUser.profile_img}`,
           last_message_date: Date.now(),
         })
 
         await Promise.all(
-          users.forEach(async (user) => {
-            await UserGroups.create({ user_id: user, group_id: group.id })
+          users.map(async (user) => {
+            await UserGroups.create({ user_id: user, group_id: pmGroup.id })
           })
         )
 
         await UserLogs.create({
           full_name: `${actionUser.first_name} ${actionUser.last_name}`,
           section: `${actionUser.section}`,
-          action_description: `Started a new conversaion with ${otherUser.first_name} ${otherUser.last_name}`,
+          action_description: `Started a new conversation with ${otherUser.first_name} ${otherUser.last_name}`,
           user_id: user.user_id,
         })
 
-        return group
-      } else if (user_id.length > 1) {
+        console.log(actionUser)
+        console.log(pmGroup)
+
+        pubsub.publish('GROUP_CREATED', {
+          groupCreated: {
+            blame: actionUser,
+            group: pmGroup,
+          },
+        })
+
+        return pmGroup
+      }
+      if (user_id.length > 1) {
         const userIds = [...user_id, user.user_id]
 
         const newGroup = await Groups.create({
@@ -574,7 +641,7 @@ const resolvers = {
           role_type: 'MODERATOR',
         })
 
-        const createDefaultUserGroupRoles = await Promise.all(
+        await Promise.all(
           createUserGroups.map(async (usergroup) => {
             if (usergroup.user_id === user.user_id) {
               const createDefaultUserGroupRole = await UserGroupRoles.create({
@@ -597,6 +664,13 @@ const resolvers = {
           section: `${actionUser.section}`,
           action_description: `Started a new group conversation with ${user_id.length} people`,
           user_id: user.user_id,
+        })
+
+        pubsub.publish('GROUP_CREATED', {
+          groupCreated: {
+            blame: actionUser,
+            group: newGroup,
+          },
         })
 
         return newGroup
@@ -772,6 +846,7 @@ const resolvers = {
         const newGroup = await Groups.create({
           group_name: newGroupName,
           is_group: true,
+          last_message_date: Date.now(),
         })
 
         const createUserGroups = await Promise.all(
@@ -895,6 +970,24 @@ const resolvers = {
     },
   },
   Subscription: {
+    groupCreated: {
+      subscribe: withFilter(
+        (_, __, { pubsub }) => pubsub.asyncIterator('GROUP_CREATED'),
+        async (payload, variables) => {
+          const userGroup = await UserGroups.findOne({
+            where: {
+              user_id: variables.user,
+              group_id: payload.groupCreated.group.id,
+            },
+          })
+
+          if (userGroup) {
+            return true
+          }
+          return false
+        }
+      ),
+    },
     memberAdded: {
       subscribe: withFilter(
         (_, __, { pubsub }) => pubsub.asyncIterator('MEMBER_ADDED'),

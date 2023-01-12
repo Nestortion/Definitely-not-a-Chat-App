@@ -122,6 +122,10 @@ const typeDefs = `
     group: Group
     blame: User
   }
+  type GroupCreatedResponse{
+    group: Group
+    blame: User
+  }
 
   type CurrentUserGroupRoles{
     roles: [String]
@@ -174,6 +178,7 @@ const typeDefs = `
   
 
   type Subscription{
+    groupCreated (user: Int): GroupCreatedResponse
     groupNameUpdate(user:Int): Group
     chatAdded(user: Int): UserChat
     memberAdded(user: Int, group_id: Int): MemberAddedResponse
