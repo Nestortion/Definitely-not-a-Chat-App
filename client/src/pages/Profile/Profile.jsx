@@ -30,7 +30,6 @@ export default function Profile() {
           {profileData.userProfile.first_name}{' '}
           {profileData.userProfile.last_name}
         </h1>
-        <span>{profileData.userProfile.username}</span>
       </div>
       <div className="profile__info">
         <span>Age: {profileData.userProfile.age}</span>
