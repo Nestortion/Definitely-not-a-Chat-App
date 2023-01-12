@@ -19,7 +19,9 @@ export default function AddMembers() {
     data: allMembers,
     loading: usersLoading,
     error: usersError,
-  } = useAddMemberListQuery({ variables: { groupId: parseInt(chatId) } })
+  } = useAddMemberListQuery({
+    variables: { groupId: parseInt(chatId), form: 'memberList' },
+  })
 
   // const [searchInput, setSearchInput] = useState('')
   const [selectedMembers, setSelectedMembers] = useState([])
