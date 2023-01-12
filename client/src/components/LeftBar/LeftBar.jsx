@@ -5,6 +5,7 @@ import ChatList from '../ChatList/ChatList'
 import { useState } from 'react'
 import {
   ChatAddedDocument,
+  GroupCreatedDocument,
   MemberAddedDocument,
   useGroupsQuery,
   useLatestChatsQuery,
@@ -62,9 +63,6 @@ export default function LeftBar({ user, showOnlyMiddle }) {
       variables: { user: user.currentUser.id },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev
-        console.log(
-          subscriptionData.data.memberAdded.blame.id === user.currentUser.id
-        )
         if (
           !(subscriptionData.data.memberAdded.blame.id === user.currentUser.id)
         )
@@ -77,7 +75,29 @@ export default function LeftBar({ user, showOnlyMiddle }) {
           refetchLatestChat()
 
           return {
-            groups: [...prev.groups, subscriptionData.data.memberAdded.group],
+            groups: [subscriptionData.data.memberAdded.group, ...prev.groups],
+          }
+        }
+      },
+    })
+    groupsSubscribeToMore({
+      document: GroupCreatedDocument,
+      variables: { user: user.currentUser.id },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev
+        if (
+          !(subscriptionData.data.groupCreated.blame.id === user.currentUser.id)
+        )
+          return prev
+        if (
+          !prev.groups.some(
+            (group) => group.id === subscriptionData.data.groupCreated.group.id
+          )
+        ) {
+          refetchLatestChat()
+
+          return {
+            groups: [subscriptionData.data.groupCreated.group, ...prev.groups],
           }
         }
       },
