@@ -5,6 +5,7 @@ import SpawnModal from '../UI/Modal/SpawnModal'
 import { useState } from 'react'
 import AddMembers from './AddMembers/AddMembers'
 import EditGroupName from './EditGroupName/EditGroupName'
+import SearchInChat from './SearchInChat/SearchInChat'
 
 export default function SettingsButtons({ roles, isGroup }) {
   const [shouldShowModal, setShouldShowModal] = useState(false)
@@ -58,7 +59,7 @@ export default function SettingsButtons({ roles, isGroup }) {
         <SpawnModal title={currentTitle} closeModal={handleHideModal}>
           {shouldShowAddMembers && <AddMembers />}
           {shouldShowEditGroupName && <EditGroupName />}
-          {shouldShowSearchInGroup && <span>Search</span>}
+          {shouldShowSearchInGroup && <SearchInChat />}
           {shouldShowReportChat && <span>Report</span>}
         </SpawnModal>
       )}
