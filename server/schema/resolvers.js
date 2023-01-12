@@ -494,7 +494,7 @@ const resolvers = {
           await UserLogs.create({
             full_name: `${actionUser.first_name} ${actionUser.last_name}`,
             section: `${actionUser.section}`,
-            action_description: `sent file: "${message}" to group ${group.group_name}`,
+            action_description: `sent message: "${message}" to group ${group.group_name}`,
             user_id: user.user_id,
           })
 
@@ -511,31 +511,96 @@ const resolvers = {
     },
     createGroup: async (_, { user_id }, context) => {
       const { data: user } = authMiddleware(context)
-
       const actionUser = await Users.findOne({ where: { id: user.user_id } })
 
-      const otherUser = await Users.findOne({ where: { id: user_id } })
+      if (user_id.length === 1) {
+        const otherUser = await Users.findOne({ where: { id: user_id[0] } })
 
-      const otherUserFullName = `${otherUser.first_name} ${otherUser.last_name}`
+        const otherUserFullName = `${otherUser.first_name} ${otherUser.last_name}`
 
-      const users = [user.user_id, user_id]
+        const users = [user.user_id, user_id[0]]
 
-      const group = await Groups.create({ group_name: otherUserFullName })
-
-      await Promise.all(
-        users.forEach(async (user) => {
-          await UserGroups.create({ user_id: user, group_id: group.id })
+        const group = await Groups.create({
+          group_name: otherUserFullName,
+          last_message_date: Date.now(),
         })
-      )
 
-      await UserLogs.create({
-        full_name: `${actionUser.first_name} ${actionUser.last_name}`,
-        section: `${actionUser.section}`,
-        action_description: `Started a new conversaion with ${otherUser.first_name} ${otherUser.last_name}`,
-        user_id: user.user_id,
-      })
+        await Promise.all(
+          users.forEach(async (user) => {
+            await UserGroups.create({ user_id: user, group_id: group.id })
+          })
+        )
 
-      return group
+        await UserLogs.create({
+          full_name: `${actionUser.first_name} ${actionUser.last_name}`,
+          section: `${actionUser.section}`,
+          action_description: `Started a new conversaion with ${otherUser.first_name} ${otherUser.last_name}`,
+          user_id: user.user_id,
+        })
+
+        return group
+      } else if (user_id.length > 1) {
+        const userIds = [...user_id, user.user_id]
+
+        const newGroup = await Groups.create({
+          group_name: 'New Group',
+          last_message_date: Date.now(),
+          group_picture: 'default-icon.png',
+          is_group: true,
+        })
+
+        const createUserGroups = await Promise.all(
+          userIds.map(async (user) => {
+            const userGroup = await UserGroups.create({
+              user_id: user,
+              group_id: newGroup.id,
+            })
+            return userGroup
+          })
+        )
+
+        const defaultGroupRole = await GroupRoles.create({
+          role_name: 'Member',
+          emoji: ' ',
+          description: ' ',
+          group_id: newGroup.id,
+        })
+
+        const defaultCreatorRole = await GroupRoles.create({
+          role_name: 'Group Creator',
+          emoji: ' ',
+          description: 'Group Creator',
+          group_id: newGroup.id,
+          role_type: 'MODERATOR',
+        })
+
+        const createDefaultUserGroupRoles = await Promise.all(
+          createUserGroups.map(async (usergroup) => {
+            if (usergroup.user_id === user.user_id) {
+              const createDefaultUserGroupRole = await UserGroupRoles.create({
+                user_group_id: usergroup.id,
+                group_role_id: defaultCreatorRole.id,
+              })
+              return createDefaultUserGroupRole
+            } else {
+              const createDefaultUserGroupRole = await UserGroupRoles.create({
+                user_group_id: usergroup.id,
+                group_role_id: defaultGroupRole.id,
+              })
+              return createDefaultUserGroupRole
+            }
+          })
+        )
+
+        await UserLogs.create({
+          full_name: `${actionUser.first_name} ${actionUser.last_name}`,
+          section: `${actionUser.section}`,
+          action_description: `Started a new group conversation with ${user_id.length} people`,
+          user_id: user.user_id,
+        })
+
+        return newGroup
+      }
     },
     addUserGroup: (_, { user_id, group_id }) => {
       return UserGroups.create({ user_id, group_id })

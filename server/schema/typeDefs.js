@@ -168,7 +168,7 @@ const typeDefs = `
     addMember(group_id: Int!, user_id: [Int!]) : [UserGroup]
     updateGroupName(group_name: String!, group_id: Int): Group
     removeMember(group_id: Int, user_id: Int): User
-    createGroup(user_id: Int!): Group
+    createGroup(user_id: [Int!]): Group
   }
 
   
