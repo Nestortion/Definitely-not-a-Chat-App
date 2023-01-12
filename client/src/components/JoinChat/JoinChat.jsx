@@ -41,6 +41,7 @@ export default function JoinChat() {
 
   const handleCreate = () => {
     // Create chat with selected members
+    if (selectedMembers.length === 0) return
     console.log(selectedMembers)
   }
 
