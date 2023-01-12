@@ -217,6 +217,7 @@ export type Query = {
 }
 
 export type QueryAddMemberListArgs = {
+  form?: InputMaybe<Scalars['String']>
   group_id?: InputMaybe<Scalars['Int']>
 }
 
@@ -386,6 +387,7 @@ export type AddGroupRoleMutation = {
 
 export type AddMemberListQueryVariables = Exact<{
   groupId?: InputMaybe<Scalars['Int']>
+  form?: InputMaybe<Scalars['String']>
 }>
 
 export type AddMemberListQuery = {
@@ -963,8 +965,8 @@ export type AddGroupRoleMutationOptions = Apollo.BaseMutationOptions<
   AddGroupRoleMutationVariables
 >
 export const AddMemberListDocument = gql`
-  query AddMemberList($groupId: Int) {
-    addMemberList(group_id: $groupId) {
+  query AddMemberList($groupId: Int, $form: String) {
+    addMemberList(group_id: $groupId, form: $form) {
       key
       value
     }
@@ -984,6 +986,7 @@ export const AddMemberListDocument = gql`
  * const { data, loading, error } = useAddMemberListQuery({
  *   variables: {
  *      groupId: // value for 'groupId'
+ *      form: // value for 'form'
  *   },
  * });
  */

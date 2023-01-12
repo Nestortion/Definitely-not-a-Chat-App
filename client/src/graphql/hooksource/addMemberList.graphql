@@ -1,5 +1,5 @@
-query AddMemberList($groupId: Int) {
-  addMemberList(group_id: $groupId) {
+query AddMemberList($groupId: Int, $form: String) {
+  addMemberList(group_id: $groupId, form: $form) {
     key
     value
   }
