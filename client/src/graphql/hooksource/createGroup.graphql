@@ -1,0 +1,8 @@
+mutation CreateGroup($userId: [Int!]) {
+  createGroup(user_id: $userId) {
+    group_name
+    group_picture
+    id
+    is_group
+  }
+}

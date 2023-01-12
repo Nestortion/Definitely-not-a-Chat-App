@@ -167,7 +167,7 @@ export type MutationAddUserGroupRoleArgs = {
 }
 
 export type MutationCreateGroupArgs = {
-  user_id: Scalars['Int']
+  user_id?: InputMaybe<Array<Scalars['Int']>>
 }
 
 export type MutationLoginArgs = {
@@ -507,6 +507,21 @@ export type ChatAddedSubscription = {
     user_id: number
     receiver?: number | null
     message_type: MessageType
+  } | null
+}
+
+export type CreateGroupMutationVariables = Exact<{
+  userId?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>
+}>
+
+export type CreateGroupMutation = {
+  __typename?: 'Mutation'
+  createGroup?: {
+    __typename?: 'Group'
+    group_name: string
+    group_picture: string
+    id: number
+    is_group: string
   } | null
 }
 
@@ -1390,6 +1405,59 @@ export type ChatAddedSubscriptionHookResult = ReturnType<
 >
 export type ChatAddedSubscriptionResult =
   Apollo.SubscriptionResult<ChatAddedSubscription>
+export const CreateGroupDocument = gql`
+  mutation CreateGroup($userId: [Int!]) {
+    createGroup(user_id: $userId) {
+      group_name
+      group_picture
+      id
+      is_group
+    }
+  }
+`
+export type CreateGroupMutationFn = Apollo.MutationFunction<
+  CreateGroupMutation,
+  CreateGroupMutationVariables
+>
+
+/**
+ * __useCreateGroupMutation__
+ *
+ * To run a mutation, you first call `useCreateGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateGroupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createGroupMutation, { data, loading, error }] = useCreateGroupMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useCreateGroupMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateGroupMutation,
+    CreateGroupMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CreateGroupMutation, CreateGroupMutationVariables>(
+    CreateGroupDocument,
+    options
+  )
+}
+export type CreateGroupMutationHookResult = ReturnType<
+  typeof useCreateGroupMutation
+>
+export type CreateGroupMutationResult =
+  Apollo.MutationResult<CreateGroupMutation>
+export type CreateGroupMutationOptions = Apollo.BaseMutationOptions<
+  CreateGroupMutation,
+  CreateGroupMutationVariables
+>
 export const CurrentUserDocument = gql`
   query CurrentUser {
     currentUser {
