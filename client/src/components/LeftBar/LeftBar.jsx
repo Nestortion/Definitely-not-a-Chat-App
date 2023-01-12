@@ -103,6 +103,10 @@ export default function LeftBar({ user, showOnlyMiddle }) {
     }
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+  }
+
   const showModal = () => {
     setIsModalShowing(true)
   }
@@ -126,7 +130,7 @@ export default function LeftBar({ user, showOnlyMiddle }) {
           </Button>
         </div>
         <div className="search">
-          <form>
+          <form onSubmit={handleSubmit}>
             <Input
               onChange={searchValueHandle}
               type="text"
