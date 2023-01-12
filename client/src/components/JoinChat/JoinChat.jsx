@@ -3,16 +3,13 @@ import Button from '../UI/Button/Button'
 import ReactSearchBox from 'react-search-box'
 import './join-chat.scss'
 import Input from '../UI/Input/Input'
-import { useAddMemberListQuery } from '../../graphql/hooks/graphql'
-import { useParams } from 'react-router-dom'
+import {
+  useAddMemberListQuery,
+  useCreateGroupMutation,
+} from '../../graphql/hooks/graphql'
+import { useNavigate, useParams } from 'react-router-dom'
 import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../Error/ErrorText'
-
-const DUMMY_USERS = [
-  { key: 1, value: 'Nestor' },
-  { key: 2, value: 'Josel' },
-  { key: 3, value: 'John Doe' },
-]
 
 export default function JoinChat() {
   const { chatId } = useParams()
@@ -25,11 +22,20 @@ export default function JoinChat() {
   } = useAddMemberListQuery({
     variables: { groupId: parseInt(chatId), form: 'userList' },
   })
-
-  console.log(users)
+  const [
+    createGroup,
+    {
+      data: createGroupData,
+      loading: createGroupLoading,
+      error: createGroupError,
+    },
+  ] = useCreateGroupMutation()
+  const navigate = useNavigate()
 
   if (loading) return <LoadingSpinner />
   if (error) return <ErrorText>Error</ErrorText>
+  if (createGroupLoading) return <LoadingSpinner />
+  if (createGroupError) return <ErrorText>Error</ErrorText>
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -59,7 +65,9 @@ export default function JoinChat() {
   const handleCreate = () => {
     // Create chat with selected members
     if (selectedMembers.length === 0) return
-    console.log(selectedMembers)
+    const selectedIds = selectedMembers.map((member) => member.key)
+    createGroup({ variables: { userId: selectedIds } })
+    navigate(`chat/${createGroupData.createGroup.id}`)
   }
 
   return (
