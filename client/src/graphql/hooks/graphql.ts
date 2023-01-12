@@ -61,6 +61,12 @@ export type Group = {
   is_group: Scalars['String']
 }
 
+export type GroupCreatedResponse = {
+  __typename?: 'GroupCreatedResponse'
+  blame?: Maybe<User>
+  group?: Maybe<Group>
+}
+
 export type GroupRole = {
   __typename?: 'GroupRole'
   description: Scalars['String']
@@ -284,12 +290,17 @@ export enum RoleType {
 export type Subscription = {
   __typename?: 'Subscription'
   chatAdded?: Maybe<UserChat>
+  groupCreated?: Maybe<GroupCreatedResponse>
   groupNameUpdate?: Maybe<Group>
   memberAdded?: Maybe<MemberAddedResponse>
   memberRemoved?: Maybe<MemberRemovedResponse>
 }
 
 export type SubscriptionChatAddedArgs = {
+  user?: InputMaybe<Scalars['Int']>
+}
+
+export type SubscriptionGroupCreatedArgs = {
   user?: InputMaybe<Scalars['Int']>
 }
 
@@ -570,6 +581,25 @@ export type GroupQuery = {
     group_name: string
     group_picture: string
     is_group: string
+  } | null
+}
+
+export type GroupCreatedSubscriptionVariables = Exact<{
+  user?: InputMaybe<Scalars['Int']>
+}>
+
+export type GroupCreatedSubscription = {
+  __typename?: 'Subscription'
+  groupCreated?: {
+    __typename?: 'GroupCreatedResponse'
+    blame?: { __typename?: 'User'; id: number } | null
+    group?: {
+      __typename?: 'Group'
+      group_name: string
+      group_picture: string
+      id: number
+      is_group: string
+    } | null
   } | null
 }
 
@@ -1633,6 +1663,55 @@ export type GroupQueryResult = Apollo.QueryResult<
   GroupQuery,
   GroupQueryVariables
 >
+export const GroupCreatedDocument = gql`
+  subscription GroupCreated($user: Int) {
+    groupCreated(user: $user) {
+      blame {
+        id
+      }
+      group {
+        group_name
+        group_picture
+        id
+        is_group
+      }
+    }
+  }
+`
+
+/**
+ * __useGroupCreatedSubscription__
+ *
+ * To run a query within a React component, call `useGroupCreatedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGroupCreatedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGroupCreatedSubscription({
+ *   variables: {
+ *      user: // value for 'user'
+ *   },
+ * });
+ */
+export function useGroupCreatedSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    GroupCreatedSubscription,
+    GroupCreatedSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSubscription<
+    GroupCreatedSubscription,
+    GroupCreatedSubscriptionVariables
+  >(GroupCreatedDocument, options)
+}
+export type GroupCreatedSubscriptionHookResult = ReturnType<
+  typeof useGroupCreatedSubscription
+>
+export type GroupCreatedSubscriptionResult =
+  Apollo.SubscriptionResult<GroupCreatedSubscription>
 export const GroupNameUpdateDocument = gql`
   subscription GroupNameUpdate($user: Int) {
     groupNameUpdate(user: $user) {

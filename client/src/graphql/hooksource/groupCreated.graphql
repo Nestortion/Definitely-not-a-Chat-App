@@ -1,0 +1,13 @@
+subscription GroupCreated($user: Int) {
+  groupCreated(user: $user) {
+    blame {
+      id
+    }
+    group {
+      group_name
+      group_picture
+      id
+      is_group
+    }
+  }
+}
