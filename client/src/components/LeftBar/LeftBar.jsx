@@ -15,6 +15,7 @@ import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import { MdAdd } from 'react-icons/md'
 import { useEffect } from 'react'
 import SpawnModal from '../UI/Modal/SpawnModal'
+import JoinChat from '../JoinChat/JoinChat'
 
 export default function LeftBar({ user, showOnlyMiddle }) {
   const {
@@ -122,7 +123,7 @@ export default function LeftBar({ user, showOnlyMiddle }) {
           <h1>Chats</h1>
           {isModalShowing && (
             <SpawnModal title="Join or Create" closeModal={closeModal}>
-              <span>Join or Create</span>
+              <JoinChat />
             </SpawnModal>
           )}
           <Button onClick={showModal}>
