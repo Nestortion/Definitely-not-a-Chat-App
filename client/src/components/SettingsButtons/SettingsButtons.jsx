@@ -6,6 +6,7 @@ import { useState } from 'react'
 import AddMembers from './AddMembers/AddMembers'
 import EditGroupName from './EditGroupName/EditGroupName'
 import SearchInChat from './SearchInChat/SearchInChat'
+import ReportChat from './ReportChat/ReportChat'
 
 export default function SettingsButtons({ roles, isGroup }) {
   const [shouldShowModal, setShouldShowModal] = useState(false)
@@ -60,7 +61,7 @@ export default function SettingsButtons({ roles, isGroup }) {
           {shouldShowAddMembers && <AddMembers />}
           {shouldShowEditGroupName && <EditGroupName />}
           {shouldShowSearchInGroup && <SearchInChat />}
-          {shouldShowReportChat && <span>Report</span>}
+          {shouldShowReportChat && <ReportChat />}
         </SpawnModal>
       )}
       <div className="settings-buttons">
