@@ -74,17 +74,6 @@ export default function JoinChat() {
     <div className="join-chat">
       <form onSubmit={handleSubmit}>
         <div className="join-chat__form__control">
-          <span>Join a Conversation</span>
-          <Input
-            type="text"
-            placeholder="Chat id"
-            value={joinChatId}
-            onChange={handleJoinChatIdChange}
-          />
-          <Button onClick={handleJoin}>Join</Button>
-        </div>
-
-        <div className="join-chat__form__control">
           <span>Create a Conversation</span>
           <ReactSearchBox
             placeholder="Search member"
