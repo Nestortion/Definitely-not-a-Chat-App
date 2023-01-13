@@ -25,9 +25,9 @@ export default function ChatMessage({
     loading: userLoading,
     error: userError,
   } = useUserChatSenderQuery({ variables: { userId: sender } })
-  useEffect(() => {
-    messageDiv.current?.scrollIntoView()
-  }, [text])
+  // useEffect(() => {
+  //   messageDiv.current?.scrollIntoView()
+  // }, [text])
 
   if (userLoading) return <LoadingSpinner>Loading</LoadingSpinner>
   if (userError) return <ErrorText>Error</ErrorText>

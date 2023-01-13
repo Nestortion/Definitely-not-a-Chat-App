@@ -4,12 +4,12 @@ import ChatMessage from '../ChatMessage/ChatMessage'
 import './chat-messages.scss'
 import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../../Error/ErrorText'
-
-// ! FETCH HERE
-// fetch messages from a chat/group chat
-// chat id should come from the global state
+import { useEffect, useRef, useState } from 'react'
 
 export default function ChatMessages({ userChats, user }) {
+  const [isBottom, setIsBottom] = useState(true)
+  const divRef = useRef()
+  const divEndRef = useRef()
   const { chatId } = useParams()
 
   const {
@@ -20,11 +20,40 @@ export default function ChatMessages({ userChats, user }) {
     variables: { groupId: parseInt(chatId) },
   })
 
+  const isScrolledToBottom = () => {
+    return (
+      divRef.current.scrollHeight - divRef.current.clientHeight <=
+      divRef.current.scrollTop + 1
+    )
+  }
+
+  const handleScroll = () => {
+    if (isScrolledToBottom()) {
+      setIsBottom(true)
+    } else {
+      setIsBottom(false)
+    }
+  }
+
+  useEffect(() => {
+    divRef.current?.addEventListener('scroll', handleScroll)
+
+    return () => {
+      divRef.current?.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isBottom) {
+      divEndRef.current?.scrollIntoView()
+    }
+  }, [userChats])
+
   if (groupLoading) return <LoadingSpinner>Loading</LoadingSpinner>
   if (groupError) return <ErrorText>Error</ErrorText>
 
   return (
-    <div className="chat-messages">
+    <div className="chat-messages" ref={divRef}>
       {userChats.data.userChats.map((chatMessage, index) => {
         if (chatMessage.receiver === parseInt(chatId)) {
           return (
@@ -40,6 +69,7 @@ export default function ChatMessages({ userChats, user }) {
           )
         }
       })}
+      <div ref={divEndRef}></div>
     </div>
   )
 }
