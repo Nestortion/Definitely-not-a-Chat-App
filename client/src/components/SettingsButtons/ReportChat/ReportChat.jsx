@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
+import Button from '../../UI/Button/Button'
 import './report-chat.scss'
 
 const reportReasons = [
@@ -21,32 +22,60 @@ const reportReasons = [
 ]
 
 export default function ReportChat() {
-  // TODO: FIX LOGIC
+  const refs = []
+
   const [selectedReasons, setSelectedReasons] = useState([])
+  const [inputShouldShow, setInputShouldShow] = useState(false)
+  const [otherReason, setOtherReason] = useState('')
 
   const handleChange = (reason) => {
-    if (selectedReasons.includes(reason)) {
-      setSelectedReasons(selectedReasons.filter((r) => r !== reason))
-    }
+    setInputShouldShow(refs[refs.length - 1].current.checked)
 
-    setSelectedReasons((prev) => [...prev, reason])
+    if (selectedReasons.includes(reason)) {
+      setSelectedReasons((prev) =>
+        prev.filter((currentReason) => currentReason !== reason)
+      )
+    } else {
+      setSelectedReasons((prev) => [...prev, reason])
+    }
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    console.log(selectedReasons)
+    console.log(otherReason)
   }
 
   return (
     <div className="report-chat">
       <span className="fs-500 fw-bold">Let us know what's going on</span>
       <ul className="report-chat__reasons">
-        {reportReasons.map((reason) => (
-          <li key={reason.id}>
-            <span>{reason.reason}</span>
-            <input
-              type="checkbox"
-              onChange={() => handleChange(reason.reason)}
-            />
-          </li>
-        ))}
+        {reportReasons.map((reason) => {
+          const newRef = useRef()
+          refs.push(newRef)
+          return (
+            <li key={reason.id}>
+              <span>{reason.reason}</span>
+              <input
+                type="checkbox"
+                onChange={() => handleChange(reason.reason)}
+                ref={newRef}
+              />
+            </li>
+          )
+        })}
       </ul>
-      <input type="text" />
+      <form className="report-chat__form" onSubmit={handleSubmit}>
+        <input
+          className="report-chat__input"
+          type="text"
+          disabled={!inputShouldShow}
+          onChange={(e) => setOtherReason(e.target.value)}
+          value={otherReason}
+        />
+        <Button>Submit</Button>
+      </form>
     </div>
   )
 }
