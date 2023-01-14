@@ -1,8 +1,0 @@
-query SearchGroups($groupName: String, $groupId: Int) {
-  searchGroups(group_name: $groupName, group_id: $groupId) {
-    group_name
-    group_picture
-    id
-    is_group
-  }
-}

@@ -207,7 +207,6 @@ export type Query = {
   isLoggedIn?: Maybe<Scalars['Boolean']>
   latestChats?: Maybe<Array<Maybe<UserChat>>>
   otherUser?: Maybe<User>
-  searchGroups?: Maybe<Array<Maybe<Group>>>
   user?: Maybe<User>
   userChat?: Maybe<UserChat>
   userChatReactions?: Maybe<Array<Maybe<UserChatReaction>>>
@@ -245,11 +244,6 @@ export type QueryGroupsArgs = {
 
 export type QueryOtherUserArgs = {
   group_id?: InputMaybe<Scalars['Int']>
-}
-
-export type QuerySearchGroupsArgs = {
-  group_id?: InputMaybe<Scalars['Int']>
-  group_name?: InputMaybe<Scalars['String']>
 }
 
 export type QueryUserChatArgs = {
@@ -811,22 +805,6 @@ export type RemoveMemberMutation = {
     age: number
     gender: string
   } | null
-}
-
-export type SearchGroupsQueryVariables = Exact<{
-  groupName?: InputMaybe<Scalars['String']>
-  groupId?: InputMaybe<Scalars['Int']>
-}>
-
-export type SearchGroupsQuery = {
-  __typename?: 'Query'
-  searchGroups?: Array<{
-    __typename?: 'Group'
-    group_name: string
-    group_picture: string
-    id: number
-    is_group: string
-  } | null> | null
 }
 
 export type UpdateGroupNameMutationVariables = Exact<{
@@ -2328,68 +2306,6 @@ export type RemoveMemberMutationResult =
 export type RemoveMemberMutationOptions = Apollo.BaseMutationOptions<
   RemoveMemberMutation,
   RemoveMemberMutationVariables
->
-export const SearchGroupsDocument = gql`
-  query SearchGroups($groupName: String, $groupId: Int) {
-    searchGroups(group_name: $groupName, group_id: $groupId) {
-      group_name
-      group_picture
-      id
-      is_group
-    }
-  }
-`
-
-/**
- * __useSearchGroupsQuery__
- *
- * To run a query within a React component, call `useSearchGroupsQuery` and pass it any options that fit your needs.
- * When your component renders, `useSearchGroupsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useSearchGroupsQuery({
- *   variables: {
- *      groupName: // value for 'groupName'
- *      groupId: // value for 'groupId'
- *   },
- * });
- */
-export function useSearchGroupsQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    SearchGroupsQuery,
-    SearchGroupsQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<SearchGroupsQuery, SearchGroupsQueryVariables>(
-    SearchGroupsDocument,
-    options
-  )
-}
-export function useSearchGroupsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    SearchGroupsQuery,
-    SearchGroupsQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<SearchGroupsQuery, SearchGroupsQueryVariables>(
-    SearchGroupsDocument,
-    options
-  )
-}
-export type SearchGroupsQueryHookResult = ReturnType<
-  typeof useSearchGroupsQuery
->
-export type SearchGroupsLazyQueryHookResult = ReturnType<
-  typeof useSearchGroupsLazyQuery
->
-export type SearchGroupsQueryResult = Apollo.QueryResult<
-  SearchGroupsQuery,
-  SearchGroupsQueryVariables
 >
 export const UpdateGroupNameDocument = gql`
   mutation UpdateGroupName($groupName: String!, $groupId: Int) {

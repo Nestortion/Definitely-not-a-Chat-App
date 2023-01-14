@@ -37,7 +37,6 @@ const documents = {
     "subscription MemberRemoved($user: Int, $groupId: Int) {\n  memberRemoved(user: $user, group_id: $groupId) {\n    blame {\n      id\n    }\n    group {\n      group_name\n      group_picture\n      id\n      is_group\n    }\n    user {\n      first_name\n      id\n      last_name\n      profile_img\n      username\n      section\n    }\n  }\n}": types.MemberRemovedDocument,
     "query OtherUser($groupId: Int) {\n  otherUser(group_id: $groupId) {\n    id\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.OtherUserDocument,
     "mutation RemoveMember($groupId: Int, $userId: Int) {\n  removeMember(group_id: $groupId, user_id: $userId) {\n    id\n    first_name\n    last_name\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.RemoveMemberDocument,
-    "query SearchGroups($groupName: String, $groupId: Int) {\n  searchGroups(group_name: $groupName, group_id: $groupId) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}": types.SearchGroupsDocument,
     "mutation UpdateGroupName($groupName: String!, $groupId: Int) {\n  updateGroupName(group_name: $groupName, group_id: $groupId) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}": types.UpdateGroupNameDocument,
     "query User {\n  user {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.UserDocument,
     "query UserChatSender($userId: Int) {\n  userChatSender(user_id: $userId) {\n    first_name\n    last_name\n    username\n    profile_img\n    id\n  }\n}": types.UserChatSenderDocument,
@@ -143,10 +142,6 @@ export function graphql(source: "query OtherUser($groupId: Int) {\n  otherUser(g
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "mutation RemoveMember($groupId: Int, $userId: Int) {\n  removeMember(group_id: $groupId, user_id: $userId) {\n    id\n    first_name\n    last_name\n    section\n    profile_img\n    age\n    gender\n  }\n}"): (typeof documents)["mutation RemoveMember($groupId: Int, $userId: Int) {\n  removeMember(group_id: $groupId, user_id: $userId) {\n    id\n    first_name\n    last_name\n    section\n    profile_img\n    age\n    gender\n  }\n}"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "query SearchGroups($groupName: String, $groupId: Int) {\n  searchGroups(group_name: $groupName, group_id: $groupId) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}"): (typeof documents)["query SearchGroups($groupName: String, $groupId: Int) {\n  searchGroups(group_name: $groupName, group_id: $groupId) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
