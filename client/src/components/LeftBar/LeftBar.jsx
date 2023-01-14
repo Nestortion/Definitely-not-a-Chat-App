@@ -9,7 +9,6 @@ import {
   MemberAddedDocument,
   useGroupsQuery,
   useLatestChatsQuery,
-  useSearchGroupsLazyQuery,
 } from '../../graphql/hooks/graphql'
 import ErrorText from '../Error/ErrorText'
 import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
