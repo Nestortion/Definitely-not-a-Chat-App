@@ -148,7 +148,7 @@ export default function LeftBar({ user, showOnlyMiddle }) {
           <h1>Chats</h1>
           {isModalShowing && (
             <SpawnModal title="Create conversation" closeModal={closeModal}>
-              <JoinChat />
+              <JoinChat closeModal={closeModal} />
             </SpawnModal>
           )}
           <Button onClick={showModal}>
