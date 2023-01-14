@@ -17,13 +17,14 @@ import { MdAdd } from 'react-icons/md'
 import { useEffect } from 'react'
 import SpawnModal from '../UI/Modal/SpawnModal'
 import JoinChat from '../JoinChat/JoinChat'
+import useDebounceValue from '../../helper_hooks/useDebounceValue'
 
 export default function LeftBar({ user, showOnlyMiddle }) {
   const {
     data: latestChats,
     loading: latestLoading,
     error: latestError,
-    subscribeToMore,
+    subscribeToMore: latestChatSubscribe,
     refetch: refetchLatestChat,
   } = useLatestChatsQuery()
 
@@ -34,10 +35,30 @@ export default function LeftBar({ user, showOnlyMiddle }) {
     refetch: refetchGroups,
     subscribeToMore: groupsSubscribeToMore,
   } = useGroupsQuery()
-  const [searchGroups] = useSearchGroupsLazyQuery()
+
+  const [searchData, setSearchData] = useState()
+  const [isSearching, setIsSearching] = useState(false)
+  const [isModalShowing, setIsModalShowing] = useState(false)
+  const [searchValue, setSearchValue] = useState('')
+  const debounceValue = useDebounceValue(searchValue, 250)
 
   useEffect(() => {
-    subscribeToMore({
+    ;(() => {
+      if (searchValue && searchValue.length > 0) {
+        const filteredData = chat.groups.filter((group) => {
+          return group.group_name.toLowerCase().includes(debounceValue)
+        })
+
+        setSearchData(filteredData)
+        setIsSearching(true)
+      } else {
+        setIsSearching(false)
+      }
+    })()
+  }, [debounceValue])
+
+  useEffect(() => {
+    latestChatSubscribe({
       document: ChatAddedDocument,
       variables: { user: user.currentUser.id },
       updateQuery: (prev, { subscriptionData }) => {
@@ -103,26 +124,11 @@ export default function LeftBar({ user, showOnlyMiddle }) {
       },
     })
   }, [])
-  const [searchData, setSearchData] = useState()
-  const [isSearching, setIsSearching] = useState(false)
-  const [isModalShowing, setIsModalShowing] = useState(false)
 
   if (loading) return <LoadingSpinner />
   if (error) return <ErrorText>Something went wrong</ErrorText>
   if (latestLoading) return <LoadingSpinner />
   if (latestError) return <ErrorText>Something went wrong</ErrorText>
-
-  const searchValueHandle = async (e) => {
-    if (e.target.value) {
-      const searchRes = await searchGroups({
-        variables: { groupName: e.target.value },
-      })
-      setSearchData(searchRes.data)
-      setIsSearching(true)
-    } else {
-      setIsSearching(false)
-    }
-  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -153,7 +159,7 @@ export default function LeftBar({ user, showOnlyMiddle }) {
         <div className="search">
           <form onSubmit={handleSubmit}>
             <Input
-              onChange={searchValueHandle}
+              onChange={(e) => setSearchValue(e.target.value)}
               type="text"
               placeholder="Search Chats"
             />
@@ -163,7 +169,7 @@ export default function LeftBar({ user, showOnlyMiddle }) {
 
       <div className="bottom">
         <ChatList
-          chats={isSearching ? searchData.searchGroups : chat.groups}
+          chats={isSearching ? searchData : chat.groups}
           latest={latestChats.latestChats}
           showOnlyMiddle={showOnlyMiddle}
         />
