@@ -6,24 +6,57 @@ import { MdUpload } from 'react-icons/md'
 import './profile-settings.scss'
 import { useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
+import Button from '../../components/UI/Button/Button'
 
 export default function ProfileSettings() {
   const user = useOutletContext()
 
-  const [fileInput, setFileInput] = useState(null)
-  const [firstName, setFirstName] = useState(user.currentUser.first_name)
-  const [lastName, setLastName] = useState(user.currentUser.last_name)
-  const [username, setUsername] = useState(user.currentUser.username)
-  const [age, setAge] = useState(user.currentUser.age)
-  const [gender, setGender] = useState(user.currentUser.gender)
-  const [section, setSection] = useState(user.currentUser.section)
-  const [address, setAddress] = useState(user.currentUser.address)
+  const initialState = {
+    firstName: user.currentUser.first_name,
+    lastName: user.currentUser.last_name,
+    username: user.currentUser.username,
+    age: user.currentUser.age,
+    gender: user.currentUser.gender,
+    section: user.currentUser.section,
+    address: user.currentUser.address,
+  }
 
-  const handleChange = (e) => {}
+  const [imageFile, setImageFile] = useState(null)
+  const [values, setValues] = useState(initialState)
+
+  const handleChange = (e) => {
+    //? the age automatically converts to string
+    const { name, value } = e.target
+
+    setValues({ ...values, [name]: value })
+  }
+
+  const handleImageChange = ({
+    target: {
+      validity,
+      files: [file],
+    },
+  }) => {
+    if (validity.valid) {
+      setImageFile(file)
+    }
+  }
+
+  const handleReset = () => {
+    setValues(initialState)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    // ! Backend logic here
+    console.log(imageFile)
+    console.log(values)
+  }
 
   return (
     <div className="profile-settings">
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="profile-settings__header">
           <div className="profile-settings__image">
             <Avatar
@@ -40,55 +73,103 @@ export default function ProfileSettings() {
               <input
                 className="profile-settings__file-input__input"
                 type="file"
-                accept="image/*"
+                accept="image/jpg, image/jpeg, image/png"
                 id="image"
+                onChange={handleImageChange}
               />
             </div>
           </div>
-          <h1 className="text-primary-400">
-            <input
-              className="profile-settings-input"
-              type="text"
-              placeholder={`${firstName} ${lastName}`}
-            />
-          </h1>
-          <span>
-            <input
-              className="profile-settings-input"
-              type="text"
-              placeholder={username}
-            />
-          </span>
         </div>
+
         <div className="profile-settings__info">
-          <span>
+          <div className="profile-settings__input-container">
+            <label htmlFor="firstName" className="text-primary-400">
+              First name:
+            </label>
             <input
               className="profile-settings-input"
               type="text"
-              placeholder={`Age: ${age}`}
+              name="firstName"
+              onChange={handleChange}
+              id="firstName"
+              value={values.firstName}
             />
-          </span>
-          <span>
+          </div>
+          <div className="profile-settings__input-container">
+            <label htmlFor="lastName" className="text-primary-400">
+              Last name:
+            </label>
             <input
               className="profile-settings-input"
               type="text"
-              placeholder={`Gender: ${gender}`}
+              name="lastName"
+              onChange={handleChange}
+              id="lastName"
+              value={values.lastName}
             />
-          </span>
-          <span>
+          </div>
+          <div className="profile-settings__input-container">
+            <label htmlFor="username">Username: </label>
             <input
               className="profile-settings-input"
               type="text"
-              placeholder={`Section: ${section}`}
+              name="username"
+              onChange={handleChange}
+              id="username"
+              value={values.username}
             />
-          </span>
-          <span>
+          </div>
+          <div className="profile-settings__input-container">
+            <label htmlFor="age">Age: </label>
+            <input
+              className="profile-settings-input"
+              type="number"
+              name="age"
+              onChange={handleChange}
+              id="age"
+              value={values.age}
+            />
+          </div>
+          <div className="profile-settings__input-container">
+            <label htmlFor="gender">Gender: </label>
             <input
               className="profile-settings-input"
               type="text"
-              placeholder={`Address: ${address}`}
+              name="gender"
+              onChange={handleChange}
+              id="gender"
+              value={values.gender}
             />
-          </span>
+          </div>
+          <div className="profile-settings__input-container">
+            <label htmlFor="section">Section: </label>
+            <input
+              className="profile-settings-input"
+              type="text"
+              name="section"
+              onChange={handleChange}
+              id="section"
+              value={values.section}
+            />
+          </div>
+          <div className="profile-settings__input-container">
+            <label htmlFor="address">Address: </label>
+            <input
+              className="profile-settings-input"
+              type="text"
+              name="address"
+              onChange={handleChange}
+              id="address"
+              value={values.address}
+            />
+          </div>
+        </div>
+
+        <div className="profile-settings__button-group">
+          <Button>Save</Button>
+          <Button onClick={handleReset} secondary>
+            Reset
+          </Button>
         </div>
       </form>
     </div>

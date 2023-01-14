@@ -1,5 +1,6 @@
 .profile-settings {
   height: 100%;
+  overflow: auto;
 
   form {
     display: flex;
@@ -57,11 +58,30 @@
 
     .profile-settings__info {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 300px));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1rem;
 
-      span {
-        font-size: clamp(0.8rem, 2vw, 1.5rem);
+      .profile-settings__input-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+
+        label {
+          font-size: clamp(0.8rem, 2vw, 1.5rem);
+        }
+      }
+    }
+
+    .profile-settings__button-group {
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+
+      button {
+        width: 25%;
       }
     }
   }
@@ -69,10 +89,8 @@
 
 .profile-settings-input {
   width: 100%;
+  padding: 0.625rem 1rem;
   background: none;
-  border: none;
-
-  text-align: center;
-
-  display: inline-block;
+  border: 1px solid var(--clr-primary-400);
+  border-radius: 0.3125rem;
 }
