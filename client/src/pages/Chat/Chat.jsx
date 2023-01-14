@@ -7,6 +7,7 @@ import {
   GroupNameUpdateDocument,
   useAddUserChatMutation,
   useGroupQuery,
+  useOtherUserQuery,
   UserChatsDocument,
   useUserGroupRolesQuery,
 } from '../../graphql/hooks/graphql'
@@ -34,6 +35,12 @@ export default function Chat() {
   const [message, setMessage] = useState('')
   const [isModalShowing, setIsModalShowing] = useState(false)
 
+  const {
+    data: otherUser,
+    loading: otherUserLoading,
+    error: otherUserError,
+  } = useOtherUserQuery({ variables: { groupId: parseInt(chatId) } })
+
   const [sendMessage] = useAddUserChatMutation({
     refetchQueries: [{ query: UserChatsDocument }],
   })
@@ -52,6 +59,8 @@ export default function Chat() {
 
   if (rolesLoading) return <LoadingSpinner />
   if (rolesError) return <ErrorText>Error</ErrorText>
+  if (otherUserLoading) return <LoadingSpinner />
+  if (otherUserError) return <ErrorText>Error</ErrorText>
   if (loading) return <LoadingSpinner />
   if (error) return <ErrorText>Something went wrong</ErrorText>
 
@@ -120,12 +129,25 @@ export default function Chat() {
     <div className={`chat ${isTabletOrMobile && 'small-screen'}`}>
       <div className="header">
         <div className="chat-info">
-          <Avatar
-            src={`${apiBasePath}/pfp/${data.group.group_picture}`}
-            alt={`${data.group.group_name}'s photo`}
-            size="40"
-          />
-          <span>{data.group.group_name}</span>
+          {data.group.is_group === 'true' ? (
+            <>
+              <Avatar
+                src={`${apiBasePath}/pfp/${data.group.group_picture}`}
+                alt={`${data.group.group_name}'s photo`}
+                size="40"
+              />
+              <span>{data.group.group_name}</span>
+            </>
+          ) : (
+            <>
+              <Avatar
+                src={`${apiBasePath}/pfp/${otherUser.otherUser.profile_img}`}
+                alt={`${data.group.group_name}'s photo`}
+                size="40"
+              />
+              <span>{`${otherUser.otherUser.first_name} ${otherUser.otherUser.last_name}`}</span>
+            </>
+          )}
         </div>
         {isModalShowing && (
           <SpawnModal title="Add members" closeModal={closeModal}>
