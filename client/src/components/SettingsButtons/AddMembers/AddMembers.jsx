@@ -9,11 +9,22 @@ import {
 import ErrorText from '../../Error/ErrorText'
 import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'
 import { useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 // Transform the data like this first
 // { key: id, value: 'first_name last_name'}
 
 export default function AddMembers({ closeModal }) {
+  const notify = () =>
+    toast('Member Added!', {
+      position: toast.POSITION.TOP_CENTER,
+      style: {
+        color: 'var(--clr-neutral-100)',
+        backgroundColor: 'var(--clr-primary-400)',
+        fontSize: 'clamp(0.8rem, 1.3vw, 1.5rem)',
+      },
+    })
+
   const { chatId } = useParams()
   const {
     data: allMembers,
@@ -66,6 +77,7 @@ export default function AddMembers({ closeModal }) {
     addMembers({ variables: { groupId: parseInt(chatId), userId: memberIds } })
     // reset selectedMembers
     setSelectedMembers([])
+    notify()
     closeModal()
   }
 
