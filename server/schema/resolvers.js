@@ -893,10 +893,32 @@ const resolvers = {
         return createUserGroups
       }
     },
-    updateGroupName: async (_, { group_name, group_id }, context) => {
+    updateGroup: async (
+      _,
+      { group_name, group_id, group_picture },
+      context
+    ) => {
       const { pubsub, data: user } = authMiddleware(context)
 
-      await Groups.update({ group_name }, { where: { id: group_id } })
+      if (group_picture) {
+        const { createReadStream, filename } = await group_picture
+        let filepath = '../files/grouppfp'
+        let newFileName = `${uuid()} ${filename}`
+
+        await new Promise((res) =>
+          createReadStream()
+            .pipe(
+              createWriteStream(path.join('__dirname', filepath, newFileName))
+            )
+            .on('close', res)
+        )
+        await Groups.update(
+          { group_picture: newFileName, group_name },
+          { where: { id: group_id } }
+        )
+      } else {
+        await Groups.update({ group_name }, { where: { id: group_id } })
+      }
 
       const updatedGroup = await Groups.findOne({ where: { id: group_id } })
 
@@ -909,8 +931,8 @@ const resolvers = {
         user_id: user.user_id,
       })
 
-      pubsub.publish('GROUP_NAME_UPDATE', {
-        groupNameUpdate: updatedGroup,
+      pubsub.publish('GROUP_UPDATE', {
+        groupUpdate: updatedGroup,
       })
 
       return updatedGroup
@@ -997,14 +1019,14 @@ const resolvers = {
         }
       ),
     },
-    groupNameUpdate: {
+    groupUpdate: {
       subscribe: withFilter(
-        (_, __, { pubsub }) => pubsub.asyncIterator('GROUP_NAME_UPDATE'),
+        (_, __, { pubsub }) => pubsub.asyncIterator('GROUP_UPDATE'),
         async (payload, variables) => {
           const userGroup = await UserGroups.findOne({
             where: {
               user_id: variables.user,
-              group_id: payload.groupNameUpdate.id,
+              group_id: payload.groupUpdate.id,
             },
           })
 

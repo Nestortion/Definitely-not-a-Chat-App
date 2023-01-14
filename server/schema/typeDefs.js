@@ -169,7 +169,7 @@ const typeDefs = `
     revokeRefreshToken(user_id:Int!) : Boolean
     logout : Boolean
     addMember(group_id: Int!, user_id: [Int!]) : [UserGroup]
-    updateGroupName(group_name: String!, group_id: Int): Group
+    updateGroup(group_name: String, group_id: Int, group_picture: Upload ): Group
     removeMember(group_id: Int, user_id: Int): User
     createGroup(user_id: [Int!]): Group
   }
@@ -178,7 +178,7 @@ const typeDefs = `
 
   type Subscription{
     groupCreated (user: Int): GroupCreatedResponse
-    groupNameUpdate(user:Int): Group
+    groupUpdate(user:Int): Group
     chatAdded(user: Int): UserChat
     memberAdded(user: Int, group_id: Int): MemberAddedResponse
     memberRemoved(user: Int, group_id: Int): MemberRemovedResponse
