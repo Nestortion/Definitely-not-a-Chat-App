@@ -3,9 +3,12 @@ import Button from '../../UI/Button/Button'
 import './edit-group-name.scss'
 import { useParams } from 'react-router-dom'
 import { useUpdateGroupNameMutation } from '../../../graphql/hooks/graphql'
+import { useRef } from 'react'
 
-export default function EditGroupName() {
+export default function GroupSettings({ closeModal }) {
   const [newName, setNewName] = useState('')
+  const [newImage, setNewImage] = useState(null)
+  const imageInputRef = useRef()
   const { chatId } = useParams()
   const [updateGroupName] = useUpdateGroupNameMutation()
 
@@ -13,21 +16,48 @@ export default function EditGroupName() {
     setNewName(e.target.value)
   }
 
+  const handleImageChange = ({
+    target: {
+      validity,
+      files: [file],
+    },
+  }) => {
+    if (validity.valid) {
+      setNewImage(file)
+    }
+  }
+
   const handleSave = (e) => {
     e.preventDefault()
+
+    if (!newName) return
 
     updateGroupName({
       variables: { groupName: newName, groupId: parseInt(chatId) },
     })
+
+    closeModal()
   }
 
   const handleReset = () => {
     setNewName('')
+    setNewImage(null)
+    imageInputRef.current.value = null
   }
 
   return (
     <div className="edit-group-name">
       <form onSubmit={handleSave}>
+        <div className="edit-group-name__input">
+          <label htmlFor="group-photo">New Group Photo</label>
+          <input
+            type="file"
+            id="group-photo"
+            accept="image/*"
+            onChange={handleImageChange}
+            ref={imageInputRef}
+          />
+        </div>
         <div className="edit-group-name__input">
           <label htmlFor="group-name">New Group Name</label>
           <input
@@ -37,10 +67,11 @@ export default function EditGroupName() {
             onChange={handleChange}
           />
         </div>
+
         <div className="edit-group-name__button-group">
           <Button onClick={handleSave}>Save</Button>
           <Button type="button" secondary onClick={handleReset}>
-            Cancel
+            Reset
           </Button>
         </div>
       </form>

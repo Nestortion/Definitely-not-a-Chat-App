@@ -1,10 +1,16 @@
 import './settings-buttons.scss'
 import Button from '../UI/Button/Button'
-import { MdAdd, MdSearch, MdReport, MdTextFields } from 'react-icons/md'
+import {
+  MdAdd,
+  MdSearch,
+  MdReport,
+  MdTextFields,
+  MdSettings,
+} from 'react-icons/md'
 import SpawnModal from '../UI/Modal/SpawnModal'
 import { useState } from 'react'
 import AddMembers from './AddMembers/AddMembers'
-import EditGroupName from './EditGroupName/EditGroupName'
+import GroupSettings from './EditGroupName/EditGroupName'
 import SearchInChat from './SearchInChat/SearchInChat'
 import ReportChat from './ReportChat/ReportChat'
 
@@ -36,7 +42,7 @@ export default function SettingsButtons({ roles, isGroup }) {
 
   const showEditRoles = () => {
     setShouldShowEditGroupName(true)
-    setCurrentTitle('Edit Group Name')
+    setCurrentTitle('Group Settings')
     handleShowModal()
   }
 
@@ -58,10 +64,14 @@ export default function SettingsButtons({ roles, isGroup }) {
     <>
       {shouldShowModal && (
         <SpawnModal title={currentTitle} closeModal={handleHideModal}>
-          {shouldShowAddMembers && <AddMembers />}
-          {shouldShowEditGroupName && <EditGroupName />}
-          {shouldShowSearchInGroup && <SearchInChat />}
-          {shouldShowReportChat && <ReportChat />}
+          {shouldShowAddMembers && <AddMembers closeModal={handleHideModal} />}
+          {shouldShowEditGroupName && (
+            <GroupSettings closeModal={handleHideModal} />
+          )}
+          {shouldShowSearchInGroup && (
+            <SearchInChat closeModal={handleHideModal} />
+          )}
+          {shouldShowReportChat && <ReportChat closeModal={handleHideModal} />}
         </SpawnModal>
       )}
       <div className="settings-buttons">
@@ -73,8 +83,8 @@ export default function SettingsButtons({ roles, isGroup }) {
                 <span>Add Members</span>
               </Button>
               <Button onClick={showEditRoles}>
-                <MdTextFields style={{ display: 'inline-block' }} />
-                <span>Edit Group Name</span>
+                <MdSettings style={{ display: 'inline-block' }} />
+                <span>Group Settings</span>
               </Button>
             </>
           )}
