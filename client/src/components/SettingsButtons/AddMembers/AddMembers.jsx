@@ -13,7 +13,7 @@ import { useParams } from 'react-router-dom'
 // Transform the data like this first
 // { key: id, value: 'first_name last_name'}
 
-export default function AddMembers() {
+export default function AddMembers({ closeModal }) {
   const { chatId } = useParams()
   const {
     data: allMembers,
@@ -66,6 +66,7 @@ export default function AddMembers() {
     addMembers({ variables: { groupId: parseInt(chatId), userId: memberIds } })
     // reset selectedMembers
     setSelectedMembers([])
+    closeModal()
   }
 
   return (

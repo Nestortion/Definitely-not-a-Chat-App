@@ -21,7 +21,7 @@ const reportReasons = [
   },
 ]
 
-export default function ReportChat() {
+export default function ReportChat({ closeModal }) {
   const refs = []
 
   const [selectedReasons, setSelectedReasons] = useState([])
@@ -43,8 +43,12 @@ export default function ReportChat() {
   const handleSubmit = (e) => {
     e.preventDefault()
 
+    if (selectedReasons.length === 0) return
+
     console.log(selectedReasons)
     console.log(otherReason)
+
+    closeModal()
   }
 
   return (
