@@ -9,6 +9,8 @@ import Button from '../UI/Button/Button'
 import { useCurrentUserQuery } from '../../graphql/hooks/graphql'
 import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../Error/ErrorText'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.min.css'
 
 export default function Layout() {
   const location = useLocation()
@@ -103,6 +105,7 @@ export default function Layout() {
           </div>
         )}
       </div>
+      <ToastContainer />
     </div>
   )
 }
