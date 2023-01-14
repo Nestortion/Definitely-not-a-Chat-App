@@ -260,33 +260,6 @@ const resolvers = {
 
       return GroupRoles.findAll({ where: { id: newgrouprolesids } })
     },
-    searchGroups: async (_, { group_name, group_id }, context) => {
-      const { data: user } = authMiddleware(context)
-
-      const validation = await UserGroups.findAll({
-        where: { user_id: user.user_id },
-      })
-
-      let groupsId = []
-
-      for (const usergroup of validation) {
-        const hasChat = await UserChats.findAll({
-          where: { receiver: usergroup.group_id },
-        })
-        if (hasChat.length > 0) {
-          groupsId.push(usergroup.group_id)
-        }
-      }
-
-      if (group_name) {
-        return Groups.findAll({
-          where: { group_name: { [Op.like]: `%${group_name}%` }, id: groupsId },
-        })
-      }
-      if (group_id) {
-        return Groups.findAll({ where: { id: group_id } })
-      }
-    },
     latestChats: async (_, __, context) => {
       const { data: user } = authMiddleware(context)
 
