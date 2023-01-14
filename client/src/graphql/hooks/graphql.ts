@@ -121,6 +121,7 @@ export type Mutation = {
   removeMember?: Maybe<User>
   revokeRefreshToken?: Maybe<Scalars['Boolean']>
   updateGroup?: Maybe<Group>
+  updateUserProfile?: Maybe<User>
 }
 
 export type MutationAddGroupRoleArgs = {
@@ -194,6 +195,15 @@ export type MutationUpdateGroupArgs = {
   group_id?: InputMaybe<Scalars['Int']>
   group_name?: InputMaybe<Scalars['String']>
   group_picture?: InputMaybe<Scalars['Upload']>
+}
+
+export type MutationUpdateUserProfileArgs = {
+  address?: InputMaybe<Scalars['String']>
+  age?: InputMaybe<Scalars['Int']>
+  gender?: InputMaybe<Scalars['String']>
+  profile_img?: InputMaybe<Scalars['Upload']>
+  section?: InputMaybe<Scalars['String']>
+  username?: InputMaybe<Scalars['String']>
 }
 
 export type Query = {
@@ -822,6 +832,30 @@ export type UpdateGroupMutation = {
     group_picture: string
     id: number
     is_group: string
+  } | null
+}
+
+export type UpdateUserProfileMutationVariables = Exact<{
+  username?: InputMaybe<Scalars['String']>
+  age?: InputMaybe<Scalars['Int']>
+  gender?: InputMaybe<Scalars['String']>
+  section?: InputMaybe<Scalars['String']>
+  address?: InputMaybe<Scalars['String']>
+  profileImg?: InputMaybe<Scalars['Upload']>
+}>
+
+export type UpdateUserProfileMutation = {
+  __typename?: 'Mutation'
+  updateUserProfile?: {
+    __typename?: 'User'
+    address: string
+    age: number
+    first_name: string
+    gender: string
+    last_name: string
+    profile_img: string
+    section: string
+    username: string
   } | null
 }
 
@@ -2371,6 +2405,82 @@ export type UpdateGroupMutationResult =
 export type UpdateGroupMutationOptions = Apollo.BaseMutationOptions<
   UpdateGroupMutation,
   UpdateGroupMutationVariables
+>
+export const UpdateUserProfileDocument = gql`
+  mutation UpdateUserProfile(
+    $username: String
+    $age: Int
+    $gender: String
+    $section: String
+    $address: String
+    $profileImg: Upload
+  ) {
+    updateUserProfile(
+      username: $username
+      age: $age
+      gender: $gender
+      section: $section
+      address: $address
+      profile_img: $profileImg
+    ) {
+      address
+      age
+      first_name
+      gender
+      last_name
+      profile_img
+      section
+      username
+    }
+  }
+`
+export type UpdateUserProfileMutationFn = Apollo.MutationFunction<
+  UpdateUserProfileMutation,
+  UpdateUserProfileMutationVariables
+>
+
+/**
+ * __useUpdateUserProfileMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserProfileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserProfileMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserProfileMutation, { data, loading, error }] = useUpdateUserProfileMutation({
+ *   variables: {
+ *      username: // value for 'username'
+ *      age: // value for 'age'
+ *      gender: // value for 'gender'
+ *      section: // value for 'section'
+ *      address: // value for 'address'
+ *      profileImg: // value for 'profileImg'
+ *   },
+ * });
+ */
+export function useUpdateUserProfileMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateUserProfileMutation,
+    UpdateUserProfileMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    UpdateUserProfileMutation,
+    UpdateUserProfileMutationVariables
+  >(UpdateUserProfileDocument, options)
+}
+export type UpdateUserProfileMutationHookResult = ReturnType<
+  typeof useUpdateUserProfileMutation
+>
+export type UpdateUserProfileMutationResult =
+  Apollo.MutationResult<UpdateUserProfileMutation>
+export type UpdateUserProfileMutationOptions = Apollo.BaseMutationOptions<
+  UpdateUserProfileMutation,
+  UpdateUserProfileMutationVariables
 >
 export const UserDocument = gql`
   query User {

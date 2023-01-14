@@ -1,0 +1,26 @@
+mutation UpdateUserProfile(
+  $username: String
+  $age: Int
+  $gender: String
+  $section: String
+  $address: String
+  $profileImg: Upload
+) {
+  updateUserProfile(
+    username: $username
+    age: $age
+    gender: $gender
+    section: $section
+    address: $address
+    profile_img: $profileImg
+  ) {
+    address
+    age
+    first_name
+    gender
+    last_name
+    profile_img
+    section
+    username
+  }
+}
