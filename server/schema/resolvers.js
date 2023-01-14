@@ -963,6 +963,45 @@ const resolvers = {
 
       return removedUser
     },
+    updateUserProfile: async (
+      _,
+      { username, address, age, section, gender, profile_img },
+      context
+    ) => {
+      const { data: user } = authMiddleware(context)
+
+      const initialUser = await Users.findOne({ where: { id: user.user_id } })
+
+      let newImage = initialUser.profile_img
+
+      if (profile_img) {
+        const { createReadStream, filename } = await profile_img
+        let filepath = '../files/pfp'
+        newImage = `${uuid()} ${filename}`
+
+        await new Promise((res) =>
+          createReadStream()
+            .pipe(createWriteStream(path.join('__dirname', filepath, newImage)))
+            .on('close', res)
+        )
+      }
+
+      await Users.update(
+        { username, address, age, section, gender, profile_img: newImage },
+        { where: { id: user.user_id } }
+      )
+
+      const updatedUser = await Users.findOne({ where: { id: user.user_id } })
+
+      await UserLogs.create({
+        full_name: `${initialUser.first_name} ${initialUser.last_name}`,
+        section: `${initialUser.section}`,
+        action_description: `Updated their User Profile`,
+        user_id: initialUser.id,
+      })
+
+      return updatedUser
+    },
   },
   Subscription: {
     groupCreated: {
