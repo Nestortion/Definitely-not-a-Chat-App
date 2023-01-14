@@ -17,6 +17,10 @@ export default function Profile() {
   if (profileLoading) return <LoadingSpinner />
   if (profileError) return <ErrorText />
 
+  if (!profileData.userProfile) {
+    return <h1>Profile Not found</h1>
+  }
+
   return (
     <div className="profile">
       <div className="profile__header">
