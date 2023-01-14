@@ -2,7 +2,6 @@ import { useState } from 'react'
 import Button from '../UI/Button/Button'
 import ReactSearchBox from 'react-search-box'
 import './join-chat.scss'
-import Input from '../UI/Input/Input'
 import {
   useAddMemberListQuery,
   useCreateGroupMutation,
@@ -10,8 +9,19 @@ import {
 import { useNavigate, useParams } from 'react-router-dom'
 import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../Error/ErrorText'
+import { toast } from 'react-toastify'
 
-export default function JoinChat() {
+export default function JoinChat({ closeModal }) {
+  const notify = () =>
+    toast('Group Created!', {
+      position: toast.POSITION.TOP_CENTER,
+      style: {
+        color: 'var(--clr-neutral-100)',
+        backgroundColor: 'var(--clr-primary-400)',
+        fontSize: 'clamp(0.8rem, 1.3vw, 1.5rem)',
+      },
+    })
+
   const { chatId } = useParams()
   const [joinChatId, setJoinChatId] = useState('')
   const [selectedMembers, setSelectedMembers] = useState([])
@@ -59,6 +69,8 @@ export default function JoinChat() {
     const selectedIds = selectedMembers.map((member) => member.key)
     const group = await createGroup({ variables: { userId: selectedIds } })
     navigate(`chat/${group.data.createGroup.id}`)
+    closeModal()
+    notify()
   }
 
   return (
