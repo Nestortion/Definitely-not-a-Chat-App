@@ -22,20 +22,11 @@ export default function JoinChat() {
   } = useAddMemberListQuery({
     variables: { groupId: parseInt(chatId), form: 'userList' },
   })
-  const [
-    createGroup,
-    {
-      data: createGroupData,
-      loading: createGroupLoading,
-      error: createGroupError,
-    },
-  ] = useCreateGroupMutation()
+  const [createGroup] = useCreateGroupMutation()
   const navigate = useNavigate()
 
   if (loading) return <LoadingSpinner />
   if (error) return <ErrorText>Error</ErrorText>
-  if (createGroupLoading) return <LoadingSpinner />
-  if (createGroupError) return <ErrorText>Error</ErrorText>
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -62,12 +53,12 @@ export default function JoinChat() {
     )
   }
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     // Create chat with selected members
     if (selectedMembers.length === 0) return
     const selectedIds = selectedMembers.map((member) => member.key)
-    createGroup({ variables: { userId: selectedIds } })
-    navigate(`chat/${createGroupData.createGroup.id}`)
+    const group = await createGroup({ variables: { userId: selectedIds } })
+    navigate(`chat/${group.data.createGroup.id}`)
   }
 
   return (
