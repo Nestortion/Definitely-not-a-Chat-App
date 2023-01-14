@@ -5,14 +5,18 @@ import { apiBasePath } from '../../data/config'
 import { MdUpload } from 'react-icons/md'
 import './profile-settings.scss'
 import { useState } from 'react'
-import { useOutletContext } from 'react-router-dom'
+import { useNavigate, useOutletContext } from 'react-router-dom'
 import Button from '../../components/UI/Button/Button'
+import { useUpdateUserProfileMutation } from '../../graphql/hooks/graphql'
 
 export default function ProfileSettings() {
   const user = useOutletContext()
+  const navigate = useNavigate()
+
+  const [updateUserProfile] = useUpdateUserProfileMutation()
 
   const initialState = {
-    profileImage: `${apiBasePath}/pfp/${user.currentUser.profile_img}`,
+    profileLink: `${apiBasePath}/pfp/${user.currentUser.profile_img}`,
     firstName: user.currentUser.first_name,
     lastName: user.currentUser.last_name,
     username: user.currentUser.username,
@@ -20,6 +24,7 @@ export default function ProfileSettings() {
     gender: user.currentUser.gender,
     section: user.currentUser.section,
     address: user.currentUser.address,
+    profileImage: null,
   }
 
   const [values, setValues] = useState(initialState)
@@ -40,7 +45,8 @@ export default function ProfileSettings() {
     if (validity.valid) {
       setValues((prev) => ({
         ...prev,
-        profileImage: URL.createObjectURL(file),
+        profileLink: URL.createObjectURL(file),
+        profileImage: file,
       }))
     }
   }
@@ -53,7 +59,20 @@ export default function ProfileSettings() {
     e.preventDefault()
 
     // ! Backend logic here
-    console.log(values)
+
+    updateUserProfile({
+      variables: {
+        address: values.address,
+        age: values.age,
+        gender: values.gender,
+        profileImg: values.profileImage,
+        section: values.section,
+        username: values.username,
+      },
+    })
+
+    // ! ADD CONFIRMATION MODAL
+    navigate(0)
   }
 
   return (
@@ -61,7 +80,7 @@ export default function ProfileSettings() {
       <form onSubmit={handleSubmit}>
         <div className="profile-settings__header">
           <div className="profile-settings__image">
-            <Avatar src={values.profileImage} size={256} />
+            <Avatar src={values.profileLink} size={256} />
             <div className="profile-settings__file-input">
               <label
                 className="profile-settings__file-input__label"
@@ -86,6 +105,7 @@ export default function ProfileSettings() {
               First name:
             </label>
             <input
+              disabled
               className="profile-settings-input"
               type="text"
               name="firstName"
@@ -99,6 +119,7 @@ export default function ProfileSettings() {
               Last name:
             </label>
             <input
+              disabled
               className="profile-settings-input"
               type="text"
               name="lastName"
