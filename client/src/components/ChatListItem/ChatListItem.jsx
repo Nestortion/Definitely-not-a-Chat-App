@@ -3,18 +3,28 @@ import Avatar from '../UI/Avatar/Avatar'
 import { NavLink } from 'react-router-dom'
 import { apiBasePath } from '../../data/config'
 import { useMediaQuery } from 'react-responsive'
+import { useOtherUserQuery } from '../../graphql/hooks/graphql'
+import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
+import ErrorText from '../Error/ErrorText'
 
 export default function ChatListItem({
   chatId,
   title,
   profilePicUrl,
   showOnlyMiddle,
+  isGroup,
   latest,
 }) {
-  // ! FETCH HERE
-  // fetch the latest conversation for each group chat where the current user is a member
+  const {
+    data: otherUser,
+    loading: otherUserLoading,
+    error: otherUserError,
+  } = useOtherUserQuery({ variables: { groupId: parseInt(chatId) } })
 
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
+
+  if (otherUserLoading) return <LoadingSpinner />
+  if (otherUserError) return <ErrorText>Error</ErrorText>
 
   const handleClick = () => {
     if (isTabletOrMobile) {
@@ -65,12 +75,23 @@ export default function ChatListItem({
       onClick={handleClick}
     >
       <div className="chat-list-item-left">
-        <Avatar
-          // TODO: add default
-          src={`${apiBasePath}/pfp/${profilePicUrl}`}
-          alt={`${title}'s photo`}
-          size="56"
-        />
+        {isGroup === 'true' ? (
+          <>
+            <Avatar
+              src={`${apiBasePath}/grouppfp/${profilePicUrl}`}
+              alt={`${title.group_name}'s photo`}
+              size="40"
+            />
+          </>
+        ) : (
+          <>
+            <Avatar
+              src={`${apiBasePath}/pfp/${otherUser.otherUser.profile_img}`}
+              alt={`${title.group_name}'s photo`}
+              size="40"
+            />
+          </>
+        )}
       </div>
       <div className="chat-list-item-right">
         <span className="title">{title}</span>
