@@ -1,16 +1,24 @@
 import './settings-buttons.scss'
 import Button from '../UI/Button/Button'
-import { MdAdd, MdSearch, MdReport, MdTextFields } from 'react-icons/md'
+import {
+  MdAdd,
+  MdSearch,
+  MdReport,
+  MdTextFields,
+  MdSettings,
+  MdEmojiPeople,
+} from 'react-icons/md'
 import SpawnModal from '../UI/Modal/SpawnModal'
 import { useState } from 'react'
 import AddMembers from './AddMembers/AddMembers'
-import EditGroupName from './EditGroupName/EditGroupName'
+import GroupSettings from './EditGroupName/EditGroupName'
 import SearchInChat from './SearchInChat/SearchInChat'
 import ReportChat from './ReportChat/ReportChat'
 
 export default function SettingsButtons({ roles, isGroup }) {
   const [shouldShowModal, setShouldShowModal] = useState(false)
   const [shouldShowAddMembers, setShouldShowAddMembers] = useState(false)
+  const [shouldShowGeneralRoles, setShouldShowGeneralRoles] = useState(false)
   const [shouldShowEditGroupName, setShouldShowEditGroupName] = useState(false)
   const [shouldShowSearchInGroup, setShouldShowSearchInGroup] = useState(false)
   const [shouldShowReportChat, setShouldShowReportChat] = useState(false)
@@ -23,6 +31,7 @@ export default function SettingsButtons({ roles, isGroup }) {
   const handleHideModal = () => {
     setShouldShowModal(false)
     setShouldShowAddMembers(false)
+    setShouldShowGeneralRoles(false)
     setShouldShowEditGroupName(false)
     setShouldShowSearchInGroup(false)
     setShouldShowReportChat(false)
@@ -34,9 +43,15 @@ export default function SettingsButtons({ roles, isGroup }) {
     handleShowModal()
   }
 
+  const showGeneralRoles = () => {
+    setShouldShowGeneralRoles(true)
+    setCurrentTitle('Edit Roles')
+    handleShowModal()
+  }
+
   const showEditRoles = () => {
     setShouldShowEditGroupName(true)
-    setCurrentTitle('Edit Group Name')
+    setCurrentTitle('Group Settings')
     handleShowModal()
   }
 
@@ -58,10 +73,15 @@ export default function SettingsButtons({ roles, isGroup }) {
     <>
       {shouldShowModal && (
         <SpawnModal title={currentTitle} closeModal={handleHideModal}>
-          {shouldShowAddMembers && <AddMembers />}
-          {shouldShowEditGroupName && <EditGroupName />}
-          {shouldShowSearchInGroup && <SearchInChat />}
-          {shouldShowReportChat && <ReportChat />}
+          {shouldShowAddMembers && <AddMembers closeModal={handleHideModal} />}
+          {shouldShowGeneralRoles && <h1>Edit Roles</h1>}
+          {shouldShowEditGroupName && (
+            <GroupSettings closeModal={handleHideModal} />
+          )}
+          {shouldShowSearchInGroup && (
+            <SearchInChat closeModal={handleHideModal} />
+          )}
+          {shouldShowReportChat && <ReportChat closeModal={handleHideModal} />}
         </SpawnModal>
       )}
       <div className="settings-buttons">
@@ -70,22 +90,26 @@ export default function SettingsButtons({ roles, isGroup }) {
             <>
               <Button onClick={showAddMembers}>
                 <MdAdd style={{ display: 'inline-block' }} />
-                <span>Add Members</span>
+                <span className="fs-400">Add Members</span>
+              </Button>
+              <Button onClick={showGeneralRoles}>
+                <MdEmojiPeople style={{ display: 'inline-block' }} />
+                <span className="fs-400">Edit Roles</span>
               </Button>
               <Button onClick={showEditRoles}>
-                <MdTextFields style={{ display: 'inline-block' }} />
-                <span>Edit Group Name</span>
+                <MdSettings style={{ display: 'inline-block' }} />
+                <span className="fs-400">Group Settings</span>
               </Button>
             </>
           )}
 
         <Button onClick={showSearchInGroup}>
           <MdSearch style={{ display: 'inline-block' }} />
-          <span>Search in Chat</span>
+          <span className="fs-400">Search in Chat</span>
         </Button>
         <Button onClick={showReportChat}>
           <MdReport style={{ display: 'inline-block' }} />
-          <span>Report Chat</span>
+          <span className="fs-400">Report Chat</span>
         </Button>
       </div>
     </>

@@ -33,3 +33,14 @@
     }
   }
 }
+
+.profile-not-found__container {
+  height: 100%;
+  display: grid;
+  place-content: center;
+
+  .profile-not-found {
+    font-size: clamp(2rem, 8vw, 4rem);
+    text-align: center;
+  }
+}

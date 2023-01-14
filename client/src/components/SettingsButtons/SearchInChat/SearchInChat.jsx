@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Button from '../../UI/Button/Button'
 import './search-in-chat.scss'
 
-export default function SearchInChat() {
+export default function SearchInChat({ closeModal }) {
   const [searchWord, setSearchWord] = useState('')
 
   const handleChange = (e) => {
@@ -13,6 +13,7 @@ export default function SearchInChat() {
     e.preventDefault()
     if (!searchWord) return
     console.log(searchWord)
+    closeModal()
   }
 
   const handleReset = () => {

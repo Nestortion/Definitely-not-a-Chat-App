@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import Button from '../../UI/Button/Button'
 import './report-chat.scss'
+import { toast } from 'react-toastify'
 
 const reportReasons = [
   {
@@ -21,7 +22,17 @@ const reportReasons = [
   },
 ]
 
-export default function ReportChat() {
+export default function ReportChat({ closeModal }) {
+  const notify = () =>
+    toast('Feedback Submitted!', {
+      position: toast.POSITION.TOP_CENTER,
+      style: {
+        color: 'var(--clr-neutral-100)',
+        backgroundColor: 'var(--clr-primary-400)',
+        fontSize: 'clamp(0.8rem, 1.3vw, 1.5rem)',
+      },
+    })
+
   const refs = []
 
   const [selectedReasons, setSelectedReasons] = useState([])
@@ -43,8 +54,13 @@ export default function ReportChat() {
   const handleSubmit = (e) => {
     e.preventDefault()
 
+    if (selectedReasons.length === 0) return
+
     console.log(selectedReasons)
     console.log(otherReason)
+
+    closeModal()
+    notify()
   }
 
   return (

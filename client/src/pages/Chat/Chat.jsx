@@ -58,7 +58,7 @@ export default function Chat() {
   }, [])
 
   if (rolesLoading) return <LoadingSpinner />
-  if (rolesError) return <ErrorText>Group Chat does not exist</ErrorText>
+  if (rolesError) return <ErrorText>Unauthorized</ErrorText>
   if (otherUserLoading) return <LoadingSpinner />
   if (otherUserError) return <ErrorText>Error</ErrorText>
   if (loading) return <LoadingSpinner />
@@ -151,7 +151,7 @@ export default function Chat() {
         </div>
         {isModalShowing && (
           <SpawnModal title="Add members" closeModal={closeModal}>
-            <AddMembers />
+            <AddMembers closeModal={closeModal} />
           </SpawnModal>
         )}
         {(data.group.is_group === 'false' ||

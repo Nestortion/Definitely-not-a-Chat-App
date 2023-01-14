@@ -12,6 +12,7 @@ export default function ProfileSettings() {
   const user = useOutletContext()
 
   const initialState = {
+    profileImage: `${apiBasePath}/pfp/${user.currentUser.profile_img}`,
     firstName: user.currentUser.first_name,
     lastName: user.currentUser.last_name,
     username: user.currentUser.username,
@@ -21,7 +22,6 @@ export default function ProfileSettings() {
     address: user.currentUser.address,
   }
 
-  const [imageFile, setImageFile] = useState(null)
   const [values, setValues] = useState(initialState)
 
   const handleChange = (e) => {
@@ -38,7 +38,10 @@ export default function ProfileSettings() {
     },
   }) => {
     if (validity.valid) {
-      setImageFile(file)
+      setValues((prev) => ({
+        ...prev,
+        profileImage: URL.createObjectURL(file),
+      }))
     }
   }
 
@@ -50,7 +53,6 @@ export default function ProfileSettings() {
     e.preventDefault()
 
     // ! Backend logic here
-    console.log(imageFile)
     console.log(values)
   }
 
@@ -59,10 +61,7 @@ export default function ProfileSettings() {
       <form onSubmit={handleSubmit}>
         <div className="profile-settings__header">
           <div className="profile-settings__image">
-            <Avatar
-              src={`${apiBasePath}/pfp/${user.currentUser.profile_img}`}
-              size={256}
-            />
+            <Avatar src={values.profileImage} size={256} />
             <div className="profile-settings__file-input">
               <label
                 className="profile-settings__file-input__label"
