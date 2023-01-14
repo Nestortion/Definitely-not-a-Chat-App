@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Button from '../../UI/Button/Button'
 import './edit-group-name.scss'
 import { useParams } from 'react-router-dom'
-import { useUpdateGroupNameMutation } from '../../../graphql/hooks/graphql'
+import { useUpdateGroupMutation } from '../../../graphql/hooks/graphql'
 import { useRef } from 'react'
 import { toast } from 'react-toastify'
 import SpawnModal from '../../UI/Modal/SpawnModal'
@@ -24,7 +24,7 @@ export default function GroupSettings({ closeModal }) {
   const [modalShouldShow, setModalShouldShow] = useState(false)
   const imageInputRef = useRef()
   const { chatId } = useParams()
-  const [updateGroupName] = useUpdateGroupNameMutation()
+  const [updateGroup] = useUpdateGroupMutation()
 
   const handleChange = (e) => {
     setNewName(e.target.value)
@@ -44,13 +44,38 @@ export default function GroupSettings({ closeModal }) {
   const handleSave = (e) => {
     e.preventDefault()
 
-    if (!newName) return
-
-    updateGroupName({
-      variables: { groupName: newName, groupId: parseInt(chatId) },
-    })
-    closeModal()
-    notify()
+    if (newName && newImage) {
+      if (!newImage.type.includes('image') || newImage.type.includes('gif'))
+        return
+      updateGroup({
+        variables: {
+          groupName: newName,
+          groupId: parseInt(chatId),
+          groupPicture: newImage,
+        },
+      })
+      closeModal()
+      notify()
+    } else if (newImage != null) {
+      if (!newImage.type.includes('image') || newImage.type.includes('gif'))
+        return
+      updateGroup({
+        variables: {
+          groupId: parseInt(chatId),
+          groupPicture: newImage,
+        },
+      })
+      closeModal()
+      notify()
+    } else {
+      if (newName !== '') {
+        updateGroup({
+          variables: { groupName: newName, groupId: parseInt(chatId) },
+        })
+        closeModal()
+        notify()
+      }
+    }
   }
 
   const handleReset = () => {
