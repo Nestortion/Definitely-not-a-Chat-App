@@ -18,7 +18,11 @@ export default function Profile() {
   if (profileError) return <ErrorText />
 
   if (!profileData.userProfile) {
-    return <h1>Profile Not found</h1>
+    return (
+      <div className="profile-not-found__container">
+        <span className="profile-not-found fw-bold">Profile not found</span>
+      </div>
+    )
   }
 
   return (
