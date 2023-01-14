@@ -151,7 +151,7 @@ export default function Chat() {
         </div>
         {isModalShowing && (
           <SpawnModal title="Add members" closeModal={closeModal}>
-            <AddMembers />
+            <AddMembers closeModal={closeModal} />
           </SpawnModal>
         )}
         {(data.group.is_group === 'false' ||
