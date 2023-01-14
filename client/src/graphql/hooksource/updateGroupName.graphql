@@ -1,8 +1,0 @@
-mutation UpdateGroupName($groupName: String!, $groupId: Int) {
-  updateGroupName(group_name: $groupName, group_id: $groupId) {
-    id
-    group_name
-    group_picture
-    is_group
-  }
-}

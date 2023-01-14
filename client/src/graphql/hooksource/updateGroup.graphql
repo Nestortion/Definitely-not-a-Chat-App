@@ -1,0 +1,12 @@
+mutation UpdateGroup($groupName: String, $groupId: Int, $groupPicture: Upload) {
+  updateGroup(
+    group_name: $groupName
+    group_id: $groupId
+    group_picture: $groupPicture
+  ) {
+    group_name
+    group_picture
+    id
+    is_group
+  }
+}
