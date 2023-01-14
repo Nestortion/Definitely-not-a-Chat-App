@@ -6,6 +6,7 @@ import {
   MdReport,
   MdTextFields,
   MdSettings,
+  MdEmojiPeople,
 } from 'react-icons/md'
 import SpawnModal from '../UI/Modal/SpawnModal'
 import { useState } from 'react'
@@ -17,6 +18,7 @@ import ReportChat from './ReportChat/ReportChat'
 export default function SettingsButtons({ roles, isGroup }) {
   const [shouldShowModal, setShouldShowModal] = useState(false)
   const [shouldShowAddMembers, setShouldShowAddMembers] = useState(false)
+  const [shouldShowGeneralRoles, setShouldShowGeneralRoles] = useState(false)
   const [shouldShowEditGroupName, setShouldShowEditGroupName] = useState(false)
   const [shouldShowSearchInGroup, setShouldShowSearchInGroup] = useState(false)
   const [shouldShowReportChat, setShouldShowReportChat] = useState(false)
@@ -29,6 +31,7 @@ export default function SettingsButtons({ roles, isGroup }) {
   const handleHideModal = () => {
     setShouldShowModal(false)
     setShouldShowAddMembers(false)
+    setShouldShowGeneralRoles(false)
     setShouldShowEditGroupName(false)
     setShouldShowSearchInGroup(false)
     setShouldShowReportChat(false)
@@ -37,6 +40,12 @@ export default function SettingsButtons({ roles, isGroup }) {
   const showAddMembers = () => {
     setShouldShowAddMembers(true)
     setCurrentTitle('Add Members')
+    handleShowModal()
+  }
+
+  const showGeneralRoles = () => {
+    setShouldShowGeneralRoles(true)
+    setCurrentTitle('Edit Roles')
     handleShowModal()
   }
 
@@ -65,6 +74,7 @@ export default function SettingsButtons({ roles, isGroup }) {
       {shouldShowModal && (
         <SpawnModal title={currentTitle} closeModal={handleHideModal}>
           {shouldShowAddMembers && <AddMembers closeModal={handleHideModal} />}
+          {shouldShowGeneralRoles && <h1>Edit Roles</h1>}
           {shouldShowEditGroupName && (
             <GroupSettings closeModal={handleHideModal} />
           )}
@@ -80,22 +90,26 @@ export default function SettingsButtons({ roles, isGroup }) {
             <>
               <Button onClick={showAddMembers}>
                 <MdAdd style={{ display: 'inline-block' }} />
-                <span>Add Members</span>
+                <span className="fs-400">Add Members</span>
+              </Button>
+              <Button onClick={showGeneralRoles}>
+                <MdEmojiPeople style={{ display: 'inline-block' }} />
+                <span className="fs-400">Edit Roles</span>
               </Button>
               <Button onClick={showEditRoles}>
                 <MdSettings style={{ display: 'inline-block' }} />
-                <span>Group Settings</span>
+                <span className="fs-400">Group Settings</span>
               </Button>
             </>
           )}
 
         <Button onClick={showSearchInGroup}>
           <MdSearch style={{ display: 'inline-block' }} />
-          <span>Search in Chat</span>
+          <span className="fs-400">Search in Chat</span>
         </Button>
         <Button onClick={showReportChat}>
           <MdReport style={{ display: 'inline-block' }} />
-          <span>Report Chat</span>
+          <span className="fs-400">Report Chat</span>
         </Button>
       </div>
     </>
