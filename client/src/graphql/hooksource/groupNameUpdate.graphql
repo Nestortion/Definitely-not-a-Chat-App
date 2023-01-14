@@ -1,8 +1,0 @@
-subscription GroupNameUpdate($user: Int) {
-  groupNameUpdate(user: $user) {
-    id
-    group_name
-    group_picture
-    is_group
-  }
-}
