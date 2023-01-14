@@ -58,7 +58,7 @@ export default function Chat() {
   }, [])
 
   if (rolesLoading) return <LoadingSpinner />
-  if (rolesError) return <ErrorText>Error</ErrorText>
+  if (rolesError) return <ErrorText>Group Chat does not exist</ErrorText>
   if (otherUserLoading) return <LoadingSpinner />
   if (otherUserError) return <ErrorText>Error</ErrorText>
   if (loading) return <LoadingSpinner />
