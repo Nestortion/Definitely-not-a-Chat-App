@@ -120,7 +120,7 @@ export type Mutation = {
   logout?: Maybe<Scalars['Boolean']>
   removeMember?: Maybe<User>
   revokeRefreshToken?: Maybe<Scalars['Boolean']>
-  updateGroupName?: Maybe<Group>
+  updateGroup?: Maybe<Group>
 }
 
 export type MutationAddGroupRoleArgs = {
@@ -190,9 +190,10 @@ export type MutationRevokeRefreshTokenArgs = {
   user_id: Scalars['Int']
 }
 
-export type MutationUpdateGroupNameArgs = {
+export type MutationUpdateGroupArgs = {
   group_id?: InputMaybe<Scalars['Int']>
-  group_name: Scalars['String']
+  group_name?: InputMaybe<Scalars['String']>
+  group_picture?: InputMaybe<Scalars['Upload']>
 }
 
 export type Query = {
@@ -285,7 +286,7 @@ export type Subscription = {
   __typename?: 'Subscription'
   chatAdded?: Maybe<UserChat>
   groupCreated?: Maybe<GroupCreatedResponse>
-  groupNameUpdate?: Maybe<Group>
+  groupUpdate?: Maybe<Group>
   memberAdded?: Maybe<MemberAddedResponse>
   memberRemoved?: Maybe<MemberRemovedResponse>
 }
@@ -298,7 +299,7 @@ export type SubscriptionGroupCreatedArgs = {
   user?: InputMaybe<Scalars['Int']>
 }
 
-export type SubscriptionGroupNameUpdateArgs = {
+export type SubscriptionGroupUpdateArgs = {
   user?: InputMaybe<Scalars['Int']>
 }
 
@@ -597,21 +598,6 @@ export type GroupCreatedSubscription = {
   } | null
 }
 
-export type GroupNameUpdateSubscriptionVariables = Exact<{
-  user?: InputMaybe<Scalars['Int']>
-}>
-
-export type GroupNameUpdateSubscription = {
-  __typename?: 'Subscription'
-  groupNameUpdate?: {
-    __typename?: 'Group'
-    id: number
-    group_name: string
-    group_picture: string
-    is_group: string
-  } | null
-}
-
 export type GroupRolesQueryVariables = Exact<{
   groupId?: InputMaybe<Scalars['Int']>
 }>
@@ -627,6 +613,21 @@ export type GroupRolesQuery = {
     group_id: string
     role_type: RoleType
   } | null> | null
+}
+
+export type GroupUpdateSubscriptionVariables = Exact<{
+  user?: InputMaybe<Scalars['Int']>
+}>
+
+export type GroupUpdateSubscription = {
+  __typename?: 'Subscription'
+  groupUpdate?: {
+    __typename?: 'Group'
+    id: number
+    group_name: string
+    group_picture: string
+    is_group: string
+  } | null
 }
 
 export type GroupsQueryVariables = Exact<{
@@ -807,18 +808,19 @@ export type RemoveMemberMutation = {
   } | null
 }
 
-export type UpdateGroupNameMutationVariables = Exact<{
-  groupName: Scalars['String']
+export type UpdateGroupMutationVariables = Exact<{
+  groupName?: InputMaybe<Scalars['String']>
   groupId?: InputMaybe<Scalars['Int']>
+  groupPicture?: InputMaybe<Scalars['Upload']>
 }>
 
-export type UpdateGroupNameMutation = {
+export type UpdateGroupMutation = {
   __typename?: 'Mutation'
-  updateGroupName?: {
+  updateGroup?: {
     __typename?: 'Group'
-    id: number
     group_name: string
     group_picture: string
+    id: number
     is_group: string
   } | null
 }
@@ -1690,50 +1692,6 @@ export type GroupCreatedSubscriptionHookResult = ReturnType<
 >
 export type GroupCreatedSubscriptionResult =
   Apollo.SubscriptionResult<GroupCreatedSubscription>
-export const GroupNameUpdateDocument = gql`
-  subscription GroupNameUpdate($user: Int) {
-    groupNameUpdate(user: $user) {
-      id
-      group_name
-      group_picture
-      is_group
-    }
-  }
-`
-
-/**
- * __useGroupNameUpdateSubscription__
- *
- * To run a query within a React component, call `useGroupNameUpdateSubscription` and pass it any options that fit your needs.
- * When your component renders, `useGroupNameUpdateSubscription` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGroupNameUpdateSubscription({
- *   variables: {
- *      user: // value for 'user'
- *   },
- * });
- */
-export function useGroupNameUpdateSubscription(
-  baseOptions?: Apollo.SubscriptionHookOptions<
-    GroupNameUpdateSubscription,
-    GroupNameUpdateSubscriptionVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useSubscription<
-    GroupNameUpdateSubscription,
-    GroupNameUpdateSubscriptionVariables
-  >(GroupNameUpdateDocument, options)
-}
-export type GroupNameUpdateSubscriptionHookResult = ReturnType<
-  typeof useGroupNameUpdateSubscription
->
-export type GroupNameUpdateSubscriptionResult =
-  Apollo.SubscriptionResult<GroupNameUpdateSubscription>
 export const GroupRolesDocument = gql`
   query GroupRoles($groupId: Int) {
     groupRoles(group_id: $groupId) {
@@ -1795,6 +1753,50 @@ export type GroupRolesQueryResult = Apollo.QueryResult<
   GroupRolesQuery,
   GroupRolesQueryVariables
 >
+export const GroupUpdateDocument = gql`
+  subscription GroupUpdate($user: Int) {
+    groupUpdate(user: $user) {
+      id
+      group_name
+      group_picture
+      is_group
+    }
+  }
+`
+
+/**
+ * __useGroupUpdateSubscription__
+ *
+ * To run a query within a React component, call `useGroupUpdateSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGroupUpdateSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGroupUpdateSubscription({
+ *   variables: {
+ *      user: // value for 'user'
+ *   },
+ * });
+ */
+export function useGroupUpdateSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    GroupUpdateSubscription,
+    GroupUpdateSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSubscription<
+    GroupUpdateSubscription,
+    GroupUpdateSubscriptionVariables
+  >(GroupUpdateDocument, options)
+}
+export type GroupUpdateSubscriptionHookResult = ReturnType<
+  typeof useGroupUpdateSubscription
+>
+export type GroupUpdateSubscriptionResult =
+  Apollo.SubscriptionResult<GroupUpdateSubscription>
 export const GroupsDocument = gql`
   query Groups($userId: Int) {
     groups(user_id: $userId) {
@@ -2307,59 +2309,68 @@ export type RemoveMemberMutationOptions = Apollo.BaseMutationOptions<
   RemoveMemberMutation,
   RemoveMemberMutationVariables
 >
-export const UpdateGroupNameDocument = gql`
-  mutation UpdateGroupName($groupName: String!, $groupId: Int) {
-    updateGroupName(group_name: $groupName, group_id: $groupId) {
-      id
+export const UpdateGroupDocument = gql`
+  mutation UpdateGroup(
+    $groupName: String
+    $groupId: Int
+    $groupPicture: Upload
+  ) {
+    updateGroup(
+      group_name: $groupName
+      group_id: $groupId
+      group_picture: $groupPicture
+    ) {
       group_name
       group_picture
+      id
       is_group
     }
   }
 `
-export type UpdateGroupNameMutationFn = Apollo.MutationFunction<
-  UpdateGroupNameMutation,
-  UpdateGroupNameMutationVariables
+export type UpdateGroupMutationFn = Apollo.MutationFunction<
+  UpdateGroupMutation,
+  UpdateGroupMutationVariables
 >
 
 /**
- * __useUpdateGroupNameMutation__
+ * __useUpdateGroupMutation__
  *
- * To run a mutation, you first call `useUpdateGroupNameMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateGroupNameMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateGroupMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateGroupNameMutation, { data, loading, error }] = useUpdateGroupNameMutation({
+ * const [updateGroupMutation, { data, loading, error }] = useUpdateGroupMutation({
  *   variables: {
  *      groupName: // value for 'groupName'
  *      groupId: // value for 'groupId'
+ *      groupPicture: // value for 'groupPicture'
  *   },
  * });
  */
-export function useUpdateGroupNameMutation(
+export function useUpdateGroupMutation(
   baseOptions?: Apollo.MutationHookOptions<
-    UpdateGroupNameMutation,
-    UpdateGroupNameMutationVariables
+    UpdateGroupMutation,
+    UpdateGroupMutationVariables
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<
-    UpdateGroupNameMutation,
-    UpdateGroupNameMutationVariables
-  >(UpdateGroupNameDocument, options)
+  return Apollo.useMutation<UpdateGroupMutation, UpdateGroupMutationVariables>(
+    UpdateGroupDocument,
+    options
+  )
 }
-export type UpdateGroupNameMutationHookResult = ReturnType<
-  typeof useUpdateGroupNameMutation
+export type UpdateGroupMutationHookResult = ReturnType<
+  typeof useUpdateGroupMutation
 >
-export type UpdateGroupNameMutationResult =
-  Apollo.MutationResult<UpdateGroupNameMutation>
-export type UpdateGroupNameMutationOptions = Apollo.BaseMutationOptions<
-  UpdateGroupNameMutation,
-  UpdateGroupNameMutationVariables
+export type UpdateGroupMutationResult =
+  Apollo.MutationResult<UpdateGroupMutation>
+export type UpdateGroupMutationOptions = Apollo.BaseMutationOptions<
+  UpdateGroupMutation,
+  UpdateGroupMutationVariables
 >
 export const UserDocument = gql`
   query User {

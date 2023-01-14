@@ -26,8 +26,8 @@ const documents = {
     "query CurrentUserGroupRoles($groupId: Int) {\n  currentUserGroupRoles(group_id: $groupId) {\n    roles\n  }\n}": types.CurrentUserGroupRolesDocument,
     "query Group($groupId: Int!) {\n  group(id: $groupId) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}": types.GroupDocument,
     "subscription GroupCreated($user: Int) {\n  groupCreated(user: $user) {\n    blame {\n      id\n    }\n    group {\n      group_name\n      group_picture\n      id\n      is_group\n    }\n  }\n}": types.GroupCreatedDocument,
-    "subscription GroupNameUpdate($user: Int) {\n  groupNameUpdate(user: $user) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}": types.GroupNameUpdateDocument,
     "query GroupRoles($groupId: Int) {\n  groupRoles(group_id: $groupId) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n  }\n}": types.GroupRolesDocument,
+    "subscription GroupUpdate($user: Int) {\n  groupUpdate(user: $user) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}": types.GroupUpdateDocument,
     "query Groups($userId: Int) {\n  groups(user_id: $userId) {\n    group_name\n    id\n    group_picture\n    is_group\n  }\n}": types.GroupsDocument,
     "query IsLoggedIn {\n  isLoggedIn\n}": types.IsLoggedInDocument,
     "query LatestChats {\n  latestChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n    createdAt\n  }\n}": types.LatestChatsDocument,
@@ -37,7 +37,7 @@ const documents = {
     "subscription MemberRemoved($user: Int, $groupId: Int) {\n  memberRemoved(user: $user, group_id: $groupId) {\n    blame {\n      id\n    }\n    group {\n      group_name\n      group_picture\n      id\n      is_group\n    }\n    user {\n      first_name\n      id\n      last_name\n      profile_img\n      username\n      section\n    }\n  }\n}": types.MemberRemovedDocument,
     "query OtherUser($groupId: Int) {\n  otherUser(group_id: $groupId) {\n    id\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.OtherUserDocument,
     "mutation RemoveMember($groupId: Int, $userId: Int) {\n  removeMember(group_id: $groupId, user_id: $userId) {\n    id\n    first_name\n    last_name\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.RemoveMemberDocument,
-    "mutation UpdateGroupName($groupName: String!, $groupId: Int) {\n  updateGroupName(group_name: $groupName, group_id: $groupId) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}": types.UpdateGroupNameDocument,
+    "mutation UpdateGroup($groupName: String, $groupId: Int, $groupPicture: Upload) {\n  updateGroup(\n    group_name: $groupName\n    group_id: $groupId\n    group_picture: $groupPicture\n  ) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}": types.UpdateGroupDocument,
     "query User {\n  user {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.UserDocument,
     "query UserChatSender($userId: Int) {\n  userChatSender(user_id: $userId) {\n    first_name\n    last_name\n    username\n    profile_img\n    id\n  }\n}": types.UserChatSenderDocument,
     "query UserChats {\n  userChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n    createdAt\n  }\n}": types.UserChatsDocument,
@@ -101,11 +101,11 @@ export function graphql(source: "subscription GroupCreated($user: Int) {\n  grou
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "subscription GroupNameUpdate($user: Int) {\n  groupNameUpdate(user: $user) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}"): (typeof documents)["subscription GroupNameUpdate($user: Int) {\n  groupNameUpdate(user: $user) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}"];
+export function graphql(source: "query GroupRoles($groupId: Int) {\n  groupRoles(group_id: $groupId) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n  }\n}"): (typeof documents)["query GroupRoles($groupId: Int) {\n  groupRoles(group_id: $groupId) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "query GroupRoles($groupId: Int) {\n  groupRoles(group_id: $groupId) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n  }\n}"): (typeof documents)["query GroupRoles($groupId: Int) {\n  groupRoles(group_id: $groupId) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n  }\n}"];
+export function graphql(source: "subscription GroupUpdate($user: Int) {\n  groupUpdate(user: $user) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}"): (typeof documents)["subscription GroupUpdate($user: Int) {\n  groupUpdate(user: $user) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -145,7 +145,7 @@ export function graphql(source: "mutation RemoveMember($groupId: Int, $userId: I
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "mutation UpdateGroupName($groupName: String!, $groupId: Int) {\n  updateGroupName(group_name: $groupName, group_id: $groupId) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}"): (typeof documents)["mutation UpdateGroupName($groupName: String!, $groupId: Int) {\n  updateGroupName(group_name: $groupName, group_id: $groupId) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}"];
+export function graphql(source: "mutation UpdateGroup($groupName: String, $groupId: Int, $groupPicture: Upload) {\n  updateGroup(\n    group_name: $groupName\n    group_id: $groupId\n    group_picture: $groupPicture\n  ) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}"): (typeof documents)["mutation UpdateGroup($groupName: String, $groupId: Int, $groupPicture: Upload) {\n  updateGroup(\n    group_name: $groupName\n    group_id: $groupId\n    group_picture: $groupPicture\n  ) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
