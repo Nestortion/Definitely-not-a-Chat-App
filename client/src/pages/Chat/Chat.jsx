@@ -4,7 +4,7 @@ import Input from '../../components/UI/Input/Input'
 import Avatar from '../../components/UI/Avatar/Avatar'
 import { useMediaQuery } from 'react-responsive'
 import {
-  GroupNameUpdateDocument,
+  GroupUpdateDocument,
   useAddUserChatMutation,
   useGroupQuery,
   useOtherUserQuery,
@@ -52,7 +52,7 @@ export default function Chat() {
 
   useEffect(() => {
     subscribeToMore({
-      document: GroupNameUpdateDocument,
+      document: GroupUpdateDocument,
       variables: { user: user.currentUser.id },
     })
   }, [])
@@ -132,7 +132,7 @@ export default function Chat() {
           {data.group.is_group === 'true' ? (
             <>
               <Avatar
-                src={`${apiBasePath}/pfp/${data.group.group_picture}`}
+                src={`${apiBasePath}/grouppfp/${data.group.group_picture}`}
                 alt={`${data.group.group_name}'s photo`}
                 size="40"
               />

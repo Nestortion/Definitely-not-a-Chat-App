@@ -50,7 +50,7 @@ export default function RightBar({ showOnlyMiddle }) {
         {groupData.group.is_group === 'true' ? (
           <>
             <Avatar
-              src={`${apiBasePath}/pfp/${groupData.group.group_picture}`}
+              src={`${apiBasePath}/grouppfp/${groupData.group.group_picture}`}
               alt={`${groupData.group.group_name}'s photo`}
               size="80"
             />
