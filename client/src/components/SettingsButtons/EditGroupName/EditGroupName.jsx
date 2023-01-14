@@ -4,8 +4,19 @@ import './edit-group-name.scss'
 import { useParams } from 'react-router-dom'
 import { useUpdateGroupNameMutation } from '../../../graphql/hooks/graphql'
 import { useRef } from 'react'
+import { toast } from 'react-toastify'
 
 export default function GroupSettings({ closeModal }) {
+  const notify = () =>
+    toast('Group Settings Saved!', {
+      position: toast.POSITION.TOP_CENTER,
+      style: {
+        color: 'var(--clr-neutral-100)',
+        backgroundColor: 'var(--clr-primary-400)',
+        fontSize: 'clamp(0.8rem, 1.3vw, 1.5rem)',
+      },
+    })
+
   const [newName, setNewName] = useState('')
   const [newImage, setNewImage] = useState(null)
   const imageInputRef = useRef()
@@ -37,6 +48,7 @@ export default function GroupSettings({ closeModal }) {
     })
 
     closeModal()
+    notify()
   }
 
   const handleReset = () => {
