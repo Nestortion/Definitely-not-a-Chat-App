@@ -82,7 +82,7 @@ export default function ChatMessage({
               <span>{userData.userChatSender.first_name}</span>
             </div>
           )}
-
+          {/* !-- TODO */}
           <span>
             {Intl.DateTimeFormat('en-US', {
               dateStyle: 'long',
