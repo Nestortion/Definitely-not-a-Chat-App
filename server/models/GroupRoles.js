@@ -27,6 +27,11 @@ const GroupRoles = DB.define(
       allowNull: false,
       defaultValue: 'MEMBER',
     },
+    is_default: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   },
   { timestamps: false }
 )
