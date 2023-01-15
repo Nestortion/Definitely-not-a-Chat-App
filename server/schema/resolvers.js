@@ -1012,7 +1012,7 @@ const resolvers = {
       { roles_to_edit, roles_to_delete, group_id },
       context
     ) => {
-      const { data: user } = authMiddleware(context)
+      const { data: user, pubsub } = authMiddleware(context)
 
       const rolesToUpdate = roles_to_edit.filter((role) => role.id !== null)
       const rolesToCreate = roles_to_edit.filter((role) => role.id === null)
@@ -1060,6 +1060,12 @@ const resolvers = {
       }
 
       const newRoles = updateRoles.concat(createRoles)
+      pubsub.publish('GROUP_ROLES_UPDATED', {
+        groupRolesUpdated: {
+          newRoles: newRoles,
+          group_id,
+        },
+      })
 
       return newRoles
     },
@@ -1145,6 +1151,24 @@ const resolvers = {
             where: {
               user_id: variables.user,
               group_id: payload.memberRemoved.group.id,
+            },
+          })
+
+          if (userGroup) {
+            return true
+          }
+          return false
+        }
+      ),
+    },
+    groupRolesUpdated: {
+      subscribe: withFilter(
+        (_, __, { pubsub }) => pubsub.asyncIterator('GROUP_ROLES_UPDATED'),
+        async (payload, variables) => {
+          const userGroup = await UserGroups.findOne({
+            where: {
+              user_id: variables.user,
+              group_id: payload.groupRolesUpdated.group_id,
             },
           })
 
