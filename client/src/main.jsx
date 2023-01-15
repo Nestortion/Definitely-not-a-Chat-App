@@ -141,6 +141,11 @@ const cache = new InMemoryCache({
             return incoming
           },
         },
+        groupRoles: {
+          merge(existing, incoming) {
+            return incoming
+          },
+        },
       },
     },
   },
