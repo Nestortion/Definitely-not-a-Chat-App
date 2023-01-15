@@ -5,6 +5,7 @@ import MemberList from '../MemberList/MemberList'
 import SettingsButtons from '../SettingsButtons/SettingsButtons'
 import { useParams } from 'react-router-dom'
 import {
+  useCurrentUserQuery,
   useGroupQuery,
   useGroupRolesListQuery,
   useOtherUserQuery,
@@ -45,6 +46,14 @@ export default function RightBar({ showOnlyMiddle }) {
     error: rolesError,
   } = useUserGroupRolesQuery({ variables: { groupId: parseInt(chatId) } })
 
+  const {
+    data: user,
+    loading: userLoading,
+    error: userError,
+  } = useCurrentUserQuery()
+
+  if (userLoading) return <LoadingSpinner />
+  if (userError) return <ErrorText>Error</ErrorText>
   if (rolesLoading) return <LoadingSpinner />
   if (rolesError) return <ErrorText>Error</ErrorText>
   if (rolesListLoading) return <LoadingSpinner />
@@ -79,7 +88,7 @@ export default function RightBar({ showOnlyMiddle }) {
       </div>
       <div className="rightbar--main">
         {groupData.group.is_group === 'true' && (
-          <MemberList showOnlyMiddle={showOnlyMiddle} />
+          <MemberList user={user.currentUser} showOnlyMiddle={showOnlyMiddle} />
         )}
         <SettingsButtons
           rolesList={rolesList.groupRolesList}
