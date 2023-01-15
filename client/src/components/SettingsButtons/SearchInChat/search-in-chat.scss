@@ -6,7 +6,9 @@
     gap: 1rem;
 
     input {
-      padding: 0.3125rem;
+      padding: 0.625rem;
+      border: 1px solid var(--clr-primary-400);
+      border-radius: 0.625rem;
     }
 
     .button-group {
