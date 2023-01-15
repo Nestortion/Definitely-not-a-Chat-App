@@ -83,7 +83,7 @@ export default function Role({
                 key={index}
                 isGroup="true"
                 id={member.id}
-                name={member.first_name}
+                name={`${member.first_name} ${member.last_name}`}
                 pfp={member.profile_img}
                 showOnlyMiddle={showOnlyMiddle}
               />
