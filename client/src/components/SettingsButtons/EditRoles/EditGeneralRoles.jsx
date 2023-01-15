@@ -2,39 +2,36 @@ import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Button from '../../UI/Button/Button'
 import './edit-general-roles.scss'
+import {
+  useGroupRolesListQuery,
+  useUpdateGroupRolesMutation,
+} from '../../../graphql/hooks/graphql'
+import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'
+import ErrorText from '../../Error/ErrorText'
 
 export default function EditGeneralRoles({ closeModal }) {
-  const { id } = useParams()
-
-  const initialState = [
-    {
-      id: 1,
-      roleName: 'Member',
-      roleType: 'MEMBER',
+  const { chatId } = useParams()
+  const [groupRoles, setGroupRoles] = useState()
+  const {
+    data: rolesFetch,
+    loading: rolesFetchLoading,
+    error: rolesFetchError,
+  } = useGroupRolesListQuery({
+    variables: { groupId: parseInt(chatId) },
+    onCompleted: (data) => {
+      setGroupRoles(data.groupRolesList)
     },
-    {
-      id: 2,
-      roleName: 'Group Creator',
-      roleType: 'MODERATOR',
-    },
-    {
-      id: 3,
-      roleName: 'VIP',
-      roleType: 'MODERATOR',
-    },
-    {
-      id: 4,
-      roleName: 'Worms',
-      roleType: 'MEMBER',
-    },
-  ]
-
-  const [groupRoles, setGroupRoles] = useState(initialState)
-  const [newRole, setNewRole] = useState({
-    id: 5,
-    roleName: '',
-    roleType: 'MEMBER',
   })
+  const [updateGroupRoles] = useUpdateGroupRolesMutation()
+
+  const [rolesToDel, setRolesToDel] = useState([])
+  const [newRole, setNewRole] = useState({
+    role_name: '',
+    role_type: 'MEMBER',
+  })
+
+  if (rolesFetchLoading) return <LoadingSpinner />
+  if (rolesFetchError) return <ErrorText>Error</ErrorText>
 
   const handleChange = (e, id) => {
     setGroupRoles((prev) =>
@@ -53,21 +50,42 @@ export default function EditGeneralRoles({ closeModal }) {
   }
 
   const handleAddRole = () => {
-    if (!newRole.roleName) return
+    if (!newRole.role_name) return
 
-    setGroupRoles((prev) => [...prev, newRole])
+    setGroupRoles((prev) => [...prev, { ...newRole, id: null }])
   }
 
   const handleDeleteRole = (id) => {
-    console.log('Delete role with id:', id)
+    const roles = groupRoles.filter((role) => role.id === id)
+
+    if (roles.some((role) => role.is_default === true)) return
+
+    setGroupRoles(groupRoles.filter((role) => role.id !== id))
+    setRolesToDel((prev) => [...prev, id])
   }
 
   const handleSave = () => {
-    console.log(groupRoles)
+    const filterGroupRoles = groupRoles.map((role) => {
+      return {
+        role_name: role.role_name,
+        emoji: role.emoji,
+        description: role.description,
+        role_type: role.role_type,
+        id: role.id,
+      }
+    })
+    updateGroupRoles({
+      variables: {
+        rolesToEdit: filterGroupRoles,
+        rolesToDelete: rolesToDel,
+        groupId: parseInt(chatId),
+      },
+    })
   }
 
   const handleReset = () => {
-    setGroupRoles(initialState)
+    setGroupRoles(rolesFetch.groupRolesList)
+    setRolesToDel([])
   }
 
   return (
@@ -81,8 +99,8 @@ export default function EditGeneralRoles({ closeModal }) {
               <input
                 type="text"
                 id="group-role-input"
-                value={role.roleName}
-                name="roleName"
+                value={role.role_name}
+                name="role_name"
                 onChange={(e) => handleChange(e, role.id)}
               />
             </div>
@@ -90,11 +108,12 @@ export default function EditGeneralRoles({ closeModal }) {
               <label htmlFor="group-role-select">Role permission type:</label>
               <select
                 id="group-role-select"
-                value={role.roleType}
-                name="roleType"
+                value={role.role_type}
+                name="role_type"
                 onChange={(e) => handleChange(e, role.id)}
               >
                 <option value="MEMBER">MEMBER</option>
+                <option value="LEADER">LEADER</option>
                 <option value="MODERATOR">MODERATOR</option>
               </select>
             </div>
@@ -114,8 +133,8 @@ export default function EditGeneralRoles({ closeModal }) {
             <input
               type="text"
               id="group-new-role-input"
-              name="roleName"
-              value={newRole.roleName}
+              name="role_name"
+              value={newRole.role_name}
               onChange={handleNewRoleChange}
             />
           </div>
@@ -123,11 +142,12 @@ export default function EditGeneralRoles({ closeModal }) {
             <label htmlFor="group-new-role-select">Role permission type:</label>
             <select
               id="group-new-role-select"
-              name="roleType"
-              value={newRole.roleType}
+              name="role_type"
+              value={newRole.role_type}
               onChange={handleNewRoleChange}
             >
               <option value="MEMBER">MEMBER</option>
+              <option value="LEADER">LEADER</option>
               <option value="MODERATOR">MODERATOR</option>
             </select>
           </div>
