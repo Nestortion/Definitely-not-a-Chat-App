@@ -2,36 +2,19 @@ import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Button from '../../UI/Button/Button'
 import './edit-general-roles.scss'
-import {
-  useGroupRolesListQuery,
-  useUpdateGroupRolesMutation,
-} from '../../../graphql/hooks/graphql'
-import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'
-import ErrorText from '../../Error/ErrorText'
+import { useUpdateGroupRolesMutation } from '../../../graphql/hooks/graphql'
 
-export default function EditGeneralRoles({ closeModal }) {
+export default function EditGeneralRoles({ closeModal, rolesList }) {
   const { chatId } = useParams()
-  const [groupRoles, setGroupRoles] = useState()
-  const {
-    data: rolesFetch,
-    loading: rolesFetchLoading,
-    error: rolesFetchError,
-  } = useGroupRolesListQuery({
-    variables: { groupId: parseInt(chatId) },
-    onCompleted: (data) => {
-      setGroupRoles(data.groupRolesList)
-    },
-  })
+
   const [updateGroupRoles] = useUpdateGroupRolesMutation()
 
+  const [groupRoles, setGroupRoles] = useState(rolesList)
   const [rolesToDel, setRolesToDel] = useState([])
   const [newRole, setNewRole] = useState({
     role_name: '',
     role_type: 'MEMBER',
   })
-
-  if (rolesFetchLoading) return <LoadingSpinner />
-  if (rolesFetchError) return <ErrorText>Error</ErrorText>
 
   const handleChange = (e, id) => {
     setGroupRoles((prev) =>
@@ -84,7 +67,7 @@ export default function EditGeneralRoles({ closeModal }) {
   }
 
   const handleReset = () => {
-    setGroupRoles(rolesFetch.groupRolesList)
+    setGroupRoles(rolesList)
     setRolesToDel([])
   }
 
