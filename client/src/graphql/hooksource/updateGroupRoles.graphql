@@ -1,0 +1,19 @@
+mutation UpdateGroupRoles(
+  $rolesToEdit: [RolesToEdit]
+  $rolesToDelete: [Int]
+  $groupId: Int
+) {
+  updateGroupRoles(
+    roles_to_edit: $rolesToEdit
+    roles_to_delete: $rolesToDelete
+    group_id: $groupId
+  ) {
+    id
+    role_name
+    emoji
+    description
+    group_id
+    role_type
+    is_default
+  }
+}

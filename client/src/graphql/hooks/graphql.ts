@@ -73,6 +73,7 @@ export type GroupRole = {
   emoji: Scalars['String']
   group_id: Scalars['String']
   id: Scalars['Int']
+  is_default: Scalars['Boolean']
   role_name: Scalars['String']
   role_type: RoleType
 }
@@ -121,6 +122,7 @@ export type Mutation = {
   removeMember?: Maybe<User>
   revokeRefreshToken?: Maybe<Scalars['Boolean']>
   updateGroup?: Maybe<Group>
+  updateGroupRoles?: Maybe<Array<Maybe<GroupRole>>>
   updateUserProfile?: Maybe<User>
 }
 
@@ -195,6 +197,12 @@ export type MutationUpdateGroupArgs = {
   group_id?: InputMaybe<Scalars['Int']>
   group_name?: InputMaybe<Scalars['String']>
   group_picture?: InputMaybe<Scalars['Upload']>
+}
+
+export type MutationUpdateGroupRolesArgs = {
+  group_id?: InputMaybe<Scalars['Int']>
+  roles_to_delete?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>
+  roles_to_edit?: InputMaybe<Array<InputMaybe<RolesToEdit>>>
 }
 
 export type MutationUpdateUserProfileArgs = {
@@ -290,6 +298,14 @@ export enum RoleType {
   Leader = 'LEADER',
   Member = 'MEMBER',
   Moderator = 'MODERATOR',
+}
+
+export type RolesToEdit = {
+  description?: InputMaybe<Scalars['String']>
+  emoji?: InputMaybe<Scalars['String']>
+  id?: InputMaybe<Scalars['Int']>
+  role_name?: InputMaybe<Scalars['String']>
+  role_type: RoleType
 }
 
 export type Subscription = {
@@ -833,6 +849,30 @@ export type UpdateGroupMutation = {
     id: number
     is_group: string
   } | null
+}
+
+export type UpdateGroupRolesMutationVariables = Exact<{
+  rolesToEdit?: InputMaybe<
+    Array<InputMaybe<RolesToEdit>> | InputMaybe<RolesToEdit>
+  >
+  rolesToDelete?: InputMaybe<
+    Array<InputMaybe<Scalars['Int']>> | InputMaybe<Scalars['Int']>
+  >
+  groupId?: InputMaybe<Scalars['Int']>
+}>
+
+export type UpdateGroupRolesMutation = {
+  __typename?: 'Mutation'
+  updateGroupRoles?: Array<{
+    __typename?: 'GroupRole'
+    id: number
+    role_name: string
+    emoji: string
+    description: string
+    group_id: string
+    role_type: RoleType
+    is_default: boolean
+  } | null> | null
 }
 
 export type UpdateUserProfileMutationVariables = Exact<{
@@ -2405,6 +2445,72 @@ export type UpdateGroupMutationResult =
 export type UpdateGroupMutationOptions = Apollo.BaseMutationOptions<
   UpdateGroupMutation,
   UpdateGroupMutationVariables
+>
+export const UpdateGroupRolesDocument = gql`
+  mutation UpdateGroupRoles(
+    $rolesToEdit: [RolesToEdit]
+    $rolesToDelete: [Int]
+    $groupId: Int
+  ) {
+    updateGroupRoles(
+      roles_to_edit: $rolesToEdit
+      roles_to_delete: $rolesToDelete
+      group_id: $groupId
+    ) {
+      id
+      role_name
+      emoji
+      description
+      group_id
+      role_type
+      is_default
+    }
+  }
+`
+export type UpdateGroupRolesMutationFn = Apollo.MutationFunction<
+  UpdateGroupRolesMutation,
+  UpdateGroupRolesMutationVariables
+>
+
+/**
+ * __useUpdateGroupRolesMutation__
+ *
+ * To run a mutation, you first call `useUpdateGroupRolesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateGroupRolesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateGroupRolesMutation, { data, loading, error }] = useUpdateGroupRolesMutation({
+ *   variables: {
+ *      rolesToEdit: // value for 'rolesToEdit'
+ *      rolesToDelete: // value for 'rolesToDelete'
+ *      groupId: // value for 'groupId'
+ *   },
+ * });
+ */
+export function useUpdateGroupRolesMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateGroupRolesMutation,
+    UpdateGroupRolesMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    UpdateGroupRolesMutation,
+    UpdateGroupRolesMutationVariables
+  >(UpdateGroupRolesDocument, options)
+}
+export type UpdateGroupRolesMutationHookResult = ReturnType<
+  typeof useUpdateGroupRolesMutation
+>
+export type UpdateGroupRolesMutationResult =
+  Apollo.MutationResult<UpdateGroupRolesMutation>
+export type UpdateGroupRolesMutationOptions = Apollo.BaseMutationOptions<
+  UpdateGroupRolesMutation,
+  UpdateGroupRolesMutationVariables
 >
 export const UpdateUserProfileDocument = gql`
   mutation UpdateUserProfile(

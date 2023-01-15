@@ -38,6 +38,7 @@ const documents = {
     "query OtherUser($groupId: Int) {\n  otherUser(group_id: $groupId) {\n    id\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.OtherUserDocument,
     "mutation RemoveMember($groupId: Int, $userId: Int) {\n  removeMember(group_id: $groupId, user_id: $userId) {\n    id\n    first_name\n    last_name\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.RemoveMemberDocument,
     "mutation UpdateGroup($groupName: String, $groupId: Int, $groupPicture: Upload) {\n  updateGroup(\n    group_name: $groupName\n    group_id: $groupId\n    group_picture: $groupPicture\n  ) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}": types.UpdateGroupDocument,
+    "mutation UpdateGroupRoles($rolesToEdit: [RolesToEdit], $rolesToDelete: [Int], $groupId: Int) {\n  updateGroupRoles(\n    roles_to_edit: $rolesToEdit\n    roles_to_delete: $rolesToDelete\n    group_id: $groupId\n  ) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n    is_default\n  }\n}": types.UpdateGroupRolesDocument,
     "mutation UpdateUserProfile($username: String, $age: Int, $gender: String, $section: String, $address: String, $profileImg: Upload) {\n  updateUserProfile(\n    username: $username\n    age: $age\n    gender: $gender\n    section: $section\n    address: $address\n    profile_img: $profileImg\n  ) {\n    address\n    age\n    first_name\n    gender\n    last_name\n    profile_img\n    section\n    username\n  }\n}": types.UpdateUserProfileDocument,
     "query User {\n  user {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.UserDocument,
     "query UserChatSender($userId: Int) {\n  userChatSender(user_id: $userId) {\n    first_name\n    last_name\n    username\n    profile_img\n    id\n  }\n}": types.UserChatSenderDocument,
@@ -147,6 +148,10 @@ export function graphql(source: "mutation RemoveMember($groupId: Int, $userId: I
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "mutation UpdateGroup($groupName: String, $groupId: Int, $groupPicture: Upload) {\n  updateGroup(\n    group_name: $groupName\n    group_id: $groupId\n    group_picture: $groupPicture\n  ) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}"): (typeof documents)["mutation UpdateGroup($groupName: String, $groupId: Int, $groupPicture: Upload) {\n  updateGroup(\n    group_name: $groupName\n    group_id: $groupId\n    group_picture: $groupPicture\n  ) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation UpdateGroupRoles($rolesToEdit: [RolesToEdit], $rolesToDelete: [Int], $groupId: Int) {\n  updateGroupRoles(\n    roles_to_edit: $rolesToEdit\n    roles_to_delete: $rolesToDelete\n    group_id: $groupId\n  ) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n    is_default\n  }\n}"): (typeof documents)["mutation UpdateGroupRoles($rolesToEdit: [RolesToEdit], $rolesToDelete: [Int], $groupId: Int) {\n  updateGroupRoles(\n    roles_to_edit: $rolesToEdit\n    roles_to_delete: $rolesToDelete\n    group_id: $groupId\n  ) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n    is_default\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
