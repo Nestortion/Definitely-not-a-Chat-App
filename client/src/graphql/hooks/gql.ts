@@ -28,6 +28,7 @@ const documents = {
     "subscription GroupCreated($user: Int) {\n  groupCreated(user: $user) {\n    blame {\n      id\n    }\n    group {\n      group_name\n      group_picture\n      id\n      is_group\n    }\n  }\n}": types.GroupCreatedDocument,
     "query GroupRoles($groupId: Int) {\n  groupRoles(group_id: $groupId) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n    is_default\n  }\n}": types.GroupRolesDocument,
     "query GroupRolesList($groupId: Int) {\n  groupRolesList(group_id: $groupId) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n    is_default\n  }\n}": types.GroupRolesListDocument,
+    "subscription GroupRolesUpdated($user: Int, $groupId: Int) {\n  groupRolesUpdated(user: $user, group_id: $groupId) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n    is_default\n  }\n}": types.GroupRolesUpdatedDocument,
     "subscription GroupUpdate($user: Int) {\n  groupUpdate(user: $user) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}": types.GroupUpdateDocument,
     "query Groups($userId: Int) {\n  groups(user_id: $userId) {\n    group_name\n    id\n    group_picture\n    is_group\n  }\n}": types.GroupsDocument,
     "query IsLoggedIn {\n  isLoggedIn\n}": types.IsLoggedInDocument,
@@ -109,6 +110,10 @@ export function graphql(source: "query GroupRoles($groupId: Int) {\n  groupRoles
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "query GroupRolesList($groupId: Int) {\n  groupRolesList(group_id: $groupId) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n    is_default\n  }\n}"): (typeof documents)["query GroupRolesList($groupId: Int) {\n  groupRolesList(group_id: $groupId) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n    is_default\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "subscription GroupRolesUpdated($user: Int, $groupId: Int) {\n  groupRolesUpdated(user: $user, group_id: $groupId) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n    is_default\n  }\n}"): (typeof documents)["subscription GroupRolesUpdated($user: Int, $groupId: Int) {\n  groupRolesUpdated(user: $user, group_id: $groupId) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n    is_default\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
