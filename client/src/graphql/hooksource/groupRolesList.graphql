@@ -1,0 +1,11 @@
+query GroupRolesList($groupId: Int) {
+  groupRolesList(group_id: $groupId) {
+    id
+    role_name
+    emoji
+    description
+    group_id
+    role_type
+    is_default
+  }
+}
