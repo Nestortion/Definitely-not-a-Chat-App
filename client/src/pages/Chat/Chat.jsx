@@ -182,7 +182,12 @@ export default function Chat() {
               </span>
             </div>
           )}
-          <Input value={message} onChange={messageChangeHandle} type="text" />
+          <input
+            type="text"
+            value={message}
+            onChange={messageChangeHandle}
+            className="chat-box"
+          />
           <Button>Send</Button>
         </form>
       </div>
