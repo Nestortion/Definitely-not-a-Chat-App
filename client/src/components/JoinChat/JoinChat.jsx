@@ -12,16 +12,6 @@ import ErrorText from '../Error/ErrorText'
 import { toast } from 'react-toastify'
 
 export default function JoinChat({ closeModal }) {
-  const notify = () =>
-    toast('Group Created!', {
-      position: toast.POSITION.TOP_CENTER,
-      style: {
-        color: 'var(--clr-neutral-100)',
-        backgroundColor: 'var(--clr-primary-400)',
-        fontSize: 'clamp(0.8rem, 1.3vw, 1.5rem)',
-      },
-    })
-
   const { chatId } = useParams()
   const [joinChatId, setJoinChatId] = useState('')
   const [selectedMembers, setSelectedMembers] = useState([])
@@ -70,7 +60,6 @@ export default function JoinChat({ closeModal }) {
     const group = await createGroup({ variables: { userId: selectedIds } })
     navigate(`chat/${group.data.createGroup.id}`)
     closeModal()
-    notify()
   }
 
   return (
