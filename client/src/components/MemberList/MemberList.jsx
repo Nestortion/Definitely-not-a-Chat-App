@@ -1,6 +1,7 @@
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import {
-  useCurrentUserQuery,
+  GroupRolesUpdatedDocument,
   useGroupRolesQuery,
 } from '../../graphql/hooks/graphql'
 import ErrorText from '../Error/ErrorText'
@@ -8,7 +9,7 @@ import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import Role from '../Role/Role/Role'
 import './memberlist.scss'
 
-export default function MemberList({ showOnlyMiddle }) {
+export default function MemberList({ showOnlyMiddle, user }) {
   // fetch roles here
   const { chatId } = useParams()
   const {
@@ -16,16 +17,21 @@ export default function MemberList({ showOnlyMiddle }) {
     loading,
     error,
     refetch,
+    subscribeToMore,
   } = useGroupRolesQuery({ variables: { groupId: parseInt(chatId) } })
 
-  const {
-    data: user,
-    loading: userLoading,
-    error: userError,
-  } = useCurrentUserQuery()
+  useEffect(() => {
+    subscribeToMore({
+      document: GroupRolesUpdatedDocument,
+      variables: { user: user.id },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData) return prev
 
-  if (userLoading) return <LoadingSpinner />
-  if (userError) return <ErrorText>Error</ErrorText>
+        return { groupRoles: subscriptionData.data.groupRolesUpdated.newRoles }
+      },
+    })
+  }, [])
+
   if (loading) return <LoadingSpinner />
   if (error) return <ErrorText>Error</ErrorText>
 
@@ -39,7 +45,7 @@ export default function MemberList({ showOnlyMiddle }) {
           emoji={role.emoji}
           showOnlyMiddle={showOnlyMiddle}
           rolesRefetch={refetch}
-          user={user.currentUser}
+          user={user}
         />
       ))}
     </div>
