@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { apiBasePath } from '../../../data/config'
 import Avatar from '../../UI/Avatar/Avatar'
 import './role-member.scss'
-import { MdClose } from 'react-icons/md'
+import { MdSettings } from 'react-icons/md'
 import {
   useCurrentUserGroupRolesQuery,
   useRemoveMemberMutation,
@@ -34,9 +34,10 @@ export default function RoleMember({ id, name, pfp, showOnlyMiddle, isGroup }) {
     navigate(`/profile/${id}`)
   }
 
-  const handleEditRole = () => {
+  const handleUserSettings = () => {
     console.log(id)
   }
+
   const handleRemoveMember = () => {
     removeMember({ variables: { userId: id, groupId: parseInt(chatId) } })
   }
@@ -56,15 +57,9 @@ export default function RoleMember({ id, name, pfp, showOnlyMiddle, isGroup }) {
           <>
             <button
               className="fs-300 bg-secondary-400 text-neutral-100 role-member__button"
-              onClick={handleEditRole}
+              onClick={handleUserSettings}
             >
-              Edit Role
-            </button>
-            <button
-              className="fs-300 bg-error-400 text-neutral-100 role-member__button"
-              onClick={handleRemoveMember}
-            >
-              <MdClose />
+              <MdSettings />
             </button>
           </>
         )}
