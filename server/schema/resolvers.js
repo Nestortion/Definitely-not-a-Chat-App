@@ -260,6 +260,13 @@ const resolvers = {
 
       return GroupRoles.findAll({ where: { id: newgrouprolesids } })
     },
+    groupRolesList: async (_, { group_id }, context) => {
+      authMiddleware(context)
+
+      const groupRoles = await GroupRoles.findAll({ where: { group_id } })
+
+      return groupRoles
+    },
     latestChats: async (_, __, context) => {
       const { data: user } = authMiddleware(context)
 
@@ -604,6 +611,7 @@ const resolvers = {
           emoji: ' ',
           description: ' ',
           group_id: newGroup.id,
+          is_default: true,
         })
 
         const defaultCreatorRole = await GroupRoles.create({
@@ -612,6 +620,7 @@ const resolvers = {
           description: 'Group Creator',
           group_id: newGroup.id,
           role_type: 'MODERATOR',
+          is_default: true,
         })
 
         await Promise.all(
@@ -810,14 +819,8 @@ const resolvers = {
           where: { id: newGroupUsers },
         })
 
-        let newGroupName = ''
-
-        newGroupUsersData.forEach((userdata) => {
-          newGroupName = newGroupName.concat(userdata.username)
-        })
-
         const newGroup = await Groups.create({
-          group_name: newGroupName,
+          group_name: 'New Group',
           is_group: true,
           last_message_date: Date.now(),
         })
@@ -838,6 +841,7 @@ const resolvers = {
           emoji: ' ',
           description: ' ',
           group_id: newGroup.id,
+          is_default: true,
         })
 
         const defaultCreatorRole = await GroupRoles.create({
@@ -846,6 +850,7 @@ const resolvers = {
           description: 'Group Creator',
           group_id: newGroup.id,
           role_type: 'MODERATOR',
+          is_default: true,
         })
 
         const createDefaultUserGroupRoles = await Promise.all(
@@ -1001,6 +1006,62 @@ const resolvers = {
       })
 
       return updatedUser
+    },
+    updateGroupRoles: async (
+      _,
+      { roles_to_edit, roles_to_delete, group_id },
+      context
+    ) => {
+      const { data: user } = authMiddleware(context)
+
+      const rolesToUpdate = roles_to_edit.filter((role) => role.id !== null)
+      const rolesToCreate = roles_to_edit.filter((role) => role.id === null)
+
+      const createRoles = await Promise.all(
+        rolesToCreate.map(async (role) => {
+          const createRole = await GroupRoles.create({
+            role_name: role.role_name,
+            role_type: role.role_type,
+            description: role.description,
+            emoji: role.emoji,
+            group_id,
+          })
+          return createRole
+        })
+      )
+
+      const updateRoles = await Promise.all(
+        rolesToUpdate.map(async (role) => {
+          await GroupRoles.update(
+            {
+              role_name: role.role_name,
+              emoji: role.emoji,
+              description: role.description,
+              role_type: role.role_type,
+            },
+            { where: { id: role.id } }
+          )
+          const updatedRole = await GroupRoles.findOne({
+            where: { id: role.id },
+          })
+
+          return updatedRole
+        })
+      )
+      let deleteRoles
+      const rolesToDelete = roles_to_delete.filter((role) => role !== null)
+      if (rolesToDelete.length > 0) {
+        deleteRoles = await Promise.all(
+          rolesToDelete.map(async (role) => {
+            const deleteRole = await GroupRoles.destroy({ where: { id: role } })
+            return deleteRole
+          })
+        )
+      }
+
+      const newRoles = updateRoles.concat(createRoles)
+
+      return newRoles
     },
   },
   Subscription: {

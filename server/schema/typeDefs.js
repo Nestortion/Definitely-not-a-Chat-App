@@ -43,7 +43,7 @@ const typeDefs = `
     id: Int!
     group_name: String!
     group_picture: String!
-    is_group:String!
+    is_group: String!
   }
 
   type UserGroup {
@@ -58,6 +58,7 @@ const typeDefs = `
     description: String!
     group_id: String!
     role_type: RoleType!
+    is_default: Boolean!
   }
 
   enum RoleType {
@@ -131,6 +132,14 @@ const typeDefs = `
     roles: [String]
   }
 
+  input RolesToEdit{
+    id: Int
+    role_name: String
+    role_type: RoleType!
+    emoji: String
+    description: String
+  }
+
   type Query {
     userChatSender(user_id: Int): User
     user: User
@@ -154,6 +163,7 @@ const typeDefs = `
     adminLogs: [AdminLog]
     currentUserGroupRoles(group_id:Int): CurrentUserGroupRoles
     otherUser(group_id: Int): User
+    groupRolesList(group_id: Int): [GroupRole]
   }
 
   
@@ -173,6 +183,7 @@ const typeDefs = `
     removeMember(group_id: Int, user_id: Int): User
     createGroup(user_id: [Int!]): Group
     updateUserProfile(username: String, age: Int, gender: String, section: String, address: String, profile_img: Upload): User
+    updateGroupRoles(roles_to_edit: [RolesToEdit], roles_to_delete: [Int], group_id: Int): [GroupRole] 
   }
 
   
