@@ -78,6 +78,12 @@ export type GroupRole = {
   role_type: RoleType
 }
 
+export type GroupRolesUpdatedResponse = {
+  __typename?: 'GroupRolesUpdatedResponse'
+  group_id?: Maybe<Scalars['Int']>
+  newRoles?: Maybe<Array<Maybe<GroupRole>>>
+}
+
 export type KvUser = {
   __typename?: 'KvUser'
   key: Scalars['Int']
@@ -317,7 +323,7 @@ export type Subscription = {
   __typename?: 'Subscription'
   chatAdded?: Maybe<UserChat>
   groupCreated?: Maybe<GroupCreatedResponse>
-  groupRolesUpdated?: Maybe<Array<Maybe<GroupRole>>>
+  groupRolesUpdated?: Maybe<GroupRolesUpdatedResponse>
   groupUpdate?: Maybe<Group>
   memberAdded?: Maybe<MemberAddedResponse>
   memberRemoved?: Maybe<MemberRemovedResponse>
@@ -678,16 +684,20 @@ export type GroupRolesUpdatedSubscriptionVariables = Exact<{
 
 export type GroupRolesUpdatedSubscription = {
   __typename?: 'Subscription'
-  groupRolesUpdated?: Array<{
-    __typename?: 'GroupRole'
-    id: number
-    role_name: string
-    emoji: string
-    description: string
-    group_id: string
-    role_type: RoleType
-    is_default: boolean
-  } | null> | null
+  groupRolesUpdated?: {
+    __typename?: 'GroupRolesUpdatedResponse'
+    group_id?: number | null
+    newRoles?: Array<{
+      __typename?: 'GroupRole'
+      id: number
+      role_name: string
+      emoji: string
+      description: string
+      group_id: string
+      role_type: RoleType
+      is_default: boolean
+    } | null> | null
+  } | null
 }
 
 export type GroupUpdateSubscriptionVariables = Exact<{
@@ -1944,13 +1954,16 @@ export type GroupRolesListQueryResult = Apollo.QueryResult<
 export const GroupRolesUpdatedDocument = gql`
   subscription GroupRolesUpdated($user: Int, $groupId: Int) {
     groupRolesUpdated(user: $user, group_id: $groupId) {
-      id
-      role_name
-      emoji
-      description
+      newRoles {
+        id
+        role_name
+        emoji
+        description
+        group_id
+        role_type
+        is_default
+      }
       group_id
-      role_type
-      is_default
     }
   }
 `
