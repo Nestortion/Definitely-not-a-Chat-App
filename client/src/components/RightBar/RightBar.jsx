@@ -6,6 +6,7 @@ import SettingsButtons from '../SettingsButtons/SettingsButtons'
 import { useParams } from 'react-router-dom'
 import {
   useGroupQuery,
+  useGroupRolesListQuery,
   useOtherUserQuery,
   useUserGroupRolesQuery,
 } from '../../graphql/hooks/graphql'
@@ -17,6 +18,13 @@ export default function RightBar({ showOnlyMiddle }) {
   // Check if global chat state is existing
   // Hide Rightbar if we not on Chat page
   const { chatId } = useParams()
+  const {
+    data: rolesList,
+    loading: rolesListLoading,
+    error: rolesListError,
+  } = useGroupRolesListQuery({
+    variables: { groupId: parseInt(chatId) },
+  })
   const {
     data: groupData,
     loading: groupLoading,
@@ -39,6 +47,8 @@ export default function RightBar({ showOnlyMiddle }) {
 
   if (rolesLoading) return <LoadingSpinner />
   if (rolesError) return <ErrorText>Error</ErrorText>
+  if (rolesListLoading) return <LoadingSpinner />
+  if (rolesListError) return <ErrorText>Error</ErrorText>
   if (otherUserLoading) return <LoadingSpinner />
   if (otherUserError) return <ErrorText>Error</ErrorText>
   if (groupLoading) return <LoadingSpinner />
@@ -71,7 +81,11 @@ export default function RightBar({ showOnlyMiddle }) {
         {groupData.group.is_group === 'true' && (
           <MemberList showOnlyMiddle={showOnlyMiddle} />
         )}
-        <SettingsButtons isGroup={groupData.group.is_group} roles={roles} />
+        <SettingsButtons
+          rolesList={rolesList.groupRolesList}
+          isGroup={groupData.group.is_group}
+          roles={roles}
+        />
       </div>
     </div>
   )
