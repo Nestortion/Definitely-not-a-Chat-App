@@ -178,14 +178,17 @@ export default function ProfileSettings() {
             </div>
             <div className="profile-settings__input-container">
               <label htmlFor="gender">Gender: </label>
-              <input
+              <select
                 className="profile-settings-input"
-                type="text"
                 name="gender"
                 onChange={handleChange}
                 id="gender"
                 value={values.gender}
-              />
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+              </select>
             </div>
             <div className="profile-settings__input-container">
               <label htmlFor="section">Section: </label>
