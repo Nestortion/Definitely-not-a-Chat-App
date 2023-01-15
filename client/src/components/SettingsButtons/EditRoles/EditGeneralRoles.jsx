@@ -53,6 +53,8 @@ export default function EditGeneralRoles({ closeModal }) {
   }
 
   const handleAddRole = () => {
+    if (!newRole.roleName) return
+
     setGroupRoles((prev) => [...prev, newRole])
   }
 
