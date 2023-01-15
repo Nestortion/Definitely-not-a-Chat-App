@@ -14,6 +14,7 @@ import AddMembers from './AddMembers/AddMembers'
 import GroupSettings from './EditGroupName/EditGroupName'
 import SearchInChat from './SearchInChat/SearchInChat'
 import ReportChat from './ReportChat/ReportChat'
+import EditGeneralRoles from './EditRoles/EditGeneralRoles'
 
 export default function SettingsButtons({ roles, isGroup }) {
   const [shouldShowModal, setShouldShowModal] = useState(false)
@@ -74,7 +75,9 @@ export default function SettingsButtons({ roles, isGroup }) {
       {shouldShowModal && (
         <SpawnModal title={currentTitle} closeModal={handleHideModal}>
           {shouldShowAddMembers && <AddMembers closeModal={handleHideModal} />}
-          {shouldShowGeneralRoles && <h1>Edit Roles</h1>}
+          {shouldShowGeneralRoles && (
+            <EditGeneralRoles closeModal={handleHideModal} />
+          )}
           {shouldShowEditGroupName && (
             <GroupSettings closeModal={handleHideModal} />
           )}
