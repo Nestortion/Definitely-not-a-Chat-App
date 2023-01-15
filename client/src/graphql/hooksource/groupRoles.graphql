@@ -6,5 +6,6 @@ query GroupRoles($groupId: Int) {
     description
     group_id
     role_type
+    is_default
   }
 }
