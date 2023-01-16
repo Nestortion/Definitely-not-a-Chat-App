@@ -74,17 +74,16 @@ export default function RoleMember({
           />
           <span className="fs-400">{name}</span>
         </div>
-        {isGroup === 'true' &&
-          userRoles.currentUserGroupRoles.roles.includes('MODERATOR') && (
-            <>
-              <button
-                className="fs-300 bg-secondary-400 text-neutral-100 role-member__button"
-                onClick={handleShowModal}
-              >
-                <MdSettings />
-              </button>
-            </>
-          )}
+        {isGroup === 'true' && userRoles.includes('MODERATOR') && (
+          <>
+            <button
+              className="fs-300 bg-secondary-400 text-neutral-100 role-member__button"
+              onClick={handleShowModal}
+            >
+              <MdSettings />
+            </button>
+          </>
+        )}
       </div>
     </>
   )
