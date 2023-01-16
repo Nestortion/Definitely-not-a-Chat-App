@@ -23,9 +23,6 @@ export default function ChatListItem({
 
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
 
-  if (otherUserLoading) return <LoadingSpinner />
-  if (otherUserError) return <ErrorText>Error</ErrorText>
-
   const handleClick = () => {
     if (isTabletOrMobile) {
       showOnlyMiddle()
@@ -65,6 +62,14 @@ export default function ChatListItem({
       return `${Math.floor(newTime)}w`
     }
   }
+
+  if (otherUserLoading) return <LoadingSpinner />
+  if (otherUserError)
+    return (
+      <div className="chat-list-item">
+        <span>You are removed from this group</span>
+      </div>
+    )
 
   return (
     <NavLink
