@@ -16,7 +16,7 @@ import SearchInChat from './SearchInChat/SearchInChat'
 import ReportChat from './ReportChat/ReportChat'
 import EditGeneralRoles from './EditRoles/EditGeneralRoles'
 
-export default function SettingsButtons({ roles, isGroup, rolesList }) {
+export default function SettingsButtons({ userRoles, isGroup, rolesList }) {
   const [shouldShowModal, setShouldShowModal] = useState(false)
   const [shouldShowAddMembers, setShouldShowAddMembers] = useState(false)
   const [shouldShowGeneralRoles, setShouldShowGeneralRoles] = useState(false)
@@ -68,8 +68,6 @@ export default function SettingsButtons({ roles, isGroup, rolesList }) {
     handleShowModal()
   }
 
-  console.log()
-
   return (
     <>
       {shouldShowModal && (
@@ -91,23 +89,22 @@ export default function SettingsButtons({ roles, isGroup, rolesList }) {
         </SpawnModal>
       )}
       <div className="settings-buttons">
-        {isGroup === 'true' &&
-          roles.userGroupRoles.some((e) => e.role_type === 'MODERATOR') && (
-            <>
-              <Button onClick={showAddMembers}>
-                <MdAdd style={{ display: 'inline-block' }} />
-                <span className="fs-400">Add Members</span>
-              </Button>
-              <Button onClick={showGeneralRoles}>
-                <MdEmojiPeople style={{ display: 'inline-block' }} />
-                <span className="fs-400">Edit Roles</span>
-              </Button>
-              <Button onClick={showEditRoles}>
-                <MdSettings style={{ display: 'inline-block' }} />
-                <span className="fs-400">Group Settings</span>
-              </Button>
-            </>
-          )}
+        {isGroup === 'true' && userRoles.some((e) => e === 'MODERATOR') && (
+          <>
+            <Button onClick={showAddMembers}>
+              <MdAdd style={{ display: 'inline-block' }} />
+              <span className="fs-400">Add Members</span>
+            </Button>
+            <Button onClick={showGeneralRoles}>
+              <MdEmojiPeople style={{ display: 'inline-block' }} />
+              <span className="fs-400">Edit Roles</span>
+            </Button>
+            <Button onClick={showEditRoles}>
+              <MdSettings style={{ display: 'inline-block' }} />
+              <span className="fs-400">Group Settings</span>
+            </Button>
+          </>
+        )}
 
         <Button onClick={showSearchInGroup}>
           <MdSearch style={{ display: 'inline-block' }} />

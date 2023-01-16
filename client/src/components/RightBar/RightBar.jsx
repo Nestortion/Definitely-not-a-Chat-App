@@ -5,15 +5,17 @@ import MemberList from '../MemberList/MemberList'
 import SettingsButtons from '../SettingsButtons/SettingsButtons'
 import { useParams } from 'react-router-dom'
 import {
+  GroupRolesUpdatedDocument,
+  useCurrentUserGroupRolesQuery,
   useCurrentUserQuery,
   useGroupQuery,
   useGroupRolesListQuery,
   useOtherUserQuery,
-  useUserGroupRolesQuery,
 } from '../../graphql/hooks/graphql'
 import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../Error/ErrorText'
 import { apiBasePath } from '../../data/config'
+import { useEffect } from 'react'
 
 export default function RightBar({ showOnlyMiddle }) {
   // Check if global chat state is existing
@@ -23,6 +25,8 @@ export default function RightBar({ showOnlyMiddle }) {
     data: rolesList,
     loading: rolesListLoading,
     error: rolesListError,
+    refetch: rolesListRefetch,
+    subscribeToMore: rolesSubscribeToMore,
   } = useGroupRolesListQuery({
     variables: { groupId: parseInt(chatId) },
   })
@@ -44,13 +48,29 @@ export default function RightBar({ showOnlyMiddle }) {
     data: roles,
     loading: rolesLoading,
     error: rolesError,
-  } = useUserGroupRolesQuery({ variables: { groupId: parseInt(chatId) } })
+  } = useCurrentUserGroupRolesQuery({
+    variables: { groupId: parseInt(chatId) },
+  })
 
   const {
     data: user,
     loading: userLoading,
     error: userError,
   } = useCurrentUserQuery()
+
+  useEffect(() => {
+    rolesSubscribeToMore({
+      document: GroupRolesUpdatedDocument,
+      variables: { user: user.currentUser.id },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData) return prev
+
+        return {
+          groupRolesList: subscriptionData.data.groupRolesUpdated.newRoles,
+        }
+      },
+    })
+  }, [])
 
   if (userLoading) return <LoadingSpinner />
   if (userError) return <ErrorText>Error</ErrorText>
@@ -88,12 +108,18 @@ export default function RightBar({ showOnlyMiddle }) {
       </div>
       <div className="rightbar--main">
         {groupData.group.is_group === 'true' && (
-          <MemberList user={user.currentUser} showOnlyMiddle={showOnlyMiddle} />
+          <MemberList
+            rolesListRefetch={rolesListRefetch}
+            userRoles={roles.currentUserGroupRoles.roles}
+            rolesList={rolesList.groupRolesList}
+            user={user.currentUser}
+            showOnlyMiddle={showOnlyMiddle}
+          />
         )}
         <SettingsButtons
           rolesList={rolesList.groupRolesList}
           isGroup={groupData.group.is_group}
-          roles={roles}
+          userRoles={roles.currentUserGroupRoles.roles}
         />
       </div>
     </div>
