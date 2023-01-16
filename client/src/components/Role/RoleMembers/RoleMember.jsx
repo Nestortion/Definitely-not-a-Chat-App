@@ -12,8 +12,20 @@ import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../../Error/ErrorText'
 import SpawnModal from '../../UI/Modal/SpawnModal'
 import { useState } from 'react'
+import EditUserRole from '../EditUserRole/EditUserRole'
+import { toast } from 'react-toastify'
 
 export default function RoleMember({ id, name, pfp, showOnlyMiddle, isGroup }) {
+  const notify = () =>
+    toast('Member removed', {
+      position: toast.POSITION.TOP_CENTER,
+      style: {
+        color: 'var(--clr-neutral-100)',
+        backgroundColor: 'var(--clr-primary-400)',
+        fontSize: 'clamp(0.8rem, 1.3vw, 1.5rem)',
+      },
+    })
+
   const [shouldShowModal, setShouldShowModal] = useState(false)
   const { chatId } = useParams()
   const navigate = useNavigate()
@@ -45,19 +57,20 @@ export default function RoleMember({ id, name, pfp, showOnlyMiddle, isGroup }) {
     setShouldShowModal(false)
   }
 
-  const handleUserSettings = () => {
-    console.log(id)
-  }
-
   const handleRemoveMember = () => {
     removeMember({ variables: { userId: id, groupId: parseInt(chatId) } })
+    notify()
   }
 
   return (
     <>
       {shouldShowModal && (
-        <SpawnModal title="Edit user" closeModal={handleHideModal}>
-          <h1>Edit User Role</h1>
+        <SpawnModal title={`Edit user - ${name}`} closeModal={handleHideModal}>
+          <EditUserRole
+            memberId={id}
+            closeModal={handleHideModal}
+            handleRemoveMember={handleRemoveMember}
+          />
         </SpawnModal>
       )}
       <div className="role-member">
