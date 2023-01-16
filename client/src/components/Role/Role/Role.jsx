@@ -16,6 +16,7 @@ export default function Role({
   showOnlyMiddle,
   rolesRefetch,
   user,
+  userRoles,
 }) {
   // fetch member here base on role
   const {
@@ -80,6 +81,7 @@ export default function Role({
           <div className="role__role-members">
             {members.userRoles.map((member, index) => (
               <RoleMember
+                userRoles={userRoles}
                 key={index}
                 isGroup="true"
                 id={member.id}
