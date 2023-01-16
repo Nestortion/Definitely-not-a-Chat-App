@@ -141,7 +141,7 @@ const cache = new InMemoryCache({
             return incoming
           },
         },
-        groupRoles: {
+        groupRolesList: {
           merge(existing, incoming) {
             return incoming
           },
