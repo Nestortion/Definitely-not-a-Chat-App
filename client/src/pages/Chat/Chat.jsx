@@ -6,10 +6,10 @@ import { useMediaQuery } from 'react-responsive'
 import {
   GroupUpdateDocument,
   useAddUserChatMutation,
+  useCurrentUserGroupRolesQuery,
   useGroupQuery,
   useOtherUserQuery,
   UserChatsDocument,
-  useUserGroupRolesQuery,
 } from '../../graphql/hooks/graphql'
 import { useOutletContext, useParams } from 'react-router-dom'
 import { apiBasePath } from '../../data/config'
@@ -48,7 +48,9 @@ export default function Chat() {
     data: roles,
     loading: rolesLoading,
     error: rolesError,
-  } = useUserGroupRolesQuery({ variables: { groupId: parseInt(chatId) } })
+  } = useCurrentUserGroupRolesQuery({
+    variables: { groupId: parseInt(chatId) },
+  })
 
   useEffect(() => {
     subscribeToMore({
@@ -155,7 +157,9 @@ export default function Chat() {
           </SpawnModal>
         )}
         {(data.group.is_group === 'false' ||
-          roles.userGroupRoles?.some((e) => e.role_type === 'MODERATOR')) && (
+          roles.currentUserGroupRoles.roles.some(
+            (e) => e.role_type === 'MODERATOR'
+          )) && (
           <Button onClick={showModal}>
             <MdAdd />
           </Button>
