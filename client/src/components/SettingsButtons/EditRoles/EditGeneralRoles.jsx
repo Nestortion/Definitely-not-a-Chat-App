@@ -3,8 +3,19 @@ import { useParams } from 'react-router-dom'
 import Button from '../../UI/Button/Button'
 import './edit-general-roles.scss'
 import { useUpdateGroupRolesMutation } from '../../../graphql/hooks/graphql'
+import { toast } from 'react-toastify'
 
 export default function EditGeneralRoles({ closeModal, rolesList }) {
+  const notify = (text) =>
+    toast(text, {
+      position: toast.POSITION.TOP_CENTER,
+      style: {
+        color: 'var(--clr-neutral-100)',
+        backgroundColor: 'var(--clr-primary-400)',
+        fontSize: 'clamp(0.8rem, 1.3vw, 1.5rem)',
+      },
+    })
+
   const { chatId } = useParams()
 
   const [updateGroupRoles] = useUpdateGroupRolesMutation()
@@ -36,6 +47,7 @@ export default function EditGeneralRoles({ closeModal, rolesList }) {
     if (!newRole.role_name) return
 
     setGroupRoles((prev) => [...prev, { ...newRole, id: null }])
+    notify('Role successfully added!')
   }
 
   const handleDeleteRole = (id) => {
@@ -45,6 +57,7 @@ export default function EditGeneralRoles({ closeModal, rolesList }) {
 
     setGroupRoles(groupRoles.filter((role) => role.id !== id))
     setRolesToDel((prev) => [...prev, id])
+    notify('Role successfully deleted!')
   }
 
   const handleSave = () => {
@@ -64,6 +77,7 @@ export default function EditGeneralRoles({ closeModal, rolesList }) {
         groupId: parseInt(chatId),
       },
     })
+    closeModal()
   }
 
   const handleReset = () => {
