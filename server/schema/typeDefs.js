@@ -155,14 +155,12 @@ const typeDefs = `
     userChats(receiver:Int): [UserChat]
     groups(user_id: Int): [Group]
     userGroups: [UserGroup]
-    groupRoles(group_id: Int): [GroupRole]
     userRoles(group_role_id: Int): [User]
     userChatReactions: [UserChatReaction]
     currentUser: User
     isLoggedIn: Boolean
     latestChats: [UserChat]
     userProfile(id: Int!): User
-    userGroupRoles(group_id: Int!): [GroupRole]
     addMemberList(group_id: Int, form: String): [KvUser]
     userLogs: [UserLog]
     adminLogs: [AdminLog]

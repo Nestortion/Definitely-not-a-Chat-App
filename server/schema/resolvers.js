@@ -236,30 +236,6 @@ const resolvers = {
 
       return Users.findAll({ where: { id: userIds } })
     },
-    groupRoles: async (_, { group_id }, context) => {
-      authMiddleware(context)
-
-      let grouprolesids = []
-      let newgrouprolesids = []
-
-      const grouproles = await GroupRoles.findAll({ where: { group_id } })
-
-      grouproles.forEach((grouprole) => {
-        grouprolesids.push(grouprole.id)
-      })
-
-      const userGroupRoles = await UserGroupRoles.findAll({
-        where: { group_role_id: grouprolesids },
-      })
-
-      userGroupRoles.forEach((usergrouprole) => {
-        if (!newgrouprolesids.includes(usergrouprole.group_role_id)) {
-          newgrouprolesids.push(usergrouprole.group_role_id)
-        }
-      })
-
-      return GroupRoles.findAll({ where: { id: newgrouprolesids } })
-    },
     groupRolesList: async (_, { group_id }, context) => {
       authMiddleware(context)
 
@@ -288,33 +264,6 @@ const resolvers = {
       })
 
       return latestChats
-    },
-    userGroupRoles: async (_, { group_id }, context) => {
-      const { data } = authMiddleware(context)
-
-      const validation = await Groups.findOne({ where: { id: group_id } })
-
-      if (validation.dataValues.is_group === false) {
-        return null
-      }
-
-      const userGroup = await UserGroups.findOne({
-        where: { user_id: data.user_id, group_id },
-      })
-
-      const userGroupRole = await UserGroupRoles.findAll({
-        where: { user_group_id: userGroup.id },
-      })
-
-      const groupRoleIds = userGroupRole.map(
-        (usergrouprole) => usergrouprole.group_role_id
-      )
-
-      const groupRoles = await GroupRoles.findAll({
-        where: { id: groupRoleIds },
-      })
-
-      return groupRoles
     },
     addMemberList: async (_, { group_id, form }, context) => {
       const { data: currUser } = authMiddleware(context)
@@ -573,9 +522,6 @@ const resolvers = {
           action_description: `Started a new conversation with ${otherUser.first_name} ${otherUser.last_name}`,
           user_id: user.user_id,
         })
-
-        console.log(actionUser)
-        console.log(pmGroup)
 
         pubsub.publish('GROUP_CREATED', {
           groupCreated: {
