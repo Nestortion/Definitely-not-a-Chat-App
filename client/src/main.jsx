@@ -26,6 +26,7 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { createClient } from 'graphql-ws'
 import ProfileSettings from './pages/ProfileSettings/ProfileSettings'
 import AdminRoute from './components/AdminRoute/AdminRoute'
+import Admin from './pages/Admin/Admin'
 
 const router = createBrowserRouter([
   {
@@ -62,7 +63,7 @@ const router = createBrowserRouter([
     path: '/admin',
     element: (
       <AdminRoute>
-        <h1>Admin control panel</h1>
+        <Admin />
       </AdminRoute>
     ),
   },
