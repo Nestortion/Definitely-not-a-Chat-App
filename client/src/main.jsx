@@ -66,6 +66,28 @@ const router = createBrowserRouter([
         <Admin />
       </AdminRoute>
     ),
+    children: [
+      {
+        path: '/admin',
+        element: <h1>Admin Control Panel</h1>,
+      },
+      {
+        path: '/admin/users',
+        element: <h1>Users</h1>,
+      },
+      {
+        path: '/admin/groups',
+        element: <h1>Groups</h1>,
+      },
+      {
+        path: '/admin/user-logs',
+        element: <h1>User logs</h1>,
+      },
+      {
+        path: '/admin/admin-logs',
+        element: <h1>User logs</h1>,
+      },
+    ],
   },
   {
     path: '*',
