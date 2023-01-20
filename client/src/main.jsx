@@ -27,6 +27,7 @@ import { createClient } from 'graphql-ws'
 import ProfileSettings from './pages/ProfileSettings/ProfileSettings'
 import AdminRoute from './components/AdminRoute/AdminRoute'
 import Admin from './pages/Admin/Admin'
+import AdminControlPanel from './pages/Admin/AdminControlPanel/AdminControlPanel'
 
 const router = createBrowserRouter([
   {
@@ -69,7 +70,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/admin',
-        element: <h1>Admin Control Panel</h1>,
+        element: <AdminControlPanel />,
       },
       {
         path: '/admin/users',
