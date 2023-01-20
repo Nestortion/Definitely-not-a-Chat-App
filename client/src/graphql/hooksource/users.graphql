@@ -1,0 +1,13 @@
+query Users($limit: Int) {
+  users(limit: $limit) {
+    id
+    first_name
+    last_name
+    address
+    section
+    profile_img
+    age
+    gender
+    username
+  }
+}
