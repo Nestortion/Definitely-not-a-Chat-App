@@ -4,57 +4,41 @@ import './admin-control-panel.scss'
 import { MdSettings } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import GroupList from '../../../components/GroupList/GroupList'
+import {
+  useGroupListQuery,
+  useSystemStatsQuery,
+  useUsersQuery,
+} from '../../../graphql/hooks/graphql'
+import LoadingSpinner from '../../../components/Loading/LoadingSpinner/LoadingSpinner'
+import ErrorText from '../../../components/Error/ErrorText'
+import { apiBasePath } from '../../../data/config'
 
 export default function AdminControlPanel() {
-  const [totalUsers] = useState(42)
-  const [totalGroupChats] = useState(125)
+  const {
+    data: systemStats,
+    loading: systemStatsLoading,
+    error: systemStatsError,
+  } = useSystemStatsQuery()
   const [pendingReports] = useState(0)
 
-  const [topFourUsers] = useState([
-    {
-      id: 1,
-      fullName: 'John Doe',
-      profilePicUrl: 'http://localhost:4000/pfp/johndoe.jpg',
-    },
-    {
-      id: 2,
-      fullName: 'Jane Doe',
-      profilePicUrl: 'http://localhost:4000/pfp/janedoe.jpg',
-    },
-    {
-      id: 3,
-      fullName: 'Josel Catalan',
-      profilePicUrl: 'http://localhost:4000/pfp/josel.jpg',
-    },
-    {
-      id: 4,
-      fullName: 'Nestor Gerona',
-      profilePicUrl: 'http://localhost:4000/pfp/nestor.jpg',
-    },
-  ])
+  const {
+    data: topFourUsers,
+    loading: topFourUsersLoading,
+    error: topFourUsersError,
+  } = useUsersQuery({ variables: { limit: 4 } })
 
-  const [topFourGroupChats] = useState([
-    {
-      id: 1,
-      groupName: 'God Gamers',
-      profilePicUrl: 'http://localhost:4000/grouppfp/default-icon.png',
-    },
-    {
-      id: 2,
-      groupName: 'lodinjanedoecluelul',
-      profilePicUrl: 'http://localhost:4000/grouppfp/default-icon.png',
-    },
-    {
-      id: 3,
-      groupName: 'okay',
-      profilePicUrl: 'http://localhost:4000/grouppfp/default-icon.png',
-    },
-    {
-      id: 4,
-      groupName: 'grz',
-      profilePicUrl: 'http://localhost:4000/grouppfp/default-icon.png',
-    },
-  ])
+  const {
+    data: topFourGroupChats,
+    loading: topFourGroupChatsLoading,
+    error: topFourGroupChatsError,
+  } = useGroupListQuery({ variables: { limit: 4 } })
+
+  if (topFourUsersLoading) return <LoadingSpinner />
+  if (topFourUsersError) return <ErrorText>Something Went Wrong</ErrorText>
+  if (systemStatsLoading) return <LoadingSpinner />
+  if (systemStatsError) return <ErrorText>Something Went Wrong</ErrorText>
+  if (topFourGroupChatsLoading) return <LoadingSpinner />
+  if (topFourGroupChatsError) return <ErrorText>Something Went Wrong</ErrorText>
 
   return (
     <div className="control-panel">
@@ -65,7 +49,9 @@ export default function AdminControlPanel() {
         >
           <div className="control-panel__card">
             <p className="control-panel__top-heading">Total Users</p>
-            <p className="control-panel__top-number fw-bold">{totalUsers}</p>
+            <p className="control-panel__top-number fw-bold">
+              {systemStats.systemStats.userCount}
+            </p>
           </div>
         </Link>
 
@@ -76,7 +62,7 @@ export default function AdminControlPanel() {
           <div className="control-panel__card">
             <p className="control-panel__top-heading">Total Group Chats</p>
             <p className="control-panel__top-number fw-bold">
-              {totalGroupChats}
+              {systemStats.systemStats.groupCount}
             </p>
           </div>
         </Link>
@@ -99,14 +85,17 @@ export default function AdminControlPanel() {
           <div className="control-panel__list-component control-panel__card">
             <p className="control-panel__list-heading fw-bold">Users List</p>
             <div className="control-panel__list-container">
-              {topFourUsers.map((user) => (
+              {topFourUsers.users.map((user) => (
                 <div
                   key={user.id}
                   className="control-panel__list-user control-panel__card"
                 >
-                  <Avatar size={36} src={user.profilePicUrl} />
+                  <Avatar
+                    size={36}
+                    src={`${apiBasePath}/pfp/${user.profile_img}`}
+                  />
                   <span>{user.id}</span>
-                  <span>{user.fullName}</span>
+                  <span>{`${user.first_name} ${user.last_name}`}</span>
                   <span>
                     <MdSettings />
                   </span>
@@ -121,12 +110,13 @@ export default function AdminControlPanel() {
           <div className="control-panel__list-component control-panel__card">
             <p className="control-panel__list-heading fw-bold">Chat List</p>
             <div className="control-panel__list-container">
-              {topFourGroupChats.map((groupChat) => (
+              {topFourGroupChats.groupList.map((groupChat) => (
                 <GroupList
                   key={groupChat.id}
                   id={groupChat.id}
-                  groupName={groupChat.groupName}
-                  profilePicUrl={groupChat.profilePicUrl}
+                  groupName={groupChat.group_name}
+                  isGroup={groupChat.is_group}
+                  profilePicUrl={groupChat.group_picture}
                 />
               ))}
             </div>
