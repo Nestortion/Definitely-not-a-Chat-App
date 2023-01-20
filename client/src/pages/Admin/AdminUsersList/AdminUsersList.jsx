@@ -6,7 +6,7 @@ import './admin-users-list.scss'
 export default function AdminUsersList() {
   const [searchInput, setSearchInput] = useState('')
 
-  const [users] = useState([
+  const [users, setUsers] = useState([
     {
       id: 1,
       fullName: 'John Doe',
