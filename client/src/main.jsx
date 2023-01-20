@@ -28,6 +28,7 @@ import ProfileSettings from './pages/ProfileSettings/ProfileSettings'
 import AdminRoute from './components/AdminRoute/AdminRoute'
 import Admin from './pages/Admin/Admin'
 import AdminControlPanel from './pages/Admin/AdminControlPanel/AdminControlPanel'
+import AdminUsersList from './pages/Admin/AdminUsersList/AdminUsersList'
 
 const router = createBrowserRouter([
   {
@@ -74,7 +75,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/admin/users',
-        element: <h1>Users</h1>,
+        element: <AdminUsersList />,
       },
       {
         path: '/admin/groups',
