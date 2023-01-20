@@ -5,10 +5,10 @@ import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 export default function ProtectedRoute({ children }) {
   const { data: isLogged, loading, error } = useIsLoggedInQuery()
 
-  if (loading) return <LoadingSpinner></LoadingSpinner>
+  if (loading) return <LoadingSpinner />
   if (error) return <Navigate to="/login" />
 
-  if (isLogged?.isLoggedIn === false) {
+  if (isLogged?.isLoggedIn.isLogged === false) {
     return <Navigate to="/login" />
   }
 
