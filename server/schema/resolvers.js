@@ -391,8 +391,6 @@ const resolvers = {
       const groups = await Groups.findAll()
       const userChats = await UserChats.findAll()
 
-      console.log(users.length)
-
       return {
         userCount: users.length,
         groupCount: groups.length,
