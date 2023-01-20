@@ -18,7 +18,7 @@ export default function App() {
     })
   }, [])
 
-  if (loading) return <LoadingSpinner></LoadingSpinner>
+  if (loading) return <LoadingSpinner />
 
   return (
     <>
