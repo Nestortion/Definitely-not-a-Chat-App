@@ -8,7 +8,12 @@ import { setAccessToken } from '../../graphql/authStore'
 import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 
-export default function UserCard({ profile_img, first_name, showOnlyMiddle }) {
+export default function UserCard({
+  profile_img,
+  first_name,
+  showOnlyMiddle,
+  user,
+}) {
   const [userSettingsIsShowing, setUserSettingsIsShowing] = useState(false)
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
   const [logout] = useLogoutMutation()
@@ -29,7 +34,10 @@ export default function UserCard({ profile_img, first_name, showOnlyMiddle }) {
     await logout()
     setAccessToken('')
     navigate(0)
-    console.log('User logged out!')
+  }
+
+  const handleAdminPage = async () => {
+    navigate('/admin')
   }
 
   return (
@@ -46,6 +54,9 @@ export default function UserCard({ profile_img, first_name, showOnlyMiddle }) {
         <div className="user-card__user-settings bg-neutral-100">
           <Button onClick={handleSettings}>Settings</Button>
           <Button onClick={handleLogout}>Log out</Button>
+          {user.currentUser.access_level === 'ADMIN' && (
+            <Button onClick={handleAdminPage}>Admin Panel</Button>
+          )}
         </div>
       )}
     </div>

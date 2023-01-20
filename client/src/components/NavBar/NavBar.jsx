@@ -9,7 +9,7 @@ import logo from '../../assets/logo.png'
 export default function NavBar({ onClick, showOnlyMiddle }) {
   const { data, loading, error } = useCurrentUserQuery()
 
-  if (loading) return <LoadingSpinner></LoadingSpinner>
+  if (loading) return <LoadingSpinner />
   if (error) return <ErrorText>Something went wrong</ErrorText>
   return (
     <div className="navbar">
@@ -20,7 +20,11 @@ export default function NavBar({ onClick, showOnlyMiddle }) {
         </Link>
       </div>
       <div className="right">
-        <UserCard showOnlyMiddle={showOnlyMiddle} {...data.currentUser} />
+        <UserCard
+          user={data}
+          showOnlyMiddle={showOnlyMiddle}
+          {...data.currentUser}
+        />
       </div>
     </div>
   )
