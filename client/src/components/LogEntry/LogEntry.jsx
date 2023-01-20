@@ -8,7 +8,7 @@ export default function LogEntry({
   section,
 }) {
   return (
-    <div className="log-entry">
+    <div className="log-entry fs-400">
       <div className="log-entry__detail">
         <p className="fw-bold">{createdAt}:</p>
         <p>
