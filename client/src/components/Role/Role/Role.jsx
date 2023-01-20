@@ -75,9 +75,7 @@ export default function Role({
     <>
       {members.userRoles.length > 0 && (
         <div className="role__container">
-          <h1 className="fs-500">
-            {name} {emoji ? emoji : ''}
-          </h1>
+          <h1 className="fs-500">{name}</h1>
           <div className="role__role-members">
             {members.userRoles.map((member, index) => (
               <RoleMember
