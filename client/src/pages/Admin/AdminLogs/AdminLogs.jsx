@@ -29,7 +29,7 @@ export default function AdminLogs() {
 
   return (
     <div className="admin-logs">
-      <p className="admin-logs__heading fw-bold">User Logs</p>
+      <p className="admin-logs__heading fw-bold">Admin Logs</p>
       <div className="admin-logs-container control-panel__card">
         {logs.map((log) => (
           <LogEntry

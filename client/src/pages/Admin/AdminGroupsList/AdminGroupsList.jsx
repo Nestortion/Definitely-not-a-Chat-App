@@ -36,7 +36,7 @@ export default function AdminGroupsList() {
     <div className="admin-groups-list">
       <div className="admin-groups-list__component control-panel__card">
         <div className="admin-groups-list__top">
-          <p className="admin-groups-list__list-heading fw-bold">Users List</p>
+          <p className="admin-groups-list__list-heading fw-bold">Chat List</p>
           <input
             type="text"
             className="admin-groups-list__list-search"
