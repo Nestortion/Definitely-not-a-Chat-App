@@ -1,3 +1,10 @@
 query IsLoggedIn {
-  isLoggedIn
+  isLoggedIn {
+    isLogged
+    currentUser {
+      id
+      username
+      access_level
+    }
+  }
 }
