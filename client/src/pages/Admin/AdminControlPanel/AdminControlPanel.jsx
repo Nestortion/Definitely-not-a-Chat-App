@@ -59,20 +59,39 @@ export default function AdminControlPanel() {
   return (
     <div className="control-panel">
       <div className="control-panel__top control-panel__card">
-        <div className="control-panel__card">
-          <p className="control-panel__top-heading">Total Users</p>
-          <p className="control-panel__top-number fw-bold">{totalUsers}</p>
-        </div>
+        <Link
+          to="/admin/users"
+          style={{ textDecoration: 'none', color: 'var(--clr-neutral-900)' }}
+        >
+          <div className="control-panel__card">
+            <p className="control-panel__top-heading">Total Users</p>
+            <p className="control-panel__top-number fw-bold">{totalUsers}</p>
+          </div>
+        </Link>
 
-        <div className="control-panel__card">
-          <p className="control-panel__top-heading">Total Group Chats</p>
-          <p className="control-panel__top-number fw-bold">{totalGroupChats}</p>
-        </div>
+        <Link
+          style={{ textDecoration: 'none', color: 'var(--clr-neutral-900)' }}
+          to="/admin/groups"
+        >
+          <div className="control-panel__card">
+            <p className="control-panel__top-heading">Total Group Chats</p>
+            <p className="control-panel__top-number fw-bold">
+              {totalGroupChats}
+            </p>
+          </div>
+        </Link>
 
-        <div className="control-panel__card">
-          <p className="control-panel__top-heading">Pending Reports</p>
-          <p className="control-panel__top-number fw-bold">{pendingReports}</p>
-        </div>
+        <Link
+          style={{ textDecoration: 'none', color: 'var(--clr-neutral-900)' }}
+          to="/admin/reports"
+        >
+          <div className="control-panel__card">
+            <p className="control-panel__top-heading">Pending Reports</p>
+            <p className="control-panel__top-number fw-bold">
+              {pendingReports}
+            </p>
+          </div>
+        </Link>
       </div>
 
       <div className="control-panel__main">
