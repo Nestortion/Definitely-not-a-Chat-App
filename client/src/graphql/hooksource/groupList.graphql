@@ -1,0 +1,8 @@
+query GroupList($limit: Int) {
+  groupList(limit: $limit) {
+    id
+    group_name
+    group_picture
+    is_group
+  }
+}

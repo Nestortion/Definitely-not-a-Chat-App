@@ -233,6 +233,7 @@ export type Query = {
   currentUser?: Maybe<User>
   currentUserGroupRoles?: Maybe<CurrentUserGroupRoles>
   group?: Maybe<Group>
+  groupList?: Maybe<Array<Maybe<Group>>>
   groupRolesList?: Maybe<Array<Maybe<GroupRole>>>
   groups?: Maybe<Array<Maybe<Group>>>
   isLoggedIn?: Maybe<IsLoggedInResponse>
@@ -262,6 +263,10 @@ export type QueryCurrentUserGroupRolesArgs = {
 
 export type QueryGroupArgs = {
   id: Scalars['Int']
+}
+
+export type QueryGroupListArgs = {
+  limit?: InputMaybe<Scalars['Int']>
 }
 
 export type QueryGroupRolesListArgs = {
@@ -640,6 +645,21 @@ export type GroupCreatedSubscription = {
       is_group: string
     } | null
   } | null
+}
+
+export type GroupListQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']>
+}>
+
+export type GroupListQuery = {
+  __typename?: 'Query'
+  groupList?: Array<{
+    __typename?: 'Group'
+    id: number
+    group_name: string
+    group_picture: string
+    is_group: string
+  } | null> | null
 }
 
 export type GroupRolesListQueryVariables = Exact<{
@@ -1825,6 +1845,62 @@ export type GroupCreatedSubscriptionHookResult = ReturnType<
 >
 export type GroupCreatedSubscriptionResult =
   Apollo.SubscriptionResult<GroupCreatedSubscription>
+export const GroupListDocument = gql`
+  query GroupList($limit: Int) {
+    groupList(limit: $limit) {
+      id
+      group_name
+      group_picture
+      is_group
+    }
+  }
+`
+
+/**
+ * __useGroupListQuery__
+ *
+ * To run a query within a React component, call `useGroupListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGroupListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGroupListQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGroupListQuery(
+  baseOptions?: Apollo.QueryHookOptions<GroupListQuery, GroupListQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GroupListQuery, GroupListQueryVariables>(
+    GroupListDocument,
+    options
+  )
+}
+export function useGroupListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GroupListQuery,
+    GroupListQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GroupListQuery, GroupListQueryVariables>(
+    GroupListDocument,
+    options
+  )
+}
+export type GroupListQueryHookResult = ReturnType<typeof useGroupListQuery>
+export type GroupListLazyQueryHookResult = ReturnType<
+  typeof useGroupListLazyQuery
+>
+export type GroupListQueryResult = Apollo.QueryResult<
+  GroupListQuery,
+  GroupListQueryVariables
+>
 export const GroupRolesListDocument = gql`
   query GroupRolesList($groupId: Int) {
     groupRolesList(group_id: $groupId) {
