@@ -5,5 +5,6 @@ subscription ChatAdded($user: Int) {
     user_id
     receiver
     message_type
+    createdAt
   }
 }

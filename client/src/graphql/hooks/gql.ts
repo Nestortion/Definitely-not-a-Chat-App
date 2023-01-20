@@ -20,7 +20,7 @@ const documents = {
     "mutation AddUserChat($file: Upload, $message: String, $userId: Int, $receiver: Int) {\n  addUserChat(\n    file: $file\n    message: $message\n    user_id: $userId\n    receiver: $receiver\n  ) {\n    message\n    id\n    message_type\n    receiver\n    user_id\n  }\n}": types.AddUserChatDocument,
     "mutation AddUserChatReaction($reaction: String, $count: Int, $userchatId: Int) {\n  addUserChatReaction(\n    reaction: $reaction\n    count: $count\n    userchat_id: $userchatId\n  ) {\n    reaction\n    count\n    userchat_id\n  }\n}": types.AddUserChatReactionDocument,
     "mutation AddUserGroupRole($userGroupId: Int, $groupRoleId: Int) {\n  addUserGroupRole(user_group_id: $userGroupId, group_role_id: $groupRoleId) {\n    group_role_id\n    user_group_id\n  }\n}": types.AddUserGroupRoleDocument,
-    "subscription ChatAdded($user: Int) {\n  chatAdded(user: $user) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}": types.ChatAddedDocument,
+    "subscription ChatAdded($user: Int) {\n  chatAdded(user: $user) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n    createdAt\n  }\n}": types.ChatAddedDocument,
     "mutation CreateGroup($userId: [Int!]) {\n  createGroup(user_id: $userId) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}": types.CreateGroupDocument,
     "query CurrentUser {\n  currentUser {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.CurrentUserDocument,
     "query CurrentUserGroupRoles($groupId: Int) {\n  currentUserGroupRoles(group_id: $groupId) {\n    roles\n  }\n}": types.CurrentUserGroupRolesDocument,
@@ -79,7 +79,7 @@ export function graphql(source: "mutation AddUserGroupRole($userGroupId: Int, $g
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "subscription ChatAdded($user: Int) {\n  chatAdded(user: $user) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}"): (typeof documents)["subscription ChatAdded($user: Int) {\n  chatAdded(user: $user) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n  }\n}"];
+export function graphql(source: "subscription ChatAdded($user: Int) {\n  chatAdded(user: $user) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n    createdAt\n  }\n}"): (typeof documents)["subscription ChatAdded($user: Int) {\n  chatAdded(user: $user) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n    createdAt\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
