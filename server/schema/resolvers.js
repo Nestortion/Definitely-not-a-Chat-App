@@ -211,8 +211,9 @@ const resolvers = {
         where: { id: refreshTokenData.user_id },
       })
 
-      if (refreshTokenUser) return true
-      else return false
+      if (refreshTokenUser)
+        return { isLogged: true, currentUser: refreshTokenUser }
+      else return { isLogged: false, currentUser: null }
     },
     userRoles: async (_, { group_role_id }, context) => {
       authMiddleware(context)

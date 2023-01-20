@@ -137,6 +137,11 @@ const typeDefs = `
     group_id: Int
   }
 
+  type IsLoggedInResponse{
+    isLogged: Boolean
+    currentUser: User
+  }
+
   input RolesToEdit{
     id: Int
     role_name: String
@@ -158,7 +163,7 @@ const typeDefs = `
     userRoles(group_role_id: Int): [User]
     userChatReactions: [UserChatReaction]
     currentUser: User
-    isLoggedIn: Boolean
+    isLoggedIn: IsLoggedInResponse
     latestChats: [UserChat]
     userProfile(id: Int!): User
     addMemberList(group_id: Int, form: String): [KvUser]
