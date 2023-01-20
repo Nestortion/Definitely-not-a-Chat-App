@@ -42,6 +42,7 @@ export default function GroupList({ id, groupName, profilePicUrl }) {
         <Avatar size={36} src={profilePicUrl} />
         <span>{id}</span>
         <span>{groupName}</span>
+        <span>grouptype</span>
         <span>
           <MdSettings />
         </span>
@@ -53,7 +54,6 @@ export default function GroupList({ id, groupName, profilePicUrl }) {
               key={member.id}
               className="group-list__member control-panel__card"
             >
-              <span>{member.id}</span>
               <Avatar size={24} src={member.profilePicUrl} />
               <span>{member.fullName}</span>
             </div>
