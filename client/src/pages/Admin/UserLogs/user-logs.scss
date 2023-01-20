@@ -1,0 +1,16 @@
+.user-logs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .user-logs__heading {
+    font-size: clamp(1.5rem, 3vw, 5rem);
+    text-align: center;
+  }
+
+  .user-logs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+}
