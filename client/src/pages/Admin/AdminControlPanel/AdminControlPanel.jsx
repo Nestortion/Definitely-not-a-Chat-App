@@ -119,9 +119,7 @@ export default function AdminControlPanel() {
           </div>
 
           <div className="control-panel__list-component control-panel__card">
-            <p className="control-panel__list-heading fw-bold">
-              Group Conversations List
-            </p>
+            <p className="control-panel__list-heading fw-bold">Chat List</p>
             <div className="control-panel__list-container">
               {topFourGroupChats.map((groupChat) => (
                 <GroupList
