@@ -1,13 +1,18 @@
 import { Navigate } from 'react-router-dom'
+import { useIsLoggedInQuery } from '../../graphql/hooks/graphql'
+import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 
 export default function AdminRoute({ children }) {
-  const user = { isLoggedIn: true, isAdmin: true }
+  const { data: user, loading, error } = useIsLoggedInQuery()
 
-  if (!user.isLoggedIn) {
+  if (loading) return <LoadingSpinner />
+  if (error) return <Navigate to="/" />
+
+  if (!user.isLoggedIn.isLogged) {
     return <Navigate to="/login" />
   }
 
-  if (user.isLoggedIn && !user.isAdmin) {
+  if (user.isLoggedIn.currentUser.access_level !== 'ADMIN') {
     return <Navigate to="/" />
   }
 
