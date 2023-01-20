@@ -1,0 +1,13 @@
+query GroupMembers($groupId: Int) {
+  groupMembers(group_id: $groupId) {
+    id
+    username
+    first_name
+    address
+    last_name
+    profile_img
+    section
+    age
+    gender
+  }
+}

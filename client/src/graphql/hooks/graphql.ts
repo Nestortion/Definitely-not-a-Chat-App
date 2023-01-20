@@ -234,6 +234,7 @@ export type Query = {
   currentUserGroupRoles?: Maybe<CurrentUserGroupRoles>
   group?: Maybe<Group>
   groupList?: Maybe<Array<Maybe<Group>>>
+  groupMembers?: Maybe<Array<Maybe<User>>>
   groupRolesList?: Maybe<Array<Maybe<GroupRole>>>
   groups?: Maybe<Array<Maybe<Group>>>
   isLoggedIn?: Maybe<IsLoggedInResponse>
@@ -267,6 +268,10 @@ export type QueryGroupArgs = {
 
 export type QueryGroupListArgs = {
   limit?: InputMaybe<Scalars['Int']>
+}
+
+export type QueryGroupMembersArgs = {
+  group_id?: InputMaybe<Scalars['Int']>
 }
 
 export type QueryGroupRolesListArgs = {
@@ -659,6 +664,26 @@ export type GroupListQuery = {
     group_name: string
     group_picture: string
     is_group: string
+  } | null> | null
+}
+
+export type GroupMembersQueryVariables = Exact<{
+  groupId?: InputMaybe<Scalars['Int']>
+}>
+
+export type GroupMembersQuery = {
+  __typename?: 'Query'
+  groupMembers?: Array<{
+    __typename?: 'User'
+    id: number
+    username: string
+    first_name: string
+    address: string
+    last_name: string
+    profile_img: string
+    section: string
+    age: number
+    gender: string
   } | null> | null
 }
 
@@ -1900,6 +1925,72 @@ export type GroupListLazyQueryHookResult = ReturnType<
 export type GroupListQueryResult = Apollo.QueryResult<
   GroupListQuery,
   GroupListQueryVariables
+>
+export const GroupMembersDocument = gql`
+  query GroupMembers($groupId: Int) {
+    groupMembers(group_id: $groupId) {
+      id
+      username
+      first_name
+      address
+      last_name
+      profile_img
+      section
+      age
+      gender
+    }
+  }
+`
+
+/**
+ * __useGroupMembersQuery__
+ *
+ * To run a query within a React component, call `useGroupMembersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGroupMembersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGroupMembersQuery({
+ *   variables: {
+ *      groupId: // value for 'groupId'
+ *   },
+ * });
+ */
+export function useGroupMembersQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GroupMembersQuery,
+    GroupMembersQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GroupMembersQuery, GroupMembersQueryVariables>(
+    GroupMembersDocument,
+    options
+  )
+}
+export function useGroupMembersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GroupMembersQuery,
+    GroupMembersQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GroupMembersQuery, GroupMembersQueryVariables>(
+    GroupMembersDocument,
+    options
+  )
+}
+export type GroupMembersQueryHookResult = ReturnType<
+  typeof useGroupMembersQuery
+>
+export type GroupMembersLazyQueryHookResult = ReturnType<
+  typeof useGroupMembersLazyQuery
+>
+export type GroupMembersQueryResult = Apollo.QueryResult<
+  GroupMembersQuery,
+  GroupMembersQueryVariables
 >
 export const GroupRolesListDocument = gql`
   query GroupRolesList($groupId: Int) {
