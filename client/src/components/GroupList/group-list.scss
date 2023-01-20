@@ -1,0 +1,23 @@
+.group-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 9fr 1fr;
+  align-items: center;
+  gap: 0.625rem;
+  cursor: pointer;
+
+  @media (max-width: 667px) {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    place-items: center;
+  }
+}
+
+.group-list__member-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+
+  .group-list__member {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+}

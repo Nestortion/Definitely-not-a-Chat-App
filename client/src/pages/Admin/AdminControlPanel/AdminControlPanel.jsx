@@ -3,6 +3,7 @@ import Avatar from '../../../components/UI/Avatar/Avatar'
 import './admin-control-panel.scss'
 import { MdSettings } from 'react-icons/md'
 import { Link } from 'react-router-dom'
+import GroupList from '../../../components/GroupList/GroupList'
 
 export default function AdminControlPanel() {
   const [totalUsers] = useState(42)
@@ -104,17 +105,12 @@ export default function AdminControlPanel() {
             </p>
             <div className="control-panel__list-container">
               {topFourGroupChats.map((groupChat) => (
-                <div
+                <GroupList
                   key={groupChat.id}
-                  className="control-panel__list-user control-panel__card"
-                >
-                  <Avatar size={36} src={groupChat.profilePicUrl} />
-                  <span>{groupChat.id}</span>
-                  <span>{groupChat.groupName}</span>
-                  <span>
-                    <MdSettings />
-                  </span>
-                </div>
+                  id={groupChat.id}
+                  groupName={groupChat.groupName}
+                  profilePicUrl={groupChat.profilePicUrl}
+                />
               ))}
             </div>
             <Link to="/admin/groups" className="control-panel__list-more">
