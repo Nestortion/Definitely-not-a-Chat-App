@@ -40,6 +40,7 @@ const documents = {
     "subscription MemberRemoved($user: Int, $groupId: Int) {\n  memberRemoved(user: $user, group_id: $groupId) {\n    blame {\n      id\n    }\n    group {\n      group_name\n      group_picture\n      id\n      is_group\n    }\n    user {\n      first_name\n      id\n      last_name\n      profile_img\n      username\n      section\n    }\n  }\n}": types.MemberRemovedDocument,
     "query OtherUser($groupId: Int) {\n  otherUser(group_id: $groupId) {\n    id\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.OtherUserDocument,
     "mutation RemoveMember($groupId: Int, $userId: Int) {\n  removeMember(group_id: $groupId, user_id: $userId) {\n    id\n    first_name\n    last_name\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.RemoveMemberDocument,
+    "query SystemStats {\n  systemStats {\n    userCount\n    groupCount\n    userChatsCount\n  }\n}": types.SystemStatsDocument,
     "mutation UpdateGroup($groupName: String, $groupId: Int, $groupPicture: Upload) {\n  updateGroup(\n    group_name: $groupName\n    group_id: $groupId\n    group_picture: $groupPicture\n  ) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}": types.UpdateGroupDocument,
     "mutation UpdateGroupRoles($rolesToEdit: [RolesToEdit], $rolesToDelete: [Int], $groupId: Int) {\n  updateGroupRoles(\n    roles_to_edit: $rolesToEdit\n    roles_to_delete: $rolesToDelete\n    group_id: $groupId\n  ) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n    is_default\n  }\n}": types.UpdateGroupRolesDocument,
     "mutation UpdateUserProfile($username: String, $age: Int, $gender: String, $section: String, $address: String, $profileImg: Upload) {\n  updateUserProfile(\n    username: $username\n    age: $age\n    gender: $gender\n    section: $section\n    address: $address\n    profile_img: $profileImg\n  ) {\n    address\n    age\n    first_name\n    gender\n    last_name\n    profile_img\n    section\n    username\n  }\n}": types.UpdateUserProfileDocument,
@@ -159,6 +160,10 @@ export function graphql(source: "query OtherUser($groupId: Int) {\n  otherUser(g
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "mutation RemoveMember($groupId: Int, $userId: Int) {\n  removeMember(group_id: $groupId, user_id: $userId) {\n    id\n    first_name\n    last_name\n    section\n    profile_img\n    age\n    gender\n  }\n}"): (typeof documents)["mutation RemoveMember($groupId: Int, $userId: Int) {\n  removeMember(group_id: $groupId, user_id: $userId) {\n    id\n    first_name\n    last_name\n    section\n    profile_img\n    age\n    gender\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "query SystemStats {\n  systemStats {\n    userCount\n    groupCount\n    userChatsCount\n  }\n}"): (typeof documents)["query SystemStats {\n  systemStats {\n    userCount\n    groupCount\n    userChatsCount\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

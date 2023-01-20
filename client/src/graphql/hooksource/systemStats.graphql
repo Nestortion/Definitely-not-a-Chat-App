@@ -1,0 +1,7 @@
+query SystemStats {
+  systemStats {
+    userCount
+    groupCount
+    userChatsCount
+  }
+}

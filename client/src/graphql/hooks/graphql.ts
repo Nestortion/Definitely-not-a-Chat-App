@@ -240,6 +240,7 @@ export type Query = {
   isLoggedIn?: Maybe<IsLoggedInResponse>
   latestChats?: Maybe<Array<Maybe<UserChat>>>
   otherUser?: Maybe<User>
+  systemStats?: Maybe<SystemStats>
   user?: Maybe<User>
   userChat?: Maybe<UserChat>
   userChatReactions?: Maybe<Array<Maybe<UserChatReaction>>>
@@ -364,6 +365,13 @@ export type SubscriptionMemberAddedArgs = {
 export type SubscriptionMemberRemovedArgs = {
   group_id?: InputMaybe<Scalars['Int']>
   user?: InputMaybe<Scalars['Int']>
+}
+
+export type SystemStats = {
+  __typename?: 'SystemStats'
+  groupCount?: Maybe<Scalars['Int']>
+  userChatsCount?: Maybe<Scalars['Int']>
+  userCount?: Maybe<Scalars['Int']>
 }
 
 export type User = {
@@ -927,6 +935,18 @@ export type RemoveMemberMutation = {
     profile_img: string
     age: number
     gender: string
+  } | null
+}
+
+export type SystemStatsQueryVariables = Exact<{ [key: string]: never }>
+
+export type SystemStatsQuery = {
+  __typename?: 'Query'
+  systemStats?: {
+    __typename?: 'SystemStats'
+    userCount?: number | null
+    groupCount?: number | null
+    userChatsCount?: number | null
   } | null
 }
 
@@ -2669,6 +2689,63 @@ export type RemoveMemberMutationResult =
 export type RemoveMemberMutationOptions = Apollo.BaseMutationOptions<
   RemoveMemberMutation,
   RemoveMemberMutationVariables
+>
+export const SystemStatsDocument = gql`
+  query SystemStats {
+    systemStats {
+      userCount
+      groupCount
+      userChatsCount
+    }
+  }
+`
+
+/**
+ * __useSystemStatsQuery__
+ *
+ * To run a query within a React component, call `useSystemStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSystemStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSystemStatsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSystemStatsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    SystemStatsQuery,
+    SystemStatsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<SystemStatsQuery, SystemStatsQueryVariables>(
+    SystemStatsDocument,
+    options
+  )
+}
+export function useSystemStatsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    SystemStatsQuery,
+    SystemStatsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<SystemStatsQuery, SystemStatsQueryVariables>(
+    SystemStatsDocument,
+    options
+  )
+}
+export type SystemStatsQueryHookResult = ReturnType<typeof useSystemStatsQuery>
+export type SystemStatsLazyQueryHookResult = ReturnType<
+  typeof useSystemStatsLazyQuery
+>
+export type SystemStatsQueryResult = Apollo.QueryResult<
+  SystemStatsQuery,
+  SystemStatsQueryVariables
 >
 export const UpdateGroupDocument = gql`
   mutation UpdateGroup(
