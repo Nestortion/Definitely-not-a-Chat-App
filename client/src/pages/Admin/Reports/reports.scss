@@ -1,0 +1,39 @@
+.reports {
+  .reports-container {
+    .reports-heading {
+      font-size: clamp(1.5rem, 3vw, 5rem);
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .reports-table {
+      width: 100%;
+      overflow-x: auto;
+
+      td,
+      th {
+        padding: 0.625rem;
+        border-bottom: 1px solid var(--clr-primary-400);
+        text-align: left;
+      }
+
+      tbody {
+        color: var(--clr-neutral-100);
+
+        .resolved {
+          background-color: var(--clr-secondary-400);
+        }
+
+        .pending {
+          background-color: var(--clr-error-400);
+        }
+
+        select {
+          padding: 0.3125rem;
+          border: 1px solid var(--clr-primary-400);
+          border-radius: 0.3125rem;
+        }
+      }
+    }
+  }
+}
