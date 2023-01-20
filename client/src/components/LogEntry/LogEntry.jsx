@@ -22,9 +22,11 @@ export default function LogEntry({
         <p>
           <span>Id: {userId}</span>
         </p>
-        <p>
-          <span>Section: {section}</span>
-        </p>
+        {section && (
+          <p>
+            <span>Section: {section}</span>
+          </p>
+        )}
       </div>
     </div>
   )
