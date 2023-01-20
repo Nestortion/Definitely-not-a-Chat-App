@@ -157,9 +157,7 @@ export default function Chat() {
           </SpawnModal>
         )}
         {(data.group.is_group === 'false' ||
-          roles.currentUserGroupRoles.roles.some(
-            (e) => e.role_type === 'MODERATOR'
-          )) && (
+          roles.currentUserGroupRoles.roles.includes('MODERATOR')) && (
           <Button onClick={showModal}>
             <MdAdd />
           </Button>
