@@ -1,32 +1,21 @@
 import { useState } from 'react'
+import ErrorText from '../../../components/Error/ErrorText'
 import GroupList from '../../../components/GroupList/GroupList'
+import LoadingSpinner from '../../../components/Loading/LoadingSpinner/LoadingSpinner'
+import { useGroupListQuery } from '../../../graphql/hooks/graphql'
 import './admin-groups-list.scss'
 
 export default function AdminGroupsList() {
   const [searchInput, setSearchInput] = useState('')
 
-  const [groupChats, setGroupChats] = useState([
-    {
-      id: 1,
-      groupName: 'God Gamers',
-      profilePicUrl: 'http://localhost:4000/grouppfp/default-icon.png',
-    },
-    {
-      id: 2,
-      groupName: 'lodinjanedoecluelul',
-      profilePicUrl: 'http://localhost:4000/grouppfp/default-icon.png',
-    },
-    {
-      id: 3,
-      groupName: 'okay',
-      profilePicUrl: 'http://localhost:4000/grouppfp/default-icon.png',
-    },
-    {
-      id: 4,
-      groupName: 'grz',
-      profilePicUrl: 'http://localhost:4000/grouppfp/default-icon.png',
-    },
-  ])
+  const {
+    data: groupChats,
+    error: groupChatsError,
+    loading: groupChatsLoading,
+  } = useGroupListQuery()
+
+  if (groupChatsLoading) return <LoadingSpinner />
+  if (groupChatsError) return <ErrorText>Something Went Wrong</ErrorText>
 
   const handleChange = (e) => {
     setSearchInput(e.target.value)
@@ -47,12 +36,13 @@ export default function AdminGroupsList() {
         </div>
 
         <div className="admin-groups-list__main">
-          {groupChats.map((groupChat) => (
+          {groupChats.groupList.map((groupChat) => (
             <GroupList
               key={groupChat.id}
               id={groupChat.id}
-              groupName={groupChat.groupName}
-              profilePicUrl={groupChat.profilePicUrl}
+              isGroup={groupChat.is_group}
+              groupName={groupChat.group_name}
+              profilePicUrl={groupChat.group_picture}
             />
           ))}
         </div>
