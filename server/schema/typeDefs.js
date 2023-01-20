@@ -142,6 +142,12 @@ const typeDefs = `
     currentUser: User
   }
 
+  type SystemStats{
+    userCount: Int
+    groupCount: Int
+    userChatsCount: Int
+  }
+
   input RolesToEdit{
     id: Int
     role_name: String
@@ -156,7 +162,10 @@ const typeDefs = `
     userChat(id: Int!): UserChat
     group(id: Int!): Group
     userGroup(user_id: Int, group_id: Int): UserGroup
-    users: [User]
+    groupMembers(group_id:Int): [User]
+    systemStats: SystemStats 
+    users(limit: Int): [User]
+    groupList(limit: Int): [Group]
     userChats(receiver:Int): [UserChat]
     groups(user_id: Int): [Group]
     userGroups: [UserGroup]

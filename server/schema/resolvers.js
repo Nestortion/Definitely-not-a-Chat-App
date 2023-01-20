@@ -102,7 +102,13 @@ const resolvers = {
         return UserGroups.findOne({ where: { group_id } })
       }
     },
-    users: () => {
+    users: (_, { limit }, context) => {
+      authMiddleware(context)
+
+      if (limit) {
+        return Users.findAll({ limit })
+      }
+
       return Users.findAll()
     },
     userChats: async (_, __, context) => {
@@ -361,6 +367,37 @@ const resolvers = {
       })
 
       return otherUser
+    },
+    groupList: async (_, { limit }, context) => {
+      authMiddleware(context)
+      if (limit) {
+        return Groups.findAll({ limit })
+      }
+      return Groups.findAll()
+    },
+    groupMembers: async (_, { group_id }, context) => {
+      authMiddleware(context)
+
+      const userGroup = await UserGroups.findAll({ where: { group_id } })
+
+      const userIds = userGroup.map((usergroup) => usergroup.user_id)
+
+      return Users.findAll({ where: { id: userIds } })
+    },
+    systemStats: async (_, __, context) => {
+      authMiddleware(context)
+
+      const users = await Users.findAll()
+      const groups = await Groups.findAll()
+      const userChats = await UserChats.findAll()
+
+      console.log(users.length)
+
+      return {
+        userCount: users.length,
+        groupCount: groups.length,
+        userChatsCount: userChats.length,
+      }
     },
   },
   Mutation: {
