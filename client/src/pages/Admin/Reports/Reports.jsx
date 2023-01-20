@@ -55,7 +55,7 @@ export default function Reports() {
             <tr className="fs-500">
               <th>Id</th>
               <th>Reported By</th>
-              <th>Reported Group Id:</th>
+              <th>Reported Chat Id</th>
               <th>Reasons</th>
               <th>Status</th>
             </tr>
