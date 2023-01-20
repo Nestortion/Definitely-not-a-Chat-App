@@ -46,8 +46,10 @@ export default function EditGeneralRoles({ closeModal, rolesList }) {
   const handleAddRole = () => {
     if (!newRole.role_name) return
 
-    setGroupRoles((prev) => [...prev, { ...newRole, id: null }])
-    notify('Role successfully added!')
+    setGroupRoles((prev) => [
+      ...prev,
+      { ...newRole, id: null, emoji: '', description: '' },
+    ])
   }
 
   const handleDeleteRole = (id) => {
@@ -57,7 +59,6 @@ export default function EditGeneralRoles({ closeModal, rolesList }) {
 
     setGroupRoles(groupRoles.filter((role) => role.id !== id))
     setRolesToDel((prev) => [...prev, id])
-    notify('Role successfully deleted!')
   }
 
   const handleSave = () => {
