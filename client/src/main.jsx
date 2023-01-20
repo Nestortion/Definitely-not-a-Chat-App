@@ -31,6 +31,7 @@ import AdminControlPanel from './pages/Admin/AdminControlPanel/AdminControlPanel
 import AdminUsersList from './pages/Admin/AdminUsersList/AdminUsersList'
 import AdminGroupsList from './pages/Admin/AdminGroupsList/AdminGroupsList'
 import UserLogs from './pages/Admin/UserLogs/UserLogs'
+import AdminLogs from './pages/Admin/AdminLogs/AdminLogs'
 
 const router = createBrowserRouter([
   {
@@ -89,7 +90,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/admin/admin-logs',
-        element: <h1>User logs</h1>,
+        element: <AdminLogs />,
       },
     ],
   },

@@ -1,0 +1,16 @@
+.admin-logs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .admin-logs__heading {
+    font-size: clamp(1.5rem, 3vw, 5rem);
+    text-align: center;
+  }
+
+  .admin-logs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+}
