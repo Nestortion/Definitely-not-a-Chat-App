@@ -98,6 +98,8 @@ export default function EditGeneralRoles({ closeModal, rolesList }) {
               <input
                 type="text"
                 id="group-role-input"
+                className={`${role.is_default ? 'disable' : ''}`}
+                disabled={role.is_default}
                 value={role.role_name}
                 name="role_name"
                 onChange={(e) => handleChange(e, role.id)}
@@ -109,6 +111,8 @@ export default function EditGeneralRoles({ closeModal, rolesList }) {
                 id="group-role-select"
                 value={role.role_type}
                 name="role_type"
+                className={`${role.is_default ? 'disable' : ''}`}
+                disabled={role.is_default}
                 onChange={(e) => handleChange(e, role.id)}
               >
                 <option value="MEMBER">MEMBER</option>
@@ -116,8 +120,12 @@ export default function EditGeneralRoles({ closeModal, rolesList }) {
                 <option value="MODERATOR">MODERATOR</option>
               </select>
             </div>
-            <div className="group-role__button-group">
-              <Button onClick={() => handleDeleteRole(role.id)} secondary>
+            <div className="group-role__button-group ">
+              <Button
+                is_default={role.is_default}
+                onClick={() => handleDeleteRole(role.id)}
+                secondary
+              >
                 Delete Role
               </Button>
             </div>

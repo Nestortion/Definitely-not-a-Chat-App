@@ -14,4 +14,7 @@
   &.secondary-btn {
     background-color: var(--clr-error-400);
   }
+  &.button-disabled {
+    opacity: 0.75;
+  }
 }
