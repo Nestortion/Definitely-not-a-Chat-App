@@ -132,7 +132,7 @@ export default function ProfileSettings() {
               </label>
               <input
                 disabled
-                className="profile-settings-input"
+                className="profile-settings-input input-disable"
                 type="text"
                 name="firstName"
                 onChange={handleChange}
@@ -146,7 +146,7 @@ export default function ProfileSettings() {
               </label>
               <input
                 disabled
-                className="profile-settings-input"
+                className="profile-settings-input input-disable"
                 type="text"
                 name="lastName"
                 onChange={handleChange}

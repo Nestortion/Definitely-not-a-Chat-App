@@ -93,4 +93,8 @@
   background: none;
   border: 1px solid var(--clr-primary-400);
   border-radius: 0.3125rem;
+
+  &.input-disable {
+    opacity: 0.5;
+  }
 }
