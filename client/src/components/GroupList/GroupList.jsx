@@ -29,7 +29,11 @@ export default function GroupList({ id, groupName, profilePicUrl, isGroup }) {
         className="group-list control-panel__card"
         onClick={toggleShowMembers}
       >
-        <Avatar size={36} src={`${apiBasePath}/grouppfp/${profilePicUrl}`} />
+        {isGroup === 'true' ? (
+          <Avatar size={36} src={`${apiBasePath}/grouppfp/${profilePicUrl}`} />
+        ) : (
+          <Avatar size={36} src={`${apiBasePath}/grouppfp/default-icon.png`} />
+        )}
         <span>{id}</span>
         <span className="group-list__group-name">{groupName}</span>
         <span>
