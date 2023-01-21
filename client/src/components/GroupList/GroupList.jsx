@@ -31,32 +31,26 @@ export default function GroupList({ id, groupName, profilePicUrl, isGroup }) {
       >
         <Avatar size={36} src={`${apiBasePath}/grouppfp/${profilePicUrl}`} />
         <span>{id}</span>
-        <span>{groupName}</span>
-        {isGroup === 'true' ? (
-          <span>Group Chat</span>
-        ) : (
-          <span>Private Chat</span>
-        )}
-
+        <span className="group-list__group-name">{groupName}</span>
         <span>
           <MdSettings />
         </span>
       </div>
       {shouldShowMembers && (
-        <div className="group-list__member-list control-panel__card">
-          {groupMembers.groupMembers.map((member) => (
-            <div
-              key={member.id}
-              className="group-list__member control-panel__card"
-            >
-              <Avatar
-                size={24}
-                src={`${apiBasePath}/pfp/${member.profile_img}`}
-              />
-              <span>{`${member.first_name} ${member.last_name}`}</span>
-            </div>
-          ))}
-        </div>
+        <>
+          <p>Group Type: Group</p>
+          <div className="group-list__member-list control-panel__card">
+            {groupMembers.map((member) => (
+              <div
+                key={member.id}
+                className="group-list__member control-panel__card"
+              >
+                <Avatar size={24} src={member.profilePicUrl} />
+                <span>{member.fullName}</span>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </>
   )

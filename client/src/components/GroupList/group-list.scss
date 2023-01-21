@@ -1,6 +1,6 @@
 .group-list {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 8fr 1fr;
+  grid-template-columns: 1fr 1fr 9fr 1fr;
   align-items: center;
   gap: 0.625rem;
   cursor: pointer;
@@ -8,6 +8,13 @@
   @media (max-width: 667px) {
     grid-template-columns: 1fr;
     place-items: center;
+  }
+
+  .group-list__group-name {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
