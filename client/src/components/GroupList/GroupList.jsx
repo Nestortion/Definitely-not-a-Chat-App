@@ -38,15 +38,19 @@ export default function GroupList({ id, groupName, profilePicUrl, isGroup }) {
       </div>
       {shouldShowMembers && (
         <>
-          <p>Group Type: Group</p>
+          {isGroup === 'true' ? <p>Group Chat</p> : <p>Private Chat</p>}
+
           <div className="group-list__member-list control-panel__card">
-            {groupMembers.map((member) => (
+            {groupMembers.groupMembers.map((member) => (
               <div
                 key={member.id}
                 className="group-list__member control-panel__card"
               >
-                <Avatar size={24} src={member.profilePicUrl} />
-                <span>{member.fullName}</span>
+                <Avatar
+                  size={24}
+                  src={`${apiBasePath}/pfp/${member.profile_img}`}
+                />
+                <span>{`${member.first_name} ${member.last_name}`}</span>
               </div>
             ))}
           </div>
