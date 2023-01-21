@@ -41,24 +41,26 @@ export default function GroupList({ id, groupName, profilePicUrl }) {
       >
         <Avatar size={36} src={profilePicUrl} />
         <span>{id}</span>
-        <span>{groupName}</span>
-        <span>grouptype</span>
+        <span className="group-list__group-name">{groupName}</span>
         <span>
           <MdSettings />
         </span>
       </div>
       {shouldShowMembers && (
-        <div className="group-list__member-list control-panel__card">
-          {groupMembers.map((member) => (
-            <div
-              key={member.id}
-              className="group-list__member control-panel__card"
-            >
-              <Avatar size={24} src={member.profilePicUrl} />
-              <span>{member.fullName}</span>
-            </div>
-          ))}
-        </div>
+        <>
+          <p>Group Type: Group</p>
+          <div className="group-list__member-list control-panel__card">
+            {groupMembers.map((member) => (
+              <div
+                key={member.id}
+                className="group-list__member control-panel__card"
+              >
+                <Avatar size={24} src={member.profilePicUrl} />
+                <span>{member.fullName}</span>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </>
   )
