@@ -78,6 +78,7 @@ export default function EditGeneralRoles({ closeModal, rolesList }) {
         groupId: parseInt(chatId),
       },
     })
+    notify('GROUP ROLES UPDATED')
     closeModal()
   }
 
