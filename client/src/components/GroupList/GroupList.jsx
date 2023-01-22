@@ -42,8 +42,13 @@ export default function GroupList({ id, groupName, profilePicUrl, isGroup }) {
       </div>
       {shouldShowMembers && (
         <div className="group-list__container control-panel__card">
-          {isGroup === 'true' ? <p>Group Chat</p> : <p>Private Chat</p>}
+          {isGroup === 'true' ? (
+            <p className="fw-bold">Group Chat</p>
+          ) : (
+            <p className="fw-bold">Private Chat</p>
+          )}
           <div className="group-list__member-list">
+            {groupMembers.groupMembers.length === 0 ? <p>No Members</p> : ''}
             {groupMembers.groupMembers.map((member) => (
               <div
                 key={member.id}
