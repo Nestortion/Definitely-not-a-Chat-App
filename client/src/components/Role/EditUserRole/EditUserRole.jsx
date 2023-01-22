@@ -90,6 +90,7 @@ export default function EditUserRole({
           <div className="edit-user-role__input-container">
             {groupRoles.map((role) => (
               <div key={role.id} className="edit-user-role__checkbox-container">
+                <label htmlFor="">{role.roleName}</label>
                 <input
                   type="checkbox"
                   value={role.roleName}
@@ -99,7 +100,6 @@ export default function EditUserRole({
                   ref={(el) => checkboxRefs.current.push(el)}
                   disabled={role.isDefault}
                 />
-                <label htmlFor="">{role.roleName}</label>
               </div>
             ))}
           </div>
