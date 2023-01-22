@@ -71,10 +71,11 @@ export default function ProfileSettings() {
         profileImg: values.profileImage,
         section: values.section,
         username: values.username,
+        password: values.password,
       },
     })
 
-    console.log('bruh')
+    // ! add update passowrd here
 
     navigate(0)
   }
@@ -163,6 +164,17 @@ export default function ProfileSettings() {
                 onChange={handleChange}
                 id="username"
                 value={values.username}
+              />
+            </div>
+            <div className="profile-settings__input-container">
+              <label htmlFor="password">Password: </label>
+              <input
+                className="profile-settings-input"
+                type="password"
+                name="password"
+                onChange={handleChange}
+                id="password"
+                value={values.password}
               />
             </div>
             <div className="profile-settings__input-container">
