@@ -1,5 +1,11 @@
 .log-entry {
-  display: grid;
-  grid-template-columns: 10fr 2fr;
-  grid-gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3125rem;
+
+  .log-entry__detail {
+    .log-entry__name {
+      cursor: pointer;
+    }
+  }
 }
