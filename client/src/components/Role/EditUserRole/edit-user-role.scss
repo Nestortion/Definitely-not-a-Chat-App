@@ -6,14 +6,13 @@
 
     .edit-user-role__input-container {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
       gap: 0.625rem;
 
-      select {
-        padding: 0.3125rem 0.625rem;
-        border: 1px solid var(--clr-primary-400);
-        border-radius: 0.3125rem;
+      .edit-user-role__checkbox-container {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
       }
     }
   }

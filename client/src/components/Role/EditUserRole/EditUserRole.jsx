@@ -3,29 +3,47 @@ import Button from '../../UI/Button/Button'
 import './edit-user-role.scss'
 import { MdWarning } from 'react-icons/md'
 import SpawnModal from '../../UI/Modal/SpawnModal'
+import { useRef } from 'react'
 
 export default function EditUserRole({
   handleRemoveMember,
   closeModal,
   memberId,
 }) {
-  // ! Fetch all group roles for the current group first
-  const [groupRoles, setGroupRoles] = useState([
+  const checkboxRefs = useRef([])
+  const [confirmModalShouldShow, setConfirmModalShouldShow] = useState(false)
+
+  const groupRoles = [
     {
       id: 1,
       roleName: 'Member',
       roleType: 'MEMBER',
+      isDefault: true,
     },
     {
       id: 2,
       roleName: 'Group Creator',
       roleType: 'MODERATOR',
+      isDefault: true,
     },
-  ])
+    {
+      id: 3,
+      roleName: 'Heheheha',
+      roleType: 'MODERATOR',
+      isDefault: false,
+    },
+    {
+      id: 4,
+      roleName: 'Gamer',
+      roleType: 'MEMBER',
+      isDefault: false,
+    },
+  ]
 
-  // ! Fetch the current role of the selected user
-  const [currentUserRole, setCurrentUserRole] = useState(groupRoles[0].roleName)
-  const [confirmModalShouldShow, setConfirmModalShouldShow] = useState(false)
+  const currentUserRoleInfo = {
+    id: memberId,
+    rolesInGroup: [1, 3],
+  }
 
   const showConfirmationModal = () => {
     setConfirmModalShouldShow(true)
@@ -35,25 +53,19 @@ export default function EditUserRole({
     setConfirmModalShouldShow(false)
   }
 
-  const handleChange = (e) => {
-    setCurrentUserRole(e.target.value)
-  }
+  const handleReset = () => {}
 
   const handleSubmit = (e) => {
     e.preventDefault()
-
-    console.log(`Make member id: ${memberId} role to ${currentUserRole}`)
-
+    const checkedCheckboxes = checkboxRefs.current.filter(
+      (checkbox) => checkbox.checked
+    )
+    checkedCheckboxes.forEach((checkbox) => console.log(checkbox.value))
     closeModal()
-  }
-
-  const handleReset = () => {
-    setCurrentUserRole(groupRoles[0].roleName)
   }
 
   const handleKickMember = () => {
     handleRemoveMember()
-
     hideConfirmationModal()
     closeModal()
   }
@@ -76,18 +88,20 @@ export default function EditUserRole({
       <div className="edit-user-role">
         <form className="edit-user-role__form">
           <div className="edit-user-role__input-container">
-            <label htmlFor="edit-user-role">Set Role:</label>
-            <select
-              id="edit-user-role"
-              value={currentUserRole}
-              onChange={handleChange}
-            >
-              {groupRoles.map((role) => (
-                <option key={role.id} value={role.roleName}>
-                  {role.roleName}
-                </option>
-              ))}
-            </select>
+            {groupRoles.map((role) => (
+              <div key={role.id} className="edit-user-role__checkbox-container">
+                <input
+                  type="checkbox"
+                  value={role.roleName}
+                  defaultChecked={currentUserRoleInfo.rolesInGroup.includes(
+                    role.id
+                  )}
+                  ref={(el) => checkboxRefs.current.push(el)}
+                  disabled={role.isDefault}
+                />
+                <label htmlFor="">{role.roleName}</label>
+              </div>
+            ))}
           </div>
           <div className="edit-user-role__input-container">
             <Button onClick={showConfirmationModal} type="button" secondary>
