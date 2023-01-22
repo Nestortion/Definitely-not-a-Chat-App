@@ -26,6 +26,7 @@
   .group-list__member-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.3125rem;
 
     .group-list__member {
       display: flex;
