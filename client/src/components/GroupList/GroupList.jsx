@@ -41,10 +41,9 @@ export default function GroupList({ id, groupName, profilePicUrl, isGroup }) {
         </span>
       </div>
       {shouldShowMembers && (
-        <>
+        <div className="group-list__container control-panel__card">
           {isGroup === 'true' ? <p>Group Chat</p> : <p>Private Chat</p>}
-
-          <div className="group-list__member-list control-panel__card">
+          <div className="group-list__member-list">
             {groupMembers.groupMembers.map((member) => (
               <div
                 key={member.id}
@@ -58,7 +57,7 @@ export default function GroupList({ id, groupName, profilePicUrl, isGroup }) {
               </div>
             ))}
           </div>
-        </>
+        </div>
       )}
     </>
   )
