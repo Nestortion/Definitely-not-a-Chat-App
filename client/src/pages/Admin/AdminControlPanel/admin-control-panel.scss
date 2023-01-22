@@ -19,14 +19,18 @@
   }
 
   .control-panel__top {
-    .control-panel__top-heading {
-      margin-bottom: 1rem;
-      font-size: clamp(1rem, 1.3vw, 2rem);
-    }
+    .control-panel__top-card {
+      min-height: 100%;
 
-    .control-panel__top-number {
-      font-size: clamp(1.5rem, 3vw, 5rem);
-      text-align: right;
+      .control-panel__top-heading {
+        margin-bottom: 1rem;
+        font-size: clamp(1rem, 1.3vw, 2rem);
+      }
+
+      .control-panel__top-number {
+        font-size: clamp(1.5rem, 3vw, 5rem);
+        text-align: right;
+      }
     }
   }
 
