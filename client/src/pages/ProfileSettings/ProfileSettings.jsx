@@ -58,15 +58,13 @@ export default function ProfileSettings() {
     setValues(initialState)
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-
+  const handleSubmit = async () => {
     // ! Backend logic here
 
-    updateUserProfile({
+    await updateUserProfile({
       variables: {
         address: values.address,
-        age: values.age,
+        age: parseInt(values.age),
         gender: values.gender,
         profileImg: values.profileImage,
         section: values.section,
@@ -104,7 +102,7 @@ export default function ProfileSettings() {
         </SpawnModal>
       )}
       <div className="profile-settings">
-        <form onSubmit={handleSubmit}>
+        <form>
           <div className="profile-settings__header">
             <div className="profile-settings__image">
               <Avatar src={values.profileLink} size={256} />
