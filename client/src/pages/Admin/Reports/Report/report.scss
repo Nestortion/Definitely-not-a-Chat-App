@@ -27,6 +27,12 @@
 
       .report-box__details {
         line-height: 1.5;
+
+        select {
+          padding: 0.3125rem;
+          border: 1px solid var(--clr-primary-400);
+          border-radius: 0.3125rem;
+        }
       }
     }
   }

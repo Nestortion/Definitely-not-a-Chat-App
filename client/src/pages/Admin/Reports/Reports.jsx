@@ -29,26 +29,6 @@ export default function Reports() {
     },
   ])
 
-  // const handleChange = (e, id) => {
-  //   let setTo
-
-  //   if (e.target.value === 'pending') {
-  //     setTo = false
-  //   } else {
-  //     setTo = true
-  //   }
-
-  //   setReports((prev) =>
-  //     prev.map((report) => {
-  //       if (report.id === id) {
-  //         return { ...report, resolved: setTo }
-  //       }
-
-  //       return report
-  //     })
-  //   )
-  // }
-
   const handleClick = (e, reportId) => {
     navigate(`/admin/reports/${reportId}`)
   }
@@ -77,17 +57,7 @@ export default function Reports() {
                 <td>{report.senderUserId}</td>
                 <td>{report.reportedGroupId}</td>
                 <td>{report.reportReasons.toString()}</td>
-                <td>
-                  {report.resolved ? 'Resolved' : 'Pending'}
-
-                  {/* <select
-                    value={report.resolved ? 'resolved' : 'pending'}
-                    onChange={(e) => handleChange(e, report.id)}
-                  >
-                    <option value="resolved">Resolved</option>
-                    <option value="pending">Pending</option>
-                  </select> */}
-                </td>
+                <td>{report.resolved ? 'Resolved' : 'Pending'}</td>
               </tr>
             ))}
           </tbody>

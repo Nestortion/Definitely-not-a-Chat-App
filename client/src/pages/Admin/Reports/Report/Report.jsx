@@ -2,6 +2,7 @@ import './report.scss'
 import { useParams } from 'react-router-dom'
 import NavBar from '../../../../components/NavBar/NavBar'
 import Avatar from '../../../../components/UI/Avatar/Avatar'
+import { useState } from 'react'
 
 export default function Report() {
   const { reportId } = useParams()
@@ -26,6 +27,12 @@ export default function Report() {
     id: 69,
     groupName: 'Gamers',
     profilePicUrl: 'http://localhost:4000/grouppfp/default-icon.png',
+  }
+
+  const [currentStatus, setCurrentStatus] = useState(reportDetails.resolved)
+
+  const handleChange = (e) => {
+    setCurrentStatus(e.target.value)
   }
 
   return (
@@ -54,7 +61,10 @@ export default function Report() {
             </p>
             <p>
               <span className="fw-bold">Status: </span>
-              {reportDetails.resolved ? 'Resolved' : 'Pending'}
+              <select value={currentStatus} onChange={handleChange}>
+                <option value="true">Resolved</option>
+                <option value="false">Pending</option>
+              </select>
             </p>
           </div>
         </div>
