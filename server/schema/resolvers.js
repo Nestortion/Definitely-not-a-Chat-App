@@ -975,12 +975,28 @@ const resolvers = {
     },
     updateUserProfile: async (
       _,
-      { username, address, age, section, gender, profile_img },
+      {
+        username,
+        address,
+        age,
+        section,
+        gender,
+        profile_img,
+        current_confirmation,
+        new_password,
+      },
       context
     ) => {
       const { data: user } = authMiddleware(context)
 
       const initialUser = await Users.findOne({ where: { id: user.user_id } })
+
+      if (current_confirmation !== initialUser.password) return null
+
+      let password = new_password
+      if (!new_password || new_password === '') {
+        password = initialUser.password
+      }
 
       let newImage = initialUser.profile_img
 
@@ -997,7 +1013,15 @@ const resolvers = {
       }
 
       await Users.update(
-        { username, address, age, section, gender, profile_img: newImage },
+        {
+          username,
+          address,
+          age,
+          section,
+          gender,
+          profile_img: newImage,
+          password,
+        },
         { where: { id: user.user_id } }
       )
 
