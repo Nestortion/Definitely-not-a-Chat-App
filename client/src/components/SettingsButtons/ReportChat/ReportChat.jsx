@@ -2,6 +2,8 @@ import { useState, useRef } from 'react'
 import Button from '../../UI/Button/Button'
 import './report-chat.scss'
 import { toast } from 'react-toastify'
+import { useSubmitReportMutation } from '../../../graphql/hooks/graphql'
+import { useParams } from 'react-router-dom'
 
 const reportReasons = [
   {
@@ -20,7 +22,7 @@ const reportReasons = [
 
 export default function ReportChat({ closeModal }) {
   const notify = () =>
-    toast('Feedback Submitted!', {
+    toast('Report Submitted!', {
       position: toast.POSITION.TOP_CENTER,
       style: {
         color: 'var(--clr-neutral-100)',
@@ -30,10 +32,11 @@ export default function ReportChat({ closeModal }) {
     })
 
   const refs = []
-
+  const { chatId } = useParams()
   const [selectedReasons, setSelectedReasons] = useState([])
   const [inputShouldShow, setInputShouldShow] = useState(false)
   const [otherReason, setOtherReason] = useState('')
+  const [submitReport] = useSubmitReportMutation()
 
   const handleChange = (reason) => {
     setInputShouldShow(refs[refs.length - 1].current.checked)
@@ -47,13 +50,20 @@ export default function ReportChat({ closeModal }) {
     }
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     if (selectedReasons.length === 0) return
 
     console.log(selectedReasons)
     console.log(otherReason)
+
+    await submitReport({
+      variables: {
+        groupId: parseInt(chatId),
+        reasons: selectedReasons.concat(otherReason),
+      },
+    })
 
     closeModal()
     notify()
