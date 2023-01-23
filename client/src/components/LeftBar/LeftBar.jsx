@@ -158,7 +158,7 @@ export default function LeftBar({ user, showOnlyMiddle }) {
         <div className="search">
           <form onSubmit={handleSubmit}>
             <Input
-              onChange={(e) => setSearchValue(e.target.value)}
+              onChange={(e) => setSearchValue(e.target.value.toLowerCase())}
               type="text"
               placeholder="Search Chats"
             />
