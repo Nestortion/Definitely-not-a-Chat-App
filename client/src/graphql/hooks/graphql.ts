@@ -228,7 +228,9 @@ export type MutationUpdateUserGroupRolesArgs = {
 export type MutationUpdateUserProfileArgs = {
   address?: InputMaybe<Scalars['String']>
   age?: InputMaybe<Scalars['Int']>
+  current_confirmation?: InputMaybe<Scalars['String']>
   gender?: InputMaybe<Scalars['String']>
+  new_password?: InputMaybe<Scalars['String']>
   profile_img?: InputMaybe<Scalars['Upload']>
   section?: InputMaybe<Scalars['String']>
   username?: InputMaybe<Scalars['String']>
@@ -1074,22 +1076,24 @@ export type UpdateUserProfileMutationVariables = Exact<{
   age?: InputMaybe<Scalars['Int']>
   gender?: InputMaybe<Scalars['String']>
   section?: InputMaybe<Scalars['String']>
-  address?: InputMaybe<Scalars['String']>
   profileImg?: InputMaybe<Scalars['Upload']>
+  address?: InputMaybe<Scalars['String']>
+  newPassword?: InputMaybe<Scalars['String']>
+  currentConfirmation?: InputMaybe<Scalars['String']>
 }>
 
 export type UpdateUserProfileMutation = {
   __typename?: 'Mutation'
   updateUserProfile?: {
     __typename?: 'User'
-    address: string
-    age: number
-    first_name: string
-    gender: string
-    last_name: string
-    profile_img: string
-    section: string
     username: string
+    first_name: string
+    last_name: string
+    address: string
+    profile_img: string
+    age: number
+    gender: string
+    section: string
   } | null
 }
 
@@ -3091,25 +3095,29 @@ export const UpdateUserProfileDocument = gql`
     $age: Int
     $gender: String
     $section: String
-    $address: String
     $profileImg: Upload
+    $address: String
+    $newPassword: String
+    $currentConfirmation: String
   ) {
     updateUserProfile(
       username: $username
       age: $age
       gender: $gender
       section: $section
-      address: $address
       profile_img: $profileImg
+      address: $address
+      new_password: $newPassword
+      current_confirmation: $currentConfirmation
     ) {
-      address
-      age
-      first_name
-      gender
-      last_name
-      profile_img
-      section
       username
+      first_name
+      last_name
+      address
+      profile_img
+      age
+      gender
+      section
     }
   }
 `
@@ -3135,8 +3143,10 @@ export type UpdateUserProfileMutationFn = Apollo.MutationFunction<
  *      age: // value for 'age'
  *      gender: // value for 'gender'
  *      section: // value for 'section'
- *      address: // value for 'address'
  *      profileImg: // value for 'profileImg'
+ *      address: // value for 'address'
+ *      newPassword: // value for 'newPassword'
+ *      currentConfirmation: // value for 'currentConfirmation'
  *   },
  * });
  */
