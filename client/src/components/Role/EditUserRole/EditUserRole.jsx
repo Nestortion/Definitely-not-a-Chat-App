@@ -4,46 +4,20 @@ import './edit-user-role.scss'
 import { MdWarning } from 'react-icons/md'
 import SpawnModal from '../../UI/Modal/SpawnModal'
 import { useRef } from 'react'
+import { useUpdateUserGroupRolesMutation } from '../../../graphql/hooks/graphql'
+import { useParams } from 'react-router-dom'
 
 export default function EditUserRole({
+  userRoles,
   handleRemoveMember,
   closeModal,
   memberId,
+  groupRoles,
 }) {
+  const { chatId } = useParams()
   const checkboxRefs = useRef([])
   const [confirmModalShouldShow, setConfirmModalShouldShow] = useState(false)
-
-  const groupRoles = [
-    {
-      id: 1,
-      roleName: 'Member',
-      roleType: 'MEMBER',
-      isDefault: true,
-    },
-    {
-      id: 2,
-      roleName: 'Group Creator',
-      roleType: 'MODERATOR',
-      isDefault: true,
-    },
-    {
-      id: 3,
-      roleName: 'Heheheha',
-      roleType: 'MODERATOR',
-      isDefault: false,
-    },
-    {
-      id: 4,
-      roleName: 'Gamer',
-      roleType: 'MEMBER',
-      isDefault: false,
-    },
-  ]
-
-  const currentUserRoleInfo = {
-    id: memberId,
-    rolesInGroup: [1, 3],
-  }
+  const [updateUserGroupRoles] = useUpdateUserGroupRolesMutation()
 
   const showConfirmationModal = () => {
     setConfirmModalShouldShow(true)
@@ -55,12 +29,25 @@ export default function EditUserRole({
 
   const handleReset = () => {}
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    const checkedCheckboxes = checkboxRefs.current.filter(
+    let checkedCheckboxes = checkboxRefs.current.filter(
       (checkbox) => checkbox.checked
     )
-    checkedCheckboxes.forEach((checkbox) => console.log(checkbox.value))
+
+    const rolesIds = checkedCheckboxes.map((value) => parseInt(value.id))
+
+    checkedCheckboxes = checkedCheckboxes.map((value) => value.defaultValue)
+
+    await updateUserGroupRoles({
+      variables: {
+        roles: checkedCheckboxes,
+        groupId: parseInt(chatId),
+        userId: memberId,
+        rolesIds,
+      },
+    })
+
     closeModal()
   }
 
@@ -90,15 +77,14 @@ export default function EditUserRole({
           <div className="edit-user-role__input-container">
             {groupRoles.map((role) => (
               <div key={role.id} className="edit-user-role__checkbox-container">
-                <label htmlFor="">{role.roleName}</label>
+                <label htmlFor="">{role.role_name}</label>
                 <input
+                  id={role.id}
                   type="checkbox"
-                  value={role.roleName}
-                  defaultChecked={currentUserRoleInfo.rolesInGroup.includes(
-                    role.id
-                  )}
+                  value={role.role_name}
+                  defaultChecked={userRoles.includes(role.id)}
                   ref={(el) => checkboxRefs.current.push(el)}
-                  disabled={role.isDefault}
+                  disabled={role.is_default}
                 />
               </div>
             ))}
