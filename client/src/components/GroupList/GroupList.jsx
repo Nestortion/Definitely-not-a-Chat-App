@@ -38,7 +38,17 @@ export default function GroupList({ id, groupName, profilePicUrl, isGroup }) {
         <span>{id}</span>
         <span className="group-list__group-name">{groupName}</span>
         <span>
-          <MdArrowForwardIos />
+          <Link
+            to={`/admin/groups/${id}`}
+            style={{
+              textDecoration: 'none',
+              color: 'var(--clr-neutral-900)',
+              display: 'block',
+              width: '100%',
+            }}
+          >
+            <MdArrowForwardIos title="Go to group page" />
+          </Link>
         </span>
       </div>
       {shouldShowMembers && (
