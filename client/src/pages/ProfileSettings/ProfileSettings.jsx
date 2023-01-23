@@ -77,7 +77,7 @@ export default function ProfileSettings() {
 
   const handleSubmit = async () => {
     // ! Backend logic here
-    await updateUserProfile({
+    const updateRes = await updateUserProfile({
       variables: {
         address: values.address,
         age: parseInt(values.age),
@@ -85,11 +85,12 @@ export default function ProfileSettings() {
         profileImg: values.profileImage,
         section: values.section,
         username: values.username,
-        password: values.password,
+        currentConfirmation: modalConfirmPassword,
+        newPassword: confirmPasswordInput,
       },
     })
 
-    // ! add update passowrd here
+    if (updateRes.data.updateUserProfile === null) return
 
     navigate(0)
   }
