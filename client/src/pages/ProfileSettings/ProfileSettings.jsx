@@ -16,6 +16,7 @@ export default function ProfileSettings() {
   const [shouldDisable, setShouldDisable] = useState(false)
   const [passwordInput, setPasswordInput] = useState('')
   const [confirmPasswordInput, setConfirmPasswordInput] = useState('')
+  const [modalConfirmPassword, setModalConfirmPassword] = useState('')
 
   const user = useOutletContext()
   const navigate = useNavigate()
@@ -64,6 +65,10 @@ export default function ProfileSettings() {
     } else {
       setConfirmPasswordInput(e.target.value)
     }
+  }
+
+  const handleModalConfirmPasswordChange = (e) => {
+    setModalConfirmPassword(e.target.value)
   }
 
   const handleReset = () => {
@@ -137,7 +142,17 @@ export default function ProfileSettings() {
       {modalShouldShow && (
         <SpawnModal title="Confirm" closeModal={closeConfirmModal}>
           <div className="confirm-modal">
-            <span className="fw-bold fs-500">Are you sure?</span>
+            <div className="confirm-modal__input-container">
+              <label htmlFor="modal-confirm">
+                Enter your current password:
+              </label>
+              <input
+                type="password"
+                id="modal-confirm"
+                value={modalConfirmPassword}
+                onChange={handleModalConfirmPasswordChange}
+              />
+            </div>
             <div className="confirm-modal__button-group">
               <Button onClick={handleSubmit}>Yes</Button>
               <Button onClick={closeConfirmModal} secondary>
