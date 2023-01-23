@@ -457,6 +457,7 @@ export type UpdateUserGroupRolesResponse = {
   __typename?: 'updateUserGroupRolesResponse'
   group_id?: Maybe<Scalars['Int']>
   newRoles?: Maybe<Array<Maybe<Scalars['String']>>>
+  roles_ids?: Maybe<Array<Maybe<Scalars['Int']>>>
   user?: Maybe<User>
 }
 
@@ -937,6 +938,7 @@ export type MemberRolesUpdatedSubscription = {
     __typename?: 'updateUserGroupRolesResponse'
     newRoles?: Array<string | null> | null
     group_id?: number | null
+    roles_ids?: Array<number | null> | null
     user?: {
       __typename?: 'User'
       id: number
@@ -2667,6 +2669,7 @@ export const MemberRolesUpdatedDocument = gql`
         profile_img
       }
       group_id
+      roles_ids
     }
   }
 `

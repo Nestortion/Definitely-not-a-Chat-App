@@ -9,5 +9,6 @@ subscription MemberRolesUpdated($user: Int, $groupId: Int) {
       profile_img
     }
     group_id
+    roles_ids
   }
 }
