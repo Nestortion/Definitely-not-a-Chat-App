@@ -47,6 +47,7 @@ const documents = {
     "query User {\n  user {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.UserDocument,
     "query UserChatSender($userId: Int) {\n  userChatSender(user_id: $userId) {\n    first_name\n    last_name\n    username\n    profile_img\n    id\n  }\n}": types.UserChatSenderDocument,
     "query UserChats {\n  userChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n    createdAt\n  }\n}": types.UserChatsDocument,
+    "query UserGroupRoles($userId: Int, $groupId: Int) {\n  userGroupRoles(user_id: $userId, group_id: $groupId)\n}": types.UserGroupRolesDocument,
     "query UserProfile($userProfileId: Int!) {\n  userProfile(id: $userProfileId) {\n    address\n    age\n    first_name\n    gender\n    last_name\n    profile_img\n    section\n  }\n}": types.UserProfileDocument,
     "query UserRoles($groupRoleId: Int) {\n  userRoles(group_role_id: $groupRoleId) {\n    first_name\n    id\n    last_name\n    profile_img\n  }\n}": types.UserRolesDocument,
     "query Users($limit: Int) {\n  users(limit: $limit) {\n    id\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n    username\n  }\n}": types.UsersDocument,
@@ -188,6 +189,10 @@ export function graphql(source: "query UserChatSender($userId: Int) {\n  userCha
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "query UserChats {\n  userChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n    createdAt\n  }\n}"): (typeof documents)["query UserChats {\n  userChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n    createdAt\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "query UserGroupRoles($userId: Int, $groupId: Int) {\n  userGroupRoles(user_id: $userId, group_id: $groupId)\n}"): (typeof documents)["query UserGroupRoles($userId: Int, $groupId: Int) {\n  userGroupRoles(user_id: $userId, group_id: $groupId)\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -1,0 +1,3 @@
+query UserGroupRoles($userId: Int, $groupId: Int) {
+  userGroupRoles(user_id: $userId, group_id: $groupId)
+}
