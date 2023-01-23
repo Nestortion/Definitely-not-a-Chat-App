@@ -7,6 +7,7 @@ import GroupRoles from '../models/GroupRoles.js'
 import UserGroupRoles from '../models/UserGroupRoles.js'
 import AdminLogs from '../models/AdminLogs.js'
 import UserLogs from '../models/UserLogs.js'
+import Reports from '../models/Reports.js'
 import GraphQLUpload from 'graphql-upload/GraphQLUpload.mjs'
 import { createWriteStream } from 'node:fs'
 import path from 'node:path'
@@ -20,6 +21,7 @@ import { v4 as uuid } from 'uuid'
 import { Op } from 'sequelize'
 import { withFilter } from 'graphql-subscriptions'
 import { DateTimeResolver } from 'graphql-scalars'
+import { report } from 'node:process'
 
 try {
   await createAssociation()
@@ -1180,6 +1182,31 @@ const resolvers = {
         newRoles: roles,
         user: targetUser,
       }
+    },
+    submitReport: async (_, { group_id, reasons }, context) => {
+      const { data: user } = authMiddleware(context)
+
+      const reportIssuer = await Users.findOne({ where: { id: user.user_id } })
+
+      const reportReasons = reasons
+        .filter((reason) => reason !== 'Others')
+        .toString()
+        .replace(/,/g, ', ')
+
+      const submit = await Reports.create({
+        report_reason: reportReasons,
+        group_id,
+        user_id: user.user_id,
+      })
+
+      await UserLogs.create({
+        full_name: `${reportIssuer.first_name} ${reportIssuer.last_name}`,
+        section: `${reportIssuer.section}`,
+        action_description: `Submitted a report on Group ${group_id}`,
+        user_id: reportIssuer.id,
+      })
+
+      return submit
     },
   },
   Subscription: {
