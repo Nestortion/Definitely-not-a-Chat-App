@@ -34,6 +34,7 @@ import UserLogs from './pages/Admin/UserLogs/UserLogs'
 import AdminLogs from './pages/Admin/AdminLogs/AdminLogs'
 import Reports from './pages/Admin/Reports/Reports'
 import Report from './pages/Admin/Reports/Report/Report'
+import SoloGroup from './pages/Admin/AdminGroupsList/SoloGroup/SoloGroup'
 
 const router = createBrowserRouter([
   {
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
       {
         path: '/admin/groups',
         element: <AdminGroupsList />,
+      },
+      {
+        path: '/admin/groups/:groupId',
+        element: <SoloGroup />,
       },
       {
         path: '/admin/user-logs',
