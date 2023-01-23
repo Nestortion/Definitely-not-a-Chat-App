@@ -14,6 +14,8 @@ import { useEffect } from 'react'
 export default function ProfileSettings() {
   const [modalShouldShow, setModalShouldShow] = useState(false)
   const [shouldDisable, setShouldDisable] = useState(false)
+  const [passwordInput, setPasswordInput] = useState('')
+  const [confirmPasswordInput, setConfirmPasswordInput] = useState('')
 
   const user = useOutletContext()
   const navigate = useNavigate()
@@ -53,6 +55,14 @@ export default function ProfileSettings() {
         profileLink: URL.createObjectURL(file),
         profileImage: file,
       }))
+    }
+  }
+
+  const handlePasswordInputChange = (e) => {
+    if (e.target.name === 'password') {
+      setPasswordInput(e.target.value)
+    } else {
+      setConfirmPasswordInput(e.target.value)
     }
   }
 
@@ -105,6 +115,22 @@ export default function ProfileSettings() {
       setShouldDisable(false)
     }
   }, [values])
+
+  useEffect(() => {
+    const hasPasswordButNoConfirmation = passwordInput && !confirmPasswordInput
+    const hasConfirmationButNoPassword = !passwordInput && confirmPasswordInput
+    const hasBothButIncorrect = passwordInput !== confirmPasswordInput
+
+    if (
+      hasPasswordButNoConfirmation ||
+      hasConfirmationButNoPassword ||
+      hasBothButIncorrect
+    ) {
+      setShouldDisable(true)
+    } else {
+      setShouldDisable(false)
+    }
+  }, [passwordInput, confirmPasswordInput])
 
   return (
     <>
@@ -185,17 +211,6 @@ export default function ProfileSettings() {
               />
             </div>
             <div className="profile-settings__input-container">
-              <label htmlFor="password">Password: </label>
-              <input
-                className="profile-settings-input"
-                type="password"
-                name="password"
-                onChange={handleChange}
-                id="password"
-                value={values.password}
-              />
-            </div>
-            <div className="profile-settings__input-container">
               <label htmlFor="age">Age: </label>
               <input
                 className="profile-settings-input"
@@ -240,6 +255,31 @@ export default function ProfileSettings() {
                 onChange={handleChange}
                 id="address"
                 value={values.address}
+              />
+            </div>
+          </div>
+
+          <div className="profile-settings__password-group">
+            <div className="profile-settings__input-container">
+              <label htmlFor="password">Change password: </label>
+              <input
+                className="profile-settings-input"
+                type="password"
+                name="password"
+                onChange={handlePasswordInputChange}
+                id="password"
+                value={passwordInput}
+              />
+            </div>
+            <div className="profile-settings__input-container">
+              <label htmlFor="confirm-password">Confirm password: </label>
+              <input
+                className="profile-settings-input"
+                type="password"
+                name="confirmPassword"
+                onChange={handlePasswordInputChange}
+                id="confirmPassword"
+                value={confirmPasswordInput}
               />
             </div>
           </div>
