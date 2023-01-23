@@ -198,6 +198,11 @@ const cache = new InMemoryCache({
             return incoming
           },
         },
+        userGroupRoles: {
+          merge(existing, incoming) {
+            return incoming
+          },
+        },
       },
     },
   },
