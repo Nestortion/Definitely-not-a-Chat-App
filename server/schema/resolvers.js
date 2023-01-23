@@ -1074,7 +1074,11 @@ const resolvers = {
 
       return newRoles
     },
-    updateUserGroupRoles: async (_, { group_id, roles, user_id }, context) => {
+    updateUserGroupRoles: async (
+      _,
+      { group_id, roles, user_id, roles_ids },
+      context
+    ) => {
       const { data: user, pubsub } = authMiddleware(context)
       const targetUser = await Users.findOne({ where: { id: user_id } })
 
@@ -1093,7 +1097,6 @@ const resolvers = {
           })
 
           if (!roles.includes(groupRole.role_name)) {
-            console.log(groupRole.role_name)
             await UserGroupRoles.destroy({
               where: {
                 user_group_id: usergrouprole.user_group_id,
@@ -1127,6 +1130,8 @@ const resolvers = {
         memberRolesUpdated: {
           newRoles: roles,
           user: targetUser,
+          group_id,
+          roles_ids,
         },
       })
 
@@ -1144,7 +1149,7 @@ const resolvers = {
           const userGroup = await UserGroups.findOne({
             where: {
               user_id: variables.user,
-              group_id: payload.memberRolesUpdated.group.id,
+              group_id: payload.memberRolesUpdated.group_id,
             },
           })
 
