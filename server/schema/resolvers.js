@@ -633,17 +633,19 @@ const resolvers = {
         await Promise.all(
           createUserGroups.map(async (usergroup) => {
             if (usergroup.user_id === user.user_id) {
-              const createDefaultUserGroupRole = await UserGroupRoles.create({
+              await UserGroupRoles.create({
                 user_group_id: usergroup.id,
                 group_role_id: defaultCreatorRole.id,
               })
-              return createDefaultUserGroupRole
-            } else {
-              const createDefaultUserGroupRole = await UserGroupRoles.create({
+              await UserGroupRoles.create({
                 user_group_id: usergroup.id,
                 group_role_id: defaultGroupRole.id,
               })
-              return createDefaultUserGroupRole
+            } else {
+              await UserGroupRoles.create({
+                user_group_id: usergroup.id,
+                group_role_id: defaultGroupRole.id,
+              })
             }
           })
         )
@@ -867,6 +869,11 @@ const resolvers = {
                 user_group_id: usergroup.id,
                 group_role_id: defaultCreatorRole.id,
               })
+              await UserGroupRoles.create({
+                user_group_id: usergroup.id,
+                group_role_id: defaultGroupRole.id,
+              })
+
               return createDefaultUserGroupRole
             } else {
               const createDefaultUserGroupRole = await UserGroupRoles.create({
