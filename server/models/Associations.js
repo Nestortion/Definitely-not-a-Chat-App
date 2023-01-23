@@ -8,11 +8,22 @@ import UserGroups from './UserGroups.js'
 import Users from './Users.js'
 import UserLogs from './UserLogs.js'
 import AdminLogs from './AdminLogs.js'
+import Reports from './Reports.js'
 
 const createAssociation = async () => {
   Users.hasMany(UserChats, { foreignKey: { name: 'user_id' } })
   UserChats.belongsTo(Users, {
     foreignKey: { name: 'user_id', allowNull: false },
+  })
+
+  Users.hasMany(Reports, { foreignKey: { name: 'user_id' } })
+  Reports.belongsTo(Users, {
+    foreignKey: { name: 'user_id', allowNull: false },
+  })
+
+  Groups.hasMany(Reports, { foreignKey: { name: 'group_id' } })
+  Reports.belongsTo(Groups, {
+    foreignKey: { name: 'group_id', allowNull: false },
   })
 
   Users.hasMany(UserLogs, { foreignKey: { name: 'user_id' } })
