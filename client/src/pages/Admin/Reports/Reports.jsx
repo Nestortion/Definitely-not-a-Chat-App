@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import './reports.scss'
+import { useNavigate } from 'react-router-dom'
 
 export default function Reports() {
+  const navigate = useNavigate()
+
   const [reports, setReports] = useState([
     {
       id: 1,
@@ -26,24 +29,28 @@ export default function Reports() {
     },
   ])
 
-  const handleChange = (e, id) => {
-    let setTo
+  // const handleChange = (e, id) => {
+  //   let setTo
 
-    if (e.target.value === 'pending') {
-      setTo = false
-    } else {
-      setTo = true
-    }
+  //   if (e.target.value === 'pending') {
+  //     setTo = false
+  //   } else {
+  //     setTo = true
+  //   }
 
-    setReports((prev) =>
-      prev.map((report) => {
-        if (report.id === id) {
-          return { ...report, resolved: setTo }
-        }
+  //   setReports((prev) =>
+  //     prev.map((report) => {
+  //       if (report.id === id) {
+  //         return { ...report, resolved: setTo }
+  //       }
 
-        return report
-      })
-    )
+  //       return report
+  //     })
+  //   )
+  // }
+
+  const handleClick = (e, reportId) => {
+    navigate(`/admin/reports/${reportId}`)
   }
 
   return (
@@ -64,41 +71,27 @@ export default function Reports() {
             {reports.map((report) => (
               <tr
                 key={report.id}
-                className={report.resolved ? 'resolved' : 'pending'}
+                onClick={(e, id) => handleClick(e, report.id)}
               >
                 <td>{report.id}</td>
                 <td>{report.senderUserId}</td>
                 <td>{report.reportedGroupId}</td>
                 <td>{report.reportReasons.toString()}</td>
                 <td>
-                  <select
+                  {report.resolved ? 'Resolved' : 'Pending'}
+
+                  {/* <select
                     value={report.resolved ? 'resolved' : 'pending'}
                     onChange={(e) => handleChange(e, report.id)}
                   >
                     <option value="resolved">Resolved</option>
                     <option value="pending">Pending</option>
-                  </select>
+                  </select> */}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        {/* <div className="reports-entry">
-          <span>Id</span>
-          <span>Reported By</span>
-          <span>Reported Group Id:</span>
-          <span>Reasons</span>
-          <span>Resolve status</span>
-        </div>
-        {reports.map((report) => (
-          <div key={report.id} className="reports-entry">
-            <span>{report.id}</span>
-            <span>{report.senderUserId}</span>
-            <span>{report.reportedGroupId}</span>
-            <span>{report.reportReasons.toString()}</span>
-            <span>{report.resolved ? 'Resolved' : 'Pending'}</span>
-          </div>
-        ))} */}
       </div>
     </div>
   )

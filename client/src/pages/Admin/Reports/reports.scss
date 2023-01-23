@@ -18,7 +18,14 @@
       }
 
       tbody {
-        color: var(--clr-neutral-100);
+        tr {
+          cursor: pointer;
+
+          &:hover {
+            color: var(--clr-neutral-100);
+            background-color: var(--clr-primary-400);
+          }
+        }
 
         .resolved {
           background-color: var(--clr-secondary-400);
