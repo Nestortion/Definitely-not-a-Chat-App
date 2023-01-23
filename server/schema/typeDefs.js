@@ -148,6 +148,11 @@ const typeDefs = `
     userChatsCount: Int
   }
 
+  type updateUserGroupRolesResponse{
+    newRoles: [String]
+    user: User
+  }
+
   input RolesToEdit{
     id: Int
     role_name: String
@@ -181,6 +186,7 @@ const typeDefs = `
     currentUserGroupRoles(group_id:Int): CurrentUserGroupRoles
     otherUser(group_id: Int): User
     groupRolesList(group_id: Int): [GroupRole]
+    userGroupRoles(user_id:Int ,group_id:Int): [Int]
   }
 
   
@@ -201,6 +207,7 @@ const typeDefs = `
     createGroup(user_id: [Int!]): Group
     updateUserProfile(username: String, age: Int, gender: String, section: String, address: String, profile_img: Upload): User
     updateGroupRoles(roles_to_edit: [RolesToEdit], roles_to_delete: [Int], group_id: Int): [GroupRole]
+    updateUserGroupRoles(roles: [String], group_id: Int, user_id: Int): updateUserGroupRolesResponse
   }
 
   
@@ -212,6 +219,7 @@ const typeDefs = `
     memberAdded(user: Int, group_id: Int): MemberAddedResponse
     memberRemoved(user: Int, group_id: Int): MemberRemovedResponse
     groupRolesUpdated(user: Int, group_id: Int): GroupRolesUpdatedResponse
+    memberRolesUpdated(user:Int, group_id: Int) : updateUserGroupRolesResponse
   }
 
 `

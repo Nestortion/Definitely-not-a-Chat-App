@@ -397,6 +397,29 @@ const resolvers = {
         userChatsCount: userChats.length,
       }
     },
+    userGroupRoles: async (_, { group_id, user_id }, context) => {
+      authMiddleware(context)
+
+      const userGroups = await UserGroups.findAll({
+        where: { group_id, user_id },
+      })
+
+      const userGroupIds = userGroups.map((usergroup) => usergroup.id)
+
+      const userGroupRoles = await UserGroupRoles.findAll({
+        where: { user_group_id: userGroupIds },
+      })
+
+      const groupRolesIds = userGroupRoles.map(
+        (usergrouprole) => usergrouprole.group_role_id
+      )
+
+      const groupRoles = await GroupRoles.findAll({
+        where: { id: groupRolesIds },
+      })
+
+      return groupRoles.map((grouprole) => grouprole.id)
+    },
   },
   Mutation: {
     addUser: async (
@@ -1051,8 +1074,87 @@ const resolvers = {
 
       return newRoles
     },
+    updateUserGroupRoles: async (_, { group_id, roles, user_id }, context) => {
+      const { data: user, pubsub } = authMiddleware(context)
+      const targetUser = await Users.findOne({ where: { id: user_id } })
+
+      const userGroup = await UserGroups.findOne({
+        where: { group_id, user_id },
+      })
+
+      const currentUserGroupRoles = await UserGroupRoles.findAll({
+        where: { user_group_id: userGroup.id },
+      })
+
+      const filterDeleteRoles = await Promise.all(
+        currentUserGroupRoles.map(async (usergrouprole) => {
+          const groupRole = await GroupRoles.findOne({
+            where: { id: usergrouprole.group_role_id },
+          })
+
+          if (!roles.includes(groupRole.role_name)) {
+            console.log(groupRole.role_name)
+            await UserGroupRoles.destroy({
+              where: {
+                user_group_id: usergrouprole.user_group_id,
+                group_role_id: usergrouprole.group_role_id,
+              },
+            })
+          }
+
+          return groupRole.role_name
+        })
+      )
+
+      const rolesToAdd = roles.filter(
+        (role) => !filterDeleteRoles.includes(role)
+      )
+
+      await Promise.all(
+        rolesToAdd.map(async (role) => {
+          const groupRole = await GroupRoles.findOne({
+            where: { group_id, role_name: role },
+          })
+
+          await UserGroupRoles.create({
+            user_group_id: userGroup.id,
+            group_role_id: groupRole.id,
+          })
+        })
+      )
+
+      pubsub.publish('MEMBER_ROLES_UPDATED', {
+        memberRolesUpdated: {
+          newRoles: roles,
+          user: targetUser,
+        },
+      })
+
+      return {
+        newRoles: roles,
+        user: targetUser,
+      }
+    },
   },
   Subscription: {
+    memberRolesUpdated: {
+      subscribe: withFilter(
+        (_, __, { pubsub }) => pubsub.asyncIterator('MEMBER_ROLES_UPDATED'),
+        async (payload, variables) => {
+          const userGroup = await UserGroups.findOne({
+            where: {
+              user_id: variables.user,
+              group_id: payload.memberRolesUpdated.group.id,
+            },
+          })
+
+          if (userGroup) {
+            return true
+          }
+          return false
+        }
+      ),
+    },
     groupCreated: {
       subscribe: withFilter(
         (_, __, { pubsub }) => pubsub.asyncIterator('GROUP_CREATED'),
