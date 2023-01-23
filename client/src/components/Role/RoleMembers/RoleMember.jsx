@@ -4,11 +4,18 @@ import { apiBasePath } from '../../../data/config'
 import Avatar from '../../UI/Avatar/Avatar'
 import './role-member.scss'
 import { MdSettings } from 'react-icons/md'
-import { useRemoveMemberMutation } from '../../../graphql/hooks/graphql'
+import {
+  useRemoveMemberMutation,
+  useUserGroupRolesQuery,
+} from '../../../graphql/hooks/graphql'
 import SpawnModal from '../../UI/Modal/SpawnModal'
 import { useState } from 'react'
 import EditUserRole from '../EditUserRole/EditUserRole'
 import { toast } from 'react-toastify'
+import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'
+import ErrorText from '../../Error/ErrorText'
+import { useEffect } from 'react'
+import { MemberRolesUpdatedDocument } from '../../../graphql/hooks/graphql'
 
 export default function RoleMember({
   id,
@@ -17,6 +24,8 @@ export default function RoleMember({
   showOnlyMiddle,
   isGroup,
   userRoles,
+  groupRoles,
+  user,
 }) {
   const notify = () =>
     toast('Member removed', {
@@ -33,6 +42,32 @@ export default function RoleMember({
   const navigate = useNavigate()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
   const [removeMember] = useRemoveMemberMutation()
+  const {
+    data: userGroupRoles,
+    loading: userGroupRolesLoading,
+    error: userGroupRolesError,
+    subscribeToMore,
+  } = useUserGroupRolesQuery({
+    variables: { groupId: parseInt(chatId), userId: id },
+  })
+
+  useEffect(() => {
+    subscribeToMore({
+      document: MemberRolesUpdatedDocument,
+      variables: { user: user.id },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev
+        return {
+          userGroupRoles: [
+            ...subscriptionData.data.memberRolesUpdated.roles_ids,
+          ],
+        }
+      },
+    })
+  }, [])
+
+  if (userGroupRolesLoading) return <LoadingSpinner />
+  if (userGroupRolesError) return <ErrorText>Something Went Wrong</ErrorText>
 
   const navigateToProfile = () => {
     if (isTabletOrMobile) {
@@ -59,6 +94,8 @@ export default function RoleMember({
       {shouldShowModal && (
         <SpawnModal title={`Edit user - ${name}`} closeModal={handleHideModal}>
           <EditUserRole
+            groupRoles={groupRoles}
+            userRoles={userGroupRoles.userGroupRoles}
             memberId={id}
             closeModal={handleHideModal}
             handleRemoveMember={handleRemoveMember}

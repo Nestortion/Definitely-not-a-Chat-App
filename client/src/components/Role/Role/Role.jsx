@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import {
   MemberAddedDocument,
   MemberRemovedDocument,
+  MemberRolesUpdatedDocument,
   useUserRolesQuery,
 } from '../../../graphql/hooks/graphql'
 import ErrorText from '../../Error/ErrorText'
@@ -17,6 +18,7 @@ export default function Role({
   rolesRefetch,
   user,
   userRoles,
+  groupRoles,
 }) {
   // fetch member here base on role
   const {
@@ -66,6 +68,44 @@ export default function Role({
         }
       },
     })
+    subscribeToMore({
+      document: MemberRolesUpdatedDocument,
+      variables: { user: user.id },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev
+
+        const currentUsers = prev.userRoles.map((userRole) => userRole.id)
+
+        if (
+          !subscriptionData.data.memberRolesUpdated.newRoles.includes(name) &&
+          currentUsers.includes(
+            subscriptionData.data.memberRolesUpdated.user.id
+          )
+        ) {
+          const newMembers = prev.userRoles.filter(
+            (user) =>
+              user.id !== subscriptionData.data.memberRolesUpdated.user.id
+          )
+
+          return {
+            userRoles: [...newMembers],
+          }
+        }
+        if (
+          subscriptionData.data.memberRolesUpdated.newRoles.includes(name) &&
+          !currentUsers.includes(
+            subscriptionData.data.memberRolesUpdated.user.id
+          )
+        ) {
+          return {
+            userRoles: [
+              ...prev.userRoles,
+              subscriptionData.data.memberRolesUpdated.user,
+            ],
+          }
+        }
+      },
+    })
   }, [])
 
   if (loading) return <LoadingSpinner />
@@ -81,7 +121,9 @@ export default function Role({
               <RoleMember
                 userRoles={userRoles}
                 key={index}
+                user={user}
                 isGroup="true"
+                groupRoles={groupRoles}
                 id={member.id}
                 name={`${member.first_name} ${member.last_name}`}
                 pfp={member.profile_img}
