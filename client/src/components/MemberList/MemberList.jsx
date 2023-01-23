@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom'
 import Role from '../Role/Role/Role'
 import './memberlist.scss'
 
@@ -10,7 +9,6 @@ export default function MemberList({
   rolesListRefetch,
 }) {
   // fetch rolesList here
-  const { chatId } = useParams()
 
   return (
     <div className="member-list">
@@ -19,6 +17,7 @@ export default function MemberList({
           userRoles={userRoles}
           key={role.id}
           id={role.id}
+          groupRoles={rolesList}
           name={role.role_name}
           emoji={role.emoji}
           showOnlyMiddle={showOnlyMiddle}
