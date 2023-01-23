@@ -9,9 +9,11 @@ import { useNavigate, useOutletContext } from 'react-router-dom'
 import Button from '../../components/UI/Button/Button'
 import { useUpdateUserProfileMutation } from '../../graphql/hooks/graphql'
 import SpawnModal from '../../components/UI/Modal/SpawnModal'
+import { useEffect } from 'react'
 
 export default function ProfileSettings() {
   const [modalShouldShow, setModalShouldShow] = useState(false)
+  const [shouldDisable, setShouldDisable] = useState(false)
 
   const user = useOutletContext()
   const navigate = useNavigate()
@@ -60,7 +62,6 @@ export default function ProfileSettings() {
 
   const handleSubmit = async () => {
     // ! Backend logic here
-
     await updateUserProfile({
       variables: {
         address: values.address,
@@ -85,6 +86,25 @@ export default function ProfileSettings() {
   const closeConfirmModal = () => {
     setModalShouldShow(false)
   }
+
+  useEffect(() => {
+    if (
+      !values.username ||
+      values.username === '' ||
+      !values.age ||
+      values.age === '' ||
+      !values.gender ||
+      values.gender === '' ||
+      !values.section ||
+      values.section === '' ||
+      !values.address ||
+      values.address === ''
+    ) {
+      setShouldDisable(true)
+    } else {
+      setShouldDisable(false)
+    }
+  }, [values])
 
   return (
     <>
@@ -225,7 +245,12 @@ export default function ProfileSettings() {
           </div>
 
           <div className="profile-settings__button-group">
-            <Button type="button" onClick={showConfirmModal}>
+            <Button
+              is_default={shouldDisable}
+              disabled={shouldDisable}
+              type="button"
+              onClick={showConfirmModal}
+            >
               Save
             </Button>
             <Button type="button" onClick={handleReset} secondary>
