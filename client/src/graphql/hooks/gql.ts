@@ -41,6 +41,7 @@ const documents = {
     "subscription MemberRolesUpdated($user: Int, $groupId: Int) {\n  memberRolesUpdated(user: $user, group_id: $groupId) {\n    newRoles\n    user {\n      id\n      username\n      first_name\n      last_name\n      profile_img\n    }\n    group_id\n    roles_ids\n  }\n}": types.MemberRolesUpdatedDocument,
     "query OtherUser($groupId: Int) {\n  otherUser(group_id: $groupId) {\n    id\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.OtherUserDocument,
     "mutation RemoveMember($groupId: Int, $userId: Int) {\n  removeMember(group_id: $groupId, user_id: $userId) {\n    id\n    first_name\n    last_name\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.RemoveMemberDocument,
+    "mutation SubmitReport($groupId: Int, $reasons: [String]) {\n  submitReport(group_id: $groupId, reasons: $reasons) {\n    id\n    user_id\n    group_id\n    report_reason\n    is_resolved\n    createdAt\n  }\n}": types.SubmitReportDocument,
     "query SystemStats {\n  systemStats {\n    userCount\n    groupCount\n    userChatsCount\n  }\n}": types.SystemStatsDocument,
     "mutation UpdateGroup($groupName: String, $groupId: Int, $groupPicture: Upload) {\n  updateGroup(\n    group_name: $groupName\n    group_id: $groupId\n    group_picture: $groupPicture\n  ) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}": types.UpdateGroupDocument,
     "mutation UpdateGroupRoles($rolesToEdit: [RolesToEdit], $rolesToDelete: [Int], $groupId: Int) {\n  updateGroupRoles(\n    roles_to_edit: $rolesToEdit\n    roles_to_delete: $rolesToDelete\n    group_id: $groupId\n  ) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n    is_default\n  }\n}": types.UpdateGroupRolesDocument,
@@ -167,6 +168,10 @@ export function graphql(source: "query OtherUser($groupId: Int) {\n  otherUser(g
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "mutation RemoveMember($groupId: Int, $userId: Int) {\n  removeMember(group_id: $groupId, user_id: $userId) {\n    id\n    first_name\n    last_name\n    section\n    profile_img\n    age\n    gender\n  }\n}"): (typeof documents)["mutation RemoveMember($groupId: Int, $userId: Int) {\n  removeMember(group_id: $groupId, user_id: $userId) {\n    id\n    first_name\n    last_name\n    section\n    profile_img\n    age\n    gender\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation SubmitReport($groupId: Int, $reasons: [String]) {\n  submitReport(group_id: $groupId, reasons: $reasons) {\n    id\n    user_id\n    group_id\n    report_reason\n    is_resolved\n    createdAt\n  }\n}"): (typeof documents)["mutation SubmitReport($groupId: Int, $reasons: [String]) {\n  submitReport(group_id: $groupId, reasons: $reasons) {\n    id\n    user_id\n    group_id\n    report_reason\n    is_resolved\n    createdAt\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

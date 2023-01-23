@@ -1,0 +1,10 @@
+mutation SubmitReport($groupId: Int, $reasons: [String]) {
+  submitReport(group_id: $groupId, reasons: $reasons) {
+    id
+    user_id
+    group_id
+    report_reason
+    is_resolved
+    createdAt
+  }
+}

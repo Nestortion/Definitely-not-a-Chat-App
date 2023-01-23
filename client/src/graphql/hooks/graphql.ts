@@ -133,6 +133,7 @@ export type Mutation = {
   logout?: Maybe<Scalars['Boolean']>
   removeMember?: Maybe<User>
   revokeRefreshToken?: Maybe<Scalars['Boolean']>
+  submitReport?: Maybe<Report>
   updateGroup?: Maybe<Group>
   updateGroupRoles?: Maybe<Array<Maybe<GroupRole>>>
   updateUserGroupRoles?: Maybe<UpdateUserGroupRolesResponse>
@@ -204,6 +205,11 @@ export type MutationRemoveMemberArgs = {
 
 export type MutationRevokeRefreshTokenArgs = {
   user_id: Scalars['Int']
+}
+
+export type MutationSubmitReportArgs = {
+  group_id?: InputMaybe<Scalars['Int']>
+  reasons?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
 }
 
 export type MutationUpdateGroupArgs = {
@@ -330,6 +336,16 @@ export type QueryUserRolesArgs = {
 
 export type QueryUsersArgs = {
   limit?: InputMaybe<Scalars['Int']>
+}
+
+export type Report = {
+  __typename?: 'Report'
+  createdAt: Scalars['DateTime']
+  group_id: Scalars['Int']
+  id: Scalars['Int']
+  is_resolved: Scalars['Boolean']
+  report_reason: Scalars['String']
+  user_id: Scalars['Int']
 }
 
 export enum RoleType {
@@ -988,6 +1004,26 @@ export type RemoveMemberMutation = {
     profile_img: string
     age: number
     gender: string
+  } | null
+}
+
+export type SubmitReportMutationVariables = Exact<{
+  groupId?: InputMaybe<Scalars['Int']>
+  reasons?: InputMaybe<
+    Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>
+  >
+}>
+
+export type SubmitReportMutation = {
+  __typename?: 'Mutation'
+  submitReport?: {
+    __typename?: 'Report'
+    id: number
+    user_id: number
+    group_id: number
+    report_reason: string
+    is_resolved: boolean
+    createdAt: any
   } | null
 }
 
@@ -2832,6 +2868,62 @@ export type RemoveMemberMutationResult =
 export type RemoveMemberMutationOptions = Apollo.BaseMutationOptions<
   RemoveMemberMutation,
   RemoveMemberMutationVariables
+>
+export const SubmitReportDocument = gql`
+  mutation SubmitReport($groupId: Int, $reasons: [String]) {
+    submitReport(group_id: $groupId, reasons: $reasons) {
+      id
+      user_id
+      group_id
+      report_reason
+      is_resolved
+      createdAt
+    }
+  }
+`
+export type SubmitReportMutationFn = Apollo.MutationFunction<
+  SubmitReportMutation,
+  SubmitReportMutationVariables
+>
+
+/**
+ * __useSubmitReportMutation__
+ *
+ * To run a mutation, you first call `useSubmitReportMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSubmitReportMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [submitReportMutation, { data, loading, error }] = useSubmitReportMutation({
+ *   variables: {
+ *      groupId: // value for 'groupId'
+ *      reasons: // value for 'reasons'
+ *   },
+ * });
+ */
+export function useSubmitReportMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    SubmitReportMutation,
+    SubmitReportMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    SubmitReportMutation,
+    SubmitReportMutationVariables
+  >(SubmitReportDocument, options)
+}
+export type SubmitReportMutationHookResult = ReturnType<
+  typeof useSubmitReportMutation
+>
+export type SubmitReportMutationResult =
+  Apollo.MutationResult<SubmitReportMutation>
+export type SubmitReportMutationOptions = Apollo.BaseMutationOptions<
+  SubmitReportMutation,
+  SubmitReportMutationVariables
 >
 export const SystemStatsDocument = gql`
   query SystemStats {
