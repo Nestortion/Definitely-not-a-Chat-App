@@ -46,7 +46,10 @@ export default function EditGeneralRoles({ closeModal, rolesList }) {
   const handleAddRole = () => {
     if (!newRole.role_name) return
 
-    if (groupRoles.some((role) => role.role_name === newRole.role_name)) return
+    if (groupRoles.some((role) => role.role_name === newRole.role_name)) {
+      alert('role name already exist')
+      return
+    }
 
     setGroupRoles((prev) => [
       ...prev,
