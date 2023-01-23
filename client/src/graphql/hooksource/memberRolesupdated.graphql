@@ -1,0 +1,13 @@
+subscription MemberRolesUpdated($user: Int, $groupId: Int) {
+  memberRolesUpdated(user: $user, group_id: $groupId) {
+    newRoles
+    user {
+      id
+      username
+      first_name
+      last_name
+      profile_img
+    }
+    group_id
+  }
+}

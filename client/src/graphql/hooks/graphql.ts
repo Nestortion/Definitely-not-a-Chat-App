@@ -351,6 +351,7 @@ export type Subscription = {
   groupUpdate?: Maybe<Group>
   memberAdded?: Maybe<MemberAddedResponse>
   memberRemoved?: Maybe<MemberRemovedResponse>
+  memberRolesUpdated?: Maybe<UpdateUserGroupRolesResponse>
 }
 
 export type SubscriptionChatAddedArgs = {
@@ -376,6 +377,11 @@ export type SubscriptionMemberAddedArgs = {
 }
 
 export type SubscriptionMemberRemovedArgs = {
+  group_id?: InputMaybe<Scalars['Int']>
+  user?: InputMaybe<Scalars['Int']>
+}
+
+export type SubscriptionMemberRolesUpdatedArgs = {
   group_id?: InputMaybe<Scalars['Int']>
   user?: InputMaybe<Scalars['Int']>
 }
@@ -449,6 +455,7 @@ export type UserRole = {
 
 export type UpdateUserGroupRolesResponse = {
   __typename?: 'updateUserGroupRolesResponse'
+  group_id?: Maybe<Scalars['Int']>
   newRoles?: Maybe<Array<Maybe<Scalars['String']>>>
   user?: Maybe<User>
 }
@@ -915,6 +922,28 @@ export type MemberRemovedSubscription = {
       profile_img: string
       username: string
       section: string
+    } | null
+  } | null
+}
+
+export type MemberRolesUpdatedSubscriptionVariables = Exact<{
+  user?: InputMaybe<Scalars['Int']>
+  groupId?: InputMaybe<Scalars['Int']>
+}>
+
+export type MemberRolesUpdatedSubscription = {
+  __typename?: 'Subscription'
+  memberRolesUpdated?: {
+    __typename?: 'updateUserGroupRolesResponse'
+    newRoles?: Array<string | null> | null
+    group_id?: number | null
+    user?: {
+      __typename?: 'User'
+      id: number
+      username: string
+      first_name: string
+      last_name: string
+      profile_img: string
     } | null
   } | null
 }
@@ -2626,6 +2655,56 @@ export type MemberRemovedSubscriptionHookResult = ReturnType<
 >
 export type MemberRemovedSubscriptionResult =
   Apollo.SubscriptionResult<MemberRemovedSubscription>
+export const MemberRolesUpdatedDocument = gql`
+  subscription MemberRolesUpdated($user: Int, $groupId: Int) {
+    memberRolesUpdated(user: $user, group_id: $groupId) {
+      newRoles
+      user {
+        id
+        username
+        first_name
+        last_name
+        profile_img
+      }
+      group_id
+    }
+  }
+`
+
+/**
+ * __useMemberRolesUpdatedSubscription__
+ *
+ * To run a query within a React component, call `useMemberRolesUpdatedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useMemberRolesUpdatedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMemberRolesUpdatedSubscription({
+ *   variables: {
+ *      user: // value for 'user'
+ *      groupId: // value for 'groupId'
+ *   },
+ * });
+ */
+export function useMemberRolesUpdatedSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    MemberRolesUpdatedSubscription,
+    MemberRolesUpdatedSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSubscription<
+    MemberRolesUpdatedSubscription,
+    MemberRolesUpdatedSubscriptionVariables
+  >(MemberRolesUpdatedDocument, options)
+}
+export type MemberRolesUpdatedSubscriptionHookResult = ReturnType<
+  typeof useMemberRolesUpdatedSubscription
+>
+export type MemberRolesUpdatedSubscriptionResult =
+  Apollo.SubscriptionResult<MemberRolesUpdatedSubscription>
 export const OtherUserDocument = gql`
   query OtherUser($groupId: Int) {
     otherUser(group_id: $groupId) {
