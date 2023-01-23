@@ -87,6 +87,7 @@ export default function SoloGroup() {
             <div className="solo-group__role-member-container">
               {role.members.map((member) => (
                 <Link
+                  key={member.id}
                   to={`/profile/${member.id}`}
                   style={{
                     textDecoration: 'none',
@@ -95,10 +96,7 @@ export default function SoloGroup() {
                     width: '100%',
                   }}
                 >
-                  <div
-                    className="solo-group__role-member hoverable control-panel__card"
-                    key={member.id}
-                  >
+                  <div className="solo-group__role-member hoverable control-panel__card">
                     <Avatar size={36} src={member.profilePicUrl} />
                     <p>{`${member.firstName} ${member.lastName}`}</p>
                   </div>
