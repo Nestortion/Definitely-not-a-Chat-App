@@ -27,6 +27,11 @@ const Reports = DB.define(
       allowNull: false,
       defaultValue: false,
     },
+    remarks: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: '',
+    },
   },
   { createdAt: true, updatedAt: false }
 )
