@@ -152,16 +152,6 @@ export default function AdminControlPanel() {
 
         <Link
           style={{ textDecoration: 'none', color: 'var(--clr-neutral-900)' }}
-          to="/admin/user-logs"
-        >
-          <div className="control-panel__card control-panel__top-card">
-            <p className="control-panel__top-heading">Latest User Action</p>
-            <p className="fs-300 fw-bold">{latestUserAction}</p>
-          </div>
-        </Link>
-
-        <Link
-          style={{ textDecoration: 'none', color: 'var(--clr-neutral-900)' }}
           to="/admin/admin-logs"
         >
           <div className="control-panel__card control-panel__top-card">
