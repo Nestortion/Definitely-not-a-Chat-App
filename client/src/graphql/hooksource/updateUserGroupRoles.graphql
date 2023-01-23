@@ -1,5 +1,15 @@
-mutation UpdateUserGroupRoles($roles: [String], $groupId: Int, $userId: Int) {
-  updateUserGroupRoles(roles: $roles, group_id: $groupId, user_id: $userId) {
+mutation UpdateUserGroupRoles(
+  $roles: [String]
+  $groupId: Int
+  $userId: Int
+  $rolesIds: [Int]
+) {
+  updateUserGroupRoles(
+    roles: $roles
+    group_id: $groupId
+    user_id: $userId
+    roles_ids: $rolesIds
+  ) {
     newRoles
     user {
       id

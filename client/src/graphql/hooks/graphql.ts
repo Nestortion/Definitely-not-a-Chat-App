@@ -221,6 +221,7 @@ export type MutationUpdateGroupRolesArgs = {
 export type MutationUpdateUserGroupRolesArgs = {
   group_id?: InputMaybe<Scalars['Int']>
   roles?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
+  roles_ids?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>
   user_id?: InputMaybe<Scalars['Int']>
 }
 
@@ -1047,6 +1048,9 @@ export type UpdateUserGroupRolesMutationVariables = Exact<{
   >
   groupId?: InputMaybe<Scalars['Int']>
   userId?: InputMaybe<Scalars['Int']>
+  rolesIds?: InputMaybe<
+    Array<InputMaybe<Scalars['Int']>> | InputMaybe<Scalars['Int']>
+  >
 }>
 
 export type UpdateUserGroupRolesMutation = {
@@ -3012,8 +3016,18 @@ export type UpdateGroupRolesMutationOptions = Apollo.BaseMutationOptions<
   UpdateGroupRolesMutationVariables
 >
 export const UpdateUserGroupRolesDocument = gql`
-  mutation UpdateUserGroupRoles($roles: [String], $groupId: Int, $userId: Int) {
-    updateUserGroupRoles(roles: $roles, group_id: $groupId, user_id: $userId) {
+  mutation UpdateUserGroupRoles(
+    $roles: [String]
+    $groupId: Int
+    $userId: Int
+    $rolesIds: [Int]
+  ) {
+    updateUserGroupRoles(
+      roles: $roles
+      group_id: $groupId
+      user_id: $userId
+      roles_ids: $rolesIds
+    ) {
       newRoles
       user {
         id
@@ -3046,6 +3060,7 @@ export type UpdateUserGroupRolesMutationFn = Apollo.MutationFunction<
  *      roles: // value for 'roles'
  *      groupId: // value for 'groupId'
  *      userId: // value for 'userId'
+ *      rolesIds: // value for 'rolesIds'
  *   },
  * });
  */
