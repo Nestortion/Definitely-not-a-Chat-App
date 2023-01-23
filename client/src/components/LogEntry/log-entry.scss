@@ -4,6 +4,10 @@
   gap: 0.3125rem;
 
   .log-entry__detail {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+
     .log-entry__name {
       cursor: pointer;
     }
