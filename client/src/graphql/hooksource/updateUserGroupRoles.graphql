@@ -1,0 +1,12 @@
+mutation UpdateUserGroupRoles($roles: [String], $groupId: Int, $userId: Int) {
+  updateUserGroupRoles(roles: $roles, group_id: $groupId, user_id: $userId) {
+    newRoles
+    user {
+      id
+      username
+      first_name
+      last_name
+      profile_img
+    }
+  }
+}

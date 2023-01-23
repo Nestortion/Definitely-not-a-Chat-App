@@ -1010,6 +1010,30 @@ export type UpdateGroupRolesMutation = {
   } | null> | null
 }
 
+export type UpdateUserGroupRolesMutationVariables = Exact<{
+  roles?: InputMaybe<
+    Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>
+  >
+  groupId?: InputMaybe<Scalars['Int']>
+  userId?: InputMaybe<Scalars['Int']>
+}>
+
+export type UpdateUserGroupRolesMutation = {
+  __typename?: 'Mutation'
+  updateUserGroupRoles?: {
+    __typename?: 'updateUserGroupRolesResponse'
+    newRoles?: Array<string | null> | null
+    user?: {
+      __typename?: 'User'
+      id: number
+      username: string
+      first_name: string
+      last_name: string
+      profile_img: string
+    } | null
+  } | null
+}
+
 export type UpdateUserProfileMutationVariables = Exact<{
   username?: InputMaybe<Scalars['String']>
   age?: InputMaybe<Scalars['Int']>
@@ -2904,6 +2928,65 @@ export type UpdateGroupRolesMutationResult =
 export type UpdateGroupRolesMutationOptions = Apollo.BaseMutationOptions<
   UpdateGroupRolesMutation,
   UpdateGroupRolesMutationVariables
+>
+export const UpdateUserGroupRolesDocument = gql`
+  mutation UpdateUserGroupRoles($roles: [String], $groupId: Int, $userId: Int) {
+    updateUserGroupRoles(roles: $roles, group_id: $groupId, user_id: $userId) {
+      newRoles
+      user {
+        id
+        username
+        first_name
+        last_name
+        profile_img
+      }
+    }
+  }
+`
+export type UpdateUserGroupRolesMutationFn = Apollo.MutationFunction<
+  UpdateUserGroupRolesMutation,
+  UpdateUserGroupRolesMutationVariables
+>
+
+/**
+ * __useUpdateUserGroupRolesMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserGroupRolesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserGroupRolesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserGroupRolesMutation, { data, loading, error }] = useUpdateUserGroupRolesMutation({
+ *   variables: {
+ *      roles: // value for 'roles'
+ *      groupId: // value for 'groupId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUpdateUserGroupRolesMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateUserGroupRolesMutation,
+    UpdateUserGroupRolesMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    UpdateUserGroupRolesMutation,
+    UpdateUserGroupRolesMutationVariables
+  >(UpdateUserGroupRolesDocument, options)
+}
+export type UpdateUserGroupRolesMutationHookResult = ReturnType<
+  typeof useUpdateUserGroupRolesMutation
+>
+export type UpdateUserGroupRolesMutationResult =
+  Apollo.MutationResult<UpdateUserGroupRolesMutation>
+export type UpdateUserGroupRolesMutationOptions = Apollo.BaseMutationOptions<
+  UpdateUserGroupRolesMutation,
+  UpdateUserGroupRolesMutationVariables
 >
 export const UpdateUserProfileDocument = gql`
   mutation UpdateUserProfile(
