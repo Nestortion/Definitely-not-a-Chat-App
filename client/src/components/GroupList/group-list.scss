@@ -5,6 +5,11 @@
   gap: 0.625rem;
   cursor: pointer;
 
+  &:hover {
+    background-color: var(--clr-primary-400);
+    color: var(--clr-neutral-100);
+  }
+
   @media (max-width: 667px) {
     grid-template-columns: 1fr;
     place-items: center;
@@ -32,6 +37,11 @@
       display: flex;
       align-items: center;
       gap: 0.625rem;
+
+      &:hover {
+        background-color: var(--clr-primary-400);
+        color: var(--clr-neutral-100);
+      }
     }
   }
 }

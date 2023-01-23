@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Avatar from '../../../components/UI/Avatar/Avatar'
 import './admin-control-panel.scss'
-import { MdSettings } from 'react-icons/md'
+import { MdArrowForwardIos, MdSettings } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import GroupList from '../../../components/GroupList/GroupList'
 import {
@@ -152,16 +152,6 @@ export default function AdminControlPanel() {
 
         <Link
           style={{ textDecoration: 'none', color: 'var(--clr-neutral-900)' }}
-          to="/admin/user-logs"
-        >
-          <div className="control-panel__card control-panel__top-card">
-            <p className="control-panel__top-heading">Latest User Action</p>
-            <p className="fs-300 fw-bold">{latestUserAction}</p>
-          </div>
-        </Link>
-
-        <Link
-          style={{ textDecoration: 'none', color: 'var(--clr-neutral-900)' }}
           to="/admin/admin-logs"
         >
           <div className="control-panel__card control-panel__top-card">
@@ -188,7 +178,17 @@ export default function AdminControlPanel() {
                   <span>{user.id}</span>
                   <span>{`${user.first_name} ${user.last_name}`}</span>
                   <span>
-                    <MdSettings />
+                    <Link
+                      to={`/profile/${user.id}`}
+                      style={{
+                        textDecoration: 'none',
+                        color: 'var(--clr-neutral-900)',
+                        display: 'block',
+                        width: '100%',
+                      }}
+                    >
+                      <MdArrowForwardIos title="Go to profile page" />
+                    </Link>
                   </span>
                 </div>
               ))}

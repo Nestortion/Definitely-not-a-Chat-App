@@ -72,6 +72,22 @@
       }
     }
 
+    .profile-settings__password-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+
+      .profile-settings__input-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+
+        label {
+          font-size: clamp(0.8rem, 2vw, 1.5rem);
+        }
+      }
+    }
+
     .profile-settings__button-group {
       width: 100%;
 
@@ -96,5 +112,20 @@
 
   &.input-disable {
     opacity: 0.5;
+  }
+}
+
+.confirm-modal__input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  input {
+    width: 100%;
+    padding: 0.625rem 1rem;
+    background: none;
+    border: 1px solid var(--clr-primary-400);
+    border-radius: 0.3125rem;
   }
 }

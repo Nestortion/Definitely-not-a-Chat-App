@@ -14,10 +14,6 @@ const reportReasons = [
   },
   {
     id: 3,
-    reason: 'Scam',
-  },
-  {
-    id: 4,
     reason: 'Others',
   },
 ]

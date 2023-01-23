@@ -9,9 +9,14 @@ import { useNavigate, useOutletContext } from 'react-router-dom'
 import Button from '../../components/UI/Button/Button'
 import { useUpdateUserProfileMutation } from '../../graphql/hooks/graphql'
 import SpawnModal from '../../components/UI/Modal/SpawnModal'
+import { useEffect } from 'react'
 
 export default function ProfileSettings() {
   const [modalShouldShow, setModalShouldShow] = useState(false)
+  const [shouldDisable, setShouldDisable] = useState(false)
+  const [passwordInput, setPasswordInput] = useState('')
+  const [confirmPasswordInput, setConfirmPasswordInput] = useState('')
+  const [modalConfirmPassword, setModalConfirmPassword] = useState('')
 
   const user = useOutletContext()
   const navigate = useNavigate()
@@ -54,13 +59,24 @@ export default function ProfileSettings() {
     }
   }
 
+  const handlePasswordInputChange = (e) => {
+    if (e.target.name === 'password') {
+      setPasswordInput(e.target.value)
+    } else {
+      setConfirmPasswordInput(e.target.value)
+    }
+  }
+
+  const handleModalConfirmPasswordChange = (e) => {
+    setModalConfirmPassword(e.target.value)
+  }
+
   const handleReset = () => {
     setValues(initialState)
   }
 
   const handleSubmit = async () => {
     // ! Backend logic here
-
     await updateUserProfile({
       variables: {
         address: values.address,
@@ -86,12 +102,57 @@ export default function ProfileSettings() {
     setModalShouldShow(false)
   }
 
+  useEffect(() => {
+    if (
+      !values.username ||
+      values.username === '' ||
+      !values.age ||
+      values.age === '' ||
+      !values.gender ||
+      values.gender === '' ||
+      !values.section ||
+      values.section === '' ||
+      !values.address ||
+      values.address === ''
+    ) {
+      setShouldDisable(true)
+    } else {
+      setShouldDisable(false)
+    }
+  }, [values])
+
+  useEffect(() => {
+    const hasPasswordButNoConfirmation = passwordInput && !confirmPasswordInput
+    const hasConfirmationButNoPassword = !passwordInput && confirmPasswordInput
+    const hasBothButIncorrect = passwordInput !== confirmPasswordInput
+
+    if (
+      hasPasswordButNoConfirmation ||
+      hasConfirmationButNoPassword ||
+      hasBothButIncorrect
+    ) {
+      setShouldDisable(true)
+    } else {
+      setShouldDisable(false)
+    }
+  }, [passwordInput, confirmPasswordInput])
+
   return (
     <>
       {modalShouldShow && (
         <SpawnModal title="Confirm" closeModal={closeConfirmModal}>
           <div className="confirm-modal">
-            <span className="fw-bold fs-500">Are you sure?</span>
+            <div className="confirm-modal__input-container">
+              <label htmlFor="modal-confirm">
+                Enter your current password:
+              </label>
+              <input
+                type="password"
+                id="modal-confirm"
+                value={modalConfirmPassword}
+                onChange={handleModalConfirmPasswordChange}
+              />
+            </div>
             <div className="confirm-modal__button-group">
               <Button onClick={handleSubmit}>Yes</Button>
               <Button onClick={closeConfirmModal} secondary>
@@ -165,17 +226,6 @@ export default function ProfileSettings() {
               />
             </div>
             <div className="profile-settings__input-container">
-              <label htmlFor="password">Password: </label>
-              <input
-                className="profile-settings-input"
-                type="password"
-                name="password"
-                onChange={handleChange}
-                id="password"
-                value={values.password}
-              />
-            </div>
-            <div className="profile-settings__input-container">
               <label htmlFor="age">Age: </label>
               <input
                 className="profile-settings-input"
@@ -224,8 +274,38 @@ export default function ProfileSettings() {
             </div>
           </div>
 
+          <div className="profile-settings__password-group">
+            <div className="profile-settings__input-container">
+              <label htmlFor="password">Change password: </label>
+              <input
+                className="profile-settings-input"
+                type="password"
+                name="password"
+                onChange={handlePasswordInputChange}
+                id="password"
+                value={passwordInput}
+              />
+            </div>
+            <div className="profile-settings__input-container">
+              <label htmlFor="confirm-password">Confirm password: </label>
+              <input
+                className="profile-settings-input"
+                type="password"
+                name="confirmPassword"
+                onChange={handlePasswordInputChange}
+                id="confirmPassword"
+                value={confirmPasswordInput}
+              />
+            </div>
+          </div>
+
           <div className="profile-settings__button-group">
-            <Button type="button" onClick={showConfirmModal}>
+            <Button
+              is_default={shouldDisable}
+              disabled={shouldDisable}
+              type="button"
+              onClick={showConfirmModal}
+            >
               Save
             </Button>
             <Button type="button" onClick={handleReset} secondary>
