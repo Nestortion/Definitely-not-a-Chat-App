@@ -187,7 +187,7 @@ export default function AdminControlPanel() {
                         width: '100%',
                       }}
                     >
-                      <MdArrowForwardIos />
+                      <MdArrowForwardIos title="Go to profile page" />
                     </Link>
                   </span>
                 </div>
