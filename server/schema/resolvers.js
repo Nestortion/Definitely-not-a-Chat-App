@@ -1043,6 +1043,8 @@ const resolvers = {
     ) => {
       const { data: user, pubsub } = authMiddleware(context)
 
+      const actionUser = await Users.findOne({ where: { id: user.user_id } })
+
       const rolesToUpdate = roles_to_edit.filter((role) => role.id !== null)
       const rolesToCreate = roles_to_edit.filter((role) => role.id === null)
 
@@ -1088,6 +1090,13 @@ const resolvers = {
         )
       }
 
+      await UserLogs.create({
+        full_name: `${actionUser.first_name} ${actionUser.last_name}`,
+        section: `${actionUser.section}`,
+        action_description: `Updated the Group roles of group ${group_id}`,
+        user_id: actionUser.id,
+      })
+
       const newRoles = updateRoles.concat(createRoles)
       pubsub.publish('GROUP_ROLES_UPDATED', {
         groupRolesUpdated: {
@@ -1105,6 +1114,7 @@ const resolvers = {
     ) => {
       const { data: user, pubsub } = authMiddleware(context)
       const targetUser = await Users.findOne({ where: { id: user_id } })
+      const actionUser = await Users.findOne({ where: { id: user.user_id } })
 
       const userGroup = await UserGroups.findOne({
         where: { group_id, user_id },
@@ -1149,6 +1159,13 @@ const resolvers = {
           })
         })
       )
+
+      await UserLogs.create({
+        full_name: `${actionUser.first_name} ${actionUser.last_name}`,
+        section: `${actionUser.section}`,
+        action_description: `Updated the Group roles of User ${targetUser.id} in Group ${group_id}`,
+        user_id: actionUser.id,
+      })
 
       pubsub.publish('MEMBER_ROLES_UPDATED', {
         memberRolesUpdated: {
