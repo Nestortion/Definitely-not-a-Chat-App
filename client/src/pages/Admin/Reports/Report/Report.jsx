@@ -78,7 +78,7 @@ export default function Report() {
             width: '100%',
           }}
         >
-          <div className="report-box control-panel__card">
+          <div className="report-box hoverable  control-panel__card">
             <p className="report-box__heading fw-bold">User Details</p>
             <div className="report-box__user-details report-box__details">
               <Avatar size={64} src={senderInfo.profilePicUrl} />
@@ -98,20 +98,30 @@ export default function Report() {
           </div>
         </Link>
 
-        <div className="report-box control-panel__card">
-          <p className="report-box__heading fw-bold">Group Details</p>
-          <div className="report-box__user-details report-box__details">
-            <Avatar size={64} src={reportedGroupInfo.profilePicUrl} />
-            <p>
-              <span className="fw-bold">Group Id: </span>
-              {reportedGroupInfo.id}
-            </p>
-            <p>
-              <span className="fw-bold">Group Name: </span>
-              {reportedGroupInfo.groupName}
-            </p>
+        <Link
+          to={`/admin/groups/${reportedGroupInfo.id}`}
+          style={{
+            textDecoration: 'none',
+            color: 'var(--clr-neutral-900)',
+            display: 'block',
+            width: '100%',
+          }}
+        >
+          <div className="report-box hoverable  control-panel__card">
+            <p className="report-box__heading fw-bold">Group Details</p>
+            <div className="report-box__user-details report-box__details">
+              <Avatar size={64} src={reportedGroupInfo.profilePicUrl} />
+              <p>
+                <span className="fw-bold">Group Id: </span>
+                {reportedGroupInfo.id}
+              </p>
+              <p>
+                <span className="fw-bold">Group Name: </span>
+                {reportedGroupInfo.groupName}
+              </p>
+            </div>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   )
