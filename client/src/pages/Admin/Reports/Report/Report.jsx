@@ -1,5 +1,5 @@
 import './report.scss'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import NavBar from '../../../../components/NavBar/NavBar'
 import Avatar from '../../../../components/UI/Avatar/Avatar'
 import { useState } from 'react'
@@ -69,24 +69,34 @@ export default function Report() {
           </div>
         </div>
 
-        <div className="report-box control-panel__card">
-          <p className="report-box__heading fw-bold">User Details</p>
-          <div className="report-box__user-details report-box__details">
-            <Avatar size={64} src={senderInfo.profilePicUrl} />
-            <p>
-              <span className="fw-bold">Id: </span>
-              {senderInfo.id}
-            </p>
-            <p>
-              <span className="fw-bold">Full name: </span>
-              <span>{`${senderInfo.firstName} ${senderInfo.lastName}`}</span>
-            </p>
-            <p>
-              <span className="fw-bold">Username: </span>
-              {senderInfo.username}
-            </p>
+        <Link
+          to={`/profile/${senderInfo.id}`}
+          style={{
+            textDecoration: 'none',
+            color: 'var(--clr-neutral-900)',
+            display: 'block',
+            width: '100%',
+          }}
+        >
+          <div className="report-box control-panel__card">
+            <p className="report-box__heading fw-bold">User Details</p>
+            <div className="report-box__user-details report-box__details">
+              <Avatar size={64} src={senderInfo.profilePicUrl} />
+              <p>
+                <span className="fw-bold">Id: </span>
+                {senderInfo.id}
+              </p>
+              <p>
+                <span className="fw-bold">Full name: </span>
+                <span>{`${senderInfo.firstName} ${senderInfo.lastName}`}</span>
+              </p>
+              <p>
+                <span className="fw-bold">Username: </span>
+                {senderInfo.username}
+              </p>
+            </div>
           </div>
-        </div>
+        </Link>
 
         <div className="report-box control-panel__card">
           <p className="report-box__heading fw-bold">Group Details</p>

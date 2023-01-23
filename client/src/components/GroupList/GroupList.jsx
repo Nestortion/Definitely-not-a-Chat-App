@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { MdSettings } from 'react-icons/md'
+import { MdArrowForwardIos } from 'react-icons/md'
+import { Link } from 'react-router-dom'
 import { apiBasePath } from '../../data/config'
 import { useGroupMembersQuery } from '../../graphql/hooks/graphql'
 import ErrorText from '../Error/ErrorText'
@@ -37,7 +38,7 @@ export default function GroupList({ id, groupName, profilePicUrl, isGroup }) {
         <span>{id}</span>
         <span className="group-list__group-name">{groupName}</span>
         <span>
-          <MdSettings />
+          <MdArrowForwardIos />
         </span>
       </div>
       {shouldShowMembers && (
@@ -50,16 +51,24 @@ export default function GroupList({ id, groupName, profilePicUrl, isGroup }) {
           <div className="group-list__member-list">
             {groupMembers.groupMembers.length === 0 ? <p>No Members</p> : ''}
             {groupMembers.groupMembers.map((member) => (
-              <div
+              <Link
+                to={`/profile/${member.id}`}
                 key={member.id}
-                className="group-list__member control-panel__card"
+                style={{
+                  textDecoration: 'none',
+                  color: 'var(--clr-neutral-900)',
+                  display: 'block',
+                  width: '100%',
+                }}
               >
-                <Avatar
-                  size={24}
-                  src={`${apiBasePath}/pfp/${member.profile_img}`}
-                />
-                <span>{`${member.first_name} ${member.last_name}`}</span>
-              </div>
+                <div className="group-list__member control-panel__card">
+                  <Avatar
+                    size={24}
+                    src={`${apiBasePath}/pfp/${member.profile_img}`}
+                  />
+                  <span>{`${member.first_name} ${member.last_name}`}</span>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
