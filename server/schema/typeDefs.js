@@ -91,7 +91,6 @@ const typeDefs = `
     user_id: Int!
     action_description: String!
     full_name: String!
-    section: String!
     createdAt: DateTime!
   }
 
