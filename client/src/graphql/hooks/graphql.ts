@@ -133,6 +133,7 @@ export type Mutation = {
   removeMember?: Maybe<User>
   revokeRefreshToken?: Maybe<Scalars['Boolean']>
   submitReport?: Maybe<Report>
+  toggleUserStatus?: Maybe<Scalars['Boolean']>
   updateGroup?: Maybe<Group>
   updateGroupRoles?: Maybe<Array<Maybe<GroupRole>>>
   updateReportStatus?: Maybe<Report>
@@ -201,6 +202,11 @@ export type MutationRevokeRefreshTokenArgs = {
 export type MutationSubmitReportArgs = {
   group_id?: InputMaybe<Scalars['Int']>
   reasons?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
+}
+
+export type MutationToggleUserStatusArgs = {
+  user_id?: InputMaybe<Scalars['Int']>
+  user_status?: InputMaybe<Scalars['Boolean']>
 }
 
 export type MutationUpdateGroupArgs = {
@@ -1181,6 +1187,16 @@ export type SystemStatsQuery = {
     userChatsCount?: number | null
     pendingReportCount?: number | null
   } | null
+}
+
+export type ToggleUserStatusMutationVariables = Exact<{
+  userId?: InputMaybe<Scalars['Int']>
+  userStatus?: InputMaybe<Scalars['Boolean']>
+}>
+
+export type ToggleUserStatusMutation = {
+  __typename?: 'Mutation'
+  toggleUserStatus?: boolean | null
 }
 
 export type UpdateGroupMutationVariables = Exact<{
@@ -3386,6 +3402,55 @@ export type SystemStatsLazyQueryHookResult = ReturnType<
 export type SystemStatsQueryResult = Apollo.QueryResult<
   SystemStatsQuery,
   SystemStatsQueryVariables
+>
+export const ToggleUserStatusDocument = gql`
+  mutation ToggleUserStatus($userId: Int, $userStatus: Boolean) {
+    toggleUserStatus(user_id: $userId, user_status: $userStatus)
+  }
+`
+export type ToggleUserStatusMutationFn = Apollo.MutationFunction<
+  ToggleUserStatusMutation,
+  ToggleUserStatusMutationVariables
+>
+
+/**
+ * __useToggleUserStatusMutation__
+ *
+ * To run a mutation, you first call `useToggleUserStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToggleUserStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toggleUserStatusMutation, { data, loading, error }] = useToggleUserStatusMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      userStatus: // value for 'userStatus'
+ *   },
+ * });
+ */
+export function useToggleUserStatusMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ToggleUserStatusMutation,
+    ToggleUserStatusMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    ToggleUserStatusMutation,
+    ToggleUserStatusMutationVariables
+  >(ToggleUserStatusDocument, options)
+}
+export type ToggleUserStatusMutationHookResult = ReturnType<
+  typeof useToggleUserStatusMutation
+>
+export type ToggleUserStatusMutationResult =
+  Apollo.MutationResult<ToggleUserStatusMutation>
+export type ToggleUserStatusMutationOptions = Apollo.BaseMutationOptions<
+  ToggleUserStatusMutation,
+  ToggleUserStatusMutationVariables
 >
 export const UpdateGroupDocument = gql`
   mutation UpdateGroup(

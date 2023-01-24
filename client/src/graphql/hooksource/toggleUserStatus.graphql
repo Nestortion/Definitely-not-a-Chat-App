@@ -1,0 +1,3 @@
+mutation ToggleUserStatus($userId: Int, $userStatus: Boolean) {
+  toggleUserStatus(user_id: $userId, user_status: $userStatus)
+}
