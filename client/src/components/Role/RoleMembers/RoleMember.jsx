@@ -57,6 +57,8 @@ export default function RoleMember({
       variables: { user: user.id },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev
+
+        if (subscriptionData.data.memberRolesUpdated.user.id !== id) return prev
         return {
           userGroupRoles: [
             ...subscriptionData.data.memberRolesUpdated.roles_ids,
