@@ -102,6 +102,8 @@ const typeDefs = `
     report_reason: String!
     is_resolved: Boolean!
     createdAt: DateTime!
+    remarks: String
+    date_resolved: DateTime
   }
 
   type AccessToken{
@@ -157,15 +159,18 @@ const typeDefs = `
     userChatsCount: Int
   }
 
-  type updateUserGroupRolesResponse{
+  type UpdateUserGroupRolesResponse{
     newRoles: [String]
     user: User
     group_id: Int
     roles_ids: [Int]
   }
 
-
-
+  type ReportResponse{
+    report: Report
+    sender: User
+    chat_reported: Group
+  }
 
   input RolesToEdit{
     id: Int
@@ -202,6 +207,7 @@ const typeDefs = `
     groupRolesList(group_id: Int): [GroupRole]
     userGroupRoles(user_id:Int ,group_id:Int): [Int]
     reports: [Report]
+    report(report_id: Int): ReportResponse
   }
 
   
@@ -222,7 +228,7 @@ const typeDefs = `
     createGroup(user_id: [Int!]): Group
     updateUserProfile(username: String, age: Int, gender: String, section: String, address: String, profile_img: Upload, new_password: String, current_confirmation: String): User
     updateGroupRoles(roles_to_edit: [RolesToEdit], roles_to_delete: [Int], group_id: Int): [GroupRole]
-    updateUserGroupRoles(roles: [String], group_id: Int, user_id: Int, roles_ids: [Int]): updateUserGroupRolesResponse
+    updateUserGroupRoles(roles: [String], group_id: Int, user_id: Int, roles_ids: [Int]): UpdateUserGroupRolesResponse
     submitReport(group_id: Int, reasons: [String]): Report 
   }
 
@@ -235,7 +241,7 @@ const typeDefs = `
     memberAdded(user: Int, group_id: Int): MemberAddedResponse
     memberRemoved(user: Int, group_id: Int): MemberRemovedResponse
     groupRolesUpdated(user: Int, group_id: Int): GroupRolesUpdatedResponse
-    memberRolesUpdated(user:Int, group_id: Int) : updateUserGroupRolesResponse
+    memberRolesUpdated(user:Int, group_id: Int) : UpdateUserGroupRolesResponse
   }
 
 `
