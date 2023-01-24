@@ -1,55 +1,34 @@
-import { useState } from 'react'
 import LogEntry from '../../../components/LogEntry/LogEntry'
 import './user-logs.scss'
+import LoadingSpinner from '../../../components/Loading/LoadingSpinner/LoadingSpinner'
+import ErrorText from '../../../components/Error/ErrorText'
+import { useUserLogsQuery } from '../../../graphql/hooks/graphql'
 
 export default function UserLogs() {
-  const [logs, setLogs] = useState([
-    {
-      id: 1,
-      fullName: 'Nestor Gerona',
-      section: 'BSIT 4-1',
-      actionDescription: 'Added John Doe to clueluljohndoelodin',
-      createdAt: '2023-01-02 11:14:48',
-      userId: '1',
-    },
-    {
-      id: 2,
-      fullName: 'Nestor Gerona',
-      section: 'BSIT 4-1',
-      actionDescription: 'Has logged in',
-      createdAt: '2023-01-02 11:13:48',
-      userId: '1',
-    },
-    {
-      id: 3,
-      fullName: 'Nestor Gerona',
-      section: 'BSIT 4-1',
-      actionDescription: 'Has logged out',
-      createdAt: '2023-01-02 11:12:48',
-      userId: '1',
-    },
-    {
-      id: 4,
-      fullName: 'Nestor Gerona',
-      section: 'BSIT 4-1',
-      actionDescription: 'Has logged in',
-      createdAt: '2023-01-02 11:11:48',
-      userId: '1',
-    },
-  ])
+  const {
+    data: userLogs,
+    loading: userLogsLoading,
+    error: userLogsError,
+  } = useUserLogsQuery()
+
+  if (userLogsLoading) return <LoadingSpinner />
+  if (userLogsError) return <ErrorText>Something went wrong</ErrorText>
 
   return (
     <div className="user-logs">
       <p className="user-logs__heading fw-bold">User Logs</p>
       <div className="user-logs-container control-panel__card">
-        {logs.map((log) => (
+        {userLogs.userLogs.map((log) => (
           <LogEntry
             key={log.id}
-            createdAt={log.createdAt}
-            actionDescription={log.actionDescription}
-            fullName={log.fullName}
+            createdAt={Intl.DateTimeFormat('en-US', {
+              dateStyle: 'medium',
+              timeStyle: 'short',
+            }).format(new Date(log.createdAt))}
+            actionDescription={log.action_description}
+            fullName={log.full_name}
             section={log.section}
-            userId={log.userId}
+            userId={log.user_id}
           />
         ))}
       </div>
