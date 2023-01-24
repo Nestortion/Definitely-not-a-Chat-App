@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Button from '../../../components/UI/Button/Button'
 import './register.scss'
+import { useAddUserMutation } from '../../../graphql/hooks/graphql'
 
 export default function Register() {
   const [userData, setUserData] = useState({
@@ -12,7 +13,9 @@ export default function Register() {
     section: '',
     address: '',
     accessLevel: 'USER',
+    password: '',
   })
+  const [register] = useAddUserMutation()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -30,10 +33,11 @@ export default function Register() {
       section: '',
       address: '',
       accessLevel: 'USER',
+      password: '',
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     // Check if there are falsy values (e.g. '' or null)
     if (Object.values(userData).some((el) => el == false)) return
 
@@ -41,6 +45,27 @@ export default function Register() {
 
     console.log(userData)
 
+    const registerRes = await register({
+      variables: {
+        userData: {
+          access_level: userData.accessLevel,
+          username: userData.username,
+          first_name: userData.firstName,
+          last_name: userData.lastName,
+          age: parseInt(userData.age),
+          address: userData.address,
+          section: userData.section,
+          gender: userData.gender,
+          password: userData.password,
+        },
+      },
+    })
+
+    if (registerRes.data.addUser.registered === false) {
+      alert('Current User is not an Admin')
+    }
+
+    alert('User Sucessfully Registered')
     handleReset()
   }
 
@@ -84,6 +109,18 @@ export default function Register() {
             type="text"
             id="username"
             name="username"
+            required
+          />
+        </div>
+
+        <div className="register__input-control">
+          <label htmlFor="password">Password: </label>
+          <input
+            onChange={handleChange}
+            value={userData.password}
+            type="password"
+            id="password"
+            name="password"
             required
           />
         </div>
