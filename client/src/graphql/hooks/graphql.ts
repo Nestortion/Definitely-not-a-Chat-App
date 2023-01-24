@@ -257,6 +257,7 @@ export type Query = {
   latestChats?: Maybe<Array<Maybe<UserChat>>>
   otherUser?: Maybe<User>
   report?: Maybe<ReportResponse>
+  reportedChat?: Maybe<ReportedChatDetails>
   reports?: Maybe<Array<Maybe<Report>>>
   systemStats?: Maybe<SystemStats>
   user?: Maybe<User>
@@ -310,6 +311,10 @@ export type QueryReportArgs = {
   report_id?: InputMaybe<Scalars['Int']>
 }
 
+export type QueryReportedChatArgs = {
+  group_id: Scalars['Int']
+}
+
 export type QueryUserChatArgs = {
   id: Scalars['Int']
 }
@@ -361,6 +366,19 @@ export type ReportResponse = {
   chat_reported?: Maybe<Group>
   report?: Maybe<Report>
   sender?: Maybe<User>
+}
+
+export type ReportedChatDetails = {
+  __typename?: 'ReportedChatDetails'
+  allMembers?: Maybe<Array<Maybe<User>>>
+  group_data?: Maybe<Group>
+  roleMembers?: Maybe<Array<Maybe<RoleMembers>>>
+}
+
+export type RoleMembers = {
+  __typename?: 'RoleMembers'
+  members?: Maybe<Array<Maybe<User>>>
+  role?: Maybe<GroupRole>
 }
 
 export enum RoleType {
@@ -1057,6 +1075,51 @@ export type ReportQuery = {
       group_name: string
       is_group: string
     } | null
+  } | null
+}
+
+export type ReportedChatQueryVariables = Exact<{
+  groupId: Scalars['Int']
+}>
+
+export type ReportedChatQuery = {
+  __typename?: 'Query'
+  reportedChat?: {
+    __typename?: 'ReportedChatDetails'
+    group_data?: {
+      __typename?: 'Group'
+      id: number
+      group_name: string
+      group_picture: string
+      is_group: string
+    } | null
+    allMembers?: Array<{
+      __typename?: 'User'
+      id: number
+      username: string
+      first_name: string
+      last_name: string
+      profile_img: string
+    } | null> | null
+    roleMembers?: Array<{
+      __typename?: 'RoleMembers'
+      role?: {
+        __typename?: 'GroupRole'
+        id: number
+        role_name: string
+        group_id: string
+        role_type: RoleType
+        is_default: boolean
+      } | null
+      members?: Array<{
+        __typename?: 'User'
+        id: number
+        username: string
+        first_name: string
+        last_name: string
+        profile_img: string
+      } | null> | null
+    } | null> | null
   } | null
 }
 
@@ -3007,6 +3070,92 @@ export type ReportLazyQueryHookResult = ReturnType<typeof useReportLazyQuery>
 export type ReportQueryResult = Apollo.QueryResult<
   ReportQuery,
   ReportQueryVariables
+>
+export const ReportedChatDocument = gql`
+  query ReportedChat($groupId: Int!) {
+    reportedChat(group_id: $groupId) {
+      group_data {
+        id
+        group_name
+        group_picture
+        is_group
+      }
+      allMembers {
+        id
+        username
+        first_name
+        last_name
+        profile_img
+      }
+      roleMembers {
+        role {
+          id
+          role_name
+          group_id
+          role_type
+          is_default
+        }
+        members {
+          id
+          username
+          first_name
+          last_name
+          profile_img
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useReportedChatQuery__
+ *
+ * To run a query within a React component, call `useReportedChatQuery` and pass it any options that fit your needs.
+ * When your component renders, `useReportedChatQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useReportedChatQuery({
+ *   variables: {
+ *      groupId: // value for 'groupId'
+ *   },
+ * });
+ */
+export function useReportedChatQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    ReportedChatQuery,
+    ReportedChatQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<ReportedChatQuery, ReportedChatQueryVariables>(
+    ReportedChatDocument,
+    options
+  )
+}
+export function useReportedChatLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ReportedChatQuery,
+    ReportedChatQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<ReportedChatQuery, ReportedChatQueryVariables>(
+    ReportedChatDocument,
+    options
+  )
+}
+export type ReportedChatQueryHookResult = ReturnType<
+  typeof useReportedChatQuery
+>
+export type ReportedChatLazyQueryHookResult = ReturnType<
+  typeof useReportedChatLazyQuery
+>
+export type ReportedChatQueryResult = Apollo.QueryResult<
+  ReportedChatQuery,
+  ReportedChatQueryVariables
 >
 export const ReportsDocument = gql`
   query Reports {
