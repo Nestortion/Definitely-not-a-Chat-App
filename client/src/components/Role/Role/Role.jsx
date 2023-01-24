@@ -119,6 +119,7 @@ export default function Role({
           <div className="role__role-members">
             {members.userRoles.map((member, index) => (
               <RoleMember
+                roleName={name}
                 userRoles={userRoles}
                 key={index}
                 user={user}

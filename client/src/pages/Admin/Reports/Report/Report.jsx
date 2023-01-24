@@ -1,11 +1,7 @@
 import './report.scss'
 import { Link, useParams } from 'react-router-dom'
 import Avatar from '../../../../components/UI/Avatar/Avatar'
-import { useEffect, useState } from 'react'
-import { useReportQuery } from '../../../../graphql/hooks/graphql'
-import LoadingSpinner from '../../../../components/Loading/LoadingSpinner/LoadingSpinner'
-import ErrorText from '../../../../components/Error/ErrorText'
-import { apiBasePath } from '../../../../data/config'
+import { useState } from 'react'
 
 export default function Report() {
   const { reportId } = useParams()
@@ -29,12 +25,6 @@ export default function Report() {
     setCurrentStatus(e.target.value)
   }
 
-  const convertMessageDate = new Date(
-    report.report.report.is_resolved
-      ? report.report.report.date_resolved
-      : report.report.report.createdAt
-  )
-
   return (
     <div className="report">
       <div className="report-box__container">
@@ -57,34 +47,6 @@ export default function Report() {
               <span className="fw-bold">Reasons: </span>
               <span>{report.report.report.report_reason}</span>
             </p>
-            {report.report.report.is_resolved ? (
-              <>
-                <p>
-                  <span className="fw-bold">Date Resolved: </span>
-                  <span>
-                    {Intl.DateTimeFormat('en-US', {
-                      dateStyle: 'medium',
-                      timeStyle: 'short',
-                    }).format(convertMessageDate)}
-                  </span>
-                </p>
-                <p>
-                  <span className="fw-bold">Remarks: </span>
-                  <span>{report.report.report.remarks}</span>
-                </p>
-              </>
-            ) : (
-              <p>
-                <span className="fw-bold">Date Issued: </span>
-                <span>
-                  {Intl.DateTimeFormat('en-US', {
-                    dateStyle: 'medium',
-                    timeStyle: 'short',
-                  }).format(convertMessageDate)}
-                </span>
-              </p>
-            )}
-
             <p>
               <span className="fw-bold">Status: </span>
               <select value={currentStatus} onChange={handleChange}>

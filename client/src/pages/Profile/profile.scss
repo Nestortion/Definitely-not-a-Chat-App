@@ -32,6 +32,12 @@
       font-size: clamp(0.8rem, 2vw, 1.5rem);
     }
   }
+
+  .profile__button-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .profile-not-found__container {
