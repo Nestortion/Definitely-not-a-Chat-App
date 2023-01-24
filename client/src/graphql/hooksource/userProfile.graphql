@@ -7,5 +7,6 @@ query UserProfile($userProfileId: Int!) {
     last_name
     profile_img
     section
+    disabled
   }
 }

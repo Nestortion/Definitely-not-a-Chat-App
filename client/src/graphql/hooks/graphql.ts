@@ -473,6 +473,7 @@ export type User = {
   access_level: AccessLevel
   address: Scalars['String']
   age: Scalars['Int']
+  disabled: Scalars['Boolean']
   first_name: Scalars['String']
   gender: Scalars['String']
   id: Scalars['Int']
@@ -1388,6 +1389,7 @@ export type UserProfileQuery = {
     last_name: string
     profile_img: string
     section: string
+    disabled: boolean
   } | null
 }
 
@@ -4019,6 +4021,7 @@ export const UserProfileDocument = gql`
       last_name
       profile_img
       section
+      disabled
     }
   }
 `
