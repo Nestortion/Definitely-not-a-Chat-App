@@ -3,7 +3,10 @@ import Avatar from '../UI/Avatar/Avatar'
 import { NavLink } from 'react-router-dom'
 import { apiBasePath } from '../../data/config'
 import { useMediaQuery } from 'react-responsive'
-import { useOtherUserQuery } from '../../graphql/hooks/graphql'
+import {
+  useOtherUserQuery,
+  useUserChatSenderQuery,
+} from '../../graphql/hooks/graphql'
 import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../Error/ErrorText'
 
@@ -21,6 +24,14 @@ export default function ChatListItem({
     error: otherUserError,
   } = useOtherUserQuery({ variables: { groupId: parseInt(chatId) } })
 
+  const {
+    data: sender,
+    loading: senderLoading,
+    error: senderError,
+  } = useUserChatSenderQuery({
+    variables: { userId: latest[0].user_id },
+  })
+
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
 
   const handleClick = () => {
@@ -31,11 +42,11 @@ export default function ChatListItem({
 
   const displayLatest = (message) => {
     if (message.message_type === 'IMAGE') {
-      return 'Sent an image'
+      return `${sender.userChatSender.first_name} sent an image`
     } else if (message.message_type === 'OTHER') {
-      return 'Sent a file'
+      return `${sender.userChatSender.first_name} sent a file`
     } else {
-      return `${message.message}`
+      return `${sender.userChatSender.first_name}: ${message.message}`
     }
   }
 
@@ -63,6 +74,8 @@ export default function ChatListItem({
     }
   }
 
+  if (senderLoading) return <LoadingSpinner />
+  if (senderError) return <ErrorText>Something went wrong</ErrorText>
   if (otherUserLoading) return <LoadingSpinner />
   if (otherUserError)
     return (
