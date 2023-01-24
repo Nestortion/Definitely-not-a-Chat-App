@@ -6,6 +6,8 @@ import { useMediaQuery } from 'react-responsive'
 import { useOtherUserQuery } from '../../graphql/hooks/graphql'
 import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../Error/ErrorText'
+import { useAtom } from 'jotai'
+import { searchInput } from '../../App'
 
 export default function ChatListItem({
   chatId,
@@ -15,6 +17,8 @@ export default function ChatListItem({
   isGroup,
   latest,
 }) {
+  const [searchWord] = useAtom(searchInput) // string from search word component
+
   const {
     data: otherUser,
     loading: otherUserLoading,
@@ -66,8 +70,13 @@ export default function ChatListItem({
   if (otherUserLoading) return <LoadingSpinner />
   if (otherUserError)
     return (
-      <div className="chat-list-item">
-        <span>You are removed from this group</span>
+      <div className="chat-list-item chat-list-item__error">
+        <div className="chat-list-item-left">
+          <Avatar src={`${apiBasePath}/grouppfp/default-icon.png`} size="40" />
+        </div>
+        <div className="chat-list-item-right">
+          <span>You are removed from this group</span>
+        </div>
       </div>
     )
 
