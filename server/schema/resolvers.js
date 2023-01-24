@@ -959,11 +959,32 @@ const resolvers = {
     removeMember: async (_, { group_id, user_id }, context) => {
       const { pubsub, data: user } = authMiddleware(context)
 
-      await UserGroups.destroy({ where: { group_id, user_id } })
+      const userGroup = await UserGroups.findOne({
+        where: { group_id, user_id },
+      })
+
+      const userGroupRoles = await UserGroupRoles.findAll({
+        where: { user_group_id: userGroup.id },
+      })
+
+      const groupRoles = (
+        await GroupRoles.findAll({
+          where: {
+            id: userGroupRoles.map(
+              (usergrouprole) => usergrouprole.group_role_id
+            ),
+          },
+        })
+      ).map((role) => role.role_name)
+
+      if (groupRoles.includes('Group Creator')) return null
 
       const removedUser = await Users.findOne({ where: { id: user_id } })
+
       const group = await Groups.findOne({ where: { id: group_id } })
       const blame = await Users.findOne({ where: { id: user.user_id } })
+
+      await UserGroups.destroy({ where: { group_id, user_id } })
 
       await UserLogs.create({
         full_name: `${blame.first_name} ${blame.last_name}`,
