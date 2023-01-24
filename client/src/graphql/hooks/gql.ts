@@ -45,7 +45,7 @@ const documents = {
     "query ReportedChat($groupId: Int!) {\n  reportedChat(group_id: $groupId) {\n    group_data {\n      id\n      group_name\n      group_picture\n      is_group\n    }\n    allMembers {\n      id\n      username\n      first_name\n      last_name\n      profile_img\n    }\n    roleMembers {\n      role {\n        id\n        role_name\n        group_id\n        role_type\n        is_default\n      }\n      members {\n        id\n        username\n        first_name\n        last_name\n        profile_img\n      }\n    }\n  }\n}": types.ReportedChatDocument,
     "query Reports {\n  reports {\n    id\n    user_id\n    group_id\n    report_reason\n    is_resolved\n    createdAt\n  }\n}": types.ReportsDocument,
     "mutation SubmitReport($groupId: Int, $reasons: [String]) {\n  submitReport(group_id: $groupId, reasons: $reasons) {\n    id\n    user_id\n    group_id\n    report_reason\n    is_resolved\n    createdAt\n  }\n}": types.SubmitReportDocument,
-    "query SystemStats {\n  systemStats {\n    userCount\n    groupCount\n    userChatsCount\n  }\n}": types.SystemStatsDocument,
+    "query SystemStats {\n  systemStats {\n    userCount\n    groupCount\n    userChatsCount\n    pendingReportCount\n  }\n}": types.SystemStatsDocument,
     "mutation UpdateGroup($groupName: String, $groupId: Int, $groupPicture: Upload) {\n  updateGroup(\n    group_name: $groupName\n    group_id: $groupId\n    group_picture: $groupPicture\n  ) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}": types.UpdateGroupDocument,
     "mutation UpdateGroupRoles($rolesToEdit: [RolesToEdit], $rolesToDelete: [Int], $groupId: Int) {\n  updateGroupRoles(\n    roles_to_edit: $rolesToEdit\n    roles_to_delete: $rolesToDelete\n    group_id: $groupId\n  ) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n    is_default\n  }\n}": types.UpdateGroupRolesDocument,
     "mutation UpdateUserGroupRoles($roles: [String], $groupId: Int, $userId: Int, $rolesIds: [Int]) {\n  updateUserGroupRoles(\n    roles: $roles\n    group_id: $groupId\n    user_id: $userId\n    roles_ids: $rolesIds\n  ) {\n    newRoles\n    user {\n      id\n      username\n      first_name\n      last_name\n      profile_img\n    }\n  }\n}": types.UpdateUserGroupRolesDocument,
@@ -190,7 +190,7 @@ export function graphql(source: "mutation SubmitReport($groupId: Int, $reasons: 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "query SystemStats {\n  systemStats {\n    userCount\n    groupCount\n    userChatsCount\n  }\n}"): (typeof documents)["query SystemStats {\n  systemStats {\n    userCount\n    groupCount\n    userChatsCount\n  }\n}"];
+export function graphql(source: "query SystemStats {\n  systemStats {\n    userCount\n    groupCount\n    userChatsCount\n    pendingReportCount\n  }\n}"): (typeof documents)["query SystemStats {\n  systemStats {\n    userCount\n    groupCount\n    userChatsCount\n    pendingReportCount\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

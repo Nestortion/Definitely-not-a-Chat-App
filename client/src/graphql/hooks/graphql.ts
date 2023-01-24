@@ -441,6 +441,7 @@ export type SubscriptionMemberRolesUpdatedArgs = {
 export type SystemStats = {
   __typename?: 'SystemStats'
   groupCount?: Maybe<Scalars['Int']>
+  pendingReportCount?: Maybe<Scalars['Int']>
   userChatsCount?: Maybe<Scalars['Int']>
   userCount?: Maybe<Scalars['Int']>
 }
@@ -1167,6 +1168,7 @@ export type SystemStatsQuery = {
     userCount?: number | null
     groupCount?: number | null
     userChatsCount?: number | null
+    pendingReportCount?: number | null
   } | null
 }
 
@@ -3271,6 +3273,7 @@ export const SystemStatsDocument = gql`
       userCount
       groupCount
       userChatsCount
+      pendingReportCount
     }
   }
 `
