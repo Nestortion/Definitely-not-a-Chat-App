@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import ErrorText from '../../components/Error/ErrorText'
 import LoadingSpinner from '../../components/Loading/LoadingSpinner/LoadingSpinner'
 import Avatar from '../../components/UI/Avatar/Avatar'
@@ -6,12 +6,14 @@ import Button from '../../components/UI/Button/Button'
 import { apiBasePath } from '../../data/config'
 import {
   useCurrentUserQuery,
+  useToggleUserStatusMutation,
   useUserProfileQuery,
 } from '../../graphql/hooks/graphql'
 import './profile.scss'
 import { MdWarning } from 'react-icons/md'
 
 export default function Profile() {
+  const navigate = useNavigate()
   const {
     data: currentUser,
     loading: currentUserLoading,
@@ -23,6 +25,7 @@ export default function Profile() {
     loading: profileLoading,
     error: profileError,
   } = useUserProfileQuery({ variables: { userProfileId: parseInt(profileId) } })
+  const [toggleUserStatus] = useToggleUserStatusMutation()
 
   if (currentUserLoading) return <LoadingSpinner />
   if (currentUserError) return <ErrorText />
@@ -37,8 +40,19 @@ export default function Profile() {
     )
   }
 
-  const handleSave = (e) => {
-    console.log(profileData.userProfile.disabled)
+  const handleSave = async (e) => {
+    const toggleRes = await toggleUserStatus({
+      variables: {
+        userId: parseInt(profileId),
+        userStatus: !profileData.userProfile.disabled,
+      },
+    })
+
+    if (toggleRes.data.toggleUserStatus === null) {
+      alert('Current User is not an Admin!')
+      return
+    }
+    navigate(0)
   }
 
   return (
@@ -64,7 +78,11 @@ export default function Profile() {
       {currentUser.currentUser.access_level === 'ADMIN' &&
         currentUser.currentUser.id !== +profileId && (
           <div className="profile__button-group">
-            <Button onClick={handleSave} secondary>
+            <Button
+              onClick={handleSave}
+              secondary={!profileData.userProfile.disabled ? 1 : 0}
+              primary={profileData.userProfile.disabled ? 1 : 0}
+            >
               <MdWarning />
               {profileData.userProfile.disabled
                 ? 'Enable User'
