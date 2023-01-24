@@ -510,6 +510,7 @@ export type UserLog = {
   createdAt: Scalars['DateTime']
   full_name: Scalars['String']
   id: Scalars['Int']
+  section?: Maybe<Scalars['String']>
   user_id: Scalars['Int']
 }
 
@@ -1365,6 +1366,21 @@ export type UserGroupRolesQueryVariables = Exact<{
 export type UserGroupRolesQuery = {
   __typename?: 'Query'
   userGroupRoles?: Array<number | null> | null
+}
+
+export type UserLogsQueryVariables = Exact<{ [key: string]: never }>
+
+export type UserLogsQuery = {
+  __typename?: 'Query'
+  userLogs?: Array<{
+    __typename?: 'UserLog'
+    id: number
+    user_id: number
+    action_description: string
+    full_name: string
+    createdAt: any
+    section?: string | null
+  } | null> | null
 }
 
 export type UserProfileQueryVariables = Exact<{
@@ -3986,6 +4002,63 @@ export type UserGroupRolesLazyQueryHookResult = ReturnType<
 export type UserGroupRolesQueryResult = Apollo.QueryResult<
   UserGroupRolesQuery,
   UserGroupRolesQueryVariables
+>
+export const UserLogsDocument = gql`
+  query UserLogs {
+    userLogs {
+      id
+      user_id
+      action_description
+      full_name
+      createdAt
+      section
+    }
+  }
+`
+
+/**
+ * __useUserLogsQuery__
+ *
+ * To run a query within a React component, call `useUserLogsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserLogsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserLogsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserLogsQuery(
+  baseOptions?: Apollo.QueryHookOptions<UserLogsQuery, UserLogsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<UserLogsQuery, UserLogsQueryVariables>(
+    UserLogsDocument,
+    options
+  )
+}
+export function useUserLogsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    UserLogsQuery,
+    UserLogsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<UserLogsQuery, UserLogsQueryVariables>(
+    UserLogsDocument,
+    options
+  )
+}
+export type UserLogsQueryHookResult = ReturnType<typeof useUserLogsQuery>
+export type UserLogsLazyQueryHookResult = ReturnType<
+  typeof useUserLogsLazyQuery
+>
+export type UserLogsQueryResult = Apollo.QueryResult<
+  UserLogsQuery,
+  UserLogsQueryVariables
 >
 export const UserProfileDocument = gql`
   query UserProfile($userProfileId: Int!) {
