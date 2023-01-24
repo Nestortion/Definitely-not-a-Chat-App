@@ -12,6 +12,7 @@ Definitely Not A Chat App is a chat application system for Polytechnic Universit
 - [How to setup and run application](#how-to-setup-and-run-application)
   - [Prerequisites](#prerequisites)
   - [How to develop and run locally](#how-to-develop-and-run-locally)
+- [Contributors](#contributors)
 
 ## Features
 
