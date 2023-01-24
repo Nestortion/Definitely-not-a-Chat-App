@@ -1,39 +1,39 @@
 import './report.scss'
 import { Link, useParams } from 'react-router-dom'
-import NavBar from '../../../../components/NavBar/NavBar'
 import Avatar from '../../../../components/UI/Avatar/Avatar'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useReportQuery } from '../../../../graphql/hooks/graphql'
+import LoadingSpinner from '../../../../components/Loading/LoadingSpinner/LoadingSpinner'
+import ErrorText from '../../../../components/Error/ErrorText'
+import { apiBasePath } from '../../../../data/config'
 
 export default function Report() {
   const { reportId } = useParams()
 
-  const reportDetails = {
-    id: reportId,
-    senderUserId: 1,
-    reportedGroupId: 69,
-    reportReasons: ['Sharing inappropriate things', 'Hate speech', 'Scam'],
-    resolved: false,
-  }
+  const {
+    data: report,
+    loading: reportLoading,
+    error: reportError,
+  } = useReportQuery({ variables: { reportId: parseInt(reportId) } })
 
-  const senderInfo = {
-    id: 1,
-    firstName: 'John',
-    lastName: 'Doe',
-    username: 'johndoe',
-    profilePicUrl: 'http://localhost:4000/pfp/amogusz.jpg',
-  }
+  const [currentStatus, setCurrentStatus] = useState(false)
 
-  const reportedGroupInfo = {
-    id: 69,
-    groupName: 'Gamers',
-    profilePicUrl: 'http://localhost:4000/grouppfp/default-icon.png',
-  }
+  useEffect(() => {
+    setCurrentStatus(report?.report?.report.is_resolved)
+  }, [report])
 
-  const [currentStatus, setCurrentStatus] = useState(reportDetails.resolved)
+  if (reportLoading) return <LoadingSpinner />
+  if (reportError) return <ErrorText>Something went wrong</ErrorText>
 
   const handleChange = (e) => {
     setCurrentStatus(e.target.value)
   }
+
+  const convertMessageDate = new Date(
+    report.report.report.is_resolved
+      ? report.report.report.date_resolved
+      : report.report.report.createdAt
+  )
 
   return (
     <div className="report">
@@ -43,22 +43,48 @@ export default function Report() {
           <div className="report-box__details">
             <p>
               <span className="fw-bold">Report Id: </span>
-              <span>{reportDetails.id}</span>
+              <span>{report.report.report.id}</span>
             </p>
             <p>
               <span className="fw-bold">Reporter: </span>
-              <span>{`${senderInfo.firstName} ${senderInfo.lastName}`}</span>
+              <span>{`${report.report.sender.first_name} ${report.report.sender.last_name}`}</span>
             </p>
             <p>
               <span className="fw-bold">Reportee: </span>
-              <span>{reportedGroupInfo.groupName}</span>
+              <span>{report.report.chat_reported.group_name}</span>
             </p>
             <p>
               <span className="fw-bold">Reasons: </span>
-              <span>
-                {reportDetails.reportReasons.toString().replace(/,/g, ', ')}
-              </span>
+              <span>{report.report.report.report_reason}</span>
             </p>
+            {report.report.report.is_resolved ? (
+              <>
+                <p>
+                  <span className="fw-bold">Date Resolved: </span>
+                  <span>
+                    {Intl.DateTimeFormat('en-US', {
+                      dateStyle: 'medium',
+                      timeStyle: 'short',
+                    }).format(convertMessageDate)}
+                  </span>
+                </p>
+                <p>
+                  <span className="fw-bold">Remarks: </span>
+                  <span>{report.report.report.remarks}</span>
+                </p>
+              </>
+            ) : (
+              <p>
+                <span className="fw-bold">Date Issued: </span>
+                <span>
+                  {Intl.DateTimeFormat('en-US', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short',
+                  }).format(convertMessageDate)}
+                </span>
+              </p>
+            )}
+
             <p>
               <span className="fw-bold">Status: </span>
               <select value={currentStatus} onChange={handleChange}>
@@ -70,7 +96,7 @@ export default function Report() {
         </div>
 
         <Link
-          to={`/profile/${senderInfo.id}`}
+          to={`/profile/${report.report.sender.id}`}
           style={{
             textDecoration: 'none',
             color: 'var(--clr-neutral-900)',
@@ -81,25 +107,28 @@ export default function Report() {
           <div className="report-box hoverable  control-panel__card">
             <p className="report-box__heading fw-bold">User Details</p>
             <div className="report-box__user-details report-box__details">
-              <Avatar size={64} src={senderInfo.profilePicUrl} />
+              <Avatar
+                size={64}
+                src={`${apiBasePath}/pfp/${report.report.sender.profile_img}`}
+              />
               <p>
                 <span className="fw-bold">Id: </span>
-                {senderInfo.id}
+                {report.report.sender.id}
               </p>
               <p>
                 <span className="fw-bold">Full name: </span>
-                <span>{`${senderInfo.firstName} ${senderInfo.lastName}`}</span>
+                <span>{`${report.report.sender.first_name} ${report.report.sender.last_name}`}</span>
               </p>
               <p>
                 <span className="fw-bold">Username: </span>
-                {senderInfo.username}
+                {report.report.sender.username}
               </p>
             </div>
           </div>
         </Link>
 
         <Link
-          to={`/admin/groups/${reportedGroupInfo.id}`}
+          to={`/admin/groups/${report.report.chat_reported.id}`}
           style={{
             textDecoration: 'none',
             color: 'var(--clr-neutral-900)',
@@ -110,14 +139,21 @@ export default function Report() {
           <div className="report-box hoverable  control-panel__card">
             <p className="report-box__heading fw-bold">Group Details</p>
             <div className="report-box__user-details report-box__details">
-              <Avatar size={64} src={reportedGroupInfo.profilePicUrl} />
+              <Avatar
+                size={64}
+                src={`${apiBasePath}/grouppfp/${
+                  report.report.chat_reported.is_group === 'true'
+                    ? report.report.chat_reported.group_picture
+                    : 'default-icon.png'
+                }`}
+              />
               <p>
                 <span className="fw-bold">Group Id: </span>
-                {reportedGroupInfo.id}
+                {report.report.chat_reported.id}
               </p>
               <p>
                 <span className="fw-bold">Group Name: </span>
-                {reportedGroupInfo.groupName}
+                {report.report.chat_reported.group_name}
               </p>
             </div>
           </div>
