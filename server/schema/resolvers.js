@@ -422,6 +422,13 @@ const resolvers = {
 
       return groupRoles.map((grouprole) => grouprole.id)
     },
+    reports: async (_, __, context) => {
+      authMiddleware(context)
+
+      const reports = await Reports.findAll()
+
+      return reports
+    },
   },
   Mutation: {
     addUser: async (

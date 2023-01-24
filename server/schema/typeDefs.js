@@ -201,6 +201,7 @@ const typeDefs = `
     otherUser(group_id: Int): User
     groupRolesList(group_id: Int): [GroupRole]
     userGroupRoles(user_id:Int ,group_id:Int): [Int]
+    reports: [Report]
   }
 
   
