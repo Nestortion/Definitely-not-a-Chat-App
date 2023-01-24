@@ -32,6 +32,9 @@ const Reports = DB.define(
       allowNull: false,
       defaultValue: '',
     },
+    data_resolved: {
+      type: DataTypes.DATE,
+    },
   },
   { createdAt: true, updatedAt: false }
 )
