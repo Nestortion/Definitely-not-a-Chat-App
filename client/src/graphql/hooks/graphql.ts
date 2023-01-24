@@ -256,6 +256,8 @@ export type Query = {
   isLoggedIn?: Maybe<IsLoggedInResponse>
   latestChats?: Maybe<Array<Maybe<UserChat>>>
   otherUser?: Maybe<User>
+  report?: Maybe<ReportResponse>
+  reports?: Maybe<Array<Maybe<Report>>>
   systemStats?: Maybe<SystemStats>
   user?: Maybe<User>
   userChat?: Maybe<UserChat>
@@ -304,6 +306,10 @@ export type QueryOtherUserArgs = {
   group_id?: InputMaybe<Scalars['Int']>
 }
 
+export type QueryReportArgs = {
+  report_id?: InputMaybe<Scalars['Int']>
+}
+
 export type QueryUserChatArgs = {
   id: Scalars['Int']
 }
@@ -341,11 +347,20 @@ export type QueryUsersArgs = {
 export type Report = {
   __typename?: 'Report'
   createdAt: Scalars['DateTime']
+  date_resolved?: Maybe<Scalars['DateTime']>
   group_id: Scalars['Int']
   id: Scalars['Int']
   is_resolved: Scalars['Boolean']
+  remarks?: Maybe<Scalars['String']>
   report_reason: Scalars['String']
   user_id: Scalars['Int']
+}
+
+export type ReportResponse = {
+  __typename?: 'ReportResponse'
+  chat_reported?: Maybe<Group>
+  report?: Maybe<Report>
+  sender?: Maybe<User>
 }
 
 export enum RoleType {
@@ -412,6 +427,14 @@ export type SystemStats = {
   userCount?: Maybe<Scalars['Int']>
 }
 
+export type UpdateUserGroupRolesResponse = {
+  __typename?: 'UpdateUserGroupRolesResponse'
+  group_id?: Maybe<Scalars['Int']>
+  newRoles?: Maybe<Array<Maybe<Scalars['String']>>>
+  roles_ids?: Maybe<Array<Maybe<Scalars['Int']>>>
+  user?: Maybe<User>
+}
+
 export type User = {
   __typename?: 'User'
   access_level: AccessLevel
@@ -469,14 +492,6 @@ export type UserLog = {
 export type UserRole = {
   __typename?: 'UserRole'
   role?: Maybe<GroupRole>
-  user?: Maybe<User>
-}
-
-export type UpdateUserGroupRolesResponse = {
-  __typename?: 'updateUserGroupRolesResponse'
-  group_id?: Maybe<Scalars['Int']>
-  newRoles?: Maybe<Array<Maybe<Scalars['String']>>>
-  roles_ids?: Maybe<Array<Maybe<Scalars['Int']>>>
   user?: Maybe<User>
 }
 
@@ -954,7 +969,7 @@ export type MemberRolesUpdatedSubscriptionVariables = Exact<{
 export type MemberRolesUpdatedSubscription = {
   __typename?: 'Subscription'
   memberRolesUpdated?: {
-    __typename?: 'updateUserGroupRolesResponse'
+    __typename?: 'UpdateUserGroupRolesResponse'
     newRoles?: Array<string | null> | null
     group_id?: number | null
     roles_ids?: Array<number | null> | null
@@ -1005,6 +1020,59 @@ export type RemoveMemberMutation = {
     age: number
     gender: string
   } | null
+}
+
+export type ReportQueryVariables = Exact<{
+  reportId?: InputMaybe<Scalars['Int']>
+}>
+
+export type ReportQuery = {
+  __typename?: 'Query'
+  report?: {
+    __typename?: 'ReportResponse'
+    report?: {
+      __typename?: 'Report'
+      id: number
+      user_id: number
+      group_id: number
+      report_reason: string
+      is_resolved: boolean
+      createdAt: any
+      remarks?: string | null
+      date_resolved?: any | null
+    } | null
+    sender?: {
+      __typename?: 'User'
+      id: number
+      username: string
+      first_name: string
+      last_name: string
+      section: string
+      profile_img: string
+    } | null
+    chat_reported?: {
+      __typename?: 'Group'
+      id: number
+      group_picture: string
+      group_name: string
+      is_group: string
+    } | null
+  } | null
+}
+
+export type ReportsQueryVariables = Exact<{ [key: string]: never }>
+
+export type ReportsQuery = {
+  __typename?: 'Query'
+  reports?: Array<{
+    __typename?: 'Report'
+    id: number
+    user_id: number
+    group_id: number
+    report_reason: string
+    is_resolved: boolean
+    createdAt: any
+  } | null> | null
 }
 
 export type SubmitReportMutationVariables = Exact<{
@@ -1094,7 +1162,7 @@ export type UpdateUserGroupRolesMutationVariables = Exact<{
 export type UpdateUserGroupRolesMutation = {
   __typename?: 'Mutation'
   updateUserGroupRoles?: {
-    __typename?: 'updateUserGroupRolesResponse'
+    __typename?: 'UpdateUserGroupRolesResponse'
     newRoles?: Array<string | null> | null
     user?: {
       __typename?: 'User'
@@ -2868,6 +2936,129 @@ export type RemoveMemberMutationResult =
 export type RemoveMemberMutationOptions = Apollo.BaseMutationOptions<
   RemoveMemberMutation,
   RemoveMemberMutationVariables
+>
+export const ReportDocument = gql`
+  query Report($reportId: Int) {
+    report(report_id: $reportId) {
+      report {
+        id
+        user_id
+        group_id
+        report_reason
+        is_resolved
+        createdAt
+        remarks
+        date_resolved
+      }
+      sender {
+        id
+        username
+        first_name
+        last_name
+        section
+        profile_img
+      }
+      chat_reported {
+        id
+        group_picture
+        group_name
+        is_group
+      }
+    }
+  }
+`
+
+/**
+ * __useReportQuery__
+ *
+ * To run a query within a React component, call `useReportQuery` and pass it any options that fit your needs.
+ * When your component renders, `useReportQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useReportQuery({
+ *   variables: {
+ *      reportId: // value for 'reportId'
+ *   },
+ * });
+ */
+export function useReportQuery(
+  baseOptions?: Apollo.QueryHookOptions<ReportQuery, ReportQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<ReportQuery, ReportQueryVariables>(
+    ReportDocument,
+    options
+  )
+}
+export function useReportLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<ReportQuery, ReportQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<ReportQuery, ReportQueryVariables>(
+    ReportDocument,
+    options
+  )
+}
+export type ReportQueryHookResult = ReturnType<typeof useReportQuery>
+export type ReportLazyQueryHookResult = ReturnType<typeof useReportLazyQuery>
+export type ReportQueryResult = Apollo.QueryResult<
+  ReportQuery,
+  ReportQueryVariables
+>
+export const ReportsDocument = gql`
+  query Reports {
+    reports {
+      id
+      user_id
+      group_id
+      report_reason
+      is_resolved
+      createdAt
+    }
+  }
+`
+
+/**
+ * __useReportsQuery__
+ *
+ * To run a query within a React component, call `useReportsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useReportsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useReportsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useReportsQuery(
+  baseOptions?: Apollo.QueryHookOptions<ReportsQuery, ReportsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<ReportsQuery, ReportsQueryVariables>(
+    ReportsDocument,
+    options
+  )
+}
+export function useReportsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<ReportsQuery, ReportsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<ReportsQuery, ReportsQueryVariables>(
+    ReportsDocument,
+    options
+  )
+}
+export type ReportsQueryHookResult = ReturnType<typeof useReportsQuery>
+export type ReportsLazyQueryHookResult = ReturnType<typeof useReportsLazyQuery>
+export type ReportsQueryResult = Apollo.QueryResult<
+  ReportsQuery,
+  ReportsQueryVariables
 >
 export const SubmitReportDocument = gql`
   mutation SubmitReport($groupId: Int, $reasons: [String]) {

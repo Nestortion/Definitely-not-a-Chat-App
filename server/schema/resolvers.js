@@ -422,6 +422,29 @@ const resolvers = {
 
       return groupRoles.map((grouprole) => grouprole.id)
     },
+    reports: async (_, __, context) => {
+      authMiddleware(context)
+
+      const reports = await Reports.findAll()
+
+      return reports
+    },
+    report: async (_, { report_id }, context) => {
+      authMiddleware(context)
+
+      const report = await Reports.findOne({ where: { id: report_id } })
+
+      const sender = await Users.findOne({ where: { id: report.user_id } })
+      const chat_reported = await Groups.findOne({
+        where: { id: report.group_id },
+      })
+
+      return {
+        report,
+        sender,
+        chat_reported,
+      }
+    },
   },
   Mutation: {
     addUser: async (

@@ -41,6 +41,8 @@ const documents = {
     "subscription MemberRolesUpdated($user: Int, $groupId: Int) {\n  memberRolesUpdated(user: $user, group_id: $groupId) {\n    newRoles\n    user {\n      id\n      username\n      first_name\n      last_name\n      profile_img\n    }\n    group_id\n    roles_ids\n  }\n}": types.MemberRolesUpdatedDocument,
     "query OtherUser($groupId: Int) {\n  otherUser(group_id: $groupId) {\n    id\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.OtherUserDocument,
     "mutation RemoveMember($groupId: Int, $userId: Int) {\n  removeMember(group_id: $groupId, user_id: $userId) {\n    id\n    first_name\n    last_name\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.RemoveMemberDocument,
+    "query Report($reportId: Int) {\n  report(report_id: $reportId) {\n    report {\n      id\n      user_id\n      group_id\n      report_reason\n      is_resolved\n      createdAt\n      remarks\n      date_resolved\n    }\n    sender {\n      id\n      username\n      first_name\n      last_name\n      section\n      profile_img\n    }\n    chat_reported {\n      id\n      group_picture\n      group_name\n      is_group\n    }\n  }\n}": types.ReportDocument,
+    "query Reports {\n  reports {\n    id\n    user_id\n    group_id\n    report_reason\n    is_resolved\n    createdAt\n  }\n}": types.ReportsDocument,
     "mutation SubmitReport($groupId: Int, $reasons: [String]) {\n  submitReport(group_id: $groupId, reasons: $reasons) {\n    id\n    user_id\n    group_id\n    report_reason\n    is_resolved\n    createdAt\n  }\n}": types.SubmitReportDocument,
     "query SystemStats {\n  systemStats {\n    userCount\n    groupCount\n    userChatsCount\n  }\n}": types.SystemStatsDocument,
     "mutation UpdateGroup($groupName: String, $groupId: Int, $groupPicture: Upload) {\n  updateGroup(\n    group_name: $groupName\n    group_id: $groupId\n    group_picture: $groupPicture\n  ) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}": types.UpdateGroupDocument,
@@ -168,6 +170,14 @@ export function graphql(source: "query OtherUser($groupId: Int) {\n  otherUser(g
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "mutation RemoveMember($groupId: Int, $userId: Int) {\n  removeMember(group_id: $groupId, user_id: $userId) {\n    id\n    first_name\n    last_name\n    section\n    profile_img\n    age\n    gender\n  }\n}"): (typeof documents)["mutation RemoveMember($groupId: Int, $userId: Int) {\n  removeMember(group_id: $groupId, user_id: $userId) {\n    id\n    first_name\n    last_name\n    section\n    profile_img\n    age\n    gender\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "query Report($reportId: Int) {\n  report(report_id: $reportId) {\n    report {\n      id\n      user_id\n      group_id\n      report_reason\n      is_resolved\n      createdAt\n      remarks\n      date_resolved\n    }\n    sender {\n      id\n      username\n      first_name\n      last_name\n      section\n      profile_img\n    }\n    chat_reported {\n      id\n      group_picture\n      group_name\n      is_group\n    }\n  }\n}"): (typeof documents)["query Report($reportId: Int) {\n  report(report_id: $reportId) {\n    report {\n      id\n      user_id\n      group_id\n      report_reason\n      is_resolved\n      createdAt\n      remarks\n      date_resolved\n    }\n    sender {\n      id\n      username\n      first_name\n      last_name\n      section\n      profile_img\n    }\n    chat_reported {\n      id\n      group_picture\n      group_name\n      is_group\n    }\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "query Reports {\n  reports {\n    id\n    user_id\n    group_id\n    report_reason\n    is_resolved\n    createdAt\n  }\n}"): (typeof documents)["query Reports {\n  reports {\n    id\n    user_id\n    group_id\n    report_reason\n    is_resolved\n    createdAt\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
