@@ -10,8 +10,19 @@ import Button from '../../components/UI/Button/Button'
 import { useUpdateUserProfileMutation } from '../../graphql/hooks/graphql'
 import SpawnModal from '../../components/UI/Modal/SpawnModal'
 import { useEffect } from 'react'
+import { toast } from 'react-toastify'
 
 export default function ProfileSettings() {
+  const warn = (text) =>
+    toast(text, {
+      position: toast.POSITION.TOP_CENTER,
+      style: {
+        color: 'var(--clr-neutral--100)',
+        backgroundColor: 'var(--clr-error-400)',
+        fontSize: 'clamp(0.8rem, 1.3vw, 1.5rem)',
+      },
+    })
+
   const [modalShouldShow, setModalShouldShow] = useState(false)
   const [shouldDisable, setShouldDisable] = useState(false)
   const [passwordInput, setPasswordInput] = useState('')
@@ -90,9 +101,11 @@ export default function ProfileSettings() {
       },
     })
 
-    if (updateRes.data.updateUserProfile === null) return
-
-    navigate(0)
+    if (updateRes.data.updateUserProfile === null) {
+      warn('Wrong password')
+    } else {
+      navigate(0)
+    }
   }
 
   const showConfirmModal = () => {
