@@ -50,6 +50,32 @@ export default function Reports() {
             ))}
           </tbody>
         </table>
+
+        <table className="reports-table control-panel__card">
+          <thead>
+            <tr className="fs-500">
+              <th>Id</th>
+              <th>Reported By</th>
+              <th>Reported Chat Id</th>
+              <th>Reasons</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reports.reports.map((report) => (
+              <tr
+                key={report.id}
+                onClick={(e, id) => handleClick(e, report.id)}
+              >
+                <td>{report.id}</td>
+                <td>{report.user_id}</td>
+                <td>{report.group_id}</td>
+                <td>{report.report_reason}</td>
+                <td>{report.is_resolved ? 'Resolved' : 'Pending'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   )

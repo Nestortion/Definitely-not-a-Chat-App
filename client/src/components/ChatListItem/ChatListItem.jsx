@@ -70,8 +70,13 @@ export default function ChatListItem({
   if (otherUserLoading) return <LoadingSpinner />
   if (otherUserError)
     return (
-      <div className="chat-list-item">
-        <span>You are removed from this group</span>
+      <div className="chat-list-item chat-list-item__error">
+        <div className="chat-list-item-left">
+          <Avatar src={`${apiBasePath}/grouppfp/default-icon.png`} size="40" />
+        </div>
+        <div className="chat-list-item-right">
+          <span>You are removed from this group</span>
+        </div>
       </div>
     )
 
