@@ -1,0 +1,12 @@
+mutation UpdateReportStatus($reportStatus: Boolean, $reportId: Int) {
+  updateReportStatus(report_status: $reportStatus, report_id: $reportId) {
+    id
+    user_id
+    report_reason
+    group_id
+    is_resolved
+    remarks
+    createdAt
+    date_resolved
+  }
+}

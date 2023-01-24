@@ -136,6 +136,7 @@ export type Mutation = {
   submitReport?: Maybe<Report>
   updateGroup?: Maybe<Group>
   updateGroupRoles?: Maybe<Array<Maybe<GroupRole>>>
+  updateReportStatus?: Maybe<Report>
   updateUserGroupRoles?: Maybe<UpdateUserGroupRolesResponse>
   updateUserProfile?: Maybe<User>
 }
@@ -222,6 +223,11 @@ export type MutationUpdateGroupRolesArgs = {
   group_id?: InputMaybe<Scalars['Int']>
   roles_to_delete?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>
   roles_to_edit?: InputMaybe<Array<InputMaybe<RolesToEdit>>>
+}
+
+export type MutationUpdateReportStatusArgs = {
+  report_id?: InputMaybe<Scalars['Int']>
+  report_status?: InputMaybe<Scalars['Boolean']>
 }
 
 export type MutationUpdateUserGroupRolesArgs = {
@@ -1211,6 +1217,26 @@ export type UpdateGroupRolesMutation = {
     role_type: RoleType
     is_default: boolean
   } | null> | null
+}
+
+export type UpdateReportStatusMutationVariables = Exact<{
+  reportStatus?: InputMaybe<Scalars['Boolean']>
+  reportId?: InputMaybe<Scalars['Int']>
+}>
+
+export type UpdateReportStatusMutation = {
+  __typename?: 'Mutation'
+  updateReportStatus?: {
+    __typename?: 'Report'
+    id: number
+    user_id: number
+    report_reason: string
+    group_id: number
+    is_resolved: boolean
+    remarks?: string | null
+    createdAt: any
+    date_resolved?: any | null
+  } | null
 }
 
 export type UpdateUserGroupRolesMutationVariables = Exact<{
@@ -3453,6 +3479,64 @@ export type UpdateGroupRolesMutationResult =
 export type UpdateGroupRolesMutationOptions = Apollo.BaseMutationOptions<
   UpdateGroupRolesMutation,
   UpdateGroupRolesMutationVariables
+>
+export const UpdateReportStatusDocument = gql`
+  mutation UpdateReportStatus($reportStatus: Boolean, $reportId: Int) {
+    updateReportStatus(report_status: $reportStatus, report_id: $reportId) {
+      id
+      user_id
+      report_reason
+      group_id
+      is_resolved
+      remarks
+      createdAt
+      date_resolved
+    }
+  }
+`
+export type UpdateReportStatusMutationFn = Apollo.MutationFunction<
+  UpdateReportStatusMutation,
+  UpdateReportStatusMutationVariables
+>
+
+/**
+ * __useUpdateReportStatusMutation__
+ *
+ * To run a mutation, you first call `useUpdateReportStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateReportStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateReportStatusMutation, { data, loading, error }] = useUpdateReportStatusMutation({
+ *   variables: {
+ *      reportStatus: // value for 'reportStatus'
+ *      reportId: // value for 'reportId'
+ *   },
+ * });
+ */
+export function useUpdateReportStatusMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateReportStatusMutation,
+    UpdateReportStatusMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    UpdateReportStatusMutation,
+    UpdateReportStatusMutationVariables
+  >(UpdateReportStatusDocument, options)
+}
+export type UpdateReportStatusMutationHookResult = ReturnType<
+  typeof useUpdateReportStatusMutation
+>
+export type UpdateReportStatusMutationResult =
+  Apollo.MutationResult<UpdateReportStatusMutation>
+export type UpdateReportStatusMutationOptions = Apollo.BaseMutationOptions<
+  UpdateReportStatusMutation,
+  UpdateReportStatusMutationVariables
 >
 export const UpdateUserGroupRolesDocument = gql`
   mutation UpdateUserGroupRoles(
