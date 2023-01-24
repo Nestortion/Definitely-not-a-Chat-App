@@ -37,6 +37,10 @@ export default function Profile() {
     )
   }
 
+  const handleSave = (e) => {
+    console.log(profileData.userProfile.disabled)
+  }
+
   return (
     <div className="profile">
       <div className="profile__header">
@@ -60,8 +64,11 @@ export default function Profile() {
       {currentUser.currentUser.access_level === 'ADMIN' &&
         currentUser.currentUser.id !== +profileId && (
           <div className="profile__button-group">
-            <Button secondary>
-              <MdWarning /> Disable User
+            <Button onClick={handleSave} secondary>
+              <MdWarning />
+              {profileData.userProfile.disabled
+                ? 'Enable User'
+                : 'Disable User'}
             </Button>
           </div>
         )}
