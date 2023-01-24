@@ -208,6 +208,11 @@ const cache = new InMemoryCache({
             return incoming
           },
         },
+        report: {
+          merge(existing, incoming) {
+            return incoming
+          },
+        },
       },
     },
   },
