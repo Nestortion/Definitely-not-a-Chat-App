@@ -3,5 +3,6 @@ query SystemStats {
     userCount
     groupCount
     userChatsCount
+    pendingReportCount
   }
 }

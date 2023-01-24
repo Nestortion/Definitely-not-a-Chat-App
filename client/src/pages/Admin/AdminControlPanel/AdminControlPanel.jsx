@@ -145,7 +145,7 @@ export default function AdminControlPanel() {
           <div className="control-panel__card control-panel__top-card">
             <p className="control-panel__top-heading">Pending Reports</p>
             <p className="control-panel__top-number fw-bold">
-              {pendingReports}
+              {systemStats.systemStats.pendingReportCount}
             </p>
           </div>
         </Link>

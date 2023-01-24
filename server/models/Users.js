@@ -33,6 +33,11 @@ const Users = DB.define(
       allowNull: false,
       defaultValue: 0,
     },
+    disabled: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   },
   { timestamps: false }
 )
