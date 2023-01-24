@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { MdSettings } from 'react-icons/md'
+import { MdArrowForwardIos, MdSettings } from 'react-icons/md'
 import Avatar from '../../../components/UI/Avatar/Avatar'
 import { useUsersQuery } from '../../../graphql/hooks/graphql'
 import './admin-users-list.scss'
 import LoadingSpinner from '../../../components/Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../../../components/Error/ErrorText'
 import { apiBasePath } from '../../../data/config'
+import { Link } from 'react-router-dom'
 
 export default function AdminUsersList() {
   const [searchInput, setSearchInput] = useState('')
@@ -49,7 +50,17 @@ export default function AdminUsersList() {
               <span>{user.id}</span>
               <span>{`${user.first_name} ${user.last_name}`}</span>
               <span>
-                <MdSettings />
+                <Link
+                  to={`/profile/${user.id}`}
+                  style={{
+                    textDecoration: 'none',
+                    color: 'var(--clr-neutral-900)',
+                    display: 'block',
+                    width: '100%',
+                  }}
+                >
+                  <MdArrowForwardIos title="Go to profile page" />
+                </Link>
               </span>
             </div>
           ))}
