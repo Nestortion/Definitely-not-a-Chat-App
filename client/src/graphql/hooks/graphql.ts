@@ -44,7 +44,7 @@ export type AdminLog = {
   createdAt: Scalars['DateTime']
   full_name: Scalars['String']
   id: Scalars['Int']
-  user_id: Scalars['Int']
+  user_id?: Maybe<Scalars['Int']>
 }
 
 export type CurrentUserGroupRoles = {
@@ -122,7 +122,7 @@ export type Mutation = {
   __typename?: 'Mutation'
   addGroupRole?: Maybe<GroupRole>
   addMember?: Maybe<Array<Maybe<UserGroup>>>
-  addUser?: Maybe<User>
+  addUser?: Maybe<RegisterResponse>
   addUserChat?: Maybe<UserChat>
   addUserChatReaction?: Maybe<UserChatReaction>
   addUserGroup?: Maybe<UserGroup>
@@ -153,16 +153,7 @@ export type MutationAddMemberArgs = {
 }
 
 export type MutationAddUserArgs = {
-  access_level?: InputMaybe<AccessLevel>
-  address?: InputMaybe<Scalars['String']>
-  age?: InputMaybe<Scalars['Int']>
-  first_name?: InputMaybe<Scalars['String']>
-  gender?: InputMaybe<Scalars['String']>
-  last_name?: InputMaybe<Scalars['String']>
-  password?: InputMaybe<Scalars['String']>
-  profile_img?: InputMaybe<Scalars['Upload']>
-  section?: InputMaybe<Scalars['String']>
-  username?: InputMaybe<Scalars['String']>
+  user_data?: InputMaybe<RegisterInput>
 }
 
 export type MutationAddUserChatArgs = {
@@ -354,6 +345,24 @@ export type QueryUsersArgs = {
   limit?: InputMaybe<Scalars['Int']>
 }
 
+export type RegisterInput = {
+  access_level?: InputMaybe<AccessLevel>
+  address?: InputMaybe<Scalars['String']>
+  age?: InputMaybe<Scalars['Int']>
+  first_name?: InputMaybe<Scalars['String']>
+  gender?: InputMaybe<Scalars['String']>
+  last_name?: InputMaybe<Scalars['String']>
+  password?: InputMaybe<Scalars['String']>
+  section?: InputMaybe<Scalars['String']>
+  username?: InputMaybe<Scalars['String']>
+}
+
+export type RegisterResponse = {
+  __typename?: 'RegisterResponse'
+  registered?: Maybe<Scalars['Boolean']>
+  username?: Maybe<Scalars['String']>
+}
+
 export type Report = {
   __typename?: 'Report'
   createdAt: Scalars['DateTime']
@@ -511,7 +520,7 @@ export type UserLog = {
   full_name: Scalars['String']
   id: Scalars['Int']
   section?: Maybe<Scalars['String']>
-  user_id: Scalars['Int']
+  user_id?: Maybe<Scalars['Int']>
 }
 
 export type UserRole = {
@@ -567,34 +576,15 @@ export type AddMemberMutation = {
 }
 
 export type AddUserMutationVariables = Exact<{
-  username?: InputMaybe<Scalars['String']>
-  age?: InputMaybe<Scalars['Int']>
-  accessLevel?: InputMaybe<AccessLevel>
-  password?: InputMaybe<Scalars['String']>
-  address?: InputMaybe<Scalars['String']>
-  section?: InputMaybe<Scalars['String']>
-  firstName?: InputMaybe<Scalars['String']>
-  lastName?: InputMaybe<Scalars['String']>
-  profileImg?: InputMaybe<Scalars['Upload']>
-  gender?: InputMaybe<Scalars['String']>
+  userData?: InputMaybe<RegisterInput>
 }>
 
 export type AddUserMutation = {
   __typename?: 'Mutation'
   addUser?: {
-    __typename?: 'User'
-    id: number
-    username: string
-    access_level: AccessLevel
-    password: string
-    token_version: string
-    first_name: string
-    last_name: string
-    address: string
-    section: string
-    profile_img: string
-    age: number
-    gender: string
+    __typename?: 'RegisterResponse'
+    registered?: boolean | null
+    username?: string | null
   } | null
 }
 
@@ -654,7 +644,7 @@ export type AdminLogsQuery = {
   adminLogs?: Array<{
     __typename?: 'AdminLog'
     id: number
-    user_id: number
+    user_id?: number | null
     action_description: string
     full_name: string
     createdAt: any
@@ -1375,7 +1365,7 @@ export type UserLogsQuery = {
   userLogs?: Array<{
     __typename?: 'UserLog'
     id: number
-    user_id: number
+    user_id?: number | null
     action_description: string
     full_name: string
     createdAt: any
@@ -1614,42 +1604,10 @@ export type AddMemberMutationOptions = Apollo.BaseMutationOptions<
   AddMemberMutationVariables
 >
 export const AddUserDocument = gql`
-  mutation AddUser(
-    $username: String
-    $age: Int
-    $accessLevel: AccessLevel
-    $password: String
-    $address: String
-    $section: String
-    $firstName: String
-    $lastName: String
-    $profileImg: Upload
-    $gender: String
-  ) {
-    addUser(
-      username: $username
-      age: $age
-      access_level: $accessLevel
-      password: $password
-      address: $address
-      section: $section
-      first_name: $firstName
-      last_name: $lastName
-      profile_img: $profileImg
-      gender: $gender
-    ) {
-      id
+  mutation AddUser($userData: RegisterInput) {
+    addUser(user_data: $userData) {
+      registered
       username
-      access_level
-      password
-      token_version
-      first_name
-      last_name
-      address
-      section
-      profile_img
-      age
-      gender
     }
   }
 `
@@ -1671,16 +1629,7 @@ export type AddUserMutationFn = Apollo.MutationFunction<
  * @example
  * const [addUserMutation, { data, loading, error }] = useAddUserMutation({
  *   variables: {
- *      username: // value for 'username'
- *      age: // value for 'age'
- *      accessLevel: // value for 'accessLevel'
- *      password: // value for 'password'
- *      address: // value for 'address'
- *      section: // value for 'section'
- *      firstName: // value for 'firstName'
- *      lastName: // value for 'lastName'
- *      profileImg: // value for 'profileImg'
- *      gender: // value for 'gender'
+ *      userData: // value for 'userData'
  *   },
  * });
  */

@@ -1,38 +1,6 @@
-mutation AddUser(
-  $username: String
-  $age: Int
-  $accessLevel: AccessLevel
-  $password: String
-  $address: String
-  $section: String
-  $firstName: String
-  $lastName: String
-  $profileImg: Upload
-  $gender: String
-) {
-  addUser(
-    username: $username
-    age: $age
-    access_level: $accessLevel
-    password: $password
-    address: $address
-    section: $section
-    first_name: $firstName
-    last_name: $lastName
-    profile_img: $profileImg
-    gender: $gender
-  ) {
-    id
+mutation AddUser($userData: RegisterInput) {
+  addUser(user_data: $userData) {
+    registered
     username
-    access_level
-    password
-    token_version
-    first_name
-    last_name
-    address
-    section
-    profile_img
-    age
-    gender
   }
 }
