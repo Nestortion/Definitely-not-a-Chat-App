@@ -1352,6 +1352,27 @@ const resolvers = {
 
       return newReport
     },
+    toggleUserStatus: async (_, { user_id, user_status }, context) => {
+      const { data: user } = authMiddleware(context)
+
+      const actionUser = await Users.findOne({ where: { id: user.user_id } })
+
+      if (actionUser.access_level !== 'ADMIN') return false
+
+      await Users.update({ disabled: user_status }, { where: { id: user_id } })
+
+      const targetUser = await Users.findOne({ where: { id: user_id } })
+
+      await AdminLogs.create({
+        full_name: `${actionUser.first_name} ${actionUser.last_name}`,
+        action_description: `${user_status ? 'Enabled' : 'Disabled'} ${
+          targetUser.username
+        }'s account`,
+        user_id: actionUser.id,
+      })
+
+      return true
+    },
   },
   Subscription: {
     memberRolesUpdated: {

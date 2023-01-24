@@ -262,6 +262,7 @@ const typeDefs = `
     updateUserGroupRoles(roles: [String], group_id: Int, user_id: Int, roles_ids: [Int]): UpdateUserGroupRolesResponse
     submitReport(group_id: Int, reasons: [String]): Report
     updateReportStatus(report_status: Boolean, report_id: Int): Report
+    toggleUserStatus(user_id: Int, user_status: Boolean): Boolean
   }
 
   
