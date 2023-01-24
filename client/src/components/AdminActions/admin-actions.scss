@@ -1,0 +1,22 @@
+.admin-actions {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: var(--clr-primary-400);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+
+  cursor: pointer;
+
+  transition: all 250ms ease;
+
+  &:hover {
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.35);
+  }
+}
