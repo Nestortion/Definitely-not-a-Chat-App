@@ -1,0 +1,28 @@
+query Report($reportId: Int) {
+  report(report_id: $reportId) {
+    report {
+      id
+      user_id
+      group_id
+      report_reason
+      is_resolved
+      createdAt
+      remarks
+      date_resolved
+    }
+    sender {
+      id
+      username
+      first_name
+      last_name
+      section
+      profile_img
+    }
+    chat_reported {
+      id
+      group_picture
+      group_name
+      is_group
+    }
+  }
+}
