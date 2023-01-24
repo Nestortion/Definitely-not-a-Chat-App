@@ -184,6 +184,23 @@ const typeDefs = `
     roleMembers: [RoleMembers]
   }
 
+  type RegisterResponse{
+    registered: Boolean
+    username: String
+  }
+
+  input RegisterInput{
+    username: String
+    access_level: AccessLevel
+    password: String
+    age: Int 
+    address: String
+    section: String
+    first_name: String
+    last_name: String
+    gender: String
+  }
+
   input RolesToEdit{
     id: Int
     role_name: String
@@ -226,7 +243,7 @@ const typeDefs = `
   
 
   type Mutation {
-    addUser( username: String, access_level: AccessLevel, password: String, age: Int, address: String, section: String, first_name: String, last_name: String, profile_img: Upload, gender: String): User
+    addUser( user_data: RegisterInput ): RegisterResponse
     addUserChat( file: Upload, message: String, user_id: Int, receiver: Int, message_type: MessageType): UserChat
     addUserGroup( user_id:Int, group_id: Int): UserGroup
     addGroupRole( role_name: String, emoji: String, description: String, group_id: Int): GroupRole

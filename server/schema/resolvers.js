@@ -21,7 +21,7 @@ import { v4 as uuid } from 'uuid'
 import { Op } from 'sequelize'
 import { withFilter } from 'graphql-subscriptions'
 import { DateTimeResolver } from 'graphql-scalars'
-import { report } from 'node:process'
+import bcrypt from 'bcrypt'
 
 try {
   await createAssociation()
@@ -497,31 +497,39 @@ const resolvers = {
     },
   },
   Mutation: {
-    addUser: async (
-      _,
-      {
-        username,
-        access_level,
-        password,
-        first_name,
-        last_name,
-        age,
-        section,
-        address,
-        gender,
+    addUser: async (_, { user_data }, context) => {
+      const { data: user } = authMiddleware(context)
+
+      const actionUser = await Users.findOne({ where: { id: user.user_id } })
+
+      if (actionUser.access_level !== 'ADMIN') {
+        return { registered: false, username: null }
       }
-    ) => {
-      return Users.create({
-        username,
-        access_level,
-        password,
-        first_name,
-        last_name,
-        age,
-        section,
-        address,
-        gender,
+
+      const hashedPassword = await bcrypt.hash(user_data.password, 10)
+
+      await Users.create({
+        username: user_data.username,
+        access_level: user_data.access_level,
+        password: hashedPassword,
+        first_name: user_data.first_name,
+        last_name: user_data.last_name,
+        age: user_data.age,
+        section: user_data.section,
+        address: user_data.address,
+        gender: user_data.gender,
       })
+
+      await AdminLogs.create({
+        full_name: `${actionUser.first_name} ${actionUser.last_name}`,
+        action_description: `Registered user: ${user_data.username}`,
+        user_id: actionUser.id,
+      })
+
+      return {
+        registered: true,
+        username: user_data.username,
+      }
     },
     addUserChat: async (_, { file, message, receiver }, context) => {
       const { data: user, pubsub } = authMiddleware(context)
@@ -769,9 +777,12 @@ const resolvers = {
     },
     login: async (_, { username, password }, context) => {
       const user = await Users.findOne({
-        where: { username, password },
+        where: { username },
       })
-      if (!user) {
+
+      const checkPassword = await bcrypt.compare(password, user.password)
+
+      if (!user || !checkPassword) {
         throw new GraphQLError('Username or password does not match')
       }
 
@@ -1094,9 +1105,14 @@ const resolvers = {
 
       const initialUser = await Users.findOne({ where: { id: user.user_id } })
 
-      if (current_confirmation !== initialUser.password) return null
+      const checkPassword = await bcrypt.compare(
+        current_confirmation,
+        initialUser.password
+      )
 
-      let password = new_password
+      if (!checkPassword) return null
+
+      let password = await bcrypt.hash(new_password, 10)
       if (!new_password || new_password === '') {
         password = initialUser.password
       }
