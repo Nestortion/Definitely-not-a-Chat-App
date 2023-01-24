@@ -242,7 +242,8 @@ const typeDefs = `
     updateUserProfile(username: String, age: Int, gender: String, section: String, address: String, profile_img: Upload, new_password: String, current_confirmation: String): User
     updateGroupRoles(roles_to_edit: [RolesToEdit], roles_to_delete: [Int], group_id: Int): [GroupRole]
     updateUserGroupRoles(roles: [String], group_id: Int, user_id: Int, roles_ids: [Int]): UpdateUserGroupRolesResponse
-    submitReport(group_id: Int, reasons: [String]): Report 
+    submitReport(group_id: Int, reasons: [String]): Report
+    updateReportStatus(report_status: Boolean, report_id: Int): Report
   }
 
   

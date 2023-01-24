@@ -1309,6 +1309,33 @@ const resolvers = {
 
       return submit
     },
+    updateReportStatus: async (_, { report_status, report_id }, context) => {
+      const { data: user } = authMiddleware(context)
+
+      const actionUser = await Users.findOne({ where: { id: user.user_id } })
+
+      const report = await Reports.findOne({ where: { id: report_id } })
+
+      if (actionUser.access_level !== 'ADMIN') return
+      if (report_status === report.is_resolved) return
+
+      await Reports.update(
+        { is_resolved: report_status, date_resolved: Date.now() },
+        { where: { id: report_id } }
+      )
+
+      await AdminLogs.create({
+        full_name: `${actionUser.first_name} ${actionUser.last_name}`,
+        action_description: `Changed the status of report ${report_id} from ${
+          report.is_resolved ? 'Resolved' : 'Pending'
+        } to ${!report.is_resolved ? 'Resolved' : 'Pending'}`,
+        user_id: actionUser.id,
+      })
+
+      const newReport = await Reports.findOne({ where: { id: report_id } })
+
+      return newReport
+    },
   },
   Subscription: {
     memberRolesUpdated: {
