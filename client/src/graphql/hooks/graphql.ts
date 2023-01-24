@@ -256,6 +256,7 @@ export type Query = {
   isLoggedIn?: Maybe<IsLoggedInResponse>
   latestChats?: Maybe<Array<Maybe<UserChat>>>
   otherUser?: Maybe<User>
+  reports?: Maybe<Array<Maybe<Report>>>
   systemStats?: Maybe<SystemStats>
   user?: Maybe<User>
   userChat?: Maybe<UserChat>
@@ -1005,6 +1006,21 @@ export type RemoveMemberMutation = {
     age: number
     gender: string
   } | null
+}
+
+export type ReportsQueryVariables = Exact<{ [key: string]: never }>
+
+export type ReportsQuery = {
+  __typename?: 'Query'
+  reports?: Array<{
+    __typename?: 'Report'
+    id: number
+    user_id: number
+    group_id: number
+    report_reason: string
+    is_resolved: boolean
+    createdAt: any
+  } | null> | null
 }
 
 export type SubmitReportMutationVariables = Exact<{
@@ -2868,6 +2884,58 @@ export type RemoveMemberMutationResult =
 export type RemoveMemberMutationOptions = Apollo.BaseMutationOptions<
   RemoveMemberMutation,
   RemoveMemberMutationVariables
+>
+export const ReportsDocument = gql`
+  query Reports {
+    reports {
+      id
+      user_id
+      group_id
+      report_reason
+      is_resolved
+      createdAt
+    }
+  }
+`
+
+/**
+ * __useReportsQuery__
+ *
+ * To run a query within a React component, call `useReportsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useReportsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useReportsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useReportsQuery(
+  baseOptions?: Apollo.QueryHookOptions<ReportsQuery, ReportsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<ReportsQuery, ReportsQueryVariables>(
+    ReportsDocument,
+    options
+  )
+}
+export function useReportsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<ReportsQuery, ReportsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<ReportsQuery, ReportsQueryVariables>(
+    ReportsDocument,
+    options
+  )
+}
+export type ReportsQueryHookResult = ReturnType<typeof useReportsQuery>
+export type ReportsLazyQueryHookResult = ReturnType<typeof useReportsLazyQuery>
+export type ReportsQueryResult = Apollo.QueryResult<
+  ReportsQuery,
+  ReportsQueryVariables
 >
 export const SubmitReportDocument = gql`
   mutation SubmitReport($groupId: Int, $reasons: [String]) {
