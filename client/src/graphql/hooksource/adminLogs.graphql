@@ -1,0 +1,9 @@
+query AdminLogs {
+  adminLogs {
+    id
+    user_id
+    action_description
+    full_name
+    createdAt
+  }
+}

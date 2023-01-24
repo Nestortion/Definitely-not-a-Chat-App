@@ -44,7 +44,6 @@ export type AdminLog = {
   createdAt: Scalars['DateTime']
   full_name: Scalars['String']
   id: Scalars['Int']
-  section: Scalars['String']
   user_id: Scalars['Int']
 }
 
@@ -645,6 +644,20 @@ export type AddUserGroupRoleMutation = {
     group_role_id: number
     user_group_id: number
   } | null
+}
+
+export type AdminLogsQueryVariables = Exact<{ [key: string]: never }>
+
+export type AdminLogsQuery = {
+  __typename?: 'Query'
+  adminLogs?: Array<{
+    __typename?: 'AdminLog'
+    id: number
+    user_id: number
+    action_description: string
+    full_name: string
+    createdAt: any
+  } | null> | null
 }
 
 export type ChatAddedSubscriptionVariables = Exact<{
@@ -1853,6 +1866,62 @@ export type AddUserGroupRoleMutationResult =
 export type AddUserGroupRoleMutationOptions = Apollo.BaseMutationOptions<
   AddUserGroupRoleMutation,
   AddUserGroupRoleMutationVariables
+>
+export const AdminLogsDocument = gql`
+  query AdminLogs {
+    adminLogs {
+      id
+      user_id
+      action_description
+      full_name
+      createdAt
+    }
+  }
+`
+
+/**
+ * __useAdminLogsQuery__
+ *
+ * To run a query within a React component, call `useAdminLogsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminLogsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminLogsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminLogsQuery(
+  baseOptions?: Apollo.QueryHookOptions<AdminLogsQuery, AdminLogsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<AdminLogsQuery, AdminLogsQueryVariables>(
+    AdminLogsDocument,
+    options
+  )
+}
+export function useAdminLogsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AdminLogsQuery,
+    AdminLogsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<AdminLogsQuery, AdminLogsQueryVariables>(
+    AdminLogsDocument,
+    options
+  )
+}
+export type AdminLogsQueryHookResult = ReturnType<typeof useAdminLogsQuery>
+export type AdminLogsLazyQueryHookResult = ReturnType<
+  typeof useAdminLogsLazyQuery
+>
+export type AdminLogsQueryResult = Apollo.QueryResult<
+  AdminLogsQuery,
+  AdminLogsQueryVariables
 >
 export const ChatAddedDocument = gql`
   subscription ChatAdded($user: Int) {
