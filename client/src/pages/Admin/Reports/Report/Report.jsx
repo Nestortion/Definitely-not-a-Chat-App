@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import NavBar from '../../../../components/NavBar/NavBar'
 import Avatar from '../../../../components/UI/Avatar/Avatar'
 import { useState } from 'react'
+import Button from '../../../../components/UI/Button/Button'
 
 export default function Report() {
   const { reportId } = useParams()
@@ -35,6 +36,10 @@ export default function Report() {
     setCurrentStatus(e.target.value)
   }
 
+  const handleSave = () => {
+    console.log(currentStatus)
+  }
+
   return (
     <div className="report">
       <div className="report-box__container">
@@ -59,13 +64,16 @@ export default function Report() {
                 {reportDetails.reportReasons.toString().replace(/,/g, ', ')}
               </span>
             </p>
-            <p>
-              <span className="fw-bold">Status: </span>
-              <select value={currentStatus} onChange={handleChange}>
-                <option value="true">Resolved</option>
-                <option value="false">Pending</option>
-              </select>
-            </p>
+            <div className="report-box__status-container">
+              <div>
+                <span className="fw-bold">Status: </span>
+                <select value={currentStatus} onChange={handleChange}>
+                  <option value="true">Resolved</option>
+                  <option value="false">Pending</option>
+                </select>
+              </div>
+              <Button onClick={handleSave}>Save</Button>
+            </div>
           </div>
         </div>
 
