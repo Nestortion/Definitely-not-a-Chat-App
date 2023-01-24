@@ -80,15 +80,16 @@ const typeDefs = `
 
   type UserLog{
     id: Int!
-    user_id: Int!
+    user_id: Int
     action_description: String!
     full_name: String!
     createdAt: DateTime!
+    section: String
   }
 
   type AdminLog{
     id: Int!
-    user_id: Int!
+    user_id: Int
     action_description: String!
     full_name: String!
     createdAt: DateTime!
