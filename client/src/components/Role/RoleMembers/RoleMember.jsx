@@ -27,8 +27,19 @@ export default function RoleMember({
   groupRoles,
   user,
 }) {
-  const notify = () =>
-    toast('Member removed', {
+  const notify = (message) => {
+    if (message) {
+      return toast(message, {
+        position: toast.POSITION.TOP_CENTER,
+        style: {
+          color: 'var(--clr-neutral-100)',
+          backgroundColor: 'var(--clr-primary-400)',
+          fontSize: 'clamp(0.8rem, 1.3vw, 1.5rem)',
+        },
+      })
+    }
+
+    return toast('Member removed', {
       position: toast.POSITION.TOP_CENTER,
       style: {
         color: 'var(--clr-neutral-100)',
@@ -36,6 +47,7 @@ export default function RoleMember({
         fontSize: 'clamp(0.8rem, 1.3vw, 1.5rem)',
       },
     })
+  }
 
   const [shouldShowModal, setShouldShowModal] = useState(false)
   const { chatId } = useParams()
@@ -86,8 +98,16 @@ export default function RoleMember({
     setShouldShowModal(false)
   }
 
-  const handleRemoveMember = () => {
-    removeMember({ variables: { userId: id, groupId: parseInt(chatId) } })
+  const handleRemoveMember = async () => {
+    const removeRes = await removeMember({
+      variables: { userId: id, groupId: parseInt(chatId) },
+    })
+
+    if (removeRes.data.removeMember === null) {
+      notify('Cannot remove Group Creator')
+      return
+    }
+
     notify()
   }
 
