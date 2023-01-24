@@ -172,6 +172,17 @@ const typeDefs = `
     chat_reported: Group
   }
 
+  type RoleMembers{
+    role: GroupRole
+    members: [User]
+  }
+
+  type ReportedChatDetails{
+    group_data: Group
+    allMembers: [User]
+    roleMembers: [RoleMembers]
+  }
+
   input RolesToEdit{
     id: Int
     role_name: String
@@ -208,6 +219,7 @@ const typeDefs = `
     userGroupRoles(user_id:Int ,group_id:Int): [Int]
     reports: [Report]
     report(report_id: Int): ReportResponse
+    reportedChat(group_id: Int!): ReportedChatDetails
   }
 
   

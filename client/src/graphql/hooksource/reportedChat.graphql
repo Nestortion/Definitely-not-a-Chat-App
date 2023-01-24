@@ -1,0 +1,33 @@
+query ReportedChat($groupId: Int!) {
+  reportedChat(group_id: $groupId) {
+    group_data {
+      id
+      group_name
+      group_picture
+      is_group
+    }
+    allMembers {
+      id
+      username
+      first_name
+      last_name
+      profile_img
+    }
+    roleMembers {
+      role {
+        id
+        role_name
+        group_id
+        role_type
+        is_default
+      }
+      members {
+        id
+        username
+        first_name
+        last_name
+        profile_img
+      }
+    }
+  }
+}

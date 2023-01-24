@@ -445,6 +445,50 @@ const resolvers = {
         chat_reported,
       }
     },
+    reportedChat: async (_, { group_id }, context) => {
+      authMiddleware(context)
+
+      const userGroups = await UserGroups.findAll({ where: { group_id } })
+
+      const userIds = userGroups.map((usergroup) => usergroup.user_id)
+
+      const allMembers = await Users.findAll({ where: { id: userIds } })
+
+      const group_data = await Groups.findOne({ where: { id: group_id } })
+
+      const groupRoles = await GroupRoles.findAll({ where: { group_id } })
+
+      const roleMembers = await Promise.all(
+        groupRoles.map(async (role) => {
+          const userGroupRoles = await UserGroupRoles.findAll({
+            where: { group_role_id: role.id },
+          })
+
+          const userGroupIds = userGroupRoles.map(
+            (usergrouprole) => usergrouprole.user_group_id
+          )
+
+          const userGroups = await UserGroups.findAll({
+            where: { id: userGroupIds },
+          })
+
+          const userIds = userGroups.map((usergroup) => usergroup.user_id)
+
+          const members = await Users.findAll({ where: { id: userIds } })
+
+          return {
+            role,
+            members,
+          }
+        })
+      )
+
+      return {
+        group_data,
+        allMembers,
+        roleMembers,
+      }
+    },
   },
   Mutation: {
     addUser: async (

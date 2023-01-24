@@ -7,25 +7,6 @@ import ErrorText from '../../../components/Error/ErrorText'
 import { useRef } from 'react'
 import { useEffect } from 'react'
 
-const dummyReports = [
-  {
-    id: 1,
-    user_id: 7,
-    group_id: 150,
-    report_reason: 'Sharing inappropriate things, Hate speech, ',
-    user_id: 7,
-    is_resolved: true,
-  },
-  {
-    id: 2,
-    user_id: 7,
-    group_id: 150,
-    report_reason: 'Sharing inappropriate things, Hate speech, ',
-    user_id: 7,
-    is_resolved: false,
-  },
-]
-
 export default function Reports() {
   const navigate = useNavigate()
   const [resolvedReports, setResolvedReports] = useState([])
@@ -33,18 +14,18 @@ export default function Reports() {
   const resolvedTbodyRef = useRef()
   const pendingTbodyRef = useRef()
 
-  // const {
-  //   data: reports,
-  //   loading: reportsLoading,
-  //   error: reportsError,
-  // } = useReportsQuery()
+  const {
+    data: reports,
+    loading: reportsLoading,
+    error: reportsError,
+  } = useReportsQuery()
 
   const handleClick = (e, reportId) => {
     navigate(`/admin/reports/${reportId}`)
   }
 
   useEffect(() => {
-    dummyReports.forEach((report) => {
+    reports?.reports.forEach((report) => {
       if (report.is_resolved) {
         if (resolvedReports.includes(report)) return
         setResolvedReports([...resolvedReports, report])
@@ -53,10 +34,10 @@ export default function Reports() {
         setPendingReports([...pendingReports, report])
       }
     })
-  }, [dummyReports])
+  }, [reports])
 
-  // if (reportsLoading) return <LoadingSpinner />
-  // if (reportsError) return <ErrorText>Something went wrong</ErrorText>
+  if (reportsLoading) return <LoadingSpinner />
+  if (reportsError) return <ErrorText>Something went wrong</ErrorText>
 
   return (
     <div className="reports">
