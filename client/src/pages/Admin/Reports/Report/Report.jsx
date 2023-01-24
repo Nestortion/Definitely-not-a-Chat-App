@@ -6,6 +6,7 @@ import { useReportQuery } from '../../../../graphql/hooks/graphql'
 import LoadingSpinner from '../../../../components/Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../../../../components/Error/ErrorText'
 import { apiBasePath } from '../../../../data/config'
+import Button from '../../../../components/UI/Button/Button'
 
 export default function Report() {
   const { reportId } = useParams()
@@ -89,13 +90,16 @@ export default function Report() {
               </p>
             )}
 
-            <p>
-              <span className="fw-bold">Status: </span>
-              <select value={currentStatus} onChange={handleChange}>
-                <option value="true">Resolved</option>
-                <option value="false">Pending</option>
-              </select>
-            </p>
+            <div className="report-box__status-container">
+              <div>
+                <span className="fw-bold">Status: </span>
+                <select value={currentStatus} onChange={handleChange}>
+                  <option value="true">Resolved</option>
+                  <option value="false">Pending</option>
+                </select>
+              </div>
+              <Button onClick={handleSave}>Save</Button>
+            </div>
           </div>
         </div>
 
