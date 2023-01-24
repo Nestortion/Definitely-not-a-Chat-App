@@ -2,7 +2,11 @@ import './report.scss'
 import { Link, useParams } from 'react-router-dom'
 import Avatar from '../../../../components/UI/Avatar/Avatar'
 import { useEffect, useState } from 'react'
-import { useReportQuery } from '../../../../graphql/hooks/graphql'
+import {
+  ReportDocument,
+  useReportQuery,
+  useUpdateReportStatusMutation,
+} from '../../../../graphql/hooks/graphql'
 import LoadingSpinner from '../../../../components/Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../../../../components/Error/ErrorText'
 import { apiBasePath } from '../../../../data/config'
@@ -18,6 +22,7 @@ export default function Report() {
   } = useReportQuery({ variables: { reportId: parseInt(reportId) } })
 
   const [currentStatus, setCurrentStatus] = useState(false)
+  const [updateReportStatus] = useUpdateReportStatusMutation()
 
   useEffect(() => {
     setCurrentStatus(report?.report?.report.is_resolved)
@@ -27,11 +32,35 @@ export default function Report() {
   if (reportError) return <ErrorText>Something went wrong</ErrorText>
 
   const handleChange = (e) => {
-    setCurrentStatus(e.target.value)
+    setCurrentStatus((prev) => !prev)
   }
 
   const handleSave = () => {
-    console.log(currentStatus)
+    updateReportStatus({
+      variables: {
+        reportId: parseInt(reportId),
+        reportStatus: currentStatus,
+      },
+      update(cache, { data: { updateReportStatus } }) {
+        const { report } = cache.readQuery({
+          query: ReportDocument,
+          variables: { reportId: parseInt(reportId) },
+        })
+        if (updateReportStatus === null) return
+
+        cache.writeQuery({
+          query: ReportDocument,
+          variables: { reportId: parseInt(reportId) },
+          data: {
+            report: {
+              report: updateReportStatus,
+              sender: report.sender,
+              chat_reported: report.chat_reported,
+            },
+          },
+        })
+      },
+    })
   }
 
   const convertMessageDate = new Date(
@@ -72,10 +101,6 @@ export default function Report() {
                       timeStyle: 'short',
                     }).format(convertMessageDate)}
                   </span>
-                </p>
-                <p>
-                  <span className="fw-bold">Remarks: </span>
-                  <span>{report.report.report.remarks}</span>
                 </p>
               </>
             ) : (
