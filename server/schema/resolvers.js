@@ -392,11 +392,17 @@ const resolvers = {
       const users = await Users.findAll()
       const groups = await Groups.findAll()
       const userChats = await UserChats.findAll()
+      const reports = await Reports.findAll()
+
+      const filterReports = reports.filter(
+        (report) => report.is_resolved === false
+      )
 
       return {
         userCount: users.length,
         groupCount: groups.length,
         userChatsCount: userChats.length,
+        pendingReportCount: filterReports.length,
       }
     },
     userGroupRoles: async (_, { group_id, user_id }, context) => {

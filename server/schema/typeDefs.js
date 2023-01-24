@@ -156,6 +156,7 @@ const typeDefs = `
   type SystemStats{
     userCount: Int
     groupCount: Int
+    pendingReportCount: Int
     userChatsCount: Int
   }
 
