@@ -35,6 +35,7 @@ import AdminLogs from './pages/Admin/AdminLogs/AdminLogs'
 import Reports from './pages/Admin/Reports/Reports'
 import Report from './pages/Admin/Reports/Report/Report'
 import SoloGroup from './pages/Admin/AdminGroupsList/SoloGroup/SoloGroup'
+import Register from './pages/Admin/Register/Register'
 
 const router = createBrowserRouter([
   {
@@ -106,6 +107,10 @@ const router = createBrowserRouter([
       {
         path: '/admin/reports/:reportId',
         element: <Report />,
+      },
+      {
+        path: '/admin/register',
+        element: <Register />,
       },
     ],
   },

@@ -1,0 +1,47 @@
+.register {
+  min-height: calc(100vh - 64px - 2rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .register__form {
+    min-width: 220px;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .register__heading {
+      text-align: center;
+    }
+
+    .register__input-control {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+
+      @media (max-width: 667px) {
+        flex-direction: column;
+      }
+
+      input,
+      select {
+        padding: 0.3125rem 0.625rem;
+        border: 1px solid var(--clr-primary-400);
+        border-radius: 0.3125rem;
+      }
+    }
+
+    .register__button-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      button {
+        width: 40%;
+      }
+    }
+  }
+}
