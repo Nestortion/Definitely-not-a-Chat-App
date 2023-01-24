@@ -1,33 +1,21 @@
 import { useState } from 'react'
 import './reports.scss'
 import { useNavigate } from 'react-router-dom'
+import { useReportsQuery } from '../../../graphql/hooks/graphql'
+import LoadingSpinner from '../../../components/Loading/LoadingSpinner/LoadingSpinner'
+import ErrorText from '../../../components/Error/ErrorText'
 
 export default function Reports() {
   const navigate = useNavigate()
 
-  const [reports, setReports] = useState([
-    {
-      id: 1,
-      senderUserId: 1,
-      reportedGroupId: 69,
-      reportReasons: ['Sharing inappropriate things', 'Hate speech', 'Scam'],
-      resolved: false,
-    },
-    {
-      id: 2,
-      senderUserId: 2,
-      reportedGroupId: 69,
-      reportReasons: ['This is the message on the others input'],
-      resolved: false,
-    },
-    {
-      id: 3,
-      senderUserId: 1,
-      reportedGroupId: 69,
-      reportReasons: ['Sharing inappropriate things', 'Hate speech', 'Scam'],
-      resolved: false,
-    },
-  ])
+  const {
+    data: reports,
+    loading: reportsLoading,
+    error: reportsError,
+  } = useReportsQuery()
+
+  if (reportsLoading) return <LoadingSpinner />
+  if (reportsError) return <ErrorText>Something went wrong</ErrorText>
 
   const handleClick = (e, reportId) => {
     navigate(`/admin/reports/${reportId}`)
@@ -48,16 +36,16 @@ export default function Reports() {
             </tr>
           </thead>
           <tbody>
-            {reports.map((report) => (
+            {reports.reports.map((report) => (
               <tr
                 key={report.id}
                 onClick={(e, id) => handleClick(e, report.id)}
               >
                 <td>{report.id}</td>
-                <td>{report.senderUserId}</td>
-                <td>{report.reportedGroupId}</td>
-                <td>{report.reportReasons.toString()}</td>
-                <td>{report.resolved ? 'Resolved' : 'Pending'}</td>
+                <td>{report.user_id}</td>
+                <td>{report.group_id}</td>
+                <td>{report.report_reason}</td>
+                <td>{report.is_resolved ? 'Resolved' : 'Pending'}</td>
               </tr>
             ))}
           </tbody>
