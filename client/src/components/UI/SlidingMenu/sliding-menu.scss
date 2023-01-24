@@ -48,6 +48,21 @@
         a {
           text-decoration: none;
           color: inherit;
+
+          &::after {
+            margin-top: 0.3125rem;
+
+            display: block;
+            content: '';
+            border-bottom: 2px solid var(--clr-neutral-100);
+            transform: scaleX(0);
+            transition: transform 250ms ease-in-out;
+            transform-origin: 0% 50%;
+          }
+
+          &:hover::after {
+            transform: scaleX(1);
+          }
         }
       }
     }
