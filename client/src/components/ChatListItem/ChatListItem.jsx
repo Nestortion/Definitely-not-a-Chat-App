@@ -6,6 +6,8 @@ import { useMediaQuery } from 'react-responsive'
 import { useOtherUserQuery } from '../../graphql/hooks/graphql'
 import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../Error/ErrorText'
+import { useAtom } from 'jotai'
+import { searchInput } from '../../App'
 
 export default function ChatListItem({
   chatId,
@@ -15,6 +17,8 @@ export default function ChatListItem({
   isGroup,
   latest,
 }) {
+  const [searchWord] = useAtom(searchInput) // string from search word component
+
   const {
     data: otherUser,
     loading: otherUserLoading,

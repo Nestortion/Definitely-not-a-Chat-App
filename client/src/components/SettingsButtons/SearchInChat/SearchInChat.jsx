@@ -1,9 +1,10 @@
-import { useState } from 'react'
 import Button from '../../UI/Button/Button'
 import './search-in-chat.scss'
+import { useAtom } from 'jotai'
+import { searchInput } from '../../../App'
 
 export default function SearchInChat({ closeModal }) {
-  const [searchWord, setSearchWord] = useState('')
+  const [searchWord, setSearchWord] = useAtom(searchInput)
 
   const handleChange = (e) => {
     setSearchWord(e.target.value)
