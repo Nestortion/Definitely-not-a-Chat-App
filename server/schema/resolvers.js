@@ -1380,6 +1380,10 @@ const resolvers = {
         user_id: actionUser.id,
       })
 
+      if (user_status === true) {
+        await Users.increment({ token_version: 1 }, { where: { id: user_id } })
+      }
+
       return true
     },
   },
