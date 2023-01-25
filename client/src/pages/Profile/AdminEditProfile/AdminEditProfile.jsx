@@ -7,8 +7,10 @@ import { toast } from 'react-toastify'
 import SpawnModal from '../../../components/UI/Modal/SpawnModal'
 import { apiBasePath } from '../../../data/config'
 import { useAdminUpdateUserProfileMutation } from '../../../graphql/hooks/graphql'
+import { useNavigate } from 'react-router-dom'
 
 export default function AdminEditProfile({ closeModal, profileData }) {
+  const navigate = useNavigate()
   const notify = (text, color) =>
     toast(text, {
       position: toast.POSITION.TOP_CENTER,
@@ -80,8 +82,9 @@ export default function AdminEditProfile({ closeModal, profileData }) {
       return
     }
 
-    notify('User Profile Updated!', 'var(--clr-secondary-400)')
-    closeModal()
+    navigate(0)
+    // notify('User Profile Updated!', 'var(--clr-secondary-400)')
+    // closeModal()
   }
 
   const handleReset = () => {
