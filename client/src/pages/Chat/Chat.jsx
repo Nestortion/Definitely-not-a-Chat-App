@@ -11,7 +11,7 @@ import {
   useOtherUserQuery,
   UserChatsDocument,
 } from '../../graphql/hooks/graphql'
-import { useOutletContext, useParams } from 'react-router-dom'
+import { Link, useOutletContext, useParams } from 'react-router-dom'
 import { apiBasePath } from '../../data/config'
 import LoadingSpinner from '../../components/Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../../components/Error/ErrorText'
@@ -141,14 +141,23 @@ export default function Chat() {
               <span>{data.group.group_name}</span>
             </>
           ) : (
-            <>
+            <Link
+              to={`/profile/${otherUser.otherUser.id}`}
+              style={{
+                textDecoration: 'none',
+                color: 'var(--clr-neutral-900)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1rem',
+              }}
+            >
               <Avatar
                 src={`${apiBasePath}/pfp/${otherUser.otherUser.profile_img}`}
                 alt={`${data.group.group_name}'s photo`}
                 size="40"
               />
               <span>{`${otherUser.otherUser.first_name} ${otherUser.otherUser.last_name}`}</span>
-            </>
+            </Link>
           )}
         </div>
         {isModalShowing && (

@@ -3,7 +3,7 @@ import Avatar from '../UI/Avatar/Avatar'
 import MemberList from '../MemberList/MemberList'
 // TODO: use the global chat data state here
 import SettingsButtons from '../SettingsButtons/SettingsButtons'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import {
   GroupRolesUpdatedDocument,
   useCurrentUserGroupRolesQuery,
@@ -96,14 +96,24 @@ export default function RightBar({ showOnlyMiddle }) {
             <span>{groupData.group.group_name}</span>
           </>
         ) : (
-          <>
+          <Link
+            to={`/profile/${otherUser.otherUser.id}`}
+            style={{
+              textDecoration: 'none',
+              color: 'var(--clr-neutral-900)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '1rem',
+            }}
+          >
             <Avatar
               src={`${apiBasePath}/pfp/${otherUser.otherUser.profile_img}`}
               alt={`${groupData.group.group_name}'s photo`}
               size="80"
             />
             <span>{`${otherUser.otherUser.first_name} ${otherUser.otherUser.last_name}`}</span>
-          </>
+          </Link>
         )}
       </div>
       <div className="rightbar--main">
