@@ -56,7 +56,8 @@ export default function ChatMessagesContainer() {
       const chatsRes = await chatsQuery()
       setChats(chatsRes.data.userChats)
     })()
-  }, [])
+  }, [searchWord])
+
   useEffect(() => {
     setUserIsSearching(false)
     setSearchWord('')
