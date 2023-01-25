@@ -787,6 +787,10 @@ const resolvers = {
 
       const checkPassword = await bcrypt.compare(password, user.password)
 
+      if (user.disabled) {
+        throw new GraphQLError('User Disabled')
+      }
+
       if (!user || !checkPassword) {
         throw new GraphQLError('Username or password does not match')
       }
