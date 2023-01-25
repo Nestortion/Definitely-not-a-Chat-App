@@ -48,6 +48,7 @@ export type AdminLog = {
 }
 
 export type AdminUserProfileUpdateInput = {
+  access_level?: InputMaybe<AccessLevel>
   first_name?: InputMaybe<Scalars['String']>
   last_name?: InputMaybe<Scalars['String']>
   new_password?: InputMaybe<Scalars['String']>
@@ -672,6 +673,23 @@ export type AdminLogsQuery = {
     full_name: string
     createdAt: any
   } | null> | null
+}
+
+export type AdminUpdateUserProfileMutationVariables = Exact<{
+  userData?: InputMaybe<AdminUserProfileUpdateInput>
+}>
+
+export type AdminUpdateUserProfileMutation = {
+  __typename?: 'Mutation'
+  adminUpdateUserProfile?: {
+    __typename?: 'User'
+    id: number
+    username: string
+    access_level: AccessLevel
+    last_name: string
+    first_name: string
+    profile_img: string
+  } | null
 }
 
 export type ChatAddedSubscriptionVariables = Exact<{
@@ -1931,6 +1949,61 @@ export type AdminLogsLazyQueryHookResult = ReturnType<
 export type AdminLogsQueryResult = Apollo.QueryResult<
   AdminLogsQuery,
   AdminLogsQueryVariables
+>
+export const AdminUpdateUserProfileDocument = gql`
+  mutation AdminUpdateUserProfile($userData: AdminUserProfileUpdateInput) {
+    adminUpdateUserProfile(userData: $userData) {
+      id
+      username
+      access_level
+      last_name
+      first_name
+      profile_img
+    }
+  }
+`
+export type AdminUpdateUserProfileMutationFn = Apollo.MutationFunction<
+  AdminUpdateUserProfileMutation,
+  AdminUpdateUserProfileMutationVariables
+>
+
+/**
+ * __useAdminUpdateUserProfileMutation__
+ *
+ * To run a mutation, you first call `useAdminUpdateUserProfileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminUpdateUserProfileMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminUpdateUserProfileMutation, { data, loading, error }] = useAdminUpdateUserProfileMutation({
+ *   variables: {
+ *      userData: // value for 'userData'
+ *   },
+ * });
+ */
+export function useAdminUpdateUserProfileMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AdminUpdateUserProfileMutation,
+    AdminUpdateUserProfileMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    AdminUpdateUserProfileMutation,
+    AdminUpdateUserProfileMutationVariables
+  >(AdminUpdateUserProfileDocument, options)
+}
+export type AdminUpdateUserProfileMutationHookResult = ReturnType<
+  typeof useAdminUpdateUserProfileMutation
+>
+export type AdminUpdateUserProfileMutationResult =
+  Apollo.MutationResult<AdminUpdateUserProfileMutation>
+export type AdminUpdateUserProfileMutationOptions = Apollo.BaseMutationOptions<
+  AdminUpdateUserProfileMutation,
+  AdminUpdateUserProfileMutationVariables
 >
 export const ChatAddedDocument = gql`
   subscription ChatAdded($user: Int) {

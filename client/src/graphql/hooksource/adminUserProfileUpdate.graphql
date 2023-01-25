@@ -1,0 +1,10 @@
+mutation AdminUpdateUserProfile($userData: AdminUserProfileUpdateInput) {
+  adminUpdateUserProfile(userData: $userData) {
+    id
+    username
+    access_level
+    last_name
+    first_name
+    profile_img
+  }
+}
