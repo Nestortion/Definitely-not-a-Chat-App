@@ -72,7 +72,10 @@ export default function Profile() {
     <>
       {shouldShowModal && (
         <SpawnModal title="Edit User" closeModal={hideModal}>
-          <AdminEditProfile closeModal={hideModal} profileId={profileId} />
+          <AdminEditProfile
+            closeModal={hideModal}
+            profileData={profileData.userProfile}
+          />
         </SpawnModal>
       )}
       <div className="profile">
