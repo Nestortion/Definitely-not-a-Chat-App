@@ -211,6 +211,17 @@ const typeDefs = `
     description: String
   }
 
+  input AdminUserProfileUpdateInput {
+    user_id: Int
+    username: String 
+    section: String
+    profile_img: Upload
+    new_password: String 
+    first_name: String
+    last_name: String
+    access_level: AccessLevel
+  }
+
   type Query {
     userChatSender(user_id: Int): User
     user: User
@@ -264,6 +275,7 @@ const typeDefs = `
     submitReport(group_id: Int, reasons: [String]): Report
     updateReportStatus(report_status: Boolean, report_id: Int): Report
     toggleUserStatus(user_id: Int, user_status: Boolean): Boolean
+    adminUpdateUserProfile(userData: AdminUserProfileUpdateInput): User
   }
 
   

@@ -1386,6 +1386,58 @@ const resolvers = {
 
       return true
     },
+    adminUpdateUserProfile: async (_, { userData }, context) => {
+      const { data: user } = authMiddleware(context)
+
+      const actionUser = await Users.findOne({
+        where: { id: user.user_id },
+      })
+
+      const initialUser = await Users.findOne({
+        where: { id: userData.user_id },
+      })
+
+      if (actionUser.access_level !== 'ADMIN') return
+
+      let newImage = initialUser.profile_img
+      if (userData.profile_img) {
+        const { createReadStream, filename } = await userData.profile_img
+        let filepath = '../files/pfp'
+        newImage = `${uuid()} ${filename}`
+
+        await new Promise((res) =>
+          createReadStream()
+            .pipe(createWriteStream(path.join('__dirname', filepath, newImage)))
+            .on('close', res)
+        )
+      }
+
+      const new_password = await bcrypt.hash(userData.new_password, 10)
+
+      await Users.update(
+        {
+          username: userData.username,
+          first_name: userData.first_name,
+          last_name: userData.last_name,
+          access_level: userData.access_level,
+          password: new_password,
+          profile_img: newImage,
+        },
+        { where: { id: userData.user_id } }
+      )
+
+      const updatedUser = await Users.findOne({
+        where: { id: userData.user_id },
+      })
+
+      await AdminLogs.create({
+        full_name: `${actionUser.first_name} ${actionUser.last_name}`,
+        action_description: `Updated the profile of user ${userData.user_id}`,
+        user_id: actionUser.id,
+      })
+
+      return updatedUser
+    },
   },
   Subscription: {
     memberRolesUpdated: {
