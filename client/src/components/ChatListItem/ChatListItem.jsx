@@ -66,7 +66,7 @@ export default function ChatListItem({
 
       return `${Math.floor(newTime)}h`
     } else if (newTime >= 1 && newTime < 7) {
-      return `${Math.ceil(newTime)}d`
+      return `${Math.floor(newTime)}d`
     } else if (newTime >= 7 && newTime <= 28) {
       newTime = Math.abs((newTime /= 7))
 
