@@ -33,77 +33,6 @@ export default function AdminControlPanel() {
     error: topFourGroupChatsError,
   } = useGroupListQuery({ variables: { limit: 4 } })
 
-  const topFourUserLogs = [
-    {
-      id: 1,
-      fullName: 'Nestor Gerona',
-      section: 'BSIT 4-1',
-      actionDescription: 'Added John Doe to clueluljohndoelodin',
-      createdAt: '2023-01-02 11:14:48',
-      userId: '1',
-    },
-    {
-      id: 2,
-      fullName: 'Nestor Gerona',
-      section: 'BSIT 4-1',
-      actionDescription: 'Has logged in',
-      createdAt: '2023-01-02 11:13:48',
-      userId: '1',
-    },
-    {
-      id: 3,
-      fullName: 'Nestor Gerona',
-      section: 'BSIT 4-1',
-      actionDescription: 'Has logged out',
-      createdAt: '2023-01-02 11:12:48',
-      userId: '1',
-    },
-    {
-      id: 4,
-      fullName: 'Nestor Gerona',
-      section: 'BSIT 4-1',
-      actionDescription: 'Has logged in',
-      createdAt: '2023-01-02 11:11:48',
-      userId: '1',
-    },
-  ]
-
-  const topFourAdminLogs = [
-    {
-      id: 1,
-      fullName: 'Nestor Gerona',
-      actionDescription: 'The one piece IS REAL!',
-      createdAt: '2023-01-02 11:14:48',
-      userId: '1',
-    },
-    {
-      id: 2,
-      fullName: 'Nestor Gerona',
-      actionDescription: 'The one piece IS REAL!',
-      createdAt: '2023-01-02 11:13:48',
-      userId: '1',
-    },
-    {
-      id: 3,
-      fullName: 'Nestor Gerona',
-      actionDescription: 'The one piece IS REAL!',
-      createdAt: '2023-01-02 11:12:48',
-      userId: '1',
-    },
-    {
-      id: 4,
-      fullName: 'Nestor Gerona',
-      actionDescription: 'The one piece IS REAL!',
-      createdAt: '2023-01-02 11:12:48',
-      userId: '1',
-    },
-  ]
-
-  const latestUserLog = topFourUserLogs[0]
-  const latesAdminLog = topFourAdminLogs[0]
-  const latestUserAction = `${latestUserLog.fullName} ${latestUserLog.actionDescription}`
-  const latestAdminAction = `${latesAdminLog.fullName} ${latesAdminLog.actionDescription}`
-
   if (topFourUsersLoading) return <LoadingSpinner />
   if (topFourUsersError) return <ErrorText>Something Went Wrong</ErrorText>
   if (systemStatsLoading) return <LoadingSpinner />
@@ -156,7 +85,16 @@ export default function AdminControlPanel() {
         >
           <div className="control-panel__card control-panel__top-card">
             <p className="control-panel__top-heading">Latest Admin Action</p>
-            <p className="fs-300 fw-bold">{latestAdminAction}</p>
+            <p className="fs-300 fw-bold">
+              {Intl.DateTimeFormat('en-US', {
+                dateStyle: 'medium',
+                timeStyle: 'short',
+              }).format(
+                new Date(systemStats.systemStats.latestAdminLog.createdAt)
+              )}
+              <br />
+              {`${systemStats.systemStats.latestAdminLog.full_name} ${systemStats.systemStats.latestAdminLog.action_description}`}
+            </p>
           </div>
         </Link>
       </div>
