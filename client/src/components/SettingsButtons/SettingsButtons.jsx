@@ -110,7 +110,7 @@ export default function SettingsButtons({ userRoles, isGroup, rolesList }) {
           </>
         )}
 
-        <Button onClick={() => setUserIsSearching(true)}>
+        <Button onClick={() => setUserIsSearching(!userIsSearching)}>
           <MdSearch style={{ display: 'inline-block' }} />
           <span className="fs-400">Search in Chat</span>
         </Button>
