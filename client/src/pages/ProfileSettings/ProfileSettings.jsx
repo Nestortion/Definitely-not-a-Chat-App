@@ -231,7 +231,8 @@ export default function ProfileSettings() {
             <div className="profile-settings__input-container">
               <label htmlFor="username">Username: </label>
               <input
-                className="profile-settings-input"
+                disabled
+                className="profile-settings-input input-disable"
                 type="text"
                 name="username"
                 onChange={handleChange}
