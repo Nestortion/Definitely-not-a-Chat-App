@@ -1,4 +1,14 @@
-import { MdClose } from 'react-icons/md'
+import {
+  MdClose,
+  MdGroups,
+  MdLeaderboard,
+  MdList,
+  MdListAlt,
+  MdNotes,
+  MdPersonAdd,
+  MdReport,
+  MdShield,
+} from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import './sliding-menu.scss'
 
@@ -17,37 +27,58 @@ export default function SlidingMenu({ closeMenu }) {
         <ul className="sliding-menu__actions-container">
           <li className="sliding-menu__action">
             <Link onClick={closeMenu} to="/admin">
-              Control Panel
+              <span className="sliding-menu__span">
+                <MdLeaderboard size={24} />
+                Control Panel
+              </span>
             </Link>
           </li>
           <li className="sliding-menu__action">
             <Link onClick={closeMenu} to="/admin/users">
-              Users List
+              <span className="sliding-menu__span">
+                <MdListAlt size={24} />
+                Users List
+              </span>
             </Link>
           </li>
           <li className="sliding-menu__action">
             <Link onClick={closeMenu} to="/admin/groups">
-              Groups List
+              <span className="sliding-menu__span">
+                <MdGroups size={24} />
+                Groups List
+              </span>
             </Link>
           </li>
           <li className="sliding-menu__action">
             <Link onClick={closeMenu} to="/admin/user-logs">
-              User Logs
+              <span className="sliding-menu__span">
+                <MdNotes size={24} />
+                User Logs
+              </span>
             </Link>
           </li>
           <li className="sliding-menu__action">
             <Link onClick={closeMenu} to="/admin/admin-logs">
-              Admin Logs
+              <span className="sliding-menu__span">
+                <MdShield size={24} />
+                Admin Logs
+              </span>
             </Link>
           </li>
           <li className="sliding-menu__action">
             <Link onClick={closeMenu} to="/admin/reports">
-              Reports
+              <span className="sliding-menu__span">
+                <MdReport size={24} />
+                Reports
+              </span>
             </Link>
           </li>
           <li className="sliding-menu__action">
             <Link onClick={closeMenu} to="/admin/register">
-              Register User
+              <span className="sliding-menu__span">
+                <MdPersonAdd size={24} />
+                Register User
+              </span>
             </Link>
           </li>
         </ul>

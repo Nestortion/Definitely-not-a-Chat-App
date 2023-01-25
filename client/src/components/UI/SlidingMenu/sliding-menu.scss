@@ -39,7 +39,7 @@
     .sliding-menu__actions-container {
       display: flex;
       flex-direction: column;
-      gap: 3rem;
+      gap: 2rem;
 
       font-size: 1.2rem;
       list-style: none;
@@ -62,6 +62,12 @@
 
           &:hover::after {
             transform: scaleX(1);
+          }
+
+          .sliding-menu__span {
+            display: flex;
+            align-items: flex-end;
+            gap: 2rem;
           }
         }
       }
