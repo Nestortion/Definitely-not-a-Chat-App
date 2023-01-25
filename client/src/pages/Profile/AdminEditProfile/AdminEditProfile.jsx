@@ -22,10 +22,6 @@ export default function AdminEditProfile({ closeModal, profileId }) {
     firstName: '',
     lastName: '',
     username: '',
-    age: '',
-    gender: 'MALE',
-    section: '',
-    address: '',
     password: '',
     profileImage: null,
     accessLevel: 'MEMBER',
@@ -66,6 +62,8 @@ export default function AdminEditProfile({ closeModal, profileId }) {
     // } else {
 
     // }
+
+    hideConfirmModal()
   }
 
   const handleReset = () => {
@@ -162,6 +160,20 @@ export default function AdminEditProfile({ closeModal, profileId }) {
                 id="password"
                 value={values.password}
               />
+            </div>
+
+            <div className="profile-settings__input-container">
+              <label htmlFor="accessLevel">Access Level: </label>
+              <select
+                className="profile-settings-input"
+                onChange={handleChange}
+                value={values.accessLevel}
+                name="accessLevel"
+                id="accessLevel"
+              >
+                <option value="USER">User</option>
+                <option value="ADMIN">Admin</option>
+              </select>
             </div>
 
             <div className="profile-settings__button-group">
