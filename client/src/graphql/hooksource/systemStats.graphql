@@ -2,7 +2,14 @@ query SystemStats {
   systemStats {
     userCount
     groupCount
-    userChatsCount
     pendingReportCount
+    userChatsCount
+    latestAdminLog {
+      id
+      user_id
+      action_description
+      full_name
+      createdAt
+    }
   }
 }

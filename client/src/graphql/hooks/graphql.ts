@@ -461,6 +461,7 @@ export type SubscriptionMemberRolesUpdatedArgs = {
 export type SystemStats = {
   __typename?: 'SystemStats'
   groupCount?: Maybe<Scalars['Int']>
+  latestAdminLog?: Maybe<AdminLog>
   pendingReportCount?: Maybe<Scalars['Int']>
   userChatsCount?: Maybe<Scalars['Int']>
   userCount?: Maybe<Scalars['Int']>
@@ -1184,8 +1185,16 @@ export type SystemStatsQuery = {
     __typename?: 'SystemStats'
     userCount?: number | null
     groupCount?: number | null
-    userChatsCount?: number | null
     pendingReportCount?: number | null
+    userChatsCount?: number | null
+    latestAdminLog?: {
+      __typename?: 'AdminLog'
+      id: number
+      user_id?: number | null
+      action_description: string
+      full_name: string
+      createdAt: any
+    } | null
   } | null
 }
 
@@ -3350,8 +3359,15 @@ export const SystemStatsDocument = gql`
     systemStats {
       userCount
       groupCount
-      userChatsCount
       pendingReportCount
+      userChatsCount
+      latestAdminLog {
+        id
+        user_id
+        action_description
+        full_name
+        createdAt
+      }
     }
   }
 `
