@@ -1,5 +1,6 @@
 query UserProfile($userProfileId: Int!) {
   userProfile(id: $userProfileId) {
+    id
     address
     age
     first_name
@@ -8,5 +9,6 @@ query UserProfile($userProfileId: Int!) {
     profile_img
     section
     disabled
+    username
   }
 }

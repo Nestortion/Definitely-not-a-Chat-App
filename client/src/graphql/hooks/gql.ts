@@ -58,7 +58,7 @@ const documents = {
     "query UserChats {\n  userChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n    createdAt\n  }\n}": types.UserChatsDocument,
     "query UserGroupRoles($userId: Int, $groupId: Int) {\n  userGroupRoles(user_id: $userId, group_id: $groupId)\n}": types.UserGroupRolesDocument,
     "query UserLogs {\n  userLogs {\n    id\n    user_id\n    action_description\n    full_name\n    createdAt\n    section\n  }\n}": types.UserLogsDocument,
-    "query UserProfile($userProfileId: Int!) {\n  userProfile(id: $userProfileId) {\n    address\n    age\n    first_name\n    gender\n    last_name\n    profile_img\n    section\n    disabled\n  }\n}": types.UserProfileDocument,
+    "query UserProfile($userProfileId: Int!) {\n  userProfile(id: $userProfileId) {\n    id\n    address\n    age\n    first_name\n    gender\n    last_name\n    profile_img\n    section\n    disabled\n    username\n  }\n}": types.UserProfileDocument,
     "query UserRoles($groupRoleId: Int) {\n  userRoles(group_role_id: $groupRoleId) {\n    first_name\n    id\n    last_name\n    profile_img\n  }\n}": types.UserRolesDocument,
     "query Users($limit: Int) {\n  users(limit: $limit) {\n    id\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n    username\n  }\n}": types.UsersDocument,
 };
@@ -246,7 +246,7 @@ export function graphql(source: "query UserLogs {\n  userLogs {\n    id\n    use
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "query UserProfile($userProfileId: Int!) {\n  userProfile(id: $userProfileId) {\n    address\n    age\n    first_name\n    gender\n    last_name\n    profile_img\n    section\n    disabled\n  }\n}"): (typeof documents)["query UserProfile($userProfileId: Int!) {\n  userProfile(id: $userProfileId) {\n    address\n    age\n    first_name\n    gender\n    last_name\n    profile_img\n    section\n    disabled\n  }\n}"];
+export function graphql(source: "query UserProfile($userProfileId: Int!) {\n  userProfile(id: $userProfileId) {\n    id\n    address\n    age\n    first_name\n    gender\n    last_name\n    profile_img\n    section\n    disabled\n    username\n  }\n}"): (typeof documents)["query UserProfile($userProfileId: Int!) {\n  userProfile(id: $userProfileId) {\n    id\n    address\n    age\n    first_name\n    gender\n    last_name\n    profile_img\n    section\n    disabled\n    username\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

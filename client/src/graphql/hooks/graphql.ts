@@ -47,6 +47,16 @@ export type AdminLog = {
   user_id?: Maybe<Scalars['Int']>
 }
 
+export type AdminUserProfileUpdateInput = {
+  first_name?: InputMaybe<Scalars['String']>
+  last_name?: InputMaybe<Scalars['String']>
+  new_password?: InputMaybe<Scalars['String']>
+  profile_img?: InputMaybe<Scalars['Upload']>
+  section?: InputMaybe<Scalars['String']>
+  user_id?: InputMaybe<Scalars['Int']>
+  username?: InputMaybe<Scalars['String']>
+}
+
 export type CurrentUserGroupRoles = {
   __typename?: 'CurrentUserGroupRoles'
   roles?: Maybe<Array<Maybe<Scalars['String']>>>
@@ -127,6 +137,7 @@ export type Mutation = {
   addUserChatReaction?: Maybe<UserChatReaction>
   addUserGroup?: Maybe<UserGroup>
   addUserGroupRole?: Maybe<UserGroupRole>
+  adminUpdateUserProfile?: Maybe<User>
   createGroup?: Maybe<Group>
   login?: Maybe<AccessToken>
   logout?: Maybe<Scalars['Boolean']>
@@ -179,6 +190,10 @@ export type MutationAddUserGroupArgs = {
 export type MutationAddUserGroupRoleArgs = {
   group_role_id?: InputMaybe<Scalars['Int']>
   user_group_id?: InputMaybe<Scalars['Int']>
+}
+
+export type MutationAdminUpdateUserProfileArgs = {
+  userData?: InputMaybe<AdminUserProfileUpdateInput>
 }
 
 export type MutationCreateGroupArgs = {
@@ -1407,6 +1422,7 @@ export type UserProfileQuery = {
   __typename?: 'Query'
   userProfile?: {
     __typename?: 'User'
+    id: number
     address: string
     age: number
     first_name: string
@@ -1415,6 +1431,7 @@ export type UserProfileQuery = {
     profile_img: string
     section: string
     disabled: boolean
+    username: string
   } | null
 }
 
@@ -4095,6 +4112,7 @@ export type UserLogsQueryResult = Apollo.QueryResult<
 export const UserProfileDocument = gql`
   query UserProfile($userProfileId: Int!) {
     userProfile(id: $userProfileId) {
+      id
       address
       age
       first_name
@@ -4103,6 +4121,7 @@ export const UserProfileDocument = gql`
       profile_img
       section
       disabled
+      username
     }
   }
 `
