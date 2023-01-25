@@ -7,6 +7,7 @@ import LoadingSpinner from './components/Loading/LoadingSpinner/LoadingSpinner'
 import { atom, Provider } from 'jotai'
 
 export const searchInput = atom('')
+export const isSearching = atom(false)
 
 export default function App() {
   const [loading, setLoading] = useState(true)
