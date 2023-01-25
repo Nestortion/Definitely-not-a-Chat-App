@@ -39,17 +39,17 @@ export default function AdminEditProfile({ closeModal, profileId }) {
     setValues({ ...values, [name]: value })
   }
 
-  const handleImageChange = ({
-    target: {
-      validity,
-      files: [file],
-    },
-  }) => {
+  const handleImageChange = (e) => {
+    const validity = e.target.validity
+    const validFiles = ['image/jpeg', 'image/png']
+    const uploadedFile = e.target.files[0]
+
+    if (!validFiles.includes(uploadedFile.type)) return
     if (validity.valid) {
       setValues((prev) => ({
         ...prev,
-        profileLink: URL.createObjectURL(file),
-        profileImage: file,
+        profileLink: URL.createObjectURL(uploadedFile),
+        profileImage: uploadedFile,
       }))
     }
   }
@@ -138,66 +138,6 @@ export default function AdminEditProfile({ closeModal, profileId }) {
               id="password"
               value={values.password}
             />
-          </div>
-          <div className="profile-settings__input-container">
-            <label htmlFor="age">Age: </label>
-            <input
-              className="profile-settings-input"
-              type="number"
-              name="age"
-              onChange={handleChange}
-              id="age"
-              value={values.age}
-            />
-          </div>
-          <div className="profile-settings__input-container">
-            <label htmlFor="gender">Gender: </label>
-            <select
-              className="profile-settings-input"
-              name="gender"
-              onChange={handleChange}
-              id="gender"
-              value={values.gender}
-            >
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Others">Others</option>
-            </select>
-          </div>
-          <div className="profile-settings__input-container">
-            <label htmlFor="section">Section: </label>
-            <input
-              className="profile-settings-input"
-              type="text"
-              name="section"
-              onChange={handleChange}
-              id="section"
-              value={values.section}
-            />
-          </div>
-          <div className="profile-settings__input-container">
-            <label htmlFor="address">Address: </label>
-            <input
-              className="profile-settings-input"
-              type="text"
-              name="address"
-              onChange={handleChange}
-              id="address"
-              value={values.address}
-            />
-          </div>
-          <div className="profile-settings__input-container">
-            <label htmlFor="accessLevel">Access Level: </label>
-            <select
-              className="profile-settings-input"
-              onChange={handleChange}
-              value={values.accessLevel}
-              name="accessLevel"
-              id="accessLevel"
-            >
-              <option value="USER">User</option>
-              <option value="ADMIN">Admin</option>
-            </select>
           </div>
 
           <div className="profile-settings__button-group">

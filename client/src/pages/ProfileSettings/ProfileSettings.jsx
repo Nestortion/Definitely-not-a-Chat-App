@@ -55,17 +55,17 @@ export default function ProfileSettings() {
     setValues({ ...values, [name]: value })
   }
 
-  const handleImageChange = ({
-    target: {
-      validity,
-      files: [file],
-    },
-  }) => {
+  const handleImageChange = (e) => {
+    const validity = e.target.validity
+    const validFiles = ['image/jpeg', 'image/png']
+    const uploadedFile = e.target.files[0]
+
+    if (!validFiles.includes(uploadedFile.type)) return
     if (validity.valid) {
       setValues((prev) => ({
         ...prev,
-        profileLink: URL.createObjectURL(file),
-        profileImage: file,
+        profileLink: URL.createObjectURL(uploadedFile),
+        profileImage: uploadedFile,
       }))
     }
   }
