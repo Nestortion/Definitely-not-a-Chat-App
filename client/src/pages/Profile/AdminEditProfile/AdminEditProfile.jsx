@@ -5,30 +5,34 @@ import Button from '../../../components/UI/Button/Button'
 import './admin-profile-settings.scss'
 import { toast } from 'react-toastify'
 import SpawnModal from '../../../components/UI/Modal/SpawnModal'
+import { apiBasePath } from '../../../data/config'
+import { useAdminUpdateUserProfileMutation } from '../../../graphql/hooks/graphql'
 
-export default function AdminEditProfile({ closeModal, profileId }) {
-  const notify = (text) =>
+export default function AdminEditProfile({ closeModal, profileData }) {
+  const notify = (text, color) =>
     toast(text, {
       position: toast.POSITION.TOP_CENTER,
       style: {
         color: 'var(--clr-neutral--100)',
-        backgroundColor: 'var(--clr-error-400)',
+        backgroundColor: `${color}`,
         fontSize: 'clamp(0.8rem, 1.3vw, 1.5rem)',
       },
     })
 
   const initialState = {
-    profileLink: '',
-    firstName: '',
-    lastName: '',
-    username: '',
+    user_id: profileData.id,
+    profileLink: `${apiBasePath}/pfp/${profileData.profile_img}`,
+    firstName: profileData.first_name,
+    lastName: profileData.last_name,
+    username: profileData.username,
     password: '',
     profileImage: null,
-    accessLevel: 'MEMBER',
+    accessLevel: profileData.acces_level,
   }
 
   const [values, setValues] = useState(initialState)
   const [confirmModalShouldShow, setConfirmModalShouldShow] = useState(false)
+  const [updateUser] = useAdminUpdateUserProfileMutation()
 
   const handleChange = (e) => {
     //? the age automatically converts to string
@@ -52,18 +56,32 @@ export default function AdminEditProfile({ closeModal, profileId }) {
     }
   }
 
-  const handleSave = () => {
-    if (Object.values(values).some((prop) => prop == false)) return
+  const handleSave = async () => {
+    if (Object.values(values).some((prop) => prop === false)) return
 
-    console.log(`The current user id is : ${profileId}`)
-
-    // if (success) {
-    //   notify('User settings saved!')
-    // } else {
-
-    // }
+    const updateRes = await updateUser({
+      variables: {
+        userData: {
+          access_level: values.accessLevel,
+          user_id: values.user_id,
+          username: values.username,
+          first_name: values.firstName,
+          last_name: values.lastName,
+          profile_img: values.profileImage,
+          new_password: values.password,
+        },
+      },
+    })
 
     hideConfirmModal()
+
+    if (updateRes.data.adminUpdateUserProfile === null) {
+      notify('Current User is not an Admin!', 'var(--clr-error-400)')
+      return
+    }
+
+    notify('User Profile Updated!', 'var(--clr-secondary-400)')
+    closeModal()
   }
 
   const handleReset = () => {
