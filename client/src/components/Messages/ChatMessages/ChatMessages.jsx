@@ -54,7 +54,7 @@ export default function ChatMessages({ userChats, user }) {
 
   return (
     <div className="chat-messages" ref={divRef}>
-      {userChats.data.userChats.map((chatMessage, index) => {
+      {userChats?.map((chatMessage, index) => {
         if (chatMessage.receiver === parseInt(chatId)) {
           return (
             <ChatMessage

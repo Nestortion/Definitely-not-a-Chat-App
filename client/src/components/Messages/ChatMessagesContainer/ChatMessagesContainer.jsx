@@ -1,22 +1,24 @@
 import {
   ChatAddedDocument,
   useCurrentUserQuery,
+  useUserChatsLazyQuery,
   useUserChatsQuery,
 } from '../../../graphql/hooks/graphql'
 import ErrorText from '../../Error/ErrorText'
 import LoadingSpinner from '../../Loading/LoadingSpinner/LoadingSpinner'
 import ChatMessages from '../ChatMessages/ChatMessages'
 import './chat-messages-container.scss'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useAtom } from 'jotai'
 import { searchInput, isSearching } from '../../../App'
 import Button from '../../UI/Button/Button'
 
 export default function ChatMessagesContainer() {
-  const chatsQuery = useUserChatsQuery()
+  const [chatsQuery, { subscribeToMore }] = useUserChatsLazyQuery()
 
   const [searchWord, setSearchWord] = useAtom(searchInput) // string from search word component
   const [userIsSearching, setUserIsSearching] = useAtom(isSearching)
+  const [chats, setChats] = useState()
 
   const {
     data: user,
@@ -25,7 +27,7 @@ export default function ChatMessagesContainer() {
   } = useCurrentUserQuery()
 
   useEffect(() => {
-    chatsQuery.subscribeToMore({
+    subscribeToMore({
       document: ChatAddedDocument,
       variables: { user: user.currentUser.id },
       updateQuery: (prev, { subscriptionData }) => {
@@ -38,19 +40,30 @@ export default function ChatMessagesContainer() {
     })
   }, [])
 
+  useEffect(() => {
+    ;(async function () {
+      const chatsRes = await chatsQuery()
+      setChats(chatsRes.data.userChats)
+    })()
+  }, [])
+
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!searchWord || searchWord === '') return
 
-    console.log(searchWord)
+    if (!userIsSearching) return
+
+    const searchedChats = chats?.filter((chat) => {
+      return chat.message.toLowerCase().includes(searchWord.toLowerCase())
+    })
+
+    setChats(searchedChats)
 
     setUserIsSearching(false)
   }
 
   if (userLoading) return <LoadingSpinner />
   if (userError) return <ErrorText>Error</ErrorText>
-  if (chatsQuery.loading) return <LoadingSpinner />
-  if (chatsQuery.error) return <ErrorText>Error</ErrorText>
 
   return (
     <div className="chat-messages-container">
@@ -66,7 +79,7 @@ export default function ChatMessagesContainer() {
           </form>
         </div>
       )}
-      <ChatMessages user={user} userChats={chatsQuery} />
+      <ChatMessages user={user} userChats={chats} />
     </div>
   )
 }
