@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import { useAtom } from 'jotai'
 import { searchInput, isSearching } from '../../../App'
 import Button from '../../UI/Button/Button'
+import { MdClose } from 'react-icons/md'
 
 export default function ChatMessagesContainer() {
   const [chatsQuery, { subscribeToMore }] = useUserChatsLazyQuery()
@@ -58,8 +59,11 @@ export default function ChatMessagesContainer() {
     })
 
     setChats(searchedChats)
+  }
 
+  const handleCloseSearch = () => {
     setUserIsSearching(false)
+    setSearchWord('')
   }
 
   if (userLoading) return <LoadingSpinner />
@@ -77,6 +81,9 @@ export default function ChatMessagesContainer() {
             />
             <Button green>Search</Button>
           </form>
+          <Button onClick={handleCloseSearch} secondary>
+            <MdClose />
+          </Button>
         </div>
       )}
       <ChatMessages user={user} userChats={chats} />
