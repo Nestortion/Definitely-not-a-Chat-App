@@ -1,21 +1,40 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ErrorText from '../../../components/Error/ErrorText'
 import GroupList from '../../../components/GroupList/GroupList'
 import LoadingSpinner from '../../../components/Loading/LoadingSpinner/LoadingSpinner'
 import { useGroupListQuery } from '../../../graphql/hooks/graphql'
+import useDebounceValue from '../../../helper_hooks/useDebounceValue'
 import './admin-groups-list.scss'
 
 export default function AdminGroupsList() {
   const [searchInput, setSearchInput] = useState('')
+  const [searchData, setSearchData] = useState([])
+  const [isSearching, setIsSearching] = useState(false)
+  const debounceValue = useDebounceValue(searchInput, 250)
 
   const {
-    data: groupChats,
-    error: groupChatsError,
-    loading: groupChatsLoading,
+    data: chats,
+    error: chatsLoading,
+    loading: chatsError,
   } = useGroupListQuery()
 
-  if (groupChatsLoading) return <LoadingSpinner />
-  if (groupChatsError) return <ErrorText>Something Went Wrong</ErrorText>
+  useEffect(() => {
+    ;(() => {
+      if (searchInput && searchInput.length > 0) {
+        const filteredData = chats.groupList.filter((group) => {
+          return group.group_name.toLowerCase().includes(debounceValue)
+        })
+
+        setSearchData(filteredData)
+        setIsSearching(true)
+      } else {
+        setIsSearching(false)
+      }
+    })()
+  }, [debounceValue])
+
+  if (chatsLoading) return <LoadingSpinner />
+  if (chatsError) return <ErrorText>Something Went Wrong</ErrorText>
 
   const handleChange = (e) => {
     setSearchInput(e.target.value)
@@ -36,18 +55,30 @@ export default function AdminGroupsList() {
         </div>
 
         <div className="admin-groups-list__main">
-          {groupChats.groupList.map((groupChat) => (
-            <>
-              <GroupList
-                key={groupChat.id}
-                id={groupChat.id}
-                isGroup={groupChat.is_group}
-                groupName={groupChat.group_name}
-                profilePicUrl={groupChat.group_picture}
-              />
-              <hr />
-            </>
-          ))}
+          {isSearching
+            ? searchData.map((groupChat) => (
+                <div key={groupChat.id}>
+                  <GroupList
+                    key={groupChat.id.toString()}
+                    id={groupChat.id}
+                    isGroup={groupChat.is_group}
+                    groupName={groupChat.group_name}
+                    profilePicUrl={groupChat.group_picture}
+                  />
+                  <hr />
+                </div>
+              ))
+            : chats.groupList.map((groupChat) => (
+                <div key={groupChat.id}>
+                  <GroupList
+                    id={groupChat.id}
+                    isGroup={groupChat.is_group}
+                    groupName={groupChat.group_name}
+                    profilePicUrl={groupChat.group_picture}
+                  />
+                  <hr />
+                </div>
+              ))}
         </div>
       </div>
     </div>
