@@ -398,11 +398,16 @@ const resolvers = {
         (report) => report.is_resolved === false
       )
 
+      const adminLog = await AdminLogs.findOne({
+        order: [['createdAt', 'DESC']],
+      })
+
       return {
         userCount: users.length,
         groupCount: groups.length,
         userChatsCount: userChats.length,
         pendingReportCount: filterReports.length,
+        latestAdminLog: adminLog,
       }
     },
     userGroupRoles: async (_, { group_id, user_id }, context) => {

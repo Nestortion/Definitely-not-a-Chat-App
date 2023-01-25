@@ -159,6 +159,7 @@ const typeDefs = `
     groupCount: Int
     pendingReportCount: Int
     userChatsCount: Int
+    latestAdminLog: AdminLog
   }
 
   type UpdateUserGroupRolesResponse{
