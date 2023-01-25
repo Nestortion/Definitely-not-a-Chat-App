@@ -13,9 +13,19 @@ import { useAtom } from 'jotai'
 import { searchInput, isSearching } from '../../../App'
 import Button from '../../UI/Button/Button'
 import { MdClose } from 'react-icons/md'
+import { useParams } from 'react-router-dom'
 
 export default function ChatMessagesContainer() {
-  const [chatsQuery, { subscribeToMore }] = useUserChatsLazyQuery()
+  const [chatsQuery, { data: chatsFetch, subscribeToMore }] =
+    useUserChatsLazyQuery()
+
+  const { chatId } = useParams()
+
+  const {
+    data: chatz,
+    loading: chatzLoading,
+    error: chatzError,
+  } = useUserChatsQuery()
 
   const [searchWord, setSearchWord] = useAtom(searchInput) // string from search word component
   const [userIsSearching, setUserIsSearching] = useAtom(isSearching)
@@ -47,6 +57,10 @@ export default function ChatMessagesContainer() {
       setChats(chatsRes.data.userChats)
     })()
   }, [])
+  useEffect(() => {
+    setUserIsSearching(false)
+    setSearchWord('')
+  }, [chatId])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -54,7 +68,7 @@ export default function ChatMessagesContainer() {
 
     if (!userIsSearching) return
 
-    const searchedChats = chats?.filter((chat) => {
+    const searchedChats = chatsFetch.userChats.filter((chat) => {
       return chat.message.toLowerCase().includes(searchWord.toLowerCase())
     })
 
@@ -64,8 +78,11 @@ export default function ChatMessagesContainer() {
   const handleCloseSearch = () => {
     setUserIsSearching(false)
     setSearchWord('')
+    setChats(chatz.userChats)
   }
 
+  if (chatzLoading) return <LoadingSpinner />
+  if (chatzError) return <LoadingSpinner />
   if (userLoading) return <LoadingSpinner />
   if (userError) return <ErrorText>Error</ErrorText>
 
@@ -86,7 +103,10 @@ export default function ChatMessagesContainer() {
           </Button>
         </div>
       )}
-      <ChatMessages user={user} userChats={chats} />
+      <ChatMessages
+        user={user}
+        userChats={userIsSearching ? chats : chatz.userChats}
+      />
     </div>
   )
 }
