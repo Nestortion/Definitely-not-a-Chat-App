@@ -16,10 +16,11 @@ import SearchInChat from './SearchInChat/SearchInChat'
 import ReportChat from './ReportChat/ReportChat'
 import EditGeneralRoles from './EditRoles/EditGeneralRoles'
 import { useAtom } from 'jotai'
-import { isSearching } from '../../App'
+import { isSearching, searchInput } from '../../App'
 
 export default function SettingsButtons({ userRoles, isGroup, rolesList }) {
   const [userIsSearching, setUserIsSearching] = useAtom(isSearching)
+  const [searchWord, setSearchWord] = useAtom(searchInput) // string from search word component
 
   const [shouldShowModal, setShouldShowModal] = useState(false)
   const [shouldShowAddMembers, setShouldShowAddMembers] = useState(false)
@@ -72,6 +73,11 @@ export default function SettingsButtons({ userRoles, isGroup, rolesList }) {
     handleShowModal()
   }
 
+  const handleToggle = () => {
+    setUserIsSearching(!userIsSearching)
+    setSearchWord('')
+  }
+
   return (
     <>
       {shouldShowModal && (
@@ -110,7 +116,7 @@ export default function SettingsButtons({ userRoles, isGroup, rolesList }) {
           </>
         )}
 
-        <Button onClick={() => setUserIsSearching(!userIsSearching)}>
+        <Button onClick={handleToggle}>
           <MdSearch style={{ display: 'inline-block' }} />
           <span className="fs-400">Search in Chat</span>
         </Button>
