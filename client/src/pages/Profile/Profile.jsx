@@ -10,7 +10,10 @@ import {
   useUserProfileQuery,
 } from '../../graphql/hooks/graphql'
 import './profile.scss'
-import { MdWarning } from 'react-icons/md'
+import { MdEdit, MdWarning } from 'react-icons/md'
+import { useState } from 'react'
+import SpawnModal from '../../components/UI/Modal/SpawnModal'
+import AdminEditProfile from './AdminEditProfile/AdminEditProfile'
 
 export default function Profile() {
   const navigate = useNavigate()
@@ -26,6 +29,16 @@ export default function Profile() {
     error: profileError,
   } = useUserProfileQuery({ variables: { userProfileId: parseInt(profileId) } })
   const [toggleUserStatus] = useToggleUserStatusMutation()
+
+  const [shouldShowModal, setShouldShowModal] = useState(false)
+
+  const hideModal = () => {
+    setShouldShowModal(false)
+  }
+
+  const showModal = () => {
+    setShouldShowModal(true)
+  }
 
   if (currentUserLoading) return <LoadingSpinner />
   if (currentUserError) return <ErrorText />
@@ -56,40 +69,51 @@ export default function Profile() {
   }
 
   return (
-    <div className="profile">
-      <div className="profile__header">
-        <div className="profile__image">
-          <Avatar
-            src={`${apiBasePath}/pfp/${profileData.userProfile.profile_img}`}
-            size={256}
-          />
-        </div>
-        <h1 className="text-primary-400">
-          {profileData.userProfile.first_name}{' '}
-          {profileData.userProfile.last_name}
-        </h1>
-      </div>
-      <div className="profile__info">
-        <span>Age: {profileData.userProfile.age}</span>
-        <span>Gender: {profileData.userProfile.gender}</span>
-        <span>Section: {profileData.userProfile.section}</span>
-        <span>Address: {profileData.userProfile.address}</span>
-      </div>
-      {currentUser.currentUser.access_level === 'ADMIN' &&
-        currentUser.currentUser.id !== +profileId && (
-          <div className="profile__button-group">
-            <Button
-              onClick={handleSave}
-              secondary={!profileData.userProfile.disabled ? 1 : 0}
-              primary={profileData.userProfile.disabled ? 1 : 0}
-            >
-              <MdWarning />
-              {profileData.userProfile.disabled
-                ? 'Enable User'
-                : 'Disable User'}
-            </Button>
+    <>
+      {shouldShowModal && (
+        <SpawnModal title="Edit User" closeModal={hideModal}>
+          <AdminEditProfile closeModal={hideModal} profileId={profileId} />
+        </SpawnModal>
+      )}
+      <div className="profile">
+        <div className="profile__header">
+          <div className="profile__image">
+            <Avatar
+              src={`${apiBasePath}/pfp/${profileData.userProfile.profile_img}`}
+              size={256}
+            />
           </div>
-        )}
-    </div>
+          <h1 className="text-primary-400">
+            {profileData.userProfile.first_name}{' '}
+            {profileData.userProfile.last_name}
+          </h1>
+        </div>
+        <div className="profile__info">
+          <span>Age: {profileData.userProfile.age}</span>
+          <span>Gender: {profileData.userProfile.gender}</span>
+          <span>Section: {profileData.userProfile.section}</span>
+          <span>Address: {profileData.userProfile.address}</span>
+        </div>
+        {currentUser.currentUser.access_level === 'ADMIN' &&
+          currentUser.currentUser.id !== +profileId && (
+            <div className="profile__button-group">
+              <Button
+                onClick={handleSave}
+                secondary={!profileData.userProfile.disabled ? 1 : 0}
+                primary={profileData.userProfile.disabled ? 1 : 0}
+              >
+                <MdWarning />
+                {profileData.userProfile.disabled
+                  ? 'Enable User'
+                  : 'Disable User'}
+              </Button>
+              <Button onClick={showModal}>
+                <MdEdit />
+                Edit user
+              </Button>
+            </div>
+          )}
+      </div>
+    </>
   )
 }
