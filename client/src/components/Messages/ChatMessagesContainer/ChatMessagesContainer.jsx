@@ -9,12 +9,14 @@ import ChatMessages from '../ChatMessages/ChatMessages'
 import './chat-messages-container.scss'
 import { useEffect } from 'react'
 import { useAtom } from 'jotai'
-import { searchInput } from '../../../App'
+import { searchInput, isSearching } from '../../../App'
+import Button from '../../UI/Button/Button'
 
 export default function ChatMessagesContainer() {
   const chatsQuery = useUserChatsQuery()
 
-  const [searchWord] = useAtom(searchInput) // string from search word component
+  const [searchWord, setSearchWord] = useAtom(searchInput) // string from search word component
+  const [userIsSearching, setUserIsSearching] = useAtom(isSearching)
 
   const {
     data: user,
@@ -36,7 +38,14 @@ export default function ChatMessagesContainer() {
     })
   }, [])
 
-  console.log(searchWord)
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (!searchWord || searchWord === '') return
+
+    console.log(searchWord)
+
+    setUserIsSearching(false)
+  }
 
   if (userLoading) return <LoadingSpinner />
   if (userError) return <ErrorText>Error</ErrorText>
@@ -45,6 +54,18 @@ export default function ChatMessagesContainer() {
 
   return (
     <div className="chat-messages-container">
+      {userIsSearching && (
+        <div className="chat-messages__search-input">
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="Search words"
+              onChange={(e) => setSearchWord(e.target.value)}
+            />
+            <Button green>Search</Button>
+          </form>
+        </div>
+      )}
       <ChatMessages user={user} userChats={chatsQuery} />
     </div>
   )

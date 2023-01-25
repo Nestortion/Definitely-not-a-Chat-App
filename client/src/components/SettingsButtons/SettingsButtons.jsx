@@ -15,8 +15,12 @@ import GroupSettings from './EditGroupName/EditGroupName'
 import SearchInChat from './SearchInChat/SearchInChat'
 import ReportChat from './ReportChat/ReportChat'
 import EditGeneralRoles from './EditRoles/EditGeneralRoles'
+import { useAtom } from 'jotai'
+import { isSearching } from '../../App'
 
 export default function SettingsButtons({ userRoles, isGroup, rolesList }) {
+  const [userIsSearching, setUserIsSearching] = useAtom(isSearching)
+
   const [shouldShowModal, setShouldShowModal] = useState(false)
   const [shouldShowAddMembers, setShouldShowAddMembers] = useState(false)
   const [shouldShowGeneralRoles, setShouldShowGeneralRoles] = useState(false)
@@ -34,7 +38,7 @@ export default function SettingsButtons({ userRoles, isGroup, rolesList }) {
     setShouldShowAddMembers(false)
     setShouldShowGeneralRoles(false)
     setShouldShowEditGroupName(false)
-    setShouldShowSearchInGroup(false)
+    // setShouldShowSearchInGroup(false)
     setShouldShowReportChat(false)
   }
 
@@ -56,11 +60,11 @@ export default function SettingsButtons({ userRoles, isGroup, rolesList }) {
     handleShowModal()
   }
 
-  const showSearchInGroup = () => {
-    setShouldShowSearchInGroup(true)
-    setCurrentTitle('Search in Group')
-    handleShowModal()
-  }
+  // const showSearchInGroup = () => {
+  //   setShouldShowSearchInGroup(true)
+  //   setCurrentTitle('Search in Group')
+  //   handleShowModal()
+  // }
 
   const showReportChat = () => {
     setShouldShowReportChat(true)
@@ -82,10 +86,10 @@ export default function SettingsButtons({ userRoles, isGroup, rolesList }) {
           {shouldShowEditGroupName && (
             <GroupSettings closeModal={handleHideModal} />
           )}
-          {shouldShowSearchInGroup && (
+          {/* {shouldShowSearchInGroup && (
             <SearchInChat closeModal={handleHideModal} />
           )}
-          {shouldShowReportChat && <ReportChat closeModal={handleHideModal} />}
+          {shouldShowReportChat && <ReportChat closeModal={handleHideModal} />} */}
         </SpawnModal>
       )}
       <div className="settings-buttons">
@@ -106,7 +110,7 @@ export default function SettingsButtons({ userRoles, isGroup, rolesList }) {
           </>
         )}
 
-        <Button onClick={showSearchInGroup}>
+        <Button onClick={() => setUserIsSearching(true)}>
           <MdSearch style={{ display: 'inline-block' }} />
           <span className="fs-400">Search in Chat</span>
         </Button>

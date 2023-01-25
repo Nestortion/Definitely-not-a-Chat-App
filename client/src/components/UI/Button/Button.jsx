@@ -5,13 +5,14 @@ export default function Button({
   children,
   onClick,
   secondary,
+  green,
   ...rest
 }) {
   return (
     <button
       className={`button ${secondary ? 'secondary-btn' : ''} ${
         is_default ? 'button-disabled' : ''
-      }`}
+      } ${green ? 'green-btn' : ''}`}
       onClick={onClick}
       {...rest}
     >

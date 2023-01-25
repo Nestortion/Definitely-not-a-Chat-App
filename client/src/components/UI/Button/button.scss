@@ -17,4 +17,7 @@
   &.button-disabled {
     opacity: 0.75;
   }
+  &.green-btn {
+    background-color: var(--clr-secondary-400);
+  }
 }
