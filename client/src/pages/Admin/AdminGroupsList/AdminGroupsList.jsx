@@ -37,13 +37,16 @@ export default function AdminGroupsList() {
 
         <div className="admin-groups-list__main">
           {groupChats.groupList.map((groupChat) => (
-            <GroupList
-              key={groupChat.id}
-              id={groupChat.id}
-              isGroup={groupChat.is_group}
-              groupName={groupChat.group_name}
-              profilePicUrl={groupChat.group_picture}
-            />
+            <>
+              <GroupList
+                key={groupChat.id}
+                id={groupChat.id}
+                isGroup={groupChat.is_group}
+                groupName={groupChat.group_name}
+                profilePicUrl={groupChat.group_picture}
+              />
+              <hr />
+            </>
           ))}
         </div>
       </div>

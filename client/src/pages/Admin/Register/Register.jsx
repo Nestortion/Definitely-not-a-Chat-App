@@ -75,7 +75,7 @@ export default function Register() {
         onSubmit={handleSubmit}
         className="register__form control-panel__card"
       >
-        <p className="register__heading fw-bold fs-500">Register User</p>
+        <p className="register__heading fw-bold">Register User</p>
 
         <div className="register__input-control">
           <label htmlFor="firstName">First Name: </label>
