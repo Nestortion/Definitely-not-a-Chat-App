@@ -330,14 +330,18 @@ const resolvers = {
     adminLogs: async (_, __, context) => {
       const { data: user } = authMiddleware(context)
 
-      const adminLogs = await AdminLogs.findAll()
+      const adminLogs = await AdminLogs.findAll({
+        order: [['createdAt', 'DESC']],
+      })
 
       return adminLogs
     },
     userLogs: async (_, __, context) => {
       const { data: user } = authMiddleware(context)
 
-      const userLogs = await UserLogs.findAll()
+      const userLogs = await UserLogs.findAll({
+        order: [['createdAt', 'DESC']],
+      })
 
       return userLogs
     },

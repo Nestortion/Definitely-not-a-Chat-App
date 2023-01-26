@@ -87,7 +87,7 @@ const typeDefs = `
     action_description: String!
     full_name: String!
     createdAt: DateTime!
-    section: Section
+    section: String
   }
 
   type AdminLog{
