@@ -86,14 +86,20 @@ export default function AdminControlPanel() {
           <div className="control-panel__card control-panel__top-card">
             <p className="control-panel__top-heading">Latest Admin Action</p>
             <p className="fs-300 fw-bold">
-              {Intl.DateTimeFormat('en-US', {
-                dateStyle: 'medium',
-                timeStyle: 'short',
-              }).format(
-                new Date(systemStats.systemStats.latestAdminLog.createdAt)
+              {systemStats.systemStats.latestAdminLog ? (
+                <>
+                  {Intl.DateTimeFormat('en-US', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short',
+                  }).format(
+                    new Date(systemStats.systemStats.latestAdminLog.createdAt)
+                  )}
+                  <br />
+                  {`${systemStats.systemStats.latestAdminLog.full_name} ${systemStats.systemStats.latestAdminLog.action_description}`}
+                </>
+              ) : (
+                'Admin Logs is currently empty'
               )}
-              <br />
-              {`${systemStats.systemStats.latestAdminLog.full_name} ${systemStats.systemStats.latestAdminLog.action_description}`}
             </p>
           </div>
         </Link>
