@@ -244,7 +244,7 @@ export default function ProfileSettings() {
             <div className="profile-settings__input-container">
               <label htmlFor="age">Age: </label>
               <input
-                className="profile-settings-input"
+                className="profile-settings-input  input-disable"
                 type="number"
                 name="age"
                 onChange={handleChange}
