@@ -22,6 +22,7 @@ import { Op } from 'sequelize'
 import { withFilter } from 'graphql-subscriptions'
 import { DateTimeResolver } from 'graphql-scalars'
 import bcrypt from 'bcrypt'
+import Sections from '../models/Sections.js'
 
 try {
   await createAssociation()
@@ -31,6 +32,20 @@ try {
 }
 
 const resolvers = {
+  User: {
+    section: async ({ section_id }) => {
+      const section = await Sections.findOne({ where: { id: section_id } })
+
+      return section.section_name
+    },
+    age: async ({ birthdate }) => {
+      const difference = new Date() - birthdate
+
+      let age = Math.floor(difference / (1000 * 3600 * 24 * 365))
+
+      return age
+    },
+  },
   Upload: GraphQLUpload,
   DateTime: DateTimeResolver,
   AccessLevel: {
@@ -106,11 +121,12 @@ const resolvers = {
         return UserGroups.findOne({ where: { group_id } })
       }
     },
-    users: (_, { limit }, context) => {
+    users: async (_, { limit }, context) => {
       authMiddleware(context)
 
       if (limit) {
-        return Users.findAll({ limit })
+        const users = await Users.findAll({ limit })
+        return users
       }
 
       return Users.findAll()
@@ -207,7 +223,9 @@ const resolvers = {
     currentUser: async (_, __, context) => {
       const { data } = authMiddleware(context)
 
-      return Users.findOne({ where: { id: data.user_id } })
+      const user = await Users.findOne({ where: { id: data.user_id } })
+
+      return user
     },
     isLoggedIn: async (_, __, context) => {
       const refreshToken = context.req.cookies['refresh-token']
