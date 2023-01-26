@@ -1,0 +1,7 @@
+query GraphData {
+  graphData {
+    title
+    value
+    color
+  }
+}

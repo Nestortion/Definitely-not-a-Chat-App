@@ -65,6 +65,13 @@ export type CurrentUserGroupRoles = {
   roles?: Maybe<Array<Maybe<Scalars['String']>>>
 }
 
+export type GraphData = {
+  __typename?: 'GraphData'
+  color?: Maybe<Scalars['String']>
+  title?: Maybe<Scalars['String']>
+  value?: Maybe<Scalars['Int']>
+}
+
 export type Group = {
   __typename?: 'Group'
   group_name: Scalars['String']
@@ -284,6 +291,7 @@ export type Query = {
   adminLogs?: Maybe<Array<Maybe<AdminLog>>>
   currentUser?: Maybe<User>
   currentUserGroupRoles?: Maybe<CurrentUserGroupRoles>
+  graphData?: Maybe<GraphData>
   group?: Maybe<Group>
   groupList?: Maybe<Array<Maybe<Group>>>
   groupMembers?: Maybe<Array<Maybe<User>>>
@@ -807,6 +815,18 @@ export type DeleteSectionMutation = {
     __typename?: 'Section'
     id: number
     section_name: string
+  } | null
+}
+
+export type GraphDataQueryVariables = Exact<{ [key: string]: never }>
+
+export type GraphDataQuery = {
+  __typename?: 'Query'
+  graphData?: {
+    __typename?: 'GraphData'
+    title?: string | null
+    value?: number | null
+    color?: string | null
   } | null
 }
 
@@ -2412,6 +2432,60 @@ export type DeleteSectionMutationResult =
 export type DeleteSectionMutationOptions = Apollo.BaseMutationOptions<
   DeleteSectionMutation,
   DeleteSectionMutationVariables
+>
+export const GraphDataDocument = gql`
+  query GraphData {
+    graphData {
+      title
+      value
+      color
+    }
+  }
+`
+
+/**
+ * __useGraphDataQuery__
+ *
+ * To run a query within a React component, call `useGraphDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGraphDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGraphDataQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGraphDataQuery(
+  baseOptions?: Apollo.QueryHookOptions<GraphDataQuery, GraphDataQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GraphDataQuery, GraphDataQueryVariables>(
+    GraphDataDocument,
+    options
+  )
+}
+export function useGraphDataLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GraphDataQuery,
+    GraphDataQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GraphDataQuery, GraphDataQueryVariables>(
+    GraphDataDocument,
+    options
+  )
+}
+export type GraphDataQueryHookResult = ReturnType<typeof useGraphDataQuery>
+export type GraphDataLazyQueryHookResult = ReturnType<
+  typeof useGraphDataLazyQuery
+>
+export type GraphDataQueryResult = Apollo.QueryResult<
+  GraphDataQuery,
+  GraphDataQueryVariables
 >
 export const GroupDocument = gql`
   query Group($groupId: Int!) {
