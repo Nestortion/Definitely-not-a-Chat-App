@@ -97,6 +97,8 @@ export default function ProfileSettings() {
   }
 
   const handleSubmit = async () => {
+    if (values === initialState) return
+
     // ! Backend logic here
     const updateRes = await updateUserProfile({
       variables: {
