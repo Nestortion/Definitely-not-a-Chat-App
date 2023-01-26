@@ -1,7 +1,7 @@
 mutation UpdateUserProfile(
   $username: String
   $gender: String
-  $section: String
+  $sectionId: Int
   $profileImg: Upload
   $address: String
   $newPassword: String
@@ -11,7 +11,7 @@ mutation UpdateUserProfile(
   updateUserProfile(
     username: $username
     gender: $gender
-    section: $section
+    section_id: $sectionId
     profile_img: $profileImg
     address: $address
     new_password: $newPassword
@@ -25,6 +25,9 @@ mutation UpdateUserProfile(
     profile_img
     age
     gender
-    section
+    section {
+      id
+      section_name
+    }
   }
 }

@@ -7,7 +7,10 @@ query UserProfile($userProfileId: Int!) {
     gender
     last_name
     profile_img
-    section
+    section {
+      id
+      section_name
+    }
     disabled
     username
   }

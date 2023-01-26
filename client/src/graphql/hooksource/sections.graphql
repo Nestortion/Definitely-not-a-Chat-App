@@ -1,0 +1,6 @@
+query Sections {
+  sections {
+    id
+    section_name
+  }
+}

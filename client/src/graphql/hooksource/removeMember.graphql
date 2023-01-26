@@ -3,7 +3,10 @@ mutation RemoveMember($groupId: Int, $userId: Int) {
     id
     first_name
     last_name
-    section
+    section {
+      id
+      section_name
+    }
     profile_img
     age
     gender

@@ -8,7 +8,10 @@ query User {
     first_name
     last_name
     address
-    section
+    section {
+      id
+      section_name
+    }
     profile_img
     age
     gender

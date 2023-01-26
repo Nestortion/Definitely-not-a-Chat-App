@@ -15,7 +15,10 @@ query Report($reportId: Int) {
       username
       first_name
       last_name
-      section
+      section {
+        id
+        section_name
+      }
       profile_img
     }
     chat_reported {

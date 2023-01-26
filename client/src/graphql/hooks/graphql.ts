@@ -258,7 +258,7 @@ export type MutationUpdateUserProfileArgs = {
   gender?: InputMaybe<Scalars['String']>
   new_password?: InputMaybe<Scalars['String']>
   profile_img?: InputMaybe<Scalars['Upload']>
-  section?: InputMaybe<Scalars['String']>
+  section_id?: InputMaybe<Scalars['Int']>
   username?: InputMaybe<Scalars['String']>
 }
 
@@ -279,6 +279,7 @@ export type Query = {
   report?: Maybe<ReportResponse>
   reportedChat?: Maybe<ReportedChatDetails>
   reports?: Maybe<Array<Maybe<Report>>>
+  sections?: Maybe<Array<Maybe<Section>>>
   systemStats?: Maybe<SystemStats>
   user?: Maybe<User>
   userChat?: Maybe<UserChat>
@@ -433,6 +434,12 @@ export type RolesToEdit = {
   role_type: RoleType
 }
 
+export type Section = {
+  __typename?: 'Section'
+  id: Scalars['Int']
+  section_name: Scalars['String']
+}
+
 export type Subscription = {
   __typename?: 'Subscription'
   chatAdded?: Maybe<UserChat>
@@ -506,7 +513,7 @@ export type User = {
   last_name: Scalars['String']
   password: Scalars['String']
   profile_img: Scalars['String']
-  section: Scalars['String']
+  section: Section
   token_version: Scalars['String']
   username: Scalars['String']
 }
@@ -546,7 +553,7 @@ export type UserLog = {
   createdAt: Scalars['DateTime']
   full_name: Scalars['String']
   id: Scalars['Int']
-  section?: Maybe<Scalars['String']>
+  section?: Maybe<Section>
   user_id?: Maybe<Scalars['Int']>
 }
 
@@ -741,11 +748,11 @@ export type CurrentUserQuery = {
     first_name: string
     last_name: string
     address: string
-    section: string
     profile_img: string
     age: number
     gender: string
     birthdate: any
+    section: { __typename?: 'Section'; id: number; section_name: string }
   } | null
 }
 
@@ -824,9 +831,9 @@ export type GroupMembersQuery = {
     address: string
     last_name: string
     profile_img: string
-    section: string
     age: number
     gender: string
+    section: { __typename?: 'Section'; id: number; section_name: string }
   } | null> | null
 }
 
@@ -976,7 +983,7 @@ export type MemberAddedSubscription = {
         last_name: string
         profile_img: string
         username: string
-        section: string
+        section: { __typename?: 'Section'; id: number; section_name: string }
       } | null
     } | null> | null
     group?: {
@@ -1030,7 +1037,7 @@ export type MemberRemovedSubscription = {
       last_name: string
       profile_img: string
       username: string
-      section: string
+      section: { __typename?: 'Section'; id: number; section_name: string }
     } | null
   } | null
 }
@@ -1070,10 +1077,10 @@ export type OtherUserQuery = {
     first_name: string
     last_name: string
     address: string
-    section: string
     profile_img: string
     age: number
     gender: string
+    section: { __typename?: 'Section'; id: number; section_name: string }
   } | null
 }
 
@@ -1089,10 +1096,10 @@ export type RemoveMemberMutation = {
     id: number
     first_name: string
     last_name: string
-    section: string
     profile_img: string
     age: number
     gender: string
+    section: { __typename?: 'Section'; id: number; section_name: string }
   } | null
 }
 
@@ -1121,8 +1128,8 @@ export type ReportQuery = {
       username: string
       first_name: string
       last_name: string
-      section: string
       profile_img: string
+      section: { __typename?: 'Section'; id: number; section_name: string }
     } | null
     chat_reported?: {
       __typename?: 'Group'
@@ -1191,6 +1198,17 @@ export type ReportsQuery = {
     report_reason: string
     is_resolved: boolean
     createdAt: any
+  } | null> | null
+}
+
+export type SectionsQueryVariables = Exact<{ [key: string]: never }>
+
+export type SectionsQuery = {
+  __typename?: 'Query'
+  sections?: Array<{
+    __typename?: 'Section'
+    id: number
+    section_name: string
   } | null> | null
 }
 
@@ -1336,7 +1354,7 @@ export type UpdateUserGroupRolesMutation = {
 export type UpdateUserProfileMutationVariables = Exact<{
   username?: InputMaybe<Scalars['String']>
   gender?: InputMaybe<Scalars['String']>
-  section?: InputMaybe<Scalars['String']>
+  sectionId?: InputMaybe<Scalars['Int']>
   profileImg?: InputMaybe<Scalars['Upload']>
   address?: InputMaybe<Scalars['String']>
   newPassword?: InputMaybe<Scalars['String']>
@@ -1355,7 +1373,7 @@ export type UpdateUserProfileMutation = {
     profile_img: string
     age: number
     gender: string
-    section: string
+    section: { __typename?: 'Section'; id: number; section_name: string }
   } | null
 }
 
@@ -1373,10 +1391,10 @@ export type UserQuery = {
     first_name: string
     last_name: string
     address: string
-    section: string
     profile_img: string
     age: number
     gender: string
+    section: { __typename?: 'Section'; id: number; section_name: string }
   } | null
 }
 
@@ -1432,7 +1450,11 @@ export type UserLogsQuery = {
     action_description: string
     full_name: string
     createdAt: any
-    section?: string | null
+    section?: {
+      __typename?: 'Section'
+      id: number
+      section_name: string
+    } | null
   } | null> | null
 }
 
@@ -1451,9 +1473,9 @@ export type UserProfileQuery = {
     gender: string
     last_name: string
     profile_img: string
-    section: string
     disabled: boolean
     username: string
+    section: { __typename?: 'Section'; id: number; section_name: string }
   } | null
 }
 
@@ -1484,12 +1506,12 @@ export type UsersQuery = {
     first_name: string
     last_name: string
     address: string
-    section: string
     profile_img: string
     age: number
     gender: string
     username: string
     access_level: AccessLevel
+    section: { __typename?: 'Section'; id: number; section_name: string }
   } | null> | null
 }
 
@@ -2120,11 +2142,14 @@ export const CurrentUserDocument = gql`
       first_name
       last_name
       address
-      section
       profile_img
       age
       gender
       birthdate
+      section {
+        id
+        section_name
+      }
     }
   }
 `
@@ -2399,9 +2424,12 @@ export const GroupMembersDocument = gql`
       address
       last_name
       profile_img
-      section
       age
       gender
+      section {
+        id
+        section_name
+      }
     }
   }
 `
@@ -2898,7 +2926,10 @@ export const MemberAddedDocument = gql`
           last_name
           profile_img
           username
-          section
+          section {
+            id
+            section_name
+          }
         }
       }
       group {
@@ -2977,7 +3008,10 @@ export const MemberRemovedDocument = gql`
         last_name
         profile_img
         username
-        section
+        section {
+          id
+          section_name
+        }
       }
     }
   }
@@ -3075,7 +3109,10 @@ export const OtherUserDocument = gql`
       first_name
       last_name
       address
-      section
+      section {
+        id
+        section_name
+      }
       profile_img
       age
       gender
@@ -3134,7 +3171,10 @@ export const RemoveMemberDocument = gql`
       id
       first_name
       last_name
-      section
+      section {
+        id
+        section_name
+      }
       profile_img
       age
       gender
@@ -3203,7 +3243,10 @@ export const ReportDocument = gql`
         username
         first_name
         last_name
-        section
+        section {
+          id
+          section_name
+        }
         profile_img
       }
       chat_reported {
@@ -3393,6 +3436,59 @@ export type ReportsLazyQueryHookResult = ReturnType<typeof useReportsLazyQuery>
 export type ReportsQueryResult = Apollo.QueryResult<
   ReportsQuery,
   ReportsQueryVariables
+>
+export const SectionsDocument = gql`
+  query Sections {
+    sections {
+      id
+      section_name
+    }
+  }
+`
+
+/**
+ * __useSectionsQuery__
+ *
+ * To run a query within a React component, call `useSectionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSectionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSectionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSectionsQuery(
+  baseOptions?: Apollo.QueryHookOptions<SectionsQuery, SectionsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<SectionsQuery, SectionsQueryVariables>(
+    SectionsDocument,
+    options
+  )
+}
+export function useSectionsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    SectionsQuery,
+    SectionsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<SectionsQuery, SectionsQueryVariables>(
+    SectionsDocument,
+    options
+  )
+}
+export type SectionsQueryHookResult = ReturnType<typeof useSectionsQuery>
+export type SectionsLazyQueryHookResult = ReturnType<
+  typeof useSectionsLazyQuery
+>
+export type SectionsQueryResult = Apollo.QueryResult<
+  SectionsQuery,
+  SectionsQueryVariables
 >
 export const SubmitReportDocument = gql`
   mutation SubmitReport($groupId: Int, $reasons: [String]) {
@@ -3825,7 +3921,7 @@ export const UpdateUserProfileDocument = gql`
   mutation UpdateUserProfile(
     $username: String
     $gender: String
-    $section: String
+    $sectionId: Int
     $profileImg: Upload
     $address: String
     $newPassword: String
@@ -3835,7 +3931,7 @@ export const UpdateUserProfileDocument = gql`
     updateUserProfile(
       username: $username
       gender: $gender
-      section: $section
+      section_id: $sectionId
       profile_img: $profileImg
       address: $address
       new_password: $newPassword
@@ -3849,7 +3945,10 @@ export const UpdateUserProfileDocument = gql`
       profile_img
       age
       gender
-      section
+      section {
+        id
+        section_name
+      }
     }
   }
 `
@@ -3873,7 +3972,7 @@ export type UpdateUserProfileMutationFn = Apollo.MutationFunction<
  *   variables: {
  *      username: // value for 'username'
  *      gender: // value for 'gender'
- *      section: // value for 'section'
+ *      sectionId: // value for 'sectionId'
  *      profileImg: // value for 'profileImg'
  *      address: // value for 'address'
  *      newPassword: // value for 'newPassword'
@@ -3914,7 +4013,10 @@ export const UserDocument = gql`
       first_name
       last_name
       address
-      section
+      section {
+        id
+        section_name
+      }
       profile_img
       age
       gender
@@ -4139,7 +4241,10 @@ export const UserLogsDocument = gql`
       action_description
       full_name
       createdAt
-      section
+      section {
+        id
+        section_name
+      }
     }
   }
 `
@@ -4198,7 +4303,10 @@ export const UserProfileDocument = gql`
       gender
       last_name
       profile_img
-      section
+      section {
+        id
+        section_name
+      }
       disabled
       username
     }
@@ -4316,7 +4424,10 @@ export const UsersDocument = gql`
       first_name
       last_name
       address
-      section
+      section {
+        id
+        section_name
+      }
       profile_img
       age
       gender

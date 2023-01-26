@@ -6,8 +6,11 @@ query GroupMembers($groupId: Int) {
     address
     last_name
     profile_img
-    section
     age
     gender
+    section {
+      id
+      section_name
+    }
   }
 }

@@ -15,7 +15,10 @@ subscription MemberRemoved($user: Int, $groupId: Int) {
       last_name
       profile_img
       username
-      section
+      section {
+        id
+        section_name
+      }
     }
   }
 }
