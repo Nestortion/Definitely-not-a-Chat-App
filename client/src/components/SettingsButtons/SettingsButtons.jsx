@@ -94,8 +94,8 @@ export default function SettingsButtons({ userRoles, isGroup, rolesList }) {
           )}
           {/* {shouldShowSearchInGroup && (
             <SearchInChat closeModal={handleHideModal} />
-          )}
-          {shouldShowReportChat && <ReportChat closeModal={handleHideModal} />} */}
+          )} */}
+          {shouldShowReportChat && <ReportChat closeModal={handleHideModal} />}
         </SpawnModal>
       )}
       <div className="settings-buttons">
