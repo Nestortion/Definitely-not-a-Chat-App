@@ -16,6 +16,7 @@ const typeDefs = `
     profile_img: String!
     age: Int!
     gender: String!
+    birthdate: DateTime!
     disabled: Boolean!
   }
 
