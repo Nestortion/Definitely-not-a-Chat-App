@@ -1520,6 +1520,54 @@ const resolvers = {
 
       return updatedUser
     },
+    createSection: async (_, { section_name }, context) => {
+      const { data: user } = authMiddleware(context)
+
+      const actionUser = await Users.findOne({ where: { id: user.user_id } })
+
+      if (actionUser.access_level !== 'ADMIN') {
+        throw new GraphQLError('Current User is not an Admin')
+      }
+
+      const newSection = await Sections.create({ section_name })
+
+      return newSection
+    },
+    deleteSection: async (_, { section_id }, context) => {
+      const { data: user } = authMiddleware(context)
+
+      const actionUser = await Users.findOne({ where: { id: user.user_id } })
+
+      if (actionUser.access_level !== 'ADMIN') {
+        throw new GraphQLError('Current User is not an Admin')
+      }
+      const sectionToDelete = await Sections.findOne({
+        where: { id: section_id },
+      })
+
+      await Sections.destroy({ where: { id: section_id } })
+
+      return sectionToDelete
+    },
+    updateSection: async (_, { section_name, section_id }, context) => {
+      const { data: user } = authMiddleware(context)
+
+      const actionUser = await Users.findOne({ where: { id: user.user_id } })
+
+      if (actionUser.access_level !== 'ADMIN') {
+        throw new GraphQLError('Current User is not an Admin')
+      }
+
+      const prevSection = await Sections.findOne({ where: { id: section_id } })
+
+      await Sections.update({ section_name }, { where: { id: section_id } })
+
+      const updatedSection = await Sections.findOne({
+        where: { id: section_id },
+      })
+
+      return updatedSection
+    },
   },
   Subscription: {
     memberRolesUpdated: {

@@ -284,6 +284,9 @@ const typeDefs = `
     updateReportStatus(report_status: Boolean, report_id: Int): Report
     toggleUserStatus(user_id: Int, user_status: Boolean): Boolean
     adminUpdateUserProfile(userData: AdminUserProfileUpdateInput): User
+    createSection(section_name: String!): Section
+    deleteSection(section_id: Int): Section
+    updateSection(section_id: Int, section_name: String!): Section
   }
 
   
