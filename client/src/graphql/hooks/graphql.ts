@@ -251,7 +251,7 @@ export type MutationUpdateUserGroupRolesArgs = {
 
 export type MutationUpdateUserProfileArgs = {
   address?: InputMaybe<Scalars['String']>
-  age?: InputMaybe<Scalars['Int']>
+  birthdate?: InputMaybe<Scalars['DateTime']>
   current_confirmation?: InputMaybe<Scalars['String']>
   gender?: InputMaybe<Scalars['String']>
   new_password?: InputMaybe<Scalars['String']>
@@ -370,7 +370,7 @@ export type QueryUsersArgs = {
 export type RegisterInput = {
   access_level?: InputMaybe<AccessLevel>
   address?: InputMaybe<Scalars['String']>
-  age?: InputMaybe<Scalars['Int']>
+  birthdate: Scalars['DateTime']
   first_name?: InputMaybe<Scalars['String']>
   gender?: InputMaybe<Scalars['String']>
   last_name?: InputMaybe<Scalars['String']>
@@ -1331,13 +1331,13 @@ export type UpdateUserGroupRolesMutation = {
 
 export type UpdateUserProfileMutationVariables = Exact<{
   username?: InputMaybe<Scalars['String']>
-  age?: InputMaybe<Scalars['Int']>
   gender?: InputMaybe<Scalars['String']>
   section?: InputMaybe<Scalars['String']>
   profileImg?: InputMaybe<Scalars['Upload']>
   address?: InputMaybe<Scalars['String']>
   newPassword?: InputMaybe<Scalars['String']>
   currentConfirmation?: InputMaybe<Scalars['String']>
+  birthdate?: InputMaybe<Scalars['DateTime']>
 }>
 
 export type UpdateUserProfileMutation = {
@@ -3818,23 +3818,23 @@ export type UpdateUserGroupRolesMutationOptions = Apollo.BaseMutationOptions<
 export const UpdateUserProfileDocument = gql`
   mutation UpdateUserProfile(
     $username: String
-    $age: Int
     $gender: String
     $section: String
     $profileImg: Upload
     $address: String
     $newPassword: String
     $currentConfirmation: String
+    $birthdate: DateTime
   ) {
     updateUserProfile(
       username: $username
-      age: $age
       gender: $gender
       section: $section
       profile_img: $profileImg
       address: $address
       new_password: $newPassword
       current_confirmation: $currentConfirmation
+      birthdate: $birthdate
     ) {
       username
       first_name
@@ -3866,13 +3866,13 @@ export type UpdateUserProfileMutationFn = Apollo.MutationFunction<
  * const [updateUserProfileMutation, { data, loading, error }] = useUpdateUserProfileMutation({
  *   variables: {
  *      username: // value for 'username'
- *      age: // value for 'age'
  *      gender: // value for 'gender'
  *      section: // value for 'section'
  *      profileImg: // value for 'profileImg'
  *      address: // value for 'address'
  *      newPassword: // value for 'newPassword'
  *      currentConfirmation: // value for 'currentConfirmation'
+ *      birthdate: // value for 'birthdate'
  *   },
  * });
  */

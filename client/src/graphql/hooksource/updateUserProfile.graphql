@@ -1,22 +1,22 @@
 mutation UpdateUserProfile(
   $username: String
-  $age: Int
   $gender: String
   $section: String
   $profileImg: Upload
   $address: String
   $newPassword: String
   $currentConfirmation: String
+  $birthdate: DateTime
 ) {
   updateUserProfile(
     username: $username
-    age: $age
     gender: $gender
     section: $section
     profile_img: $profileImg
     address: $address
     new_password: $newPassword
     current_confirmation: $currentConfirmation
+    birthdate: $birthdate
   ) {
     username
     first_name
