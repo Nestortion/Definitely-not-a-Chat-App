@@ -9,5 +9,6 @@ query Users($limit: Int) {
     age
     gender
     username
+    access_level
   }
 }
