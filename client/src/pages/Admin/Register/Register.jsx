@@ -2,8 +2,19 @@ import { useState } from 'react'
 import Button from '../../../components/UI/Button/Button'
 import './register.scss'
 import { useAddUserMutation } from '../../../graphql/hooks/graphql'
+import { toast } from 'react-toastify'
 
 export default function Register() {
+  const notify = (text) =>
+    toast(text, {
+      position: toast.POSITION.TOP_CENTER,
+      style: {
+        color: 'var(--clr-neutral-100)',
+        backgroundColor: 'var(--clr-primary-400)',
+        fontSize: 'clamp(0.8rem, 1.3vw, 1.5rem)',
+      },
+    })
+
   const [userData, setUserData] = useState({
     firstName: '',
     lastName: '',
@@ -65,7 +76,7 @@ export default function Register() {
       alert('Current User is not an Admin')
     }
 
-    alert('User Sucessfully Registered')
+    notify('User Successfully Registered')
     handleReset()
   }
 
