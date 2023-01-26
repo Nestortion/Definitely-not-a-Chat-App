@@ -2,6 +2,7 @@ const typeDefs = `
 
   scalar Upload
   scalar DateTime
+  scalar Date
 
   type User {
     id: Int!
@@ -16,7 +17,7 @@ const typeDefs = `
     profile_img: String!
     age: Int!
     gender: String!
-    birthdate: DateTime!
+    birthdate: Date!
     disabled: Boolean!
   }
 
@@ -196,7 +197,7 @@ const typeDefs = `
     username: String
     access_level: AccessLevel
     password: String
-    birthdate: DateTime!
+    birthdate: Date!
     address: String
     section: String
     first_name: String
@@ -270,7 +271,7 @@ const typeDefs = `
     updateGroup(group_name: String, group_id: Int, group_picture: Upload ): Group
     removeMember(group_id: Int, user_id: Int): User
     createGroup(user_id: [Int!]): Group
-    updateUserProfile(username: String, birthdate: DateTime, gender: String, section: String, address: String, profile_img: Upload, new_password: String, current_confirmation: String): User
+    updateUserProfile(username: String, birthdate: Date, gender: String, section: String, address: String, profile_img: Upload, new_password: String, current_confirmation: String): User
     updateGroupRoles(roles_to_edit: [RolesToEdit], roles_to_delete: [Int], group_id: Int): [GroupRole]
     updateUserGroupRoles(roles: [String], group_id: Int, user_id: Int, roles_ids: [Int]): UpdateUserGroupRolesResponse
     submitReport(group_id: Int, reasons: [String]): Report

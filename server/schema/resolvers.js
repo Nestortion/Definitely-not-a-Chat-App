@@ -20,7 +20,7 @@ import { createAssociation, syncModels } from '../models/Associations.js'
 import { v4 as uuid } from 'uuid'
 import { Op } from 'sequelize'
 import { withFilter } from 'graphql-subscriptions'
-import { DateTimeResolver } from 'graphql-scalars'
+import { DateTimeResolver, DateResolver } from 'graphql-scalars'
 import bcrypt from 'bcrypt'
 import Sections from '../models/Sections.js'
 
@@ -48,6 +48,7 @@ const resolvers = {
   },
   Upload: GraphQLUpload,
   DateTime: DateTimeResolver,
+  Date: DateResolver,
   AccessLevel: {
     USER: 'USER',
     MODERATOR: 'MODERATOR',
@@ -1121,10 +1122,10 @@ const resolvers = {
       {
         username,
         address,
-        age,
         section,
         gender,
         profile_img,
+        birthdate,
         current_confirmation,
         new_password,
       },
@@ -1164,11 +1165,11 @@ const resolvers = {
         {
           username,
           address,
-          age,
           section,
           gender,
           profile_img: newImage,
           password,
+          birthdate,
         },
         { where: { id: user.user_id } }
       )
