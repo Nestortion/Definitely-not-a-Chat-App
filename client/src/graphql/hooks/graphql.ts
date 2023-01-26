@@ -21,6 +21,8 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
+  /** A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
+  Date: any
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   DateTime: any
   /** The `Upload` scalar type represents a file upload. */
@@ -251,7 +253,7 @@ export type MutationUpdateUserGroupRolesArgs = {
 
 export type MutationUpdateUserProfileArgs = {
   address?: InputMaybe<Scalars['String']>
-  birthdate?: InputMaybe<Scalars['DateTime']>
+  birthdate?: InputMaybe<Scalars['Date']>
   current_confirmation?: InputMaybe<Scalars['String']>
   gender?: InputMaybe<Scalars['String']>
   new_password?: InputMaybe<Scalars['String']>
@@ -370,7 +372,7 @@ export type QueryUsersArgs = {
 export type RegisterInput = {
   access_level?: InputMaybe<AccessLevel>
   address?: InputMaybe<Scalars['String']>
-  birthdate: Scalars['DateTime']
+  birthdate: Scalars['Date']
   first_name?: InputMaybe<Scalars['String']>
   gender?: InputMaybe<Scalars['String']>
   last_name?: InputMaybe<Scalars['String']>
@@ -496,7 +498,7 @@ export type User = {
   access_level: AccessLevel
   address: Scalars['String']
   age: Scalars['Int']
-  birthdate: Scalars['DateTime']
+  birthdate: Scalars['Date']
   disabled: Scalars['Boolean']
   first_name: Scalars['String']
   gender: Scalars['String']
@@ -1339,7 +1341,7 @@ export type UpdateUserProfileMutationVariables = Exact<{
   address?: InputMaybe<Scalars['String']>
   newPassword?: InputMaybe<Scalars['String']>
   currentConfirmation?: InputMaybe<Scalars['String']>
-  birthdate?: InputMaybe<Scalars['DateTime']>
+  birthdate?: InputMaybe<Scalars['Date']>
 }>
 
 export type UpdateUserProfileMutation = {
@@ -3828,7 +3830,7 @@ export const UpdateUserProfileDocument = gql`
     $address: String
     $newPassword: String
     $currentConfirmation: String
-    $birthdate: DateTime
+    $birthdate: Date
   ) {
     updateUserProfile(
       username: $username

@@ -6,7 +6,7 @@ mutation UpdateUserProfile(
   $address: String
   $newPassword: String
   $currentConfirmation: String
-  $birthdate: DateTime
+  $birthdate: Date
 ) {
   updateUserProfile(
     username: $username
