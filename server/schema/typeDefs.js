@@ -13,7 +13,7 @@ const typeDefs = `
     first_name: String!
     last_name: String!
     address: String!
-    section: String!
+    section: Section!
     profile_img: String!
     age: Int!
     gender: String!
@@ -87,7 +87,7 @@ const typeDefs = `
     action_description: String!
     full_name: String!
     createdAt: DateTime!
-    section: String
+    section: Section
   }
 
   type AdminLog{
@@ -107,6 +107,11 @@ const typeDefs = `
     createdAt: DateTime!
     remarks: String
     date_resolved: DateTime
+  }
+  
+  type Section{
+    id: Int!
+    section_name: String!
   }
 
   type AccessToken{
@@ -253,6 +258,7 @@ const typeDefs = `
     reports: [Report]
     report(report_id: Int): ReportResponse
     reportedChat(group_id: Int!): ReportedChatDetails
+    sections: [Section]
   }
 
   
@@ -271,7 +277,7 @@ const typeDefs = `
     updateGroup(group_name: String, group_id: Int, group_picture: Upload ): Group
     removeMember(group_id: Int, user_id: Int): User
     createGroup(user_id: [Int!]): Group
-    updateUserProfile(username: String, birthdate: Date, gender: String, section: String, address: String, profile_img: Upload, new_password: String, current_confirmation: String): User
+    updateUserProfile(username: String, birthdate: Date, gender: String, section_id: Int, address: String, profile_img: Upload, new_password: String, current_confirmation: String): User
     updateGroupRoles(roles_to_edit: [RolesToEdit], roles_to_delete: [Int], group_id: Int): [GroupRole]
     updateUserGroupRoles(roles: [String], group_id: Int, user_id: Int, roles_ids: [Int]): UpdateUserGroupRolesResponse
     submitReport(group_id: Int, reasons: [String]): Report

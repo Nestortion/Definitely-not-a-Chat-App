@@ -36,7 +36,7 @@ const resolvers = {
     section: async ({ section_id }) => {
       const section = await Sections.findOne({ where: { id: section_id } })
 
-      return section.section_name
+      return section
     },
     age: async ({ birthdate }) => {
       const difference = new Date() - birthdate
@@ -521,6 +521,10 @@ const resolvers = {
         roleMembers,
       }
     },
+    sections: async (_, __, context) => {
+      authMiddleware(context)
+      return Sections.findAll()
+    },
   },
   Mutation: {
     addUser: async (_, { user_data }, context) => {
@@ -605,9 +609,13 @@ const resolvers = {
             }
           )
 
+          const actionUserSection = await Sections.findOne({
+            where: { id: actionUser.section_id },
+          })
+
           await UserLogs.create({
             full_name: `${actionUser.first_name} ${actionUser.last_name}`,
-            section: `${actionUser.section}`,
+            section: `${actionUserSection.section_name}`,
             action_description: `sent file: ${filename} to group ${group.group_name}`,
             user_id: user.user_id,
           })
@@ -634,9 +642,13 @@ const resolvers = {
             }
           )
 
+          const actionUserSection = await Sections.findOne({
+            where: { id: actionUser.section_id },
+          })
+
           await UserLogs.create({
             full_name: `${actionUser.first_name} ${actionUser.last_name}`,
-            section: `${actionUser.section}`,
+            section: `${actionUserSection.section_name}`,
             action_description: `sent message: "${message}" to group ${group.group_name}`,
             user_id: user.user_id,
           })
@@ -684,9 +696,13 @@ const resolvers = {
           })
         )
 
+        const actionUserSection = await Sections.findOne({
+          where: { id: actionUser.section_id },
+        })
+
         await UserLogs.create({
           full_name: `${actionUser.first_name} ${actionUser.last_name}`,
-          section: `${actionUser.section}`,
+          section: `${actionUserSection.section_name}`,
           action_description: `Started a new conversation with ${otherUser.first_name} ${otherUser.last_name}`,
           user_id: user.user_id,
         })
@@ -757,9 +773,13 @@ const resolvers = {
           })
         )
 
+        const actionUserSection = await Sections.findOne({
+          where: { id: actionUser.section_id },
+        })
+
         await UserLogs.create({
           full_name: `${actionUser.first_name} ${actionUser.last_name}`,
-          section: `${actionUser.section}`,
+          section: `${actionUserSection.section_name}`,
           action_description: `Started a new group conversation with ${user_id.length} people`,
           user_id: user.user_id,
         })
@@ -818,9 +838,13 @@ const resolvers = {
 
       sendRefreshToken(context.res, signRefreshToken(user))
 
+      const userSection = await Sections.findOne({
+        where: { id: user.section_id },
+      })
+
       await UserLogs.create({
         full_name: `${user.first_name} ${user.last_name}`,
-        section: `${user.section}`,
+        section: `${userSection.section_name}`,
         action_description: `Has logged in`,
         user_id: user.id,
       })
@@ -843,9 +867,13 @@ const resolvers = {
 
       const actionUser = await Users.findOne({ where: { id: user.user_id } })
 
+      const actionUserSection = await Sections.findOne({
+        where: { id: actionUser.section_id },
+      })
+
       await UserLogs.create({
         full_name: `${actionUser.first_name} ${actionUser.last_name}`,
-        section: `${actionUser.section}`,
+        section: `${actionUserSection.section_name}`,
         action_description: `Has logged out`,
         user_id: user.user_id,
       })
@@ -911,9 +939,13 @@ const resolvers = {
             return `${user.first_name} ${user.last_name}`
           })
 
+          const blameSection = await Sections.findOne({
+            where: { id: blame.id },
+          })
+
           await UserLogs.create({
             full_name: `${blame.first_name} ${blame.last_name}`,
-            section: `${blame.section}`,
+            section: `${blameSection.section_name}`,
             action_description: `Added ${addedUsers.toString()} to ${
               group.group_name
             }`,
@@ -1005,9 +1037,13 @@ const resolvers = {
           return `${user.first_name} ${user.last_name}`
         })
 
+        const blameSection = await Sections.findOne({
+          where: { id: blame.id },
+        })
+
         await UserLogs.create({
           full_name: `${blame.first_name} ${blame.last_name}`,
-          section: `${blame.section}`,
+          section: `${blameSection.section_name}`,
           action_description: `Added ${addedUsers.toString()} to ${
             newGroup.group_name
           }`,
@@ -1057,9 +1093,13 @@ const resolvers = {
 
       const actionUser = await Users.findOne({ where: { id: user.user_id } })
 
+      const actionUserSection = await Sections.findOne({
+        where: { id: actionUser.id },
+      })
+
       await UserLogs.create({
         full_name: `${actionUser.first_name} ${actionUser.last_name}`,
-        section: `${actionUser.section}`,
+        section: `${actionUserSection.section_name}`,
         action_description: `Updated the group_name of group ${updatedGroup.id} from ${group_name} to ${updatedGroup.group_name}`,
         user_id: user.user_id,
       })
@@ -1100,9 +1140,13 @@ const resolvers = {
 
       await UserGroups.destroy({ where: { group_id, user_id } })
 
+      const blameSection = await Sections.findOne({
+        where: { id: blame.id },
+      })
+
       await UserLogs.create({
         full_name: `${blame.first_name} ${blame.last_name}`,
-        section: `${blame.section}`,
+        section: `${blameSection.section_name}`,
         action_description: `Removed ${removedUser.first_name} ${removedUser.last_name} from group ${group.id}`,
         user_id: blame.user_id,
       })
@@ -1122,7 +1166,7 @@ const resolvers = {
       {
         username,
         address,
-        section,
+        section_id,
         gender,
         profile_img,
         birthdate,
@@ -1165,7 +1209,7 @@ const resolvers = {
         {
           username,
           address,
-          section,
+          section_id,
           gender,
           profile_img: newImage,
           password,
@@ -1176,9 +1220,12 @@ const resolvers = {
 
       const updatedUser = await Users.findOne({ where: { id: user.user_id } })
 
+      const initialUserSection = await Sections.findOne({
+        where: { id: initialUser.section_id },
+      })
       await UserLogs.create({
         full_name: `${initialUser.first_name} ${initialUser.last_name}`,
-        section: `${initialUser.section}`,
+        section: `${initialUserSection.section_name}`,
         action_description: `Updated their User Profile`,
         user_id: initialUser.id,
       })
@@ -1239,9 +1286,13 @@ const resolvers = {
         )
       }
 
+      const actionUserSection = await Sections.findOne({
+        where: { id: actionUser.section_id },
+      })
+
       await UserLogs.create({
         full_name: `${actionUser.first_name} ${actionUser.last_name}`,
-        section: `${actionUser.section}`,
+        section: `${actionUserSection.section_name}`,
         action_description: `Updated the Group roles of group ${group_id}`,
         user_id: actionUser.id,
       })
@@ -1308,10 +1359,13 @@ const resolvers = {
           })
         })
       )
+      const actionUserSection = await Sections.findOne({
+        where: { id: actionUser.section_id },
+      })
 
       await UserLogs.create({
         full_name: `${actionUser.first_name} ${actionUser.last_name}`,
-        section: `${actionUser.section}`,
+        section: `${actionUserSection.section_name}`,
         action_description: `Updated the Group roles of User ${targetUser.id} in Group ${group_id}`,
         user_id: actionUser.id,
       })
@@ -1346,9 +1400,13 @@ const resolvers = {
         user_id: user.user_id,
       })
 
+      const reportIssuerSection = await Sections.findOne({
+        where: { id: reportIssuer.section_id },
+      })
+
       await UserLogs.create({
         full_name: `${reportIssuer.first_name} ${reportIssuer.last_name}`,
-        section: `${reportIssuer.section}`,
+        section: `${reportIssuerSection.section_name}`,
         action_description: `Submitted a report on Group ${group_id}`,
         user_id: reportIssuer.id,
       })
