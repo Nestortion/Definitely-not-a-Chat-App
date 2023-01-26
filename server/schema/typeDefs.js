@@ -204,7 +204,7 @@ const typeDefs = `
     password: String
     birthdate: Date!
     address: String
-    section: String
+    section_id: Int 
     first_name: String
     last_name: String
     gender: String

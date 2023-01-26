@@ -548,8 +548,8 @@ const resolvers = {
         password: hashedPassword,
         first_name: user_data.first_name,
         last_name: user_data.last_name,
-        age: user_data.age,
-        section: user_data.section,
+        birthdate: user_data.birthdate,
+        section_id: user_data.section_id,
         address: user_data.address,
         gender: user_data.gender,
       })
