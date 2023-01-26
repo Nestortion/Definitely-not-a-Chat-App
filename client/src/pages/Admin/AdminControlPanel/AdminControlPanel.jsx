@@ -5,6 +5,7 @@ import { MdArrowForwardIos, MdSettings } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import GroupList from '../../../components/GroupList/GroupList'
 import {
+  useGraphDataQuery,
   useGroupListQuery,
   useSystemStatsQuery,
   useUsersQuery,
@@ -13,22 +14,13 @@ import LoadingSpinner from '../../../components/Loading/LoadingSpinner/LoadingSp
 import ErrorText from '../../../components/Error/ErrorText'
 import { apiBasePath } from '../../../data/config'
 import { PieChart } from 'react-minimal-pie-chart'
-import { randomColor } from 'randomcolor'
 
 export default function AdminControlPanel() {
-  const graphData = [
-    {
-      title: 'BSIT 4-1',
-      value: 35,
-      color: randomColor({ luminosity: 'dark' }),
-    },
-    {
-      title: 'BSIT 3-1',
-      value: 10,
-      color: randomColor({ luminosity: 'dark' }),
-    },
-    { title: 'BSIT 3-1', value: 2, color: randomColor({ luminosity: 'dark' }) },
-  ]
+  const {
+    data: graphData,
+    loading: graphDataLoading,
+    error: graphDataError,
+  } = useGraphDataQuery()
 
   const {
     data: systemStats,
@@ -49,12 +41,16 @@ export default function AdminControlPanel() {
     error: topFourGroupChatsError,
   } = useGroupListQuery({ variables: { limit: 4 } })
 
+  if (graphDataLoading) return <LoadingSpinner />
+  if (graphDataError) return <ErrorText>Something Went Wrong</ErrorText>
   if (topFourUsersLoading) return <LoadingSpinner />
   if (topFourUsersError) return <ErrorText>Something Went Wrong</ErrorText>
   if (systemStatsLoading) return <LoadingSpinner />
   if (systemStatsError) return <ErrorText>Something Went Wrong</ErrorText>
   if (topFourGroupChatsLoading) return <LoadingSpinner />
   if (topFourGroupChatsError) return <ErrorText>Something Went Wrong</ErrorText>
+
+  console.log(graphData)
 
   return (
     <div className="control-panel">
@@ -182,7 +178,7 @@ export default function AdminControlPanel() {
         <div className="control-panel__chart-container control-panel__card">
           <p className="fw-bold fs-500">Section Percentages</p>
           <PieChart
-            data={graphData}
+            data={graphData.graphData}
             label={({ dataEntry }) =>
               `${dataEntry.title} = ${Math.round(dataEntry.percentage)} %`
             }
