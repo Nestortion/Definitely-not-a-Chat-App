@@ -54,6 +54,8 @@ const resolvers = {
     },
     userChatSender: (_, { user_id }, context) => {
       authMiddleware(context)
+
+      if (!user_id) return
       return Users.findOne({ where: { id: user_id } })
     },
     user: (_, __, context) => {
