@@ -23,6 +23,7 @@ import { withFilter } from 'graphql-subscriptions'
 import { DateTimeResolver, DateResolver } from 'graphql-scalars'
 import bcrypt from 'bcrypt'
 import Sections from '../models/Sections.js'
+import { randomColor } from 'randomcolor'
 
 try {
   await createAssociation()
@@ -44,6 +45,11 @@ const resolvers = {
       let age = Math.floor(difference / (1000 * 3600 * 24 * 365))
 
       return age
+    },
+  },
+  GraphData: {
+    color: () => {
+      return randomColor({ luminosity: 'dark' })
     },
   },
   Upload: GraphQLUpload,
@@ -528,6 +534,26 @@ const resolvers = {
     sections: async (_, __, context) => {
       authMiddleware(context)
       return Sections.findAll()
+    },
+    graphData: async (_, __, context) => {
+      authMiddleware(context)
+
+      const allSections = await Sections.findAll()
+
+      const sections = await Promise.all(
+        allSections.map(async (section) => {
+          const users = await Users.findAll({
+            where: { section_id: section.id },
+          })
+
+          return {
+            title: section.section_name,
+            value: users.length,
+          }
+        })
+      )
+
+      return sections
     },
   },
   Mutation: {
@@ -1531,6 +1557,12 @@ const resolvers = {
 
       const newSection = await Sections.create({ section_name })
 
+      await AdminLogs.create({
+        full_name: `${actionUser.first_name} ${actionUser.last_name}`,
+        action_description: `Created a new section ${newSection.section_name} with id ${newSection.id}`,
+        user_id: actionUser.id,
+      })
+
       return newSection
     },
     deleteSection: async (_, { section_id }, context) => {
@@ -1546,6 +1578,12 @@ const resolvers = {
       })
 
       await Sections.destroy({ where: { id: section_id } })
+
+      await AdminLogs.create({
+        full_name: `${actionUser.first_name} ${actionUser.last_name}`,
+        action_description: `Delete section ${sectionToDelete.section_name} with id ${sectionToDelete.id}`,
+        user_id: actionUser.id,
+      })
 
       return sectionToDelete
     },
@@ -1564,6 +1602,12 @@ const resolvers = {
 
       const updatedSection = await Sections.findOne({
         where: { id: section_id },
+      })
+
+      await AdminLogs.create({
+        full_name: `${actionUser.first_name} ${actionUser.last_name}`,
+        action_description: `Updated the name of section ${updatedSection.id} from ${prevSection.section_name} to ${updatedSection.section_name}`,
+        user_id: actionUser.id,
       })
 
       return updatedSection

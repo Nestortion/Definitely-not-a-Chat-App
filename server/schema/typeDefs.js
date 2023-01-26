@@ -198,6 +198,12 @@ const typeDefs = `
     username: String
   }
 
+  type GraphData{
+    title: String
+    value: Int
+    color: String
+  }
+
   input RegisterInput{
     username: String
     access_level: AccessLevel
@@ -259,6 +265,7 @@ const typeDefs = `
     report(report_id: Int): ReportResponse
     reportedChat(group_id: Int!): ReportedChatDetails
     sections: [Section]
+    graphData: [GraphData]
   }
 
   
