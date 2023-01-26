@@ -28,6 +28,7 @@ export default function AdminEditProfile({ closeModal, profileData }) {
     lastName: profileData.last_name,
     username: profileData.username,
     password: '',
+    birthdate: '',
     profileImage: null,
     accessLevel: profileData.acces_level,
   }
@@ -69,6 +70,7 @@ export default function AdminEditProfile({ closeModal, profileData }) {
           username: values.username,
           first_name: values.firstName,
           last_name: values.lastName,
+          birthdate: values.birthdate,
           profile_img: values.profileImage,
           new_password: values.password,
         },
@@ -180,6 +182,18 @@ export default function AdminEditProfile({ closeModal, profileData }) {
                 onChange={handleChange}
                 id="password"
                 value={values.password}
+              />
+            </div>
+
+            <div className="profile-settings__input-container">
+              <label htmlFor="birthdate">Birthdate: </label>
+              <input
+                className="profile-settings-input"
+                type="date"
+                name="birthdate"
+                onChange={handleChange}
+                id="birthdate"
+                value={values.birthdate}
               />
             </div>
 
