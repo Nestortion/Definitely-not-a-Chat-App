@@ -496,6 +496,7 @@ export type User = {
   access_level: AccessLevel
   address: Scalars['String']
   age: Scalars['Int']
+  birthdate: Scalars['DateTime']
   disabled: Scalars['Boolean']
   first_name: Scalars['String']
   gender: Scalars['String']
@@ -742,6 +743,7 @@ export type CurrentUserQuery = {
     profile_img: string
     age: number
     gender: string
+    birthdate: any
   } | null
 }
 
@@ -2119,6 +2121,7 @@ export const CurrentUserDocument = gql`
       profile_img
       age
       gender
+      birthdate
     }
   }
 `

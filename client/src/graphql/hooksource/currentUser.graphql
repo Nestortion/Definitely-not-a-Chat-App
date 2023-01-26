@@ -12,5 +12,6 @@ query CurrentUser {
     profile_img
     age
     gender
+    birthdate
   }
 }

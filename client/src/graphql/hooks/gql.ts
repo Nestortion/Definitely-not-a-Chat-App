@@ -24,7 +24,7 @@ const documents = {
     "mutation AdminUpdateUserProfile($userData: AdminUserProfileUpdateInput) {\n  adminUpdateUserProfile(userData: $userData) {\n    id\n    username\n    access_level\n    last_name\n    first_name\n    profile_img\n  }\n}": types.AdminUpdateUserProfileDocument,
     "subscription ChatAdded($user: Int) {\n  chatAdded(user: $user) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n    createdAt\n  }\n}": types.ChatAddedDocument,
     "mutation CreateGroup($userId: [Int!]) {\n  createGroup(user_id: $userId) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}": types.CreateGroupDocument,
-    "query CurrentUser {\n  currentUser {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n  }\n}": types.CurrentUserDocument,
+    "query CurrentUser {\n  currentUser {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n    birthdate\n  }\n}": types.CurrentUserDocument,
     "query CurrentUserGroupRoles($groupId: Int) {\n  currentUserGroupRoles(group_id: $groupId) {\n    roles\n  }\n}": types.CurrentUserGroupRolesDocument,
     "query Group($groupId: Int!) {\n  group(id: $groupId) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}": types.GroupDocument,
     "subscription GroupCreated($user: Int) {\n  groupCreated(user: $user) {\n    blame {\n      id\n    }\n    group {\n      group_name\n      group_picture\n      id\n      is_group\n    }\n  }\n}": types.GroupCreatedDocument,
@@ -111,7 +111,7 @@ export function graphql(source: "mutation CreateGroup($userId: [Int!]) {\n  crea
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "query CurrentUser {\n  currentUser {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n  }\n}"): (typeof documents)["query CurrentUser {\n  currentUser {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n  }\n}"];
+export function graphql(source: "query CurrentUser {\n  currentUser {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n    birthdate\n  }\n}"): (typeof documents)["query CurrentUser {\n  currentUser {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    section\n    profile_img\n    age\n    gender\n    birthdate\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
