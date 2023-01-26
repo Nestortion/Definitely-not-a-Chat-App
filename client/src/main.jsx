@@ -36,6 +36,7 @@ import Reports from './pages/Admin/Reports/Reports'
 import Report from './pages/Admin/Reports/Report/Report'
 import SoloGroup from './pages/Admin/AdminGroupsList/SoloGroup/SoloGroup'
 import Register from './pages/Admin/Register/Register'
+import Maintenance from './pages/Maintenance/Maintenance'
 
 const router = createBrowserRouter([
   {
@@ -111,6 +112,10 @@ const router = createBrowserRouter([
       {
         path: '/admin/register',
         element: <Register />,
+      },
+      {
+        path: '/admin/maintenance',
+        element: <Maintenance />,
       },
     ],
   },
