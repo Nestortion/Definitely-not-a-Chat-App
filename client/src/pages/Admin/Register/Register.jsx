@@ -19,7 +19,7 @@ export default function Register() {
     firstName: '',
     lastName: '',
     username: '',
-    age: '',
+    birthdate: '',
     gender: 'Male',
     section: '',
     address: '',
@@ -39,7 +39,7 @@ export default function Register() {
       firstName: '',
       lastName: '',
       username: '',
-      age: '',
+      birthdate: '',
       gender: 'Male',
       section: '',
       address: '',
@@ -63,7 +63,7 @@ export default function Register() {
           username: userData.username,
           first_name: userData.firstName,
           last_name: userData.lastName,
-          age: parseInt(userData.age),
+          birthdate: userData.birthdate,
           address: userData.address,
           section: userData.section,
           gender: userData.gender,
@@ -137,13 +137,13 @@ export default function Register() {
         </div>
 
         <div className="register__input-control">
-          <label htmlFor="age">Age: </label>
+          <label htmlFor="birthdate">Birthdate: </label>
           <input
             onChange={handleChange}
-            value={userData.age}
-            type="number"
-            id="age"
-            name="age"
+            value={userData.birthdate}
+            type="date"
+            id="birthdate"
+            name="birthdate"
             required
           />
         </div>
