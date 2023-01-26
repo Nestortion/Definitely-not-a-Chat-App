@@ -11,7 +11,8 @@ import useDebounceValue from '../../../helper_hooks/useDebounceValue'
 
 export default function AdminUsersList() {
   const [searchInput, setSearchInput] = useState('')
-  const [searchData, setSearchData] = useState([])
+  const [searchDataUser, setSearchDataUser] = useState([])
+  const [searchDataAdmin, setSearchDataAdmin] = useState([])
   const [isSearching, setIsSearching] = useState(false)
   const debounceValue = useDebounceValue(searchInput, 250)
 
@@ -21,16 +22,41 @@ export default function AdminUsersList() {
     error: usersError,
   } = useUsersQuery()
 
+  const usersList = users?.users.filter((user) => {
+    return user.access_level === 'USER'
+  })
+
+  const adminsList = users?.users.filter((user) => {
+    return user.access_level === 'ADMIN'
+  })
+
   useEffect(() => {
     ;(() => {
       if (searchInput && searchInput.length > 0) {
-        const filteredData = users.users.filter((user) => {
+        const filteredData = usersList.filter((user) => {
           const userFullName = `${user.first_name} ${user.last_name}`
 
           return userFullName.toLowerCase().includes(debounceValue)
         })
 
-        setSearchData(filteredData)
+        setSearchDataUser(filteredData)
+        setIsSearching(true)
+      } else {
+        setIsSearching(false)
+      }
+    })()
+  }, [debounceValue])
+
+  useEffect(() => {
+    ;(() => {
+      if (searchInput && searchInput.length > 0) {
+        const filteredData = adminsList.filter((user) => {
+          const userFullName = `${user.first_name} ${user.last_name}`
+
+          return userFullName.toLowerCase().includes(debounceValue)
+        })
+
+        setSearchDataAdmin(filteredData)
         setIsSearching(true)
       } else {
         setIsSearching(false)
@@ -58,60 +84,122 @@ export default function AdminUsersList() {
             value={searchInput}
           />
         </div>
-        <div className="admin-users-list__list-container">
-          {isSearching
-            ? searchData.map((user) => (
-                <div
-                  key={user.id}
-                  className="admin-users-list__list-user control-panel__card"
-                >
-                  <Avatar
-                    size={36}
-                    src={`${apiBasePath}/pfp/${user.profile_img}`}
-                  />
-                  <span>{user.id}</span>
-                  <span>{`${user.first_name} ${user.last_name}`}</span>
-                  <span>
-                    <Link
-                      to={`/profile/${user.id}`}
-                      style={{
-                        textDecoration: 'none',
-                        color: 'var(--clr-neutral-900)',
-                        display: 'block',
-                        width: '100%',
-                      }}
-                    >
-                      <MdArrowForwardIos title="Go to profile page" />
-                    </Link>
-                  </span>
-                </div>
-              ))
-            : users.users.map((user) => (
-                <div
-                  key={user.id}
-                  className="admin-users-list__list-user control-panel__card"
-                >
-                  <Avatar
-                    size={36}
-                    src={`${apiBasePath}/pfp/${user.profile_img}`}
-                  />
-                  <span>{user.id}</span>
-                  <span>{`${user.first_name} ${user.last_name}`}</span>
-                  <span>
-                    <Link
-                      to={`/profile/${user.id}`}
-                      style={{
-                        textDecoration: 'none',
-                        color: 'var(--clr-neutral-900)',
-                        display: 'block',
-                        width: '100%',
-                      }}
-                    >
-                      <MdArrowForwardIos title="Go to profile page" />
-                    </Link>
-                  </span>
-                </div>
-              ))}
+
+        <div className="admin-users-list__container-wrapper">
+          <div className="admin-users-list__list-container">
+            <p className="fw-bold fs-500">Users</p>
+            {isSearching
+              ? searchDataUser.map((user) => (
+                  <div
+                    key={user.id}
+                    className="admin-users-list__list-user control-panel__card"
+                  >
+                    <Avatar
+                      size={36}
+                      src={`${apiBasePath}/pfp/${user.profile_img}`}
+                    />
+                    <span>{user.id}</span>
+                    <span>{`${user.first_name} ${user.last_name}`}</span>
+                    <span>
+                      <Link
+                        to={`/profile/${user.id}`}
+                        style={{
+                          textDecoration: 'none',
+                          color: 'var(--clr-neutral-900)',
+                          display: 'block',
+                          width: '100%',
+                        }}
+                      >
+                        <MdArrowForwardIos title="Go to profile page" />
+                      </Link>
+                    </span>
+                  </div>
+                ))
+              : usersList.map((user) => (
+                  <div
+                    key={user.id}
+                    className="admin-users-list__list-user control-panel__card"
+                  >
+                    <Avatar
+                      size={36}
+                      src={`${apiBasePath}/pfp/${user.profile_img}`}
+                    />
+                    <span>{user.id}</span>
+                    <span>{`${user.first_name} ${user.last_name}`}</span>
+                    <span>
+                      <Link
+                        to={`/profile/${user.id}`}
+                        style={{
+                          textDecoration: 'none',
+                          color: 'var(--clr-neutral-900)',
+                          display: 'block',
+                          width: '100%',
+                        }}
+                      >
+                        <MdArrowForwardIos title="Go to profile page" />
+                      </Link>
+                    </span>
+                  </div>
+                ))}
+          </div>
+
+          <div className="admin-users-list__list-container">
+            <p className="fw-bold fs-500">Admins</p>
+
+            {isSearching
+              ? searchDataAdmin.map((user) => (
+                  <div
+                    key={user.id}
+                    className="admin-users-list__list-user control-panel__card"
+                  >
+                    <Avatar
+                      size={36}
+                      src={`${apiBasePath}/pfp/${user.profile_img}`}
+                    />
+                    <span>{user.id}</span>
+                    <span>{`${user.first_name} ${user.last_name}`}</span>
+                    <span>
+                      <Link
+                        to={`/profile/${user.id}`}
+                        style={{
+                          textDecoration: 'none',
+                          color: 'var(--clr-neutral-900)',
+                          display: 'block',
+                          width: '100%',
+                        }}
+                      >
+                        <MdArrowForwardIos title="Go to profile page" />
+                      </Link>
+                    </span>
+                  </div>
+                ))
+              : adminsList.map((user) => (
+                  <div
+                    key={user.id}
+                    className="admin-users-list__list-user control-panel__card"
+                  >
+                    <Avatar
+                      size={36}
+                      src={`${apiBasePath}/pfp/${user.profile_img}`}
+                    />
+                    <span>{user.id}</span>
+                    <span>{`${user.first_name} ${user.last_name}`}</span>
+                    <span>
+                      <Link
+                        to={`/profile/${user.id}`}
+                        style={{
+                          textDecoration: 'none',
+                          color: 'var(--clr-neutral-900)',
+                          display: 'block',
+                          width: '100%',
+                        }}
+                      >
+                        <MdArrowForwardIos title="Go to profile page" />
+                      </Link>
+                    </span>
+                  </div>
+                ))}
+          </div>
         </div>
       </div>
     </div>
