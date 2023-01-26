@@ -3,6 +3,7 @@ import ReactSearchBox from 'react-search-box'
 import Button from '../../UI/Button/Button'
 import './add-members.scss'
 import {
+  AddMemberListDocument,
   useAddMemberListQuery,
   useAddMemberMutation,
 } from '../../../graphql/hooks/graphql'
@@ -76,6 +77,12 @@ export default function AddMembers({ closeModal }) {
     const memberIds = selectedMembers.map((member) => member.key)
     await addMembers({
       variables: { groupId: parseInt(chatId), userId: memberIds },
+      refetchQueries: [
+        {
+          query: AddMemberListDocument,
+          variables: { groupId: parseInt(chatId), form: 'memberList' },
+        },
+      ],
     })
     // reset selectedMembers
     setSelectedMembers([])

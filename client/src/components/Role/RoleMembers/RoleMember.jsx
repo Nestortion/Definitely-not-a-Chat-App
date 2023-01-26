@@ -5,6 +5,7 @@ import Avatar from '../../UI/Avatar/Avatar'
 import './role-member.scss'
 import { MdSettings } from 'react-icons/md'
 import {
+  AddMemberListDocument,
   useRemoveMemberMutation,
   useUserGroupRolesQuery,
 } from '../../../graphql/hooks/graphql'
@@ -102,6 +103,12 @@ export default function RoleMember({
   const handleRemoveMember = async () => {
     const removeRes = await removeMember({
       variables: { userId: id, groupId: parseInt(chatId) },
+      refetchQueries: [
+        {
+          query: AddMemberListDocument,
+          variables: { groupId: parseInt(chatId), form: 'memberList' },
+        },
+      ],
     })
 
     if (removeRes.data.removeMember === null) {
