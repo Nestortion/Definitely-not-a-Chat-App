@@ -29,7 +29,7 @@ export default function ChatListItem({
     loading: senderLoading,
     error: senderError,
   } = useUserChatSenderQuery({
-    variables: { userId: latest[0].user_id },
+    variables: { userId: latest[0]?.user_id },
   })
 
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
@@ -42,11 +42,11 @@ export default function ChatListItem({
 
   const displayLatest = (message) => {
     if (message.message_type === 'IMAGE') {
-      return `${sender.userChatSender.first_name} sent an image`
+      return `${sender?.userChatSender.first_name} sent an image`
     } else if (message.message_type === 'OTHER') {
-      return `${sender.userChatSender.first_name} sent a file`
+      return `${sender?.userChatSender.first_name} sent a file`
     } else {
-      return `${sender.userChatSender.first_name}: ${message.message}`
+      return `${sender?.userChatSender.first_name}: ${message.message}`
     }
   }
 
