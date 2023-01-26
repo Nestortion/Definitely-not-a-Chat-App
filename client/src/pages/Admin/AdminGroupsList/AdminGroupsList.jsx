@@ -8,9 +8,10 @@ import './admin-groups-list.scss'
 
 export default function AdminGroupsList() {
   const [searchInput, setSearchInput] = useState('')
-  const [searchData, setSearchData] = useState([])
+  const [searchDataPrivate, setSearchDataPrivate] = useState([])
+  const [searchDataGroup, setSearchDataGroup] = useState([])
   const [isSearching, setIsSearching] = useState(false)
-  const debounceValue = useDebounceValue(searchInput, 250)
+  const debounceValue = useDebounceValue(searchInput.toLowerCase(), 250)
 
   const {
     data: chats,
@@ -18,14 +19,37 @@ export default function AdminGroupsList() {
     loading: chatsError,
   } = useGroupListQuery()
 
+  const groupChats = chats?.groupList.filter((groupChat) => {
+    return groupChat.is_group === 'true'
+  })
+
+  const privateChats = chats?.groupList.filter((groupChat) => {
+    return groupChat.is_group === 'false'
+  })
+
   useEffect(() => {
     ;(() => {
       if (searchInput && searchInput.length > 0) {
-        const filteredData = chats.groupList.filter((group) => {
+        const filteredData = privateChats.filter((group) => {
           return group.group_name.toLowerCase().includes(debounceValue)
         })
 
-        setSearchData(filteredData)
+        setSearchDataPrivate(filteredData)
+        setIsSearching(true)
+      } else {
+        setIsSearching(false)
+      }
+    })()
+  }, [debounceValue])
+
+  useEffect(() => {
+    ;(() => {
+      if (searchInput && searchInput.length > 0) {
+        const filteredData = groupChats.filter((group) => {
+          return group.group_name.toLowerCase().includes(debounceValue)
+        })
+
+        setSearchDataGroup(filteredData)
         setIsSearching(true)
       } else {
         setIsSearching(false)
@@ -54,31 +78,62 @@ export default function AdminGroupsList() {
           />
         </div>
 
-        <div className="admin-groups-list__main">
-          {isSearching
-            ? searchData.map((groupChat) => (
-                <div key={groupChat.id}>
-                  <GroupList
-                    key={groupChat.id.toString()}
-                    id={groupChat.id}
-                    isGroup={groupChat.is_group}
-                    groupName={groupChat.group_name}
-                    profilePicUrl={groupChat.group_picture}
-                  />
-                  <hr />
-                </div>
-              ))
-            : chats.groupList.map((groupChat) => (
-                <div key={groupChat.id}>
-                  <GroupList
-                    id={groupChat.id}
-                    isGroup={groupChat.is_group}
-                    groupName={groupChat.group_name}
-                    profilePicUrl={groupChat.group_picture}
-                  />
-                  <hr />
-                </div>
-              ))}
+        <div className="admin-groups-list__main-container">
+          <div className="admin-groups-list__main">
+            <p className="fw-bold fs-500">Private Chats</p>
+            {isSearching
+              ? searchDataPrivate.map((groupChat) => (
+                  <div key={groupChat.id}>
+                    <GroupList
+                      key={groupChat.id.toString()}
+                      id={groupChat.id}
+                      isGroup={groupChat.is_group}
+                      groupName={groupChat.group_name}
+                      profilePicUrl={groupChat.group_picture}
+                    />
+                    <hr />
+                  </div>
+                ))
+              : privateChats.map((groupChat) => (
+                  <div key={groupChat.id}>
+                    <GroupList
+                      id={groupChat.id}
+                      isGroup={groupChat.is_group}
+                      groupName={groupChat.group_name}
+                      profilePicUrl={groupChat.group_picture}
+                    />
+                    <hr />
+                  </div>
+                ))}
+          </div>
+
+          <div className="admin-groups-list__main">
+            <p className="fw-bold fs-500">Group Chats</p>
+            {isSearching
+              ? searchDataGroup.map((groupChat) => (
+                  <div key={groupChat.id}>
+                    <GroupList
+                      key={groupChat.id.toString()}
+                      id={groupChat.id}
+                      isGroup={groupChat.is_group}
+                      groupName={groupChat.group_name}
+                      profilePicUrl={groupChat.group_picture}
+                    />
+                    <hr />
+                  </div>
+                ))
+              : groupChats.map((groupChat) => (
+                  <div key={groupChat.id}>
+                    <GroupList
+                      id={groupChat.id}
+                      isGroup={groupChat.is_group}
+                      groupName={groupChat.group_name}
+                      profilePicUrl={groupChat.group_picture}
+                    />
+                    <hr />
+                  </div>
+                ))}
+          </div>
         </div>
       </div>
     </div>
