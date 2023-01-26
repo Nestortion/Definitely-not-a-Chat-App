@@ -2,13 +2,47 @@ import { useState } from 'react'
 import Button from '../../../components/UI/Button/Button'
 import './register.scss'
 import { useAddUserMutation } from '../../../graphql/hooks/graphql'
+import { toast } from 'react-toastify'
 
 export default function Register() {
+  const sectionsSelection = [
+    {
+      id: 1,
+      name: 'BSIT 1-1',
+    },
+    {
+      id: 2,
+      name: 'BSIT 2-1',
+    },
+    {
+      id: 3,
+      name: 'BSIT 3-1',
+    },
+    {
+      id: 4,
+      name: 'BSIT 4-1',
+    },
+    {
+      id: 5,
+      name: 'BSIT 5-1',
+    },
+  ]
+
+  const notify = (text) =>
+    toast(text, {
+      position: toast.POSITION.TOP_CENTER,
+      style: {
+        color: 'var(--clr-neutral-100)',
+        backgroundColor: 'var(--clr-primary-400)',
+        fontSize: 'clamp(0.8rem, 1.3vw, 1.5rem)',
+      },
+    })
+
   const [userData, setUserData] = useState({
     firstName: '',
     lastName: '',
     username: '',
-    age: '',
+    birthdate: '',
     gender: 'Male',
     section: '',
     address: '',
@@ -28,7 +62,7 @@ export default function Register() {
       firstName: '',
       lastName: '',
       username: '',
-      age: '',
+      birthdate: '',
       gender: 'Male',
       section: '',
       address: '',
@@ -52,7 +86,7 @@ export default function Register() {
           username: userData.username,
           first_name: userData.firstName,
           last_name: userData.lastName,
-          age: parseInt(userData.age),
+          birthdate: userData.birthdate,
           address: userData.address,
           section: userData.section,
           gender: userData.gender,
@@ -65,7 +99,7 @@ export default function Register() {
       alert('Current User is not an Admin')
     }
 
-    alert('User Sucessfully Registered')
+    notify('User Successfully Registered')
     handleReset()
   }
 
@@ -126,13 +160,13 @@ export default function Register() {
         </div>
 
         <div className="register__input-control">
-          <label htmlFor="age">Age: </label>
+          <label htmlFor="birthdate">Birthdate: </label>
           <input
             onChange={handleChange}
-            value={userData.age}
-            type="number"
-            id="age"
-            name="age"
+            value={userData.birthdate}
+            type="date"
+            id="birthdate"
+            name="birthdate"
             required
           />
         </div>
@@ -154,14 +188,20 @@ export default function Register() {
 
         <div className="register__input-control">
           <label htmlFor="section">Section: </label>
-          <input
+          <select
             onChange={handleChange}
             value={userData.section}
             type="text"
             id="section"
             name="section"
             required
-          />
+          >
+            {sectionsSelection.map((section) => (
+              <option key={section.id} value={section.name}>
+                {section.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="register__input-control">

@@ -1487,6 +1487,7 @@ export type UsersQuery = {
     age: number
     gender: string
     username: string
+    access_level: AccessLevel
   } | null> | null
 }
 
@@ -4318,6 +4319,7 @@ export const UsersDocument = gql`
       age
       gender
       username
+      access_level
     }
   }
 `

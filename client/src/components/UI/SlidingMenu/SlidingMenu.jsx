@@ -1,4 +1,5 @@
 import {
+  MdApi,
   MdClose,
   MdGroups,
   MdLeaderboard,
@@ -78,6 +79,14 @@ export default function SlidingMenu({ closeMenu }) {
               <span className="sliding-menu__span">
                 <MdPersonAdd size={24} />
                 Register User
+              </span>
+            </Link>
+          </li>
+          <li className="sliding-menu__action">
+            <Link onClick={closeMenu} to="/admin/maintenance">
+              <span className="sliding-menu__span">
+                <MdApi size={24} />
+                Maintenance
               </span>
             </Link>
           </li>

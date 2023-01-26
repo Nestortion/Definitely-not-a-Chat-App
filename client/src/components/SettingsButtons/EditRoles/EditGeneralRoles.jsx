@@ -121,7 +121,6 @@ export default function EditGeneralRoles({ closeModal, rolesList }) {
                 onChange={(e) => handleChange(e, role.id)}
               >
                 <option value="MEMBER">MEMBER</option>
-                <option value="LEADER">LEADER</option>
                 <option value="MODERATOR">MODERATOR</option>
               </select>
             </div>
@@ -159,7 +158,6 @@ export default function EditGeneralRoles({ closeModal, rolesList }) {
               onChange={handleNewRoleChange}
             >
               <option value="MEMBER">MEMBER</option>
-              <option value="LEADER">LEADER</option>
               <option value="MODERATOR">MODERATOR</option>
             </select>
           </div>
