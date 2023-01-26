@@ -12,14 +12,21 @@ import { Navigate, useNavigate } from 'react-router-dom'
 export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [login, { error: loginError }] = useLoginMutation()
+  const [login, { data: dataLogin, error: loginError }] = useLoginMutation()
   const { data: isLogged, loading: isLoggedLoading } = useIsLoggedInQuery()
   const navigate = useNavigate()
+  const [errorMessage, setErrorMessage] = useState('')
 
   const loginSubmitHandle = async (e) => {
     e.preventDefault()
-    const loginData = await login({ variables: { username, password } })
-    if (loginData) {
+    const loginData = await login({
+      variables: { username, password },
+      onError: (data) => {
+        setErrorMessage(data.message)
+      },
+    })
+
+    if (loginData.data) {
       setAccessToken(loginData.data.login.access_token)
       navigate('/')
     }
@@ -58,9 +65,7 @@ export default function Login() {
               }}
             />
             {loginError && (
-              <span className="text-error-400">
-                Invalid Username or Password
-              </span>
+              <span className="text-error-400">{errorMessage}</span>
             )}
             <Button>Submit</Button>
           </form>
