@@ -1,32 +1,20 @@
 import { useState } from 'react'
 import Button from '../../../components/UI/Button/Button'
 import './register.scss'
-import { useAddUserMutation } from '../../../graphql/hooks/graphql'
+import {
+  useAddUserMutation,
+  useSectionsQuery,
+} from '../../../graphql/hooks/graphql'
 import { toast } from 'react-toastify'
+import LoadingSpinner from '../../../components/Loading/LoadingSpinner/LoadingSpinner'
+import ErrorText from '../../../components/Error/ErrorText'
 
 export default function Register() {
-  const sectionsSelection = [
-    {
-      id: 1,
-      name: 'BSIT 1-1',
-    },
-    {
-      id: 2,
-      name: 'BSIT 2-1',
-    },
-    {
-      id: 3,
-      name: 'BSIT 3-1',
-    },
-    {
-      id: 4,
-      name: 'BSIT 4-1',
-    },
-    {
-      id: 5,
-      name: 'BSIT 5-1',
-    },
-  ]
+  const {
+    data: sections,
+    loading: sectionsLoading,
+    error: sectionsError,
+  } = useSectionsQuery()
 
   const notify = (text) =>
     toast(text, {
@@ -44,7 +32,7 @@ export default function Register() {
     username: '',
     birthdate: '',
     gender: 'Male',
-    section: '',
+    section: 1,
     address: '',
     accessLevel: 'USER',
     password: '',
@@ -73,11 +61,9 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     // Check if there are falsy values (e.g. '' or null)
-    if (Object.values(userData).some((el) => el == false)) return
+    if (Object.values(userData).some((el) => el === false)) return
 
     e.preventDefault()
-
-    console.log(userData)
 
     const registerRes = await register({
       variables: {
@@ -88,7 +74,7 @@ export default function Register() {
           last_name: userData.lastName,
           birthdate: userData.birthdate,
           address: userData.address,
-          section: userData.section,
+          section_id: parseInt(userData.section),
           gender: userData.gender,
           password: userData.password,
         },
@@ -96,16 +82,21 @@ export default function Register() {
     })
 
     if (registerRes.data.addUser.registered === false) {
-      alert('Current User is not an Admin')
+      notify('Current User is not an Admin')
+      return
     }
 
     notify('User Successfully Registered')
     handleReset()
   }
 
+  if (sectionsLoading) return <LoadingSpinner />
+  if (sectionsError) return <ErrorText>Something went wrong</ErrorText>
+
   return (
     <div className="register">
       <form
+        method="POST"
         onSubmit={handleSubmit}
         className="register__form control-panel__card"
       >
@@ -196,9 +187,9 @@ export default function Register() {
             name="section"
             required
           >
-            {sectionsSelection.map((section) => (
-              <option key={section.id} value={section.name}>
-                {section.name}
+            {sections.sections.map((section) => (
+              <option key={section.id} value={section.id}>
+                {section.section_name}
               </option>
             ))}
           </select>

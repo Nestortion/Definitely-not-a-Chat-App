@@ -94,7 +94,7 @@ export default function Profile() {
         <div className="profile__info">
           <span>Age: {profileData.userProfile.age}</span>
           <span>Gender: {profileData.userProfile.gender}</span>
-          <span>Section: {profileData.userProfile.section}</span>
+          <span>Section: {profileData.userProfile.section.section_name}</span>
           <span>Address: {profileData.userProfile.address}</span>
         </div>
         {currentUser.currentUser.access_level === 'ADMIN' &&

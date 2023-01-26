@@ -2,39 +2,25 @@ import ErrorText from '../../components/Error/ErrorText'
 import LoadingSpinner from '../../components/Loading/LoadingSpinner/LoadingSpinner'
 import Avatar from '../../components/UI/Avatar/Avatar'
 import { apiBasePath } from '../../data/config'
-import { MdUpload } from 'react-icons/md'
+import { MdSecurityUpdateWarning, MdUpload } from 'react-icons/md'
 import './profile-settings.scss'
 import { useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import Button from '../../components/UI/Button/Button'
-import { useUpdateUserProfileMutation } from '../../graphql/hooks/graphql'
+import {
+  useSectionsQuery,
+  useUpdateUserProfileMutation,
+} from '../../graphql/hooks/graphql'
 import SpawnModal from '../../components/UI/Modal/SpawnModal'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 
 export default function ProfileSettings() {
-  const sectionsSelection = [
-    {
-      id: 1,
-      name: 'BSIT 1-1',
-    },
-    {
-      id: 2,
-      name: 'BSIT 2-1',
-    },
-    {
-      id: 3,
-      name: 'BSIT 3-1',
-    },
-    {
-      id: 4,
-      name: 'BSIT 4-1',
-    },
-    {
-      id: 5,
-      name: 'BSIT 5-1',
-    },
-  ]
+  const {
+    data: sections,
+    loading: sectionsLoading,
+    error: sectionsError,
+  } = useSectionsQuery()
 
   const warn = (text) =>
     toast(text, {
@@ -63,9 +49,9 @@ export default function ProfileSettings() {
     lastName: user.currentUser.last_name,
     username: user.currentUser.username,
     age: user.currentUser.age,
-    birthdate: '',
+    birthdate: user.currentUser.birthdate,
     gender: user.currentUser.gender,
-    section: user.currentUser.section,
+    section: user.currentUser.section.id,
     address: user.currentUser.address,
     profileImage: null,
   }
@@ -118,7 +104,7 @@ export default function ProfileSettings() {
         gender: values.gender,
         birthdate: values.birthdate,
         profileImg: values.profileImage,
-        section: values.section,
+        sectionId: parseInt(values.section),
         username: values.username,
         currentConfirmation: modalConfirmPassword,
         newPassword: confirmPasswordInput,
@@ -174,6 +160,9 @@ export default function ProfileSettings() {
       setShouldDisable(false)
     }
   }, [passwordInput, confirmPasswordInput])
+
+  if (sectionsLoading) return <LoadingSpinner />
+  if (sectionsError) return <ErrorText>Something went Wrong</ErrorText>
 
   return (
     <>
@@ -311,9 +300,9 @@ export default function ProfileSettings() {
                 id="section"
                 name="section"
               >
-                {sectionsSelection.map((section) => (
-                  <option key={section.id} value={section.name}>
-                    {section.name}
+                {sections.sections.map((section) => (
+                  <option key={section.id} value={section.id}>
+                    {section.section_name}
                   </option>
                 ))}
               </select>

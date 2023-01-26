@@ -63,7 +63,7 @@ export default function AddMembers({ closeModal }) {
     setSelectedMembers([])
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // add users to the group chat
     // the most important data is key
     // key correlates to id
@@ -74,7 +74,9 @@ export default function AddMembers({ closeModal }) {
     // do the logic here
 
     const memberIds = selectedMembers.map((member) => member.key)
-    addMembers({ variables: { groupId: parseInt(chatId), userId: memberIds } })
+    await addMembers({
+      variables: { groupId: parseInt(chatId), userId: memberIds },
+    })
     // reset selectedMembers
     setSelectedMembers([])
     notify()

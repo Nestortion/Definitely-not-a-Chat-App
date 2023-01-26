@@ -57,8 +57,8 @@ export default function AdminGroupsList() {
     })()
   }, [debounceValue])
 
-  if (chatsLoading) return <LoadingSpinner />
-  if (chatsError) return <ErrorText>Something Went Wrong</ErrorText>
+  if (chatsLoading) return
+  if (chatsError) return
 
   const handleChange = (e) => {
     setSearchInput(e.target.value)
