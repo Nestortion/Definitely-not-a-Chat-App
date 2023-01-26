@@ -12,8 +12,24 @@ import {
 import LoadingSpinner from '../../../components/Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../../../components/Error/ErrorText'
 import { apiBasePath } from '../../../data/config'
+import { PieChart } from 'react-minimal-pie-chart'
+import { randomColor } from 'randomcolor'
 
 export default function AdminControlPanel() {
+  const graphData = [
+    {
+      title: 'BSIT 4-1',
+      value: 35,
+      color: randomColor({ luminosity: 'dark' }),
+    },
+    {
+      title: 'BSIT 3-1',
+      value: 10,
+      color: randomColor({ luminosity: 'dark' }),
+    },
+    { title: 'BSIT 3-1', value: 2, color: randomColor({ luminosity: 'dark' }) },
+  ]
+
   const {
     data: systemStats,
     loading: systemStatsLoading,
@@ -153,6 +169,26 @@ export default function AdminControlPanel() {
               See more
             </Link>
           </div>
+        </div>
+      </div>
+
+      <div className="control-panel__bottom">
+        <div className="control-panel__chart-container control-panel__card">
+          <p className="fw-bold fs-500">Section Percentages</p>
+          <PieChart
+            data={graphData}
+            label={({ dataEntry }) =>
+              `${dataEntry.title} = ${Math.round(dataEntry.percentage)} %`
+            }
+            labelStyle={(index) => ({
+              fontSize: '0.3rem',
+              fill: '#fff',
+            })}
+            segmentsShift={1}
+            viewBoxSize={[110, 110]}
+            center={[55, 55]}
+            animate
+          />
         </div>
       </div>
     </div>

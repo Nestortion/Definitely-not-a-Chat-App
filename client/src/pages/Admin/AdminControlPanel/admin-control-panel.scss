@@ -91,4 +91,20 @@
       }
     }
   }
+
+  .control-panel__bottom {
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .control-panel__chart-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      max-width: 500px;
+      padding: 2rem;
+    }
+  }
 }
