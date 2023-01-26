@@ -142,6 +142,8 @@ export type Mutation = {
   addUserGroupRole?: Maybe<UserGroupRole>
   adminUpdateUserProfile?: Maybe<User>
   createGroup?: Maybe<Group>
+  createSection?: Maybe<Section>
+  deleteSection?: Maybe<Section>
   login?: Maybe<AccessToken>
   logout?: Maybe<Scalars['Boolean']>
   removeMember?: Maybe<User>
@@ -151,6 +153,7 @@ export type Mutation = {
   updateGroup?: Maybe<Group>
   updateGroupRoles?: Maybe<Array<Maybe<GroupRole>>>
   updateReportStatus?: Maybe<Report>
+  updateSection?: Maybe<Section>
   updateUserGroupRoles?: Maybe<UpdateUserGroupRolesResponse>
   updateUserProfile?: Maybe<User>
 }
@@ -203,6 +206,14 @@ export type MutationCreateGroupArgs = {
   user_id?: InputMaybe<Array<Scalars['Int']>>
 }
 
+export type MutationCreateSectionArgs = {
+  section_name: Scalars['String']
+}
+
+export type MutationDeleteSectionArgs = {
+  section_id?: InputMaybe<Scalars['Int']>
+}
+
 export type MutationLoginArgs = {
   password: Scalars['String']
   username: Scalars['String']
@@ -242,6 +253,11 @@ export type MutationUpdateGroupRolesArgs = {
 export type MutationUpdateReportStatusArgs = {
   report_id?: InputMaybe<Scalars['Int']>
   report_status?: InputMaybe<Scalars['Boolean']>
+}
+
+export type MutationUpdateSectionArgs = {
+  section_id?: InputMaybe<Scalars['Int']>
+  section_name: Scalars['String']
 }
 
 export type MutationUpdateUserGroupRolesArgs = {
@@ -378,7 +394,7 @@ export type RegisterInput = {
   gender?: InputMaybe<Scalars['String']>
   last_name?: InputMaybe<Scalars['String']>
   password?: InputMaybe<Scalars['String']>
-  section?: InputMaybe<Scalars['String']>
+  section_id?: InputMaybe<Scalars['Int']>
   username?: InputMaybe<Scalars['String']>
 }
 
@@ -734,6 +750,19 @@ export type CreateGroupMutation = {
   } | null
 }
 
+export type CreateSectionMutationVariables = Exact<{
+  sectionName: Scalars['String']
+}>
+
+export type CreateSectionMutation = {
+  __typename?: 'Mutation'
+  createSection?: {
+    __typename?: 'Section'
+    id: number
+    section_name: string
+  } | null
+}
+
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never }>
 
 export type CurrentUserQuery = {
@@ -765,6 +794,19 @@ export type CurrentUserGroupRolesQuery = {
   currentUserGroupRoles?: {
     __typename?: 'CurrentUserGroupRoles'
     roles?: Array<string | null> | null
+  } | null
+}
+
+export type DeleteSectionMutationVariables = Exact<{
+  sectionId?: InputMaybe<Scalars['Int']>
+}>
+
+export type DeleteSectionMutation = {
+  __typename?: 'Mutation'
+  deleteSection?: {
+    __typename?: 'Section'
+    id: number
+    section_name: string
   } | null
 }
 
@@ -1321,6 +1363,20 @@ export type UpdateReportStatusMutation = {
     remarks?: string | null
     createdAt: any
     date_resolved?: any | null
+  } | null
+}
+
+export type UpdateSectionMutationVariables = Exact<{
+  sectionId?: InputMaybe<Scalars['Int']>
+  sectionName: Scalars['String']
+}>
+
+export type UpdateSectionMutation = {
+  __typename?: 'Mutation'
+  updateSection?: {
+    __typename?: 'Section'
+    id: number
+    section_name: string
   } | null
 }
 
@@ -2127,6 +2183,57 @@ export type CreateGroupMutationOptions = Apollo.BaseMutationOptions<
   CreateGroupMutation,
   CreateGroupMutationVariables
 >
+export const CreateSectionDocument = gql`
+  mutation CreateSection($sectionName: String!) {
+    createSection(section_name: $sectionName) {
+      id
+      section_name
+    }
+  }
+`
+export type CreateSectionMutationFn = Apollo.MutationFunction<
+  CreateSectionMutation,
+  CreateSectionMutationVariables
+>
+
+/**
+ * __useCreateSectionMutation__
+ *
+ * To run a mutation, you first call `useCreateSectionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSectionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSectionMutation, { data, loading, error }] = useCreateSectionMutation({
+ *   variables: {
+ *      sectionName: // value for 'sectionName'
+ *   },
+ * });
+ */
+export function useCreateSectionMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateSectionMutation,
+    CreateSectionMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    CreateSectionMutation,
+    CreateSectionMutationVariables
+  >(CreateSectionDocument, options)
+}
+export type CreateSectionMutationHookResult = ReturnType<
+  typeof useCreateSectionMutation
+>
+export type CreateSectionMutationResult =
+  Apollo.MutationResult<CreateSectionMutation>
+export type CreateSectionMutationOptions = Apollo.BaseMutationOptions<
+  CreateSectionMutation,
+  CreateSectionMutationVariables
+>
 export const CurrentUserDocument = gql`
   query CurrentUser {
     currentUser {
@@ -2254,6 +2361,57 @@ export type CurrentUserGroupRolesLazyQueryHookResult = ReturnType<
 export type CurrentUserGroupRolesQueryResult = Apollo.QueryResult<
   CurrentUserGroupRolesQuery,
   CurrentUserGroupRolesQueryVariables
+>
+export const DeleteSectionDocument = gql`
+  mutation DeleteSection($sectionId: Int) {
+    deleteSection(section_id: $sectionId) {
+      id
+      section_name
+    }
+  }
+`
+export type DeleteSectionMutationFn = Apollo.MutationFunction<
+  DeleteSectionMutation,
+  DeleteSectionMutationVariables
+>
+
+/**
+ * __useDeleteSectionMutation__
+ *
+ * To run a mutation, you first call `useDeleteSectionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteSectionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteSectionMutation, { data, loading, error }] = useDeleteSectionMutation({
+ *   variables: {
+ *      sectionId: // value for 'sectionId'
+ *   },
+ * });
+ */
+export function useDeleteSectionMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteSectionMutation,
+    DeleteSectionMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    DeleteSectionMutation,
+    DeleteSectionMutationVariables
+  >(DeleteSectionDocument, options)
+}
+export type DeleteSectionMutationHookResult = ReturnType<
+  typeof useDeleteSectionMutation
+>
+export type DeleteSectionMutationResult =
+  Apollo.MutationResult<DeleteSectionMutation>
+export type DeleteSectionMutationOptions = Apollo.BaseMutationOptions<
+  DeleteSectionMutation,
+  DeleteSectionMutationVariables
 >
 export const GroupDocument = gql`
   query Group($groupId: Int!) {
@@ -3842,6 +4000,58 @@ export type UpdateReportStatusMutationResult =
 export type UpdateReportStatusMutationOptions = Apollo.BaseMutationOptions<
   UpdateReportStatusMutation,
   UpdateReportStatusMutationVariables
+>
+export const UpdateSectionDocument = gql`
+  mutation UpdateSection($sectionId: Int, $sectionName: String!) {
+    updateSection(section_id: $sectionId, section_name: $sectionName) {
+      id
+      section_name
+    }
+  }
+`
+export type UpdateSectionMutationFn = Apollo.MutationFunction<
+  UpdateSectionMutation,
+  UpdateSectionMutationVariables
+>
+
+/**
+ * __useUpdateSectionMutation__
+ *
+ * To run a mutation, you first call `useUpdateSectionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSectionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSectionMutation, { data, loading, error }] = useUpdateSectionMutation({
+ *   variables: {
+ *      sectionId: // value for 'sectionId'
+ *      sectionName: // value for 'sectionName'
+ *   },
+ * });
+ */
+export function useUpdateSectionMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateSectionMutation,
+    UpdateSectionMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    UpdateSectionMutation,
+    UpdateSectionMutationVariables
+  >(UpdateSectionDocument, options)
+}
+export type UpdateSectionMutationHookResult = ReturnType<
+  typeof useUpdateSectionMutation
+>
+export type UpdateSectionMutationResult =
+  Apollo.MutationResult<UpdateSectionMutation>
+export type UpdateSectionMutationOptions = Apollo.BaseMutationOptions<
+  UpdateSectionMutation,
+  UpdateSectionMutationVariables
 >
 export const UpdateUserGroupRolesDocument = gql`
   mutation UpdateUserGroupRoles(

@@ -1,0 +1,6 @@
+mutation CreateSection($sectionName: String!) {
+  createSection(section_name: $sectionName) {
+    id
+    section_name
+  }
+}

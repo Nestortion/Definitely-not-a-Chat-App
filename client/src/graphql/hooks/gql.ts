@@ -24,8 +24,10 @@ const documents = {
     "mutation AdminUpdateUserProfile($userData: AdminUserProfileUpdateInput) {\n  adminUpdateUserProfile(userData: $userData) {\n    id\n    username\n    access_level\n    last_name\n    first_name\n    profile_img\n  }\n}": types.AdminUpdateUserProfileDocument,
     "subscription ChatAdded($user: Int) {\n  chatAdded(user: $user) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n    createdAt\n  }\n}": types.ChatAddedDocument,
     "mutation CreateGroup($userId: [Int!]) {\n  createGroup(user_id: $userId) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}": types.CreateGroupDocument,
+    "mutation CreateSection($sectionName: String!) {\n  createSection(section_name: $sectionName) {\n    id\n    section_name\n  }\n}": types.CreateSectionDocument,
     "query CurrentUser {\n  currentUser {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    profile_img\n    age\n    gender\n    birthdate\n    section {\n      id\n      section_name\n    }\n  }\n}": types.CurrentUserDocument,
     "query CurrentUserGroupRoles($groupId: Int) {\n  currentUserGroupRoles(group_id: $groupId) {\n    roles\n  }\n}": types.CurrentUserGroupRolesDocument,
+    "mutation DeleteSection($sectionId: Int) {\n  deleteSection(section_id: $sectionId) {\n    id\n    section_name\n  }\n}": types.DeleteSectionDocument,
     "query Group($groupId: Int!) {\n  group(id: $groupId) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}": types.GroupDocument,
     "subscription GroupCreated($user: Int) {\n  groupCreated(user: $user) {\n    blame {\n      id\n    }\n    group {\n      group_name\n      group_picture\n      id\n      is_group\n    }\n  }\n}": types.GroupCreatedDocument,
     "query GroupList($limit: Int) {\n  groupList(limit: $limit) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}": types.GroupListDocument,
@@ -53,6 +55,7 @@ const documents = {
     "mutation UpdateGroup($groupName: String, $groupId: Int, $groupPicture: Upload) {\n  updateGroup(\n    group_name: $groupName\n    group_id: $groupId\n    group_picture: $groupPicture\n  ) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}": types.UpdateGroupDocument,
     "mutation UpdateGroupRoles($rolesToEdit: [RolesToEdit], $rolesToDelete: [Int], $groupId: Int) {\n  updateGroupRoles(\n    roles_to_edit: $rolesToEdit\n    roles_to_delete: $rolesToDelete\n    group_id: $groupId\n  ) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n    is_default\n  }\n}": types.UpdateGroupRolesDocument,
     "mutation UpdateReportStatus($reportStatus: Boolean, $reportId: Int) {\n  updateReportStatus(report_status: $reportStatus, report_id: $reportId) {\n    id\n    user_id\n    report_reason\n    group_id\n    is_resolved\n    remarks\n    createdAt\n    date_resolved\n  }\n}": types.UpdateReportStatusDocument,
+    "mutation UpdateSection($sectionId: Int, $sectionName: String!) {\n  updateSection(section_id: $sectionId, section_name: $sectionName) {\n    id\n    section_name\n  }\n}": types.UpdateSectionDocument,
     "mutation UpdateUserGroupRoles($roles: [String], $groupId: Int, $userId: Int, $rolesIds: [Int]) {\n  updateUserGroupRoles(\n    roles: $roles\n    group_id: $groupId\n    user_id: $userId\n    roles_ids: $rolesIds\n  ) {\n    newRoles\n    user {\n      id\n      username\n      first_name\n      last_name\n      profile_img\n    }\n  }\n}": types.UpdateUserGroupRolesDocument,
     "mutation UpdateUserProfile($username: String, $gender: String, $sectionId: Int, $profileImg: Upload, $address: String, $newPassword: String, $currentConfirmation: String, $birthdate: Date) {\n  updateUserProfile(\n    username: $username\n    gender: $gender\n    section_id: $sectionId\n    profile_img: $profileImg\n    address: $address\n    new_password: $newPassword\n    current_confirmation: $currentConfirmation\n    birthdate: $birthdate\n  ) {\n    username\n    first_name\n    last_name\n    address\n    profile_img\n    age\n    gender\n    section {\n      id\n      section_name\n    }\n  }\n}": types.UpdateUserProfileDocument,
     "query User {\n  user {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    section {\n      id\n      section_name\n    }\n    profile_img\n    age\n    gender\n  }\n}": types.UserDocument,
@@ -112,11 +115,19 @@ export function graphql(source: "mutation CreateGroup($userId: [Int!]) {\n  crea
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "mutation CreateSection($sectionName: String!) {\n  createSection(section_name: $sectionName) {\n    id\n    section_name\n  }\n}"): (typeof documents)["mutation CreateSection($sectionName: String!) {\n  createSection(section_name: $sectionName) {\n    id\n    section_name\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "query CurrentUser {\n  currentUser {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    profile_img\n    age\n    gender\n    birthdate\n    section {\n      id\n      section_name\n    }\n  }\n}"): (typeof documents)["query CurrentUser {\n  currentUser {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    profile_img\n    age\n    gender\n    birthdate\n    section {\n      id\n      section_name\n    }\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "query CurrentUserGroupRoles($groupId: Int) {\n  currentUserGroupRoles(group_id: $groupId) {\n    roles\n  }\n}"): (typeof documents)["query CurrentUserGroupRoles($groupId: Int) {\n  currentUserGroupRoles(group_id: $groupId) {\n    roles\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation DeleteSection($sectionId: Int) {\n  deleteSection(section_id: $sectionId) {\n    id\n    section_name\n  }\n}"): (typeof documents)["mutation DeleteSection($sectionId: Int) {\n  deleteSection(section_id: $sectionId) {\n    id\n    section_name\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -225,6 +236,10 @@ export function graphql(source: "mutation UpdateGroupRoles($rolesToEdit: [RolesT
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "mutation UpdateReportStatus($reportStatus: Boolean, $reportId: Int) {\n  updateReportStatus(report_status: $reportStatus, report_id: $reportId) {\n    id\n    user_id\n    report_reason\n    group_id\n    is_resolved\n    remarks\n    createdAt\n    date_resolved\n  }\n}"): (typeof documents)["mutation UpdateReportStatus($reportStatus: Boolean, $reportId: Int) {\n  updateReportStatus(report_status: $reportStatus, report_id: $reportId) {\n    id\n    user_id\n    report_reason\n    group_id\n    is_resolved\n    remarks\n    createdAt\n    date_resolved\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation UpdateSection($sectionId: Int, $sectionName: String!) {\n  updateSection(section_id: $sectionId, section_name: $sectionName) {\n    id\n    section_name\n  }\n}"): (typeof documents)["mutation UpdateSection($sectionId: Int, $sectionName: String!) {\n  updateSection(section_id: $sectionId, section_name: $sectionName) {\n    id\n    section_name\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
