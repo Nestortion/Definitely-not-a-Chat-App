@@ -32,7 +32,7 @@ export default function Register() {
     username: '',
     birthdate: '',
     gender: 'Male',
-    section: 1,
+    section: '1',
     address: '',
     accessLevel: 'USER',
     password: '',

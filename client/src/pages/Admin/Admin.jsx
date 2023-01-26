@@ -7,6 +7,8 @@ import SlidingMenu from '../../components/UI/SlidingMenu/SlidingMenu'
 import { apiBasePath } from '../../data/config'
 import { setAccessToken } from '../../graphql/authStore'
 import './admin.scss'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.min.css'
 
 export default function Admin() {
   const [menuShouldShow, setMenuShouldShow] = useState(false)
@@ -44,6 +46,7 @@ export default function Admin() {
         <Outlet context={[openMenu, closeMenu]} />
       </div>
       <AdminActions isOpen={menuShouldShow} openMenu={toggleMenu} />
+      <ToastContainer />
     </div>
   )
 }

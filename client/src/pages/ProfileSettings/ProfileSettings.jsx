@@ -26,7 +26,7 @@ export default function ProfileSettings() {
     toast(text, {
       position: toast.POSITION.TOP_CENTER,
       style: {
-        color: 'var(--clr-neutral--100)',
+        color: 'var(--clr-neutral-100)',
         backgroundColor: 'var(--clr-error-400)',
         fontSize: 'clamp(0.8rem, 1.3vw, 1.5rem)',
       },
