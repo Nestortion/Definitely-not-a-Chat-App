@@ -5,6 +5,29 @@ import { useAddUserMutation } from '../../../graphql/hooks/graphql'
 import { toast } from 'react-toastify'
 
 export default function Register() {
+  const sectionsSelection = [
+    {
+      id: 1,
+      name: 'BSIT 1-1',
+    },
+    {
+      id: 2,
+      name: 'BSIT 2-1',
+    },
+    {
+      id: 3,
+      name: 'BSIT 3-1',
+    },
+    {
+      id: 4,
+      name: 'BSIT 4-1',
+    },
+    {
+      id: 5,
+      name: 'BSIT 5-1',
+    },
+  ]
+
   const notify = (text) =>
     toast(text, {
       position: toast.POSITION.TOP_CENTER,
@@ -165,14 +188,20 @@ export default function Register() {
 
         <div className="register__input-control">
           <label htmlFor="section">Section: </label>
-          <input
+          <select
             onChange={handleChange}
             value={userData.section}
             type="text"
             id="section"
             name="section"
             required
-          />
+          >
+            {sectionsSelection.map((section) => (
+              <option key={section.id} value={section.name}>
+                {section.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="register__input-control">

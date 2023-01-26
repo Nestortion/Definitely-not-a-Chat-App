@@ -13,6 +13,29 @@ import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 
 export default function ProfileSettings() {
+  const sectionsSelection = [
+    {
+      id: 1,
+      name: 'BSIT 1-1',
+    },
+    {
+      id: 2,
+      name: 'BSIT 2-1',
+    },
+    {
+      id: 3,
+      name: 'BSIT 3-1',
+    },
+    {
+      id: 4,
+      name: 'BSIT 4-1',
+    },
+    {
+      id: 5,
+      name: 'BSIT 5-1',
+    },
+  ]
+
   const warn = (text) =>
     toast(text, {
       position: toast.POSITION.TOP_CENTER,
@@ -280,14 +303,20 @@ export default function ProfileSettings() {
             </div>
             <div className="profile-settings__input-container">
               <label htmlFor="section">Section: </label>
-              <input
+              <select
                 className="profile-settings-input"
-                type="text"
-                name="section"
                 onChange={handleChange}
-                id="section"
                 value={values.section}
-              />
+                type="text"
+                id="section"
+                name="section"
+              >
+                {sectionsSelection.map((section) => (
+                  <option key={section.id} value={section.name}>
+                    {section.name}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="profile-settings__input-container">
               <label htmlFor="address">Address: </label>
