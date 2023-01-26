@@ -891,26 +891,25 @@ const resolvers = {
       const usersAdded = await Users.findAll({ where: { id: user_id } })
       const group = await Groups.findOne({ where: { id: group_id } })
 
-      const userIds = await Promise.all(
+      const initialUserIds = await Promise.all(
         user_id.map(async (id) => {
           const validate = await UserGroups.findOne({
             where: { user_id: id, group_id },
           })
 
           if (validate) return null
-          else {
-            return { user_id: id, group_id }
-          }
+          return { user_id: id, group_id }
         })
       )
+
+      const userIds = initialUserIds.filter((id) => id !== null)
+
       if (group.is_group === true) {
         if (userIds.length > 0) {
           const bulkUserGroups = await Promise.all(
             userIds.map(async (user) => {
-              if (user !== null) {
-                const userGroup = await UserGroups.create(user)
-                return userGroup
-              }
+              const userGroup = await UserGroups.create(user)
+              return userGroup
             })
           )
 
@@ -953,7 +952,7 @@ const resolvers = {
             action_description: `Added ${addedUsers.toString()} to ${
               group.group_name
             }`,
-            user_id: blame.user_id,
+            user_id: user.user_id,
           })
           pubsub.publish('MEMBER_ADDED', {
             memberAdded: {
@@ -1152,7 +1151,7 @@ const resolvers = {
         full_name: `${blame.first_name} ${blame.last_name}`,
         section: `${blameSection.section_name}`,
         action_description: `Removed ${removedUser.first_name} ${removedUser.last_name} from group ${group.id}`,
-        user_id: blame.user_id,
+        user_id: user.user_id,
       })
 
       pubsub.publish('MEMBER_REMOVED', {
