@@ -5,9 +5,6 @@ query UserLogs {
     action_description
     full_name
     createdAt
-    section {
-      id
-      section_name
-    }
+    section
   }
 }

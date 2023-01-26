@@ -553,7 +553,7 @@ export type UserLog = {
   createdAt: Scalars['DateTime']
   full_name: Scalars['String']
   id: Scalars['Int']
-  section?: Maybe<Section>
+  section?: Maybe<Scalars['String']>
   user_id?: Maybe<Scalars['Int']>
 }
 
@@ -1450,11 +1450,7 @@ export type UserLogsQuery = {
     action_description: string
     full_name: string
     createdAt: any
-    section?: {
-      __typename?: 'Section'
-      id: number
-      section_name: string
-    } | null
+    section?: string | null
   } | null> | null
 }
 
@@ -4241,10 +4237,7 @@ export const UserLogsDocument = gql`
       action_description
       full_name
       createdAt
-      section {
-        id
-        section_name
-      }
+      section
     }
   }
 `
