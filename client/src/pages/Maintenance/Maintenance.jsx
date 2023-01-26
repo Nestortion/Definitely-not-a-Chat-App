@@ -1,40 +1,37 @@
+import { useEffect } from 'react'
 import { useState } from 'react'
 import { MdDelete, MdEdit } from 'react-icons/md'
+import ErrorText from '../../components/Error/ErrorText'
+import LoadingSpinner from '../../components/Loading/LoadingSpinner/LoadingSpinner'
 import Button from '../../components/UI/Button/Button'
 import SpawnModal from '../../components/UI/Modal/SpawnModal'
+import {
+  SectionsDocument,
+  useCreateSectionMutation,
+  useDeleteSectionMutation,
+  useSectionsQuery,
+  useUpdateSectionMutation,
+} from '../../graphql/hooks/graphql'
 import './maintenance.scss'
 
 export default function Maintenance() {
-  const sectionsSelection = [
-    {
-      id: 1,
-      name: 'BSIT 1-1',
-    },
-    {
-      id: 2,
-      name: 'BSIT 2-1',
-    },
-    {
-      id: 3,
-      name: 'BSIT 3-1',
-    },
-    {
-      id: 4,
-      name: 'BSIT 4-1',
-    },
-    {
-      id: 5,
-      name: 'BSIT 5-1 BSIT 5-1BSIT 5-1BSIT 5-1BSIT 5-1BSIT 5-1BSIT 5-1BSIT 5-1BSIT 5-1',
-    },
-  ]
-
   const [modalShouldShow, setModalShouldShow] = useState(false)
   const [editModalShouldShow, setEditModalShouldShow] = useState(false)
-  const [sections, setSections] = useState(sectionsSelection)
   const [input, setInput] = useState('')
   const [newSectionName, setNewSectionName] = useState('')
   const [currentSectionId, setCurrentSectionId] = useState()
   const [deleting, setDeleting] = useState(false)
+  const [createSection] = useCreateSectionMutation()
+  const [deleteSection] = useDeleteSectionMutation()
+  const [updateSection] = useUpdateSectionMutation()
+  const {
+    data: sectionsFetch,
+    loading: sectionsLoading,
+    error: sectionsError,
+  } = useSectionsQuery()
+
+  if (sectionsLoading) return <LoadingSpinner />
+  if (sectionsError) return <ErrorText>Something went wrong</ErrorText>
 
   const showConfirmModal = () => {
     setModalShouldShow(true)
@@ -75,37 +72,60 @@ export default function Maintenance() {
     showConfirmModal()
   }
 
-  const handleCreateSection = () => {
+  const handleCreateSection = async () => {
     if (!input) return
 
     // ! REPLACE THIS WITH THE BACKEND LOGIC
-    setSections((prev) => [
-      ...prev,
-      { id: crypto.randomUUID().substring(0, 2), name: input },
-    ])
+
+    await createSection({
+      variables: { sectionName: input },
+      update(cache, { data: createSection }) {
+        const { sections } = cache.readQuery({ query: SectionsDocument })
+
+        cache.writeQuery({
+          query: SectionsDocument,
+          data: {
+            sections: [...sections, createSection.createSection],
+          },
+        })
+      },
+    })
 
     closeConfirmModal()
     setInput('')
   }
 
-  const handleEditSection = () => {
+  const handleEditSection = async () => {
     if (!newSectionName || !currentSectionId) return
 
     // ! ADD BACKEND LOGIC HERE
-    console.log(currentSectionId)
-    console.log(newSectionName)
+
+    await updateSection({
+      variables: { sectionName: newSectionName, sectionId: currentSectionId },
+    })
 
     setCurrentSectionId(undefined)
     setNewSectionName('')
     hideEditModal()
   }
 
-  const handleDeleteSection = () => {
-    console.log(currentSectionId)
-
+  const handleDeleteSection = async () => {
     // ! REPLACE THIS WITH THE BACKEND LOGIC
-    setSections((prev) => {
-      return prev.filter((section) => section.id !== currentSectionId)
+
+    await deleteSection({
+      variables: { sectionId: currentSectionId },
+      update(cache, { data: deleteSection }) {
+        const { sections } = cache.readQuery({ query: SectionsDocument })
+
+        cache.writeQuery({
+          query: SectionsDocument,
+          data: {
+            sections: sections.filter(
+              (section) => section.id !== deleteSection.deleteSection.id
+            ),
+          },
+        })
+      },
     })
 
     setCurrentSectionId(undefined)
@@ -179,13 +199,15 @@ export default function Maintenance() {
               <span className="fw-bold">Id</span>
               <span className="fw-bold">Name</span>
             </div>
-            {sections.map((section) => (
+            {sectionsFetch.sections.map((section) => (
               <div
                 key={section.id}
                 className="maintenance__section control-panel__card"
               >
                 <span>{section.id}</span>
-                <span className="maintenance__name">{section.name}</span>
+                <span className="maintenance__name">
+                  {section.section_name}
+                </span>
                 <span
                   onClick={() => handleEdit(section.id)}
                   className="maintenance__action"
