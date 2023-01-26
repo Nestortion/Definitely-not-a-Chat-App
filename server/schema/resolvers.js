@@ -546,6 +546,8 @@ const resolvers = {
             where: { section_id: section.id },
           })
 
+          if (users.length === 0) return
+
           return {
             title: section.section_name,
             value: users.length,
@@ -553,7 +555,7 @@ const resolvers = {
         })
       )
 
-      return sections
+      return sections.filter((section) => section)
     },
   },
   Mutation: {
