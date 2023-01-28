@@ -24,6 +24,8 @@ import { DateTimeResolver, DateResolver } from 'graphql-scalars'
 import bcrypt from 'bcrypt'
 import Sections from '../models/Sections.js'
 import { randomColor } from 'randomcolor'
+import Filter from 'bad-words'
+import filipinoBadWords from 'filipino-badwords-list'
 
 try {
   await createAssociation()
@@ -31,6 +33,8 @@ try {
 } catch (error) {
   console.log(error)
 }
+
+const filter = new Filter({ list: filipinoBadWords.array })
 
 const resolvers = {
   User: {
@@ -149,7 +153,14 @@ const resolvers = {
         throw new GraphQLError('user does not exist')
       }
 
-      return UserChats.findAll()
+      const userChats = await UserChats.findAll()
+
+      const filteredUserChats = userChats.map((userchat) => {
+        userchat.message = filter.clean(userchat.message)
+        return userchat
+      })
+
+      return filteredUserChats
     },
     groups: async (_, __, context) => {
       const { data: user } = authMiddleware(context)
@@ -286,20 +297,25 @@ const resolvers = {
         where: { user_id: user.user_id },
       })
 
-      let latestChats = []
+      let latestChats = await Promise.all(
+        groups.map(async (group) => {
+          const latestGroupChat = await UserChats.findOne({
+            where: {
+              receiver: group.group_id,
+            },
+            order: [['createdAt', 'DESC']],
+          })
 
-      groups.forEach((group) => {
-        const latestGroupChat = UserChats.findOne({
-          where: {
-            receiver: group.group_id,
-          },
-          order: [['createdAt', 'DESC']],
+          return latestGroupChat
         })
+      )
 
-        latestChats.push(latestGroupChat)
+      const filterLatestChats = latestChats.map((latestchat) => {
+        latestchat.message = filter.clean(latestchat.message)
+        return latestchat
       })
 
-      return latestChats
+      return filterLatestChats
     },
     addMemberList: async (_, { group_id, form }, context) => {
       const { data: currUser } = authMiddleware(context)
@@ -342,14 +358,22 @@ const resolvers = {
 
       return adminLogs
     },
-    userLogs: async (_, __, context) => {
+    userLogs: async (_, { limit, offset }, context) => {
       const { data: user } = authMiddleware(context)
 
       const userLogs = await UserLogs.findAll({
         order: [['createdAt', 'DESC']],
+        limit,
+        offset: offset * 10,
       })
 
-      return userLogs
+      const filterWords = userLogs.map((userlog) => {
+        userlog.action_description = filter.clean(userlog.action_description)
+
+        return userlog
+      })
+
+      return filterWords
     },
     currentUserGroupRoles: async (_, { group_id }, context) => {
       const { data } = authMiddleware(context)
