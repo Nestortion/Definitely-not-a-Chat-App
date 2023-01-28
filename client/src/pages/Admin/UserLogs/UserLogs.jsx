@@ -17,7 +17,7 @@ export default function UserLogs() {
   const [hasMore, setHasMore] = useState(true)
   const loadMoreHandle = (page) => {
     fetchMore({
-      variables: { limit: 10, offset: page },
+      variables: { limit: 10, offset: userLogs.userLogs.length },
       updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult) return
 
