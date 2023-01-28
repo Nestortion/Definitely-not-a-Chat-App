@@ -302,7 +302,6 @@ const resolvers = {
     },
     latestChats: async (_, __, context) => {
       const { data: user } = authMiddleware(context)
-      console.log('huh')
 
       const groups = await UserGroups.findAll({
         where: { user_id: user.user_id },
