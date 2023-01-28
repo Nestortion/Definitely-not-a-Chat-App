@@ -50,8 +50,6 @@ export default function AdminControlPanel() {
   if (topFourGroupChatsLoading) return <LoadingSpinner />
   if (topFourGroupChatsError) return <ErrorText>Something Went Wrong</ErrorText>
 
-  console.log(graphData)
-
   return (
     <div className="control-panel">
       <div className="control-panel__top control-panel__card">
