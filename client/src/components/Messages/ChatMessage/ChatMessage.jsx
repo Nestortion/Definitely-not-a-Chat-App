@@ -8,8 +8,6 @@ import { useEffect, useRef, useState } from 'react'
 import CustomImage from '../../UI/Image/CustomImage'
 import { MdDownload } from 'react-icons/md'
 import SpawnModal from '../../UI/Modal/SpawnModal'
-import { array } from 'filipino-badwords-list'
-import Filter from 'bad-words'
 
 export default function ChatMessage({
   text,
@@ -21,7 +19,6 @@ export default function ChatMessage({
 }) {
   const [shouldShowModal, setShouldShowModal] = useState(false)
   const messageDiv = useRef(null)
-  const filter = new Filter({ list: array })
 
   const {
     data: userData,
@@ -117,9 +114,7 @@ export default function ChatMessage({
 
             {/* If type text */}
             {message_type === 'TEXT' && (
-              <span className="chat-message-message__text">
-                {filter.clean(text)}
-              </span>
+              <span className="chat-message-message__text">{text}</span>
             )}
           </div>
         </div>
