@@ -223,6 +223,16 @@ const cache = new InMemoryCache({
             return incoming
           },
         },
+        userLogs: {
+          merge(existing, incoming) {
+            return incoming
+          },
+        },
+        userChats: {
+          merge(existing, incoming) {
+            return incoming
+          },
+        },
       },
     },
   },
