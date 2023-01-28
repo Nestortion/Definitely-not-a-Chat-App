@@ -220,10 +220,8 @@ const resolvers = {
         returnVal.map(async (group) => {
           if (group.is_group === true) return group
 
-          let newGroup = group
-
           const userGroups = await UserGroups.findAll({
-            where: { group_id: newGroup.id },
+            where: { group_id: group.id },
           })
 
           const otherUserId = userGroups.filter(
@@ -236,10 +234,10 @@ const resolvers = {
 
           const otherUserFullName = `${otherUser.first_name} ${otherUser.last_name}`
 
-          newGroup.group_name = otherUserFullName
-          newGroup.group_picture = otherUser.profile_img
+          group.group_name = otherUserFullName
+          group.group_picture = otherUser.profile_img
 
-          return newGroup
+          return group
         })
       )
 
