@@ -145,6 +145,12 @@ const resolvers = {
     userChats: async (_, __, context) => {
       const { data: user } = authMiddleware(context)
 
+      const userGroups = await UserGroups.findAll({
+        where: { user_id: user.user_id },
+      })
+
+      const groupIds = userGroups.map((usergroup) => usergroup.group_id)
+
       const validation = await Users.findOne({
         where: { id: user.user_id },
       })
@@ -153,7 +159,9 @@ const resolvers = {
         throw new GraphQLError('user does not exist')
       }
 
-      const userChats = await UserChats.findAll()
+      const userChats = await UserChats.findAll({
+        where: { receiver: groupIds },
+      })
 
       const filteredUserChats = userChats.map((userchat) => {
         userchat.message = filter.clean(userchat.message)
