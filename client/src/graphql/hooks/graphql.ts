@@ -291,7 +291,7 @@ export type Query = {
   adminLogs?: Maybe<Array<Maybe<AdminLog>>>
   currentUser?: Maybe<User>
   currentUserGroupRoles?: Maybe<CurrentUserGroupRoles>
-  graphData?: Maybe<GraphData>
+  graphData?: Maybe<Array<Maybe<GraphData>>>
   group?: Maybe<Group>
   groupList?: Maybe<Array<Maybe<Group>>>
   groupMembers?: Maybe<Array<Maybe<User>>>
@@ -380,6 +380,11 @@ export type QueryUserGroupArgs = {
 export type QueryUserGroupRolesArgs = {
   group_id?: InputMaybe<Scalars['Int']>
   user_id?: InputMaybe<Scalars['Int']>
+}
+
+export type QueryUserLogsArgs = {
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
 }
 
 export type QueryUserProfileArgs = {
@@ -822,12 +827,12 @@ export type GraphDataQueryVariables = Exact<{ [key: string]: never }>
 
 export type GraphDataQuery = {
   __typename?: 'Query'
-  graphData?: {
+  graphData?: Array<{
     __typename?: 'GraphData'
     title?: string | null
     value?: number | null
     color?: string | null
-  } | null
+  } | null> | null
 }
 
 export type GroupQueryVariables = Exact<{
@@ -1515,7 +1520,10 @@ export type UserGroupRolesQuery = {
   userGroupRoles?: Array<number | null> | null
 }
 
-export type UserLogsQueryVariables = Exact<{ [key: string]: never }>
+export type UserLogsQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+}>
 
 export type UserLogsQuery = {
   __typename?: 'Query'
@@ -4514,8 +4522,8 @@ export type UserGroupRolesQueryResult = Apollo.QueryResult<
   UserGroupRolesQueryVariables
 >
 export const UserLogsDocument = gql`
-  query UserLogs {
-    userLogs {
+  query UserLogs($limit: Int, $offset: Int) {
+    userLogs(limit: $limit, offset: $offset) {
       id
       user_id
       action_description
@@ -4538,6 +4546,8 @@ export const UserLogsDocument = gql`
  * @example
  * const { data, loading, error } = useUserLogsQuery({
  *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */

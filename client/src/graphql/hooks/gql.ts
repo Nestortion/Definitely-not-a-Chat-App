@@ -63,7 +63,7 @@ const documents = {
     "query UserChatSender($userId: Int) {\n  userChatSender(user_id: $userId) {\n    first_name\n    last_name\n    username\n    profile_img\n    id\n  }\n}": types.UserChatSenderDocument,
     "query UserChats {\n  userChats {\n    id\n    message\n    user_id\n    receiver\n    message_type\n    createdAt\n  }\n}": types.UserChatsDocument,
     "query UserGroupRoles($userId: Int, $groupId: Int) {\n  userGroupRoles(user_id: $userId, group_id: $groupId)\n}": types.UserGroupRolesDocument,
-    "query UserLogs {\n  userLogs {\n    id\n    user_id\n    action_description\n    full_name\n    createdAt\n    section\n  }\n}": types.UserLogsDocument,
+    "query UserLogs($limit: Int, $offset: Int) {\n  userLogs(limit: $limit, offset: $offset) {\n    id\n    user_id\n    action_description\n    full_name\n    createdAt\n    section\n  }\n}": types.UserLogsDocument,
     "query UserProfile($userProfileId: Int!) {\n  userProfile(id: $userProfileId) {\n    id\n    address\n    age\n    first_name\n    gender\n    last_name\n    profile_img\n    section {\n      id\n      section_name\n    }\n    disabled\n    username\n  }\n}": types.UserProfileDocument,
     "query UserRoles($groupRoleId: Int) {\n  userRoles(group_role_id: $groupRoleId) {\n    first_name\n    id\n    last_name\n    profile_img\n  }\n}": types.UserRolesDocument,
     "query Users($limit: Int) {\n  users(limit: $limit) {\n    id\n    first_name\n    last_name\n    address\n    section {\n      id\n      section_name\n    }\n    profile_img\n    age\n    gender\n    username\n    access_level\n  }\n}": types.UsersDocument,
@@ -272,7 +272,7 @@ export function graphql(source: "query UserGroupRoles($userId: Int, $groupId: In
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "query UserLogs {\n  userLogs {\n    id\n    user_id\n    action_description\n    full_name\n    createdAt\n    section\n  }\n}"): (typeof documents)["query UserLogs {\n  userLogs {\n    id\n    user_id\n    action_description\n    full_name\n    createdAt\n    section\n  }\n}"];
+export function graphql(source: "query UserLogs($limit: Int, $offset: Int) {\n  userLogs(limit: $limit, offset: $offset) {\n    id\n    user_id\n    action_description\n    full_name\n    createdAt\n    section\n  }\n}"): (typeof documents)["query UserLogs($limit: Int, $offset: Int) {\n  userLogs(limit: $limit, offset: $offset) {\n    id\n    user_id\n    action_description\n    full_name\n    createdAt\n    section\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
