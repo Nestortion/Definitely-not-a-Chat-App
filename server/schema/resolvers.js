@@ -170,7 +170,7 @@ const resolvers = {
 
       return filteredUserChats
     },
-    groups: async (_, __, context) => {
+    groups: async (_, { limit, offset }, context) => {
       const { data: user } = authMiddleware(context)
 
       const validation = await UserGroups.findAll({
@@ -211,6 +211,8 @@ const resolvers = {
 
       const returnVal = await Groups.findAll({
         where: { id: groups },
+        // limit,
+        // offset,
         order: [['last_message_date', 'DESC']],
       })
 
@@ -300,6 +302,7 @@ const resolvers = {
     },
     latestChats: async (_, __, context) => {
       const { data: user } = authMiddleware(context)
+      console.log('huh')
 
       const groups = await UserGroups.findAll({
         where: { user_id: user.user_id },
@@ -318,10 +321,16 @@ const resolvers = {
         })
       )
 
-      const filterLatestChats = latestChats.map((latestchat) => {
-        latestchat.message = filter.clean(latestchat.message)
-        return latestchat
-      })
+      const filterLatestChats = latestChats
+        .map((latestchat) => {
+          if (!latestchat) {
+            return null
+          }
+          latestchat.message
+          latestchat.message = filter.clean(latestchat.message)
+          return latestchat
+        })
+        .filter((userchat) => userchat !== null)
 
       return filterLatestChats
     },
