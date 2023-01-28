@@ -9,6 +9,8 @@ import {
 } from '../../graphql/hooks/graphql'
 import LoadingSpinner from '../Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../Error/ErrorText'
+import Filter from 'bad-words'
+import { array } from 'filipino-badwords-list'
 
 export default function ChatListItem({
   chatId,
@@ -23,6 +25,7 @@ export default function ChatListItem({
     loading: otherUserLoading,
     error: otherUserError,
   } = useOtherUserQuery({ variables: { groupId: parseInt(chatId) } })
+  const filter = new Filter({ list: array })
 
   const {
     data: sender,
@@ -46,7 +49,9 @@ export default function ChatListItem({
     } else if (message.message_type === 'OTHER') {
       return `${sender?.userChatSender.first_name} sent a file`
     } else {
-      return `${sender?.userChatSender.first_name}: ${message.message}`
+      return `${sender?.userChatSender.first_name}: ${filter.clean(
+        message.message
+      )}`
     }
   }
 
