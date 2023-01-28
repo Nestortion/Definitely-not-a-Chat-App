@@ -3,6 +3,7 @@ import Button from '../UI/Button/Button'
 import ReactSearchBox from 'react-search-box'
 import './join-chat.scss'
 import {
+  GroupsDocument,
   useAddMemberListQuery,
   useCreateGroupMutation,
 } from '../../graphql/hooks/graphql'
@@ -57,7 +58,10 @@ export default function JoinChat({ closeModal }) {
     // Create chat with selected members
     if (selectedMembers.length === 0) return
     const selectedIds = selectedMembers.map((member) => member.key)
-    const group = await createGroup({ variables: { userId: selectedIds } })
+    const group = await createGroup({
+      variables: { userId: selectedIds },
+      refetchQueries: [{ query: GroupsDocument }],
+    })
     navigate(`chat/${group.data.createGroup.id}`)
     closeModal()
   }
