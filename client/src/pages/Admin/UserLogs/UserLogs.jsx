@@ -31,9 +31,6 @@ export default function UserLogs() {
         }
       },
     })
-
-    if (userLogsLoading || userLogsError) {
-    }
   }
 
   if (userLogsLoading) return <LoadingSpinner />
