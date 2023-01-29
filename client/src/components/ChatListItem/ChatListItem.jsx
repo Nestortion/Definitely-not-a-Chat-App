@@ -117,7 +117,11 @@ export default function ChatListItem({
         )}
       </div>
       <div className="chat-list-item-right">
-        <span className="title">{title}</span>
+        <span className="title">
+          {isGroup === 'true'
+            ? title
+            : `${otherUser.otherUser.first_name} ${otherUser.otherUser.last_name}`}
+        </span>
         <span className="latest-message fs-400">
           <span>{latest[0] ? displayLatest(latest[0]) : null}</span>
           {latest[0] && ` ● `}
