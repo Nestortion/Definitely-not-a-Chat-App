@@ -187,11 +187,14 @@ export default function Register() {
             name="section"
             required
           >
-            {sections.sections.map((section) => (
-              <option key={section.id} value={section.id}>
-                {section.section_name}
-              </option>
-            ))}
+            {sections.sections.map((section) => {
+              if (section.disabled) return
+              return (
+                <option key={section.id} value={section.id}>
+                  {section.section_name}
+                </option>
+              )
+            })}
           </select>
         </div>
 

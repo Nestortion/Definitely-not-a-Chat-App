@@ -302,11 +302,20 @@ export default function ProfileSettings() {
                 id="section"
                 name="section"
               >
-                {sections.sections.map((section) => (
-                  <option key={section.id} value={section.id}>
-                    {section.section_name}
-                  </option>
-                ))}
+                {sections.sections.map((section) => {
+                  if (section.id === initialState.section)
+                    return (
+                      <option key={section.id} value={section.id}>
+                        {section.section_name}
+                      </option>
+                    )
+                  if (section.disabled) return
+                  return (
+                    <option key={section.id} value={section.id}>
+                      {section.section_name}
+                    </option>
+                  )
+                })}
               </select>
             </div>
             <div className="profile-settings__input-container">
