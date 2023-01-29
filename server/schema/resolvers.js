@@ -1584,7 +1584,7 @@ const resolvers = {
 
       return newSection
     },
-    deleteSection: async (_, { section_id }, context) => {
+    toggleSectionStatus: async (_, { section_id, status }, context) => {
       const { data: user } = authMiddleware(context)
 
       const actionUser = await Users.findOne({ where: { id: user.user_id } })
@@ -1593,7 +1593,7 @@ const resolvers = {
         throw new GraphQLError('Current User is not an Admin')
       }
 
-      await Sections.update({ disabled: true }, { where: { id: section_id } })
+      await Sections.update({ disabled: status }, { where: { id: section_id } })
 
       const updatedSection = await Sections.findOne({
         where: { id: section_id },
@@ -1601,7 +1601,9 @@ const resolvers = {
 
       await AdminLogs.create({
         full_name: `${actionUser.first_name} ${actionUser.last_name}`,
-        action_description: `Disabled section ${updatedSection.section_name} with id ${updatedSection.id}`,
+        action_description: `${status ? 'Disabled' : 'Enabled'} section ${
+          updatedSection.section_name
+        } with id ${updatedSection.id}`,
         user_id: actionUser.id,
       })
 

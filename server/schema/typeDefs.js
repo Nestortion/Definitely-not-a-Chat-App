@@ -293,7 +293,7 @@ const typeDefs = `
     toggleUserStatus(user_id: Int, user_status: Boolean): Boolean
     adminUpdateUserProfile(userData: AdminUserProfileUpdateInput): User
     createSection(section_name: String!): Section
-    deleteSection(section_id: Int): Section
+    toggleSectionStatus(section_id: Int, status: Boolean): Section
     updateSection(section_id: Int, section_name: String!): Section
   }
 
