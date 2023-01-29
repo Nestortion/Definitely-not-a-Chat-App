@@ -112,6 +112,7 @@ const typeDefs = `
   type Section{
     id: Int!
     section_name: String!
+    disabled: Boolean!
   }
 
   type AccessToken{
