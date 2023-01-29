@@ -871,13 +871,17 @@ const resolvers = {
         where: { username },
       })
 
+      if (!user) {
+        throw new GraphQLError('Username or password does not match')
+      }
+
       const checkPassword = await bcrypt.compare(password, user.password)
 
       if (user.disabled) {
         throw new GraphQLError('User Disabled')
       }
 
-      if (!user || !checkPassword) {
+      if (!checkPassword) {
         throw new GraphQLError('Username or password does not match')
       }
 
@@ -1588,19 +1592,20 @@ const resolvers = {
       if (actionUser.access_level !== 'ADMIN') {
         throw new GraphQLError('Current User is not an Admin')
       }
-      const sectionToDelete = await Sections.findOne({
+
+      await Sections.update({ disabled: true }, { where: { id: section_id } })
+
+      const updatedSection = await Sections.findOne({
         where: { id: section_id },
       })
 
-      await Sections.destroy({ where: { id: section_id } })
-
       await AdminLogs.create({
         full_name: `${actionUser.first_name} ${actionUser.last_name}`,
-        action_description: `Delete section ${sectionToDelete.section_name} with id ${sectionToDelete.id}`,
+        action_description: `Disabled section ${updatedSection.section_name} with id ${updatedSection.id}`,
         user_id: actionUser.id,
       })
 
-      return sectionToDelete
+      return updatedSection
     },
     updateSection: async (_, { section_name, section_id }, context) => {
       const { data: user } = authMiddleware(context)
