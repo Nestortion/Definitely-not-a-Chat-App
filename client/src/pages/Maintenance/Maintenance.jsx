@@ -117,12 +117,17 @@ export default function Maintenance() {
       update(cache, { data: deleteSection }) {
         const { sections } = cache.readQuery({ query: SectionsDocument })
 
+        const updatedSection = sections.map((section) => {
+          if (section.id === deleteSection.deleteSection.disabled) {
+            return deleteSection.deleteSection
+          }
+          return section
+        })
+
         cache.writeQuery({
           query: SectionsDocument,
           data: {
-            sections: sections.filter(
-              (section) => section.id !== deleteSection.deleteSection.id
-            ),
+            sections: updatedSection,
           },
         })
       },
@@ -202,7 +207,9 @@ export default function Maintenance() {
             {sectionsFetch.sections.map((section) => (
               <div
                 key={section.id}
-                className="maintenance__section control-panel__card"
+                className={`maintenance__section control-panel__card ${
+                  section.disabled && 'disabled'
+                }`}
               >
                 <span>{section.id}</span>
                 <span className="maintenance__name">
