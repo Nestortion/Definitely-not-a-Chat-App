@@ -8,8 +8,8 @@ import SpawnModal from '../../components/UI/Modal/SpawnModal'
 import {
   SectionsDocument,
   useCreateSectionMutation,
-  useDeleteSectionMutation,
   useSectionsQuery,
+  useToggleSectionStatusMutation,
   useUpdateSectionMutation,
 } from '../../graphql/hooks/graphql'
 import './maintenance.scss'
@@ -22,7 +22,7 @@ export default function Maintenance() {
   const [currentSectionId, setCurrentSectionId] = useState()
   const [deleting, setDeleting] = useState(false)
   const [createSection] = useCreateSectionMutation()
-  const [deleteSection] = useDeleteSectionMutation()
+  const [toggleSection] = useToggleSectionStatusMutation()
   const [updateSection] = useUpdateSectionMutation()
   const {
     data: sectionsFetch,
@@ -75,7 +75,26 @@ export default function Maintenance() {
   const handleEnableSection = async (sectionId) => {
     // ! ADD BACKEND CODE
 
-    console.log(sectionId)
+    await toggleSection({
+      variables: { sectionId: sectionId, status: false },
+      update(cache, { data: toggleSectionStatus }) {
+        const { sections } = cache.readQuery({ query: SectionsDocument })
+
+        const updatedSection = sections.map((section) => {
+          if (section.id === toggleSectionStatus.toggleSectionStatus.disabled) {
+            return toggleSectionStatus.toggleSectionStatus
+          }
+          return section
+        })
+
+        cache.writeQuery({
+          query: SectionsDocument,
+          data: {
+            sections: updatedSection,
+          },
+        })
+      },
+    })
   }
 
   const handleCreateSection = async () => {
@@ -118,14 +137,14 @@ export default function Maintenance() {
   const handleDeleteSection = async () => {
     // ! REPLACE THIS WITH THE BACKEND LOGIC
 
-    await deleteSection({
-      variables: { sectionId: currentSectionId },
-      update(cache, { data: deleteSection }) {
+    await toggleSection({
+      variables: { sectionId: currentSectionId, status: true },
+      update(cache, { data: toggleSectionStatus }) {
         const { sections } = cache.readQuery({ query: SectionsDocument })
 
         const updatedSection = sections.map((section) => {
-          if (section.id === deleteSection.deleteSection.disabled) {
-            return deleteSection.deleteSection
+          if (section.id === toggleSectionStatus.toggleSectionStatus.disabled) {
+            return toggleSectionStatus.toggleSectionStatus
           }
           return section
         })
