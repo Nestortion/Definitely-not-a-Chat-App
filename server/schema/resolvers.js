@@ -1730,7 +1730,11 @@ const resolvers = {
             },
           })
 
-          if (userGroup) {
+          const removedUser = await Users.findOne({
+            where: { id: payload.memberRemoved.user.id },
+          })
+
+          if (userGroup || removedUser.id === variables.user) {
             return true
           }
           return false
