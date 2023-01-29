@@ -216,32 +216,7 @@ const resolvers = {
         order: [['last_message_date', 'DESC']],
       })
 
-      const updatedList = await Promise.all(
-        returnVal.map(async (group) => {
-          if (group.is_group === true) return group
-
-          const userGroups = await UserGroups.findAll({
-            where: { group_id: group.id },
-          })
-
-          const otherUserId = userGroups.filter(
-            (usergroup) => usergroup.user_id !== user.user_id
-          )
-
-          const otherUser = await Users.findOne({
-            where: { id: otherUserId[0].user_id },
-          })
-
-          const otherUserFullName = `${otherUser.first_name} ${otherUser.last_name}`
-
-          group.group_name = otherUserFullName
-          group.group_picture = otherUser.profile_img
-
-          return group
-        })
-      )
-
-      return updatedList
+      return returnVal
     },
     userGroups: () => {
       return UserGroups.findAll()
