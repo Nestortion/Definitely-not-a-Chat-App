@@ -15,7 +15,7 @@ const AdminLogs = DB.define(
       allowNull: false,
     },
     action_description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
   },
