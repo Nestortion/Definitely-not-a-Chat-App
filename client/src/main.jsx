@@ -233,6 +233,11 @@ const cache = new InMemoryCache({
             return incoming
           },
         },
+        groups: {
+          merge(existing, incoming) {
+            return incoming
+          },
+        },
       },
     },
   },
