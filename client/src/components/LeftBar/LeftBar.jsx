@@ -7,6 +7,7 @@ import {
   ChatAddedDocument,
   GroupCreatedDocument,
   MemberAddedDocument,
+  MemberRemovedDocument,
   useGroupsQuery,
   useLatestChatsQuery,
 } from '../../graphql/hooks/graphql'
@@ -17,6 +18,8 @@ import { useEffect } from 'react'
 import SpawnModal from '../UI/Modal/SpawnModal'
 import JoinChat from '../JoinChat/JoinChat'
 import useDebounceValue from '../../helper_hooks/useDebounceValue'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 export default function LeftBar({ user, showOnlyMiddle }) {
   const {
@@ -27,6 +30,7 @@ export default function LeftBar({ user, showOnlyMiddle }) {
     refetch: refetchLatestChat,
   } = useLatestChatsQuery()
 
+  const navigate = useNavigate()
   const {
     data: chat,
     loading,
@@ -40,6 +44,17 @@ export default function LeftBar({ user, showOnlyMiddle }) {
   const [isModalShowing, setIsModalShowing] = useState(false)
   const [searchValue, setSearchValue] = useState('')
   const debounceValue = useDebounceValue(searchValue, 250)
+
+  const notify = (message) => {
+    return toast(message, {
+      position: toast.POSITION.TOP_CENTER,
+      style: {
+        color: 'var(--clr-neutral-100)',
+        backgroundColor: 'var(--clr-primary-400)',
+        fontSize: 'clamp(0.8rem, 1.3vw, 1.5rem)',
+      },
+    })
+  }
 
   useEffect(() => {
     ;(() => {
@@ -119,6 +134,32 @@ export default function LeftBar({ user, showOnlyMiddle }) {
           return {
             groups: [subscriptionData.data.groupCreated.group, ...prev.groups],
           }
+        }
+      },
+    })
+    groupsSubscribeToMore({
+      document: MemberRemovedDocument,
+      variables: { user: user.currentUser.id },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev
+
+        if (
+          !(subscriptionData.data.memberRemoved.user.id === user.currentUser.id)
+        )
+          return prev
+
+        console.log(prev)
+
+        const updatedGroupList = prev.groups.filter(
+          (group) => group.id !== subscriptionData.data.memberRemoved.group.id
+        )
+
+        navigate('/')
+        notify(
+          `You are removed from ${subscriptionData.data.memberRemoved.group.group_name}`
+        )
+        return {
+          groups: updatedGroupList,
         }
       },
     })
