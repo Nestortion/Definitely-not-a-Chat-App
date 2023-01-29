@@ -18,6 +18,7 @@ subscription MemberRemoved($user: Int, $groupId: Int) {
       section {
         id
         section_name
+        disabled
       }
     }
   }

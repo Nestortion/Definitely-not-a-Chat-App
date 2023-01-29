@@ -6,6 +6,7 @@ mutation RemoveMember($groupId: Int, $userId: Int) {
     section {
       id
       section_name
+      disabled
     }
     profile_img
     age

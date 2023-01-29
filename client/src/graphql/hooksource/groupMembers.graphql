@@ -11,6 +11,7 @@ query GroupMembers($groupId: Int) {
     section {
       id
       section_name
+      disabled
     }
   }
 }

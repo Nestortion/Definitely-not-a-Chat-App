@@ -7,6 +7,7 @@ query Users($limit: Int) {
     section {
       id
       section_name
+      disabled
     }
     profile_img
     age

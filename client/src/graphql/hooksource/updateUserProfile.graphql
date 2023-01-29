@@ -28,6 +28,7 @@ mutation UpdateUserProfile(
     section {
       id
       section_name
+      disabled
     }
   }
 }

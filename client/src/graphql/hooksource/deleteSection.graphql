@@ -2,5 +2,6 @@ mutation DeleteSection($sectionId: Int) {
   deleteSection(section_id: $sectionId) {
     id
     section_name
+    disabled
   }
 }

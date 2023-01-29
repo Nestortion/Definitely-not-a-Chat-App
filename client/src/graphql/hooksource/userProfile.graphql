@@ -10,6 +10,7 @@ query UserProfile($userProfileId: Int!) {
     section {
       id
       section_name
+      disabled
     }
     disabled
     username

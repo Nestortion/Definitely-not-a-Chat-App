@@ -2,5 +2,6 @@ mutation UpdateSection($sectionId: Int, $sectionName: String!) {
   updateSection(section_id: $sectionId, section_name: $sectionName) {
     id
     section_name
+    disabled
   }
 }

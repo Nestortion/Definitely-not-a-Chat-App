@@ -465,6 +465,7 @@ export type RolesToEdit = {
 
 export type Section = {
   __typename?: 'Section'
+  disabled: Scalars['Boolean']
   id: Scalars['Int']
   section_name: Scalars['String']
 }
@@ -773,6 +774,7 @@ export type CreateSectionMutation = {
     __typename?: 'Section'
     id: number
     section_name: string
+    disabled: boolean
   } | null
 }
 
@@ -794,7 +796,12 @@ export type CurrentUserQuery = {
     age: number
     gender: string
     birthdate: any
-    section: { __typename?: 'Section'; id: number; section_name: string }
+    section: {
+      __typename?: 'Section'
+      id: number
+      section_name: string
+      disabled: boolean
+    }
   } | null
 }
 
@@ -820,6 +827,7 @@ export type DeleteSectionMutation = {
     __typename?: 'Section'
     id: number
     section_name: string
+    disabled: boolean
   } | null
 }
 
@@ -900,7 +908,12 @@ export type GroupMembersQuery = {
     profile_img: string
     age: number
     gender: string
-    section: { __typename?: 'Section'; id: number; section_name: string }
+    section: {
+      __typename?: 'Section'
+      id: number
+      section_name: string
+      disabled: boolean
+    }
   } | null> | null
 }
 
@@ -1050,7 +1063,12 @@ export type MemberAddedSubscription = {
         last_name: string
         profile_img: string
         username: string
-        section: { __typename?: 'Section'; id: number; section_name: string }
+        section: {
+          __typename?: 'Section'
+          id: number
+          section_name: string
+          disabled: boolean
+        }
       } | null
     } | null> | null
     group?: {
@@ -1104,7 +1122,12 @@ export type MemberRemovedSubscription = {
       last_name: string
       profile_img: string
       username: string
-      section: { __typename?: 'Section'; id: number; section_name: string }
+      section: {
+        __typename?: 'Section'
+        id: number
+        section_name: string
+        disabled: boolean
+      }
     } | null
   } | null
 }
@@ -1147,7 +1170,12 @@ export type OtherUserQuery = {
     profile_img: string
     age: number
     gender: string
-    section: { __typename?: 'Section'; id: number; section_name: string }
+    section: {
+      __typename?: 'Section'
+      id: number
+      section_name: string
+      disabled: boolean
+    }
   } | null
 }
 
@@ -1166,7 +1194,12 @@ export type RemoveMemberMutation = {
     profile_img: string
     age: number
     gender: string
-    section: { __typename?: 'Section'; id: number; section_name: string }
+    section: {
+      __typename?: 'Section'
+      id: number
+      section_name: string
+      disabled: boolean
+    }
   } | null
 }
 
@@ -1196,7 +1229,12 @@ export type ReportQuery = {
       first_name: string
       last_name: string
       profile_img: string
-      section: { __typename?: 'Section'; id: number; section_name: string }
+      section: {
+        __typename?: 'Section'
+        id: number
+        section_name: string
+        disabled: boolean
+      }
     } | null
     chat_reported?: {
       __typename?: 'Group'
@@ -1276,6 +1314,7 @@ export type SectionsQuery = {
     __typename?: 'Section'
     id: number
     section_name: string
+    disabled: boolean
   } | null> | null
 }
 
@@ -1402,6 +1441,7 @@ export type UpdateSectionMutation = {
     __typename?: 'Section'
     id: number
     section_name: string
+    disabled: boolean
   } | null
 }
 
@@ -1454,7 +1494,12 @@ export type UpdateUserProfileMutation = {
     profile_img: string
     age: number
     gender: string
-    section: { __typename?: 'Section'; id: number; section_name: string }
+    section: {
+      __typename?: 'Section'
+      id: number
+      section_name: string
+      disabled: boolean
+    }
   } | null
 }
 
@@ -1475,7 +1520,12 @@ export type UserQuery = {
     profile_img: string
     age: number
     gender: string
-    section: { __typename?: 'Section'; id: number; section_name: string }
+    section: {
+      __typename?: 'Section'
+      id: number
+      section_name: string
+      disabled: boolean
+    }
   } | null
 }
 
@@ -1555,7 +1605,12 @@ export type UserProfileQuery = {
     profile_img: string
     disabled: boolean
     username: string
-    section: { __typename?: 'Section'; id: number; section_name: string }
+    section: {
+      __typename?: 'Section'
+      id: number
+      section_name: string
+      disabled: boolean
+    }
   } | null
 }
 
@@ -1591,7 +1646,12 @@ export type UsersQuery = {
     gender: string
     username: string
     access_level: AccessLevel
-    section: { __typename?: 'Section'; id: number; section_name: string }
+    section: {
+      __typename?: 'Section'
+      id: number
+      section_name: string
+      disabled: boolean
+    }
   } | null> | null
 }
 
@@ -2216,6 +2276,7 @@ export const CreateSectionDocument = gql`
     createSection(section_name: $sectionName) {
       id
       section_name
+      disabled
     }
   }
 `
@@ -2280,6 +2341,7 @@ export const CurrentUserDocument = gql`
       section {
         id
         section_name
+        disabled
       }
     }
   }
@@ -2395,6 +2457,7 @@ export const DeleteSectionDocument = gql`
     deleteSection(section_id: $sectionId) {
       id
       section_name
+      disabled
     }
   }
 `
@@ -2665,6 +2728,7 @@ export const GroupMembersDocument = gql`
       section {
         id
         section_name
+        disabled
       }
     }
   }
@@ -3165,6 +3229,7 @@ export const MemberAddedDocument = gql`
           section {
             id
             section_name
+            disabled
           }
         }
       }
@@ -3247,6 +3312,7 @@ export const MemberRemovedDocument = gql`
         section {
           id
           section_name
+          disabled
         }
       }
     }
@@ -3348,6 +3414,7 @@ export const OtherUserDocument = gql`
       section {
         id
         section_name
+        disabled
       }
       profile_img
       age
@@ -3410,6 +3477,7 @@ export const RemoveMemberDocument = gql`
       section {
         id
         section_name
+        disabled
       }
       profile_img
       age
@@ -3482,6 +3550,7 @@ export const ReportDocument = gql`
         section {
           id
           section_name
+          disabled
         }
         profile_img
       }
@@ -3678,6 +3747,7 @@ export const SectionsDocument = gql`
     sections {
       id
       section_name
+      disabled
     }
   }
 `
@@ -4088,6 +4158,7 @@ export const UpdateSectionDocument = gql`
     updateSection(section_id: $sectionId, section_name: $sectionName) {
       id
       section_name
+      disabled
     }
   }
 `
@@ -4236,6 +4307,7 @@ export const UpdateUserProfileDocument = gql`
       section {
         id
         section_name
+        disabled
       }
     }
   }
@@ -4304,6 +4376,7 @@ export const UserDocument = gql`
       section {
         id
         section_name
+        disabled
       }
       profile_img
       age
@@ -4593,6 +4666,7 @@ export const UserProfileDocument = gql`
       section {
         id
         section_name
+        disabled
       }
       disabled
       username
@@ -4714,6 +4788,7 @@ export const UsersDocument = gql`
       section {
         id
         section_name
+        disabled
       }
       profile_img
       age

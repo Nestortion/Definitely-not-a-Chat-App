@@ -20,6 +20,7 @@ subscription MemberAdded($user: Int, $groupId: Int) {
         section {
           id
           section_name
+          disabled
         }
       }
     }
