@@ -60,7 +60,6 @@ export default function JoinChat({ closeModal }) {
     const selectedIds = selectedMembers.map((member) => member.key)
     const group = await createGroup({
       variables: { userId: selectedIds },
-      refetchQueries: [{ query: GroupsDocument }],
     })
     navigate(`chat/${group.data.createGroup.id}`)
     closeModal()
