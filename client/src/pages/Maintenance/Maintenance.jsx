@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useState } from 'react'
-import { MdDelete, MdEdit } from 'react-icons/md'
+import { MdDelete, MdEdit, MdNotInterested } from 'react-icons/md'
 import ErrorText from '../../components/Error/ErrorText'
 import LoadingSpinner from '../../components/Loading/LoadingSpinner/LoadingSpinner'
 import Button from '../../components/UI/Button/Button'
@@ -70,6 +70,12 @@ export default function Maintenance() {
     setCurrentSectionId(sectionId)
     setDeleting(true)
     showConfirmModal()
+  }
+
+  const handleEnableSection = async (sectionId) => {
+    // ! ADD BACKEND CODE
+
+    console.log(sectionId)
   }
 
   const handleCreateSection = async () => {
@@ -218,7 +224,13 @@ export default function Maintenance() {
                   onClick={() => handleDelete(section.id)}
                   className="maintenance__action"
                 >
-                  <MdDelete title="Delete section" />
+                  <MdNotInterested title="Delete section" />
+                </span>
+                <span
+                  onClick={() => handleEnableSection(section.id)}
+                  className="maintenance__action"
+                >
+                  <Button>Enable</Button>
                 </span>
               </div>
             ))}
