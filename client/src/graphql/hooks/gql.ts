@@ -27,7 +27,6 @@ const documents = {
     "mutation CreateSection($sectionName: String!) {\n  createSection(section_name: $sectionName) {\n    id\n    section_name\n    disabled\n  }\n}": types.CreateSectionDocument,
     "query CurrentUser {\n  currentUser {\n    id\n    username\n    access_level\n    password\n    token_version\n    first_name\n    last_name\n    address\n    profile_img\n    age\n    gender\n    birthdate\n    section {\n      id\n      section_name\n      disabled\n    }\n  }\n}": types.CurrentUserDocument,
     "query CurrentUserGroupRoles($groupId: Int) {\n  currentUserGroupRoles(group_id: $groupId) {\n    roles\n  }\n}": types.CurrentUserGroupRolesDocument,
-    "mutation DeleteSection($sectionId: Int) {\n  deleteSection(section_id: $sectionId) {\n    id\n    section_name\n    disabled\n  }\n}": types.DeleteSectionDocument,
     "query GraphData {\n  graphData {\n    title\n    value\n    color\n  }\n}": types.GraphDataDocument,
     "query Group($groupId: Int!) {\n  group(id: $groupId) {\n    id\n    group_name\n    group_picture\n    is_group\n  }\n}": types.GroupDocument,
     "subscription GroupCreated($user: Int) {\n  groupCreated(user: $user) {\n    blame {\n      id\n    }\n    group {\n      group_name\n      group_picture\n      id\n      is_group\n    }\n  }\n}": types.GroupCreatedDocument,
@@ -52,6 +51,7 @@ const documents = {
     "query Sections {\n  sections {\n    id\n    section_name\n    disabled\n  }\n}": types.SectionsDocument,
     "mutation SubmitReport($groupId: Int, $reasons: [String]) {\n  submitReport(group_id: $groupId, reasons: $reasons) {\n    id\n    user_id\n    group_id\n    report_reason\n    is_resolved\n    createdAt\n  }\n}": types.SubmitReportDocument,
     "query SystemStats {\n  systemStats {\n    userCount\n    groupCount\n    pendingReportCount\n    userChatsCount\n    latestAdminLog {\n      id\n      user_id\n      action_description\n      full_name\n      createdAt\n    }\n  }\n}": types.SystemStatsDocument,
+    "mutation ToggleSectionStatus($sectionId: Int, $status: Boolean) {\n  toggleSectionStatus(section_id: $sectionId, status: $status) {\n    id\n    section_name\n    disabled\n  }\n}": types.ToggleSectionStatusDocument,
     "mutation ToggleUserStatus($userId: Int, $userStatus: Boolean) {\n  toggleUserStatus(user_id: $userId, user_status: $userStatus)\n}": types.ToggleUserStatusDocument,
     "mutation UpdateGroup($groupName: String, $groupId: Int, $groupPicture: Upload) {\n  updateGroup(\n    group_name: $groupName\n    group_id: $groupId\n    group_picture: $groupPicture\n  ) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}": types.UpdateGroupDocument,
     "mutation UpdateGroupRoles($rolesToEdit: [RolesToEdit], $rolesToDelete: [Int], $groupId: Int) {\n  updateGroupRoles(\n    roles_to_edit: $rolesToEdit\n    roles_to_delete: $rolesToDelete\n    group_id: $groupId\n  ) {\n    id\n    role_name\n    emoji\n    description\n    group_id\n    role_type\n    is_default\n  }\n}": types.UpdateGroupRolesDocument,
@@ -125,10 +125,6 @@ export function graphql(source: "query CurrentUser {\n  currentUser {\n    id\n 
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "query CurrentUserGroupRoles($groupId: Int) {\n  currentUserGroupRoles(group_id: $groupId) {\n    roles\n  }\n}"): (typeof documents)["query CurrentUserGroupRoles($groupId: Int) {\n  currentUserGroupRoles(group_id: $groupId) {\n    roles\n  }\n}"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "mutation DeleteSection($sectionId: Int) {\n  deleteSection(section_id: $sectionId) {\n    id\n    section_name\n    disabled\n  }\n}"): (typeof documents)["mutation DeleteSection($sectionId: Int) {\n  deleteSection(section_id: $sectionId) {\n    id\n    section_name\n    disabled\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -225,6 +221,10 @@ export function graphql(source: "mutation SubmitReport($groupId: Int, $reasons: 
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "query SystemStats {\n  systemStats {\n    userCount\n    groupCount\n    pendingReportCount\n    userChatsCount\n    latestAdminLog {\n      id\n      user_id\n      action_description\n      full_name\n      createdAt\n    }\n  }\n}"): (typeof documents)["query SystemStats {\n  systemStats {\n    userCount\n    groupCount\n    pendingReportCount\n    userChatsCount\n    latestAdminLog {\n      id\n      user_id\n      action_description\n      full_name\n      createdAt\n    }\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation ToggleSectionStatus($sectionId: Int, $status: Boolean) {\n  toggleSectionStatus(section_id: $sectionId, status: $status) {\n    id\n    section_name\n    disabled\n  }\n}"): (typeof documents)["mutation ToggleSectionStatus($sectionId: Int, $status: Boolean) {\n  toggleSectionStatus(section_id: $sectionId, status: $status) {\n    id\n    section_name\n    disabled\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

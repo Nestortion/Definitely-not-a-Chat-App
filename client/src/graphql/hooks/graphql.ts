@@ -150,12 +150,12 @@ export type Mutation = {
   adminUpdateUserProfile?: Maybe<User>
   createGroup?: Maybe<Group>
   createSection?: Maybe<Section>
-  deleteSection?: Maybe<Section>
   login?: Maybe<AccessToken>
   logout?: Maybe<Scalars['Boolean']>
   removeMember?: Maybe<User>
   revokeRefreshToken?: Maybe<Scalars['Boolean']>
   submitReport?: Maybe<Report>
+  toggleSectionStatus?: Maybe<Section>
   toggleUserStatus?: Maybe<Scalars['Boolean']>
   updateGroup?: Maybe<Group>
   updateGroupRoles?: Maybe<Array<Maybe<GroupRole>>>
@@ -217,10 +217,6 @@ export type MutationCreateSectionArgs = {
   section_name: Scalars['String']
 }
 
-export type MutationDeleteSectionArgs = {
-  section_id?: InputMaybe<Scalars['Int']>
-}
-
 export type MutationLoginArgs = {
   password: Scalars['String']
   username: Scalars['String']
@@ -238,6 +234,11 @@ export type MutationRevokeRefreshTokenArgs = {
 export type MutationSubmitReportArgs = {
   group_id?: InputMaybe<Scalars['Int']>
   reasons?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
+}
+
+export type MutationToggleSectionStatusArgs = {
+  section_id?: InputMaybe<Scalars['Int']>
+  status?: InputMaybe<Scalars['Boolean']>
 }
 
 export type MutationToggleUserStatusArgs = {
@@ -817,20 +818,6 @@ export type CurrentUserGroupRolesQuery = {
   } | null
 }
 
-export type DeleteSectionMutationVariables = Exact<{
-  sectionId?: InputMaybe<Scalars['Int']>
-}>
-
-export type DeleteSectionMutation = {
-  __typename?: 'Mutation'
-  deleteSection?: {
-    __typename?: 'Section'
-    id: number
-    section_name: string
-    disabled: boolean
-  } | null
-}
-
 export type GraphDataQueryVariables = Exact<{ [key: string]: never }>
 
 export type GraphDataQuery = {
@@ -1356,6 +1343,21 @@ export type SystemStatsQuery = {
       full_name: string
       createdAt: any
     } | null
+  } | null
+}
+
+export type ToggleSectionStatusMutationVariables = Exact<{
+  sectionId?: InputMaybe<Scalars['Int']>
+  status?: InputMaybe<Scalars['Boolean']>
+}>
+
+export type ToggleSectionStatusMutation = {
+  __typename?: 'Mutation'
+  toggleSectionStatus?: {
+    __typename?: 'Section'
+    id: number
+    section_name: string
+    disabled: boolean
   } | null
 }
 
@@ -2451,58 +2453,6 @@ export type CurrentUserGroupRolesLazyQueryHookResult = ReturnType<
 export type CurrentUserGroupRolesQueryResult = Apollo.QueryResult<
   CurrentUserGroupRolesQuery,
   CurrentUserGroupRolesQueryVariables
->
-export const DeleteSectionDocument = gql`
-  mutation DeleteSection($sectionId: Int) {
-    deleteSection(section_id: $sectionId) {
-      id
-      section_name
-      disabled
-    }
-  }
-`
-export type DeleteSectionMutationFn = Apollo.MutationFunction<
-  DeleteSectionMutation,
-  DeleteSectionMutationVariables
->
-
-/**
- * __useDeleteSectionMutation__
- *
- * To run a mutation, you first call `useDeleteSectionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteSectionMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteSectionMutation, { data, loading, error }] = useDeleteSectionMutation({
- *   variables: {
- *      sectionId: // value for 'sectionId'
- *   },
- * });
- */
-export function useDeleteSectionMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    DeleteSectionMutation,
-    DeleteSectionMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<
-    DeleteSectionMutation,
-    DeleteSectionMutationVariables
-  >(DeleteSectionDocument, options)
-}
-export type DeleteSectionMutationHookResult = ReturnType<
-  typeof useDeleteSectionMutation
->
-export type DeleteSectionMutationResult =
-  Apollo.MutationResult<DeleteSectionMutation>
-export type DeleteSectionMutationOptions = Apollo.BaseMutationOptions<
-  DeleteSectionMutation,
-  DeleteSectionMutationVariables
 >
 export const GraphDataDocument = gql`
   query GraphData {
@@ -3916,6 +3866,59 @@ export type SystemStatsLazyQueryHookResult = ReturnType<
 export type SystemStatsQueryResult = Apollo.QueryResult<
   SystemStatsQuery,
   SystemStatsQueryVariables
+>
+export const ToggleSectionStatusDocument = gql`
+  mutation ToggleSectionStatus($sectionId: Int, $status: Boolean) {
+    toggleSectionStatus(section_id: $sectionId, status: $status) {
+      id
+      section_name
+      disabled
+    }
+  }
+`
+export type ToggleSectionStatusMutationFn = Apollo.MutationFunction<
+  ToggleSectionStatusMutation,
+  ToggleSectionStatusMutationVariables
+>
+
+/**
+ * __useToggleSectionStatusMutation__
+ *
+ * To run a mutation, you first call `useToggleSectionStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToggleSectionStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toggleSectionStatusMutation, { data, loading, error }] = useToggleSectionStatusMutation({
+ *   variables: {
+ *      sectionId: // value for 'sectionId'
+ *      status: // value for 'status'
+ *   },
+ * });
+ */
+export function useToggleSectionStatusMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ToggleSectionStatusMutation,
+    ToggleSectionStatusMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    ToggleSectionStatusMutation,
+    ToggleSectionStatusMutationVariables
+  >(ToggleSectionStatusDocument, options)
+}
+export type ToggleSectionStatusMutationHookResult = ReturnType<
+  typeof useToggleSectionStatusMutation
+>
+export type ToggleSectionStatusMutationResult =
+  Apollo.MutationResult<ToggleSectionStatusMutation>
+export type ToggleSectionStatusMutationOptions = Apollo.BaseMutationOptions<
+  ToggleSectionStatusMutation,
+  ToggleSectionStatusMutationVariables
 >
 export const ToggleUserStatusDocument = gql`
   mutation ToggleUserStatus($userId: Int, $userStatus: Boolean) {

@@ -1,0 +1,7 @@
+mutation ToggleSectionStatus($sectionId: Int, $status: Boolean) {
+  toggleSectionStatus(section_id: $sectionId, status: $status) {
+    id
+    section_name
+    disabled
+  }
+}
