@@ -16,6 +16,8 @@ import { useServer } from 'graphql-ws/lib/use/ws'
 import { makeExecutableSchema } from '@graphql-tools/schema'
 import { PubSub } from 'graphql-subscriptions'
 import session from 'express-session'
+import { redis } from './config/redis.js'
+import connectRedis from 'connect-redis'
 
 dotenv.config()
 
@@ -25,6 +27,7 @@ const CLIENT_PORT = process.env.CLIENT_PORT || '5173'
 const PORT = process.env.PORT || 4000
 const httpServer = createServer(app)
 const pubsub = new PubSub()
+const RedisStore = connectRedis(session)
 
 const wsServer = new WebSocketServer({
   server: httpServer,
@@ -74,6 +77,7 @@ app.use(
     ],
   }),
   session({
+    store: new RedisStore({ client: redis }),
     name: 'session',
     secret: process.env.COOKIE_SECRET,
     saveUninitialized: false,
