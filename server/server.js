@@ -3,10 +3,8 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import { expressMiddleware } from '@apollo/server/express4'
 import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.mjs'
-import cookieParser from 'cookie-parser'
 import jwt from 'jsonwebtoken'
 import Users from './models/Users.js'
-import { sendRefreshToken } from './auth/sendTokens.js'
 import { signAccessToken, signRefreshToken } from './auth/signTokens.js'
 import { createServer } from 'node:http'
 import { WebSocketServer } from 'ws'
@@ -17,6 +15,7 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import { useServer } from 'graphql-ws/lib/use/ws'
 import { makeExecutableSchema } from '@graphql-tools/schema'
 import { PubSub } from 'graphql-subscriptions'
+import session from 'express-session'
 
 dotenv.config()
 
@@ -47,7 +46,6 @@ const serverCleanup = useServer(
 
 const server = new ApolloServer({
   schema,
-  csrfPrevention: false,
   plugins: [
     ApolloServerPluginDrainHttpServer({ httpServer }),
     {
@@ -75,12 +73,21 @@ app.use(
       `${CLIENT_URL}:${CLIENT_PORT}`,
     ],
   }),
-  cookieParser(),
+  session({
+    name: 'session',
+    secret: process.env.COOKIE_SECRET,
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+      httpOnly: true,
+      maxAge: 604800,
+    },
+  }),
   json()
 )
 
 app.post('/refresh_token', async (req, res) => {
-  const token = req.cookies['refresh-token']
+  const token = req.session.refresh_token
 
   if (!token) {
     return res.send({
@@ -114,7 +121,7 @@ app.post('/refresh_token', async (req, res) => {
       accessToken: '',
     })
   }
-  sendRefreshToken(res, signRefreshToken(user))
+  req.session.refresh_token = signRefreshToken(user)
 
   return res.send({ accessToken: signAccessToken(user) })
 })

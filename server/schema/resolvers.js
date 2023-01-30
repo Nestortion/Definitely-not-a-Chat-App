@@ -14,7 +14,6 @@ import path from 'node:path'
 import { GraphQLError } from 'graphql'
 import jwt from 'jsonwebtoken'
 import { signAccessToken, signRefreshToken } from '../auth/signTokens.js'
-import { sendRefreshToken } from '../auth/sendTokens.js'
 import { authMiddleware } from '../auth/middlewares/authMiddleware.js'
 import { createAssociation, syncModels } from '../models/Associations.js'
 import { v4 as uuid } from 'uuid'
@@ -229,7 +228,7 @@ const resolvers = {
       return user
     },
     isLoggedIn: async (_, __, context) => {
-      const refreshToken = context.req.cookies['refresh-token']
+      const refreshToken = context.req.session.refresh_token
 
       const refreshTokenData = jwt.verify(
         refreshToken,
@@ -866,7 +865,7 @@ const resolvers = {
         userchat_id,
       })
     },
-    login: async (_, { username, password }, context) => {
+    login: async (_, { username, password }, { req, res }) => {
       const user = await Users.findOne({
         where: { username },
       })
@@ -885,7 +884,7 @@ const resolvers = {
         throw new GraphQLError('Username or password does not match')
       }
 
-      sendRefreshToken(context.res, signRefreshToken(user))
+      req.session.refresh_token = signRefreshToken(user)
 
       const userSection = await Sections.findOne({
         where: { id: user.section_id },
@@ -912,7 +911,7 @@ const resolvers = {
       else return false
     },
     logout: async (_, __, context) => {
-      const { res, data: user } = authMiddleware(context)
+      const { req, res, data: user } = authMiddleware(context)
 
       const actionUser = await Users.findOne({ where: { id: user.user_id } })
 
@@ -926,9 +925,17 @@ const resolvers = {
         action_description: `Has logged out`,
         user_id: user.user_id,
       })
-      res.clearCookie('refresh-token')
 
-      return true
+      return new Promise((resolve, reject) =>
+        req.session.destroy((error) => {
+          if (error) {
+            console.log(error)
+            reject(false)
+          }
+          res.clearCookie('session')
+          resolve(true)
+        })
+      )
     },
     addMember: async (_, { group_id, user_id }, context) => {
       const { pubsub, data: user } = authMiddleware(context)
