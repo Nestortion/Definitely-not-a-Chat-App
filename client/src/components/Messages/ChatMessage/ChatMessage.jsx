@@ -54,8 +54,10 @@ export default function ChatMessage({
   return (
     <>
       {shouldShowModal && (
-        <SpawnModal title={newText} closeModal={handleHideModal}>
-          <img src={`${apiBasePath}/message/images/${text}`} />
+        <SpawnModal title="" closeModal={handleHideModal}>
+          <div className="image-container">
+            <img src={`${apiBasePath}/message/images/${text}`} />
+          </div>
         </SpawnModal>
       )}
       <div

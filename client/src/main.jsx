@@ -164,6 +164,7 @@ const authLink = new ApolloLink((operation, forward) => {
       headers: {
         ...headers,
         authorization: `bearer ${accessToken}`,
+        'Apollo-Require-Preflight': 'true',
       },
     }
   })
