@@ -24,6 +24,7 @@
     "react-infinite-scroller": "^1.2.6",
     "react-loader-spinner": "^5.3.4",
     "react-minimal-pie-chart": "^8.4.0",
+    "react-password-strength-bar": "^0.4.1",
     "react-responsive": "^9.0.0",
     "react-router-dom": "^6.4.3",
     "react-search-box": "^2.3.0",

@@ -14,6 +14,7 @@ import {
 import SpawnModal from '../../components/UI/Modal/SpawnModal'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
+import PasswordStrengthBar from 'react-password-strength-bar'
 
 export default function ProfileSettings() {
   const {
@@ -37,6 +38,7 @@ export default function ProfileSettings() {
   const [passwordInput, setPasswordInput] = useState('')
   const [confirmPasswordInput, setConfirmPasswordInput] = useState('')
   const [modalConfirmPassword, setModalConfirmPassword] = useState('')
+  const [passwordScore, setPasswordScore] = useState(0)
 
   const user = useOutletContext()
   const navigate = useNavigate()
@@ -128,6 +130,10 @@ export default function ProfileSettings() {
     setModalShouldShow(false)
   }
 
+  const handleChangeScore = (score, feedback) => {
+    setPasswordScore(score)
+  }
+
   useEffect(() => {
     if (
       !values.username ||
@@ -151,11 +157,13 @@ export default function ProfileSettings() {
     const hasPasswordButNoConfirmation = passwordInput && !confirmPasswordInput
     const hasConfirmationButNoPassword = !passwordInput && confirmPasswordInput
     const hasBothButIncorrect = passwordInput !== confirmPasswordInput
+    const passwordNotGood = passwordScore <= 2
 
     if (
       hasPasswordButNoConfirmation ||
       hasConfirmationButNoPassword ||
-      hasBothButIncorrect
+      hasBothButIncorrect ||
+      passwordNotGood
     ) {
       setShouldDisable(true)
     } else {
@@ -341,6 +349,10 @@ export default function ProfileSettings() {
                 onChange={handlePasswordInputChange}
                 id="password"
                 value={passwordInput}
+              />
+              <PasswordStrengthBar
+                password={passwordInput}
+                onChangeScore={handleChangeScore}
               />
             </div>
             <div className="profile-settings__input-container">
