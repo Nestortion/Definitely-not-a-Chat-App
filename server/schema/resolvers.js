@@ -25,6 +25,7 @@ import Sections from '../models/Sections.js'
 import { randomColor } from 'randomcolor'
 import Filter from 'bad-words'
 import filipinoBadWords from 'filipino-badwords-list'
+import { rateLimitMiddleware } from '../auth/middlewares/rateLimitMiddleware.js'
 
 try {
   await createAssociation()
@@ -865,10 +866,15 @@ const resolvers = {
         userchat_id,
       })
     },
-    login: async (_, { username, password }, { req, res }) => {
+    login: async (_, { username, password }, context) => {
+      const rateLimitCheck = await rateLimitMiddleware(context)
+
       const user = await Users.findOne({
         where: { username },
       })
+      if (rateLimitCheck) {
+        throw new GraphQLError(rateLimitCheck)
+      }
 
       if (!user) {
         throw new GraphQLError('Username or password does not match')
@@ -884,7 +890,7 @@ const resolvers = {
         throw new GraphQLError('Username or password does not match')
       }
 
-      req.session.refresh_token = signRefreshToken(user)
+      context.req.session.refresh_token = signRefreshToken(user)
 
       const userSection = await Sections.findOne({
         where: { id: user.section_id },
