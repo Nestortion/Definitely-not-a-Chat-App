@@ -36,7 +36,9 @@ export default function AdminUsersList() {
         const filteredData = usersList.filter((user) => {
           const userFullName = `${user.first_name} ${user.last_name}`
 
-          return userFullName.toLowerCase().includes(debounceValue)
+          return userFullName
+            .toLowerCase()
+            .includes(debounceValue.toLowerCase())
         })
 
         setSearchDataUser(filteredData)
@@ -53,7 +55,9 @@ export default function AdminUsersList() {
         const filteredData = adminsList.filter((user) => {
           const userFullName = `${user.first_name} ${user.last_name}`
 
-          return userFullName.toLowerCase().includes(debounceValue)
+          return userFullName
+            .toLowerCase()
+            .includes(debounceValue.toLowerCase())
         })
 
         setSearchDataAdmin(filteredData)
