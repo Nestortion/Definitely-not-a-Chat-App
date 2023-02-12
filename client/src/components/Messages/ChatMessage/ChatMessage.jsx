@@ -139,11 +139,11 @@ export default function ChatMessage({
                     className="text-error-400"
                     style={{
                       backgroundColor: '#ffffff',
+                      textAlign: 'center',
                     }}
                   >
                     <MdWarningAmber style={{ display: 'inline-block' }} />{' '}
-                    Please be cautious when clicking on links from unknown
-                    sources
+                    Please be cautious when clicking on links
                   </p>
                 )}
               </>
