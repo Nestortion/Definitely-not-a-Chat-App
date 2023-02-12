@@ -16,6 +16,8 @@ import { apiBasePath } from '../../../data/config'
 import { PieChart } from 'react-minimal-pie-chart'
 
 export default function AdminControlPanel() {
+  const [hasNotif, setHasNotif] = useState(true)
+
   const {
     data: graphData,
     loading: graphDataLoading,
@@ -81,7 +83,11 @@ export default function AdminControlPanel() {
           style={{ textDecoration: 'none', color: 'var(--clr-neutral-900)' }}
           to="/admin/reports"
         >
-          <div className="control-panel__card control-panel__top-card">
+          <div
+            className={`control-panel__card control-panel__top-card ${
+              hasNotif && 'has-notif'
+            }`}
+          >
             <p className="control-panel__top-heading">Pending Reports</p>
             <p className="control-panel__top-number fw-bold">
               {systemStats.systemStats.pendingReportCount}
