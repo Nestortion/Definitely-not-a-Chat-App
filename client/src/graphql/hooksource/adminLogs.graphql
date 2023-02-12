@@ -1,5 +1,5 @@
-query AdminLogs {
-  adminLogs {
+query AdminLogs($limit: Int, $offset: Int) {
+  adminLogs(limit: $limit, offset: $offset) {
     id
     user_id
     action_description
