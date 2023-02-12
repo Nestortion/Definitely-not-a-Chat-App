@@ -50,7 +50,7 @@ export default function Reports() {
 
         <div className="reports-table-container-wrapper">
           <div className="reports-potential-threats-container control-panel__card">
-            <p className="fw-bold fs-500">Group chats with potential threats</p>
+            <p className="fw-bold fs-500">Chats with potential threats</p>
 
             <div className="reports-potential-threats-list">
               {dummyHasThreatChats.map((groupChat) => (
