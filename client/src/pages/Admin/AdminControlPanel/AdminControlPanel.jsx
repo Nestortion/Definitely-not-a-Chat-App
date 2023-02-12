@@ -88,7 +88,9 @@ export default function AdminControlPanel() {
               hasNotif && 'has-notif'
             }`}
           >
-            <p className="control-panel__top-heading">Pending Reports</p>
+            <p className="control-panel__top-heading">
+              Pending Reports/Threats
+            </p>
             <p className="control-panel__top-number fw-bold">
               {systemStats.systemStats.pendingReportCount}
             </p>
