@@ -76,6 +76,7 @@ export type Group = {
   __typename?: 'Group'
   group_name: Scalars['String']
   group_picture: Scalars['String']
+  has_threat: Scalars['Boolean']
   id: Scalars['Int']
   is_group: Scalars['String']
 }
@@ -445,6 +446,7 @@ export type ReportResponse = {
 export type ReportedChatDetails = {
   __typename?: 'ReportedChatDetails'
   allMembers?: Maybe<Array<Maybe<User>>>
+  chat_messages?: Maybe<Array<Maybe<UserChat>>>
   group_data?: Maybe<Group>
   roleMembers?: Maybe<Array<Maybe<RoleMembers>>>
 }
@@ -561,6 +563,7 @@ export type UserChat = {
   message: Scalars['String']
   message_type: MessageType
   receiver?: Maybe<Scalars['Int']>
+  senderImage: Scalars['String']
   user_id: Scalars['Int']
 }
 
@@ -1255,6 +1258,7 @@ export type ReportedChatQuery = {
       group_name: string
       group_picture: string
       is_group: string
+      has_threat: boolean
     } | null
     allMembers?: Array<{
       __typename?: 'User'
@@ -1282,6 +1286,16 @@ export type ReportedChatQuery = {
         last_name: string
         profile_img: string
       } | null> | null
+    } | null> | null
+    chat_messages?: Array<{
+      __typename?: 'UserChat'
+      id: number
+      message: string
+      user_id: number
+      receiver?: number | null
+      message_type: MessageType
+      createdAt: any
+      senderImage: string
     } | null> | null
   } | null
 }
@@ -3572,6 +3586,7 @@ export const ReportedChatDocument = gql`
         group_name
         group_picture
         is_group
+        has_threat
       }
       allMembers {
         id
@@ -3595,6 +3610,15 @@ export const ReportedChatDocument = gql`
           last_name
           profile_img
         }
+      }
+      chat_messages {
+        id
+        message
+        user_id
+        receiver
+        message_type
+        createdAt
+        senderImage
       }
     }
   }

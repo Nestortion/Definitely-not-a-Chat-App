@@ -5,6 +5,7 @@ query ReportedChat($groupId: Int!) {
       group_name
       group_picture
       is_group
+      has_threat
     }
     allMembers {
       id
@@ -28,6 +29,15 @@ query ReportedChat($groupId: Int!) {
         last_name
         profile_img
       }
+    }
+    chat_messages {
+      id
+      message
+      user_id
+      receiver
+      message_type
+      createdAt
+      senderImage
     }
   }
 }
