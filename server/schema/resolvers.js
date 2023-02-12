@@ -338,11 +338,13 @@ const resolvers = {
         return kvUsers
       }
     },
-    adminLogs: async (_, __, context) => {
+    adminLogs: async (_, { limit, offset }, context) => {
       const { data: user } = authMiddleware(context)
 
       const adminLogs = await AdminLogs.findAll({
         order: [['createdAt', 'DESC']],
+        limit,
+        offset,
       })
 
       return adminLogs
@@ -353,7 +355,7 @@ const resolvers = {
       const userLogs = await UserLogs.findAll({
         order: [['createdAt', 'DESC']],
         limit,
-        offset: offset * 10,
+        offset,
       })
 
       const filterWords = userLogs.map((userlog) => {
@@ -872,8 +874,10 @@ const resolvers = {
       const user = await Users.findOne({
         where: { username },
       })
-      if (rateLimitCheck) {
-        throw new GraphQLError(rateLimitCheck)
+      if (rateLimitCheck.limitReached === true) {
+        throw new GraphQLError(
+          'You have reached the limit of loggin in, please try again in 20 minutes'
+        )
       }
 
       if (!user) {
