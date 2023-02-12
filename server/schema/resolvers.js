@@ -51,9 +51,20 @@ const resolvers = {
       return age
     },
   },
+  UserChat: {
+    senderImage: async ({ user_id }) => {
+      const user = await Users.findOne({ where: { id: user_id } })
+      return user.profile_img
+    },
+  },
   GraphData: {
     color: () => {
       return randomColor({ luminosity: 'dark' })
+    },
+  },
+  ReportedChatDetails: {
+    chat_messages: async ({ group_data }) => {
+      return UserChats.findAll({ where: { receiver: group_data.id } })
     },
   },
   Upload: GraphQLUpload,
@@ -869,16 +880,16 @@ const resolvers = {
       })
     },
     login: async (_, { username, password }, context) => {
-      const rateLimitCheck = await rateLimitMiddleware(context)
+      // const rateLimitCheck = await rateLimitMiddleware(context)
 
       const user = await Users.findOne({
         where: { username },
       })
-      if (rateLimitCheck.limitReached === true) {
-        throw new GraphQLError(
-          'You have reached the limit of loggin in, please try again in 20 minutes'
-        )
-      }
+      // if (rateLimitCheck.limitReached === true) {
+      //   throw new GraphQLError(
+      //     'You have reached the limit of loggin in, please try again in 20 minutes'
+      //   )
+      // }
 
       if (!user) {
         throw new GraphQLError('Username or password does not match')
@@ -1650,6 +1661,21 @@ const resolvers = {
       })
 
       return updatedSection
+    },
+    clearChatThreat: async (_, { group_id }, context) => {
+      const { data: user } = authMiddleware(context)
+
+      const actionUser = await Users.findOne({ where: { id: user.user_id } })
+
+      await Groups.update({ has_threat: false }, { where: { id: group_id } })
+
+      await AdminLogs.create({
+        full_name: `${actionUser.first_name} ${actionUser.last_name}`,
+        action_description: `Has marked chat ${group_id} clear for threats`,
+        user_id: actionUser.id,
+      })
+
+      return false
     },
   },
   Subscription: {

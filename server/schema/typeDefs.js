@@ -34,6 +34,7 @@ const typeDefs = `
     receiver: Int
     message_type: MessageType!
     createdAt: DateTime!
+    senderImage: String!
   }
 
   enum MessageType {
@@ -47,6 +48,7 @@ const typeDefs = `
     group_name: String!
     group_picture: String!
     is_group: String!
+    has_threat: Boolean!
   }
 
   type UserGroup {
@@ -192,6 +194,7 @@ const typeDefs = `
     group_data: Group
     allMembers: [User]
     roleMembers: [RoleMembers]
+    chat_messages: [UserChat]
   }
 
   type RegisterResponse{
@@ -295,6 +298,7 @@ const typeDefs = `
     createSection(section_name: String!): Section
     toggleSectionStatus(section_id: Int, status: Boolean): Section
     updateSection(section_id: Int, section_name: String!): Section
+    clearChatThreat(group_id: Int): Boolean
   }
 
   
