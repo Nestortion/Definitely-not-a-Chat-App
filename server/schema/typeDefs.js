@@ -110,6 +110,11 @@ const typeDefs = `
     remarks: String
     date_resolved: DateTime
   }
+
+  type ReportsAndThreats{
+    chat_with_threat: [Group]
+    reports: [Report]
+  }
   
   type Section{
     id: Int!
@@ -265,7 +270,7 @@ const typeDefs = `
     otherUser(group_id: Int): User
     groupRolesList(group_id: Int): [GroupRole]
     userGroupRoles(user_id:Int ,group_id:Int): [Int]
-    reports: [Report]
+    reports: ReportsAndThreats
     report(report_id: Int): ReportResponse
     reportedChat(group_id: Int!): ReportedChatDetails
     sections: [Section]

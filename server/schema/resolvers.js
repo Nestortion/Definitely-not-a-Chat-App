@@ -495,7 +495,14 @@ const resolvers = {
 
       const reports = await Reports.findAll()
 
-      return reports
+      const chat_with_threat = await Groups.findAll({
+        where: { has_threat: true },
+      })
+
+      return {
+        chat_with_threat,
+        reports,
+      }
     },
     report: async (_, { report_id }, context) => {
       authMiddleware(context)
