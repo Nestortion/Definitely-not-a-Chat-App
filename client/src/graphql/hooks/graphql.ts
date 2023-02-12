@@ -60,6 +60,12 @@ export type AdminUserProfileUpdateInput = {
   username?: InputMaybe<Scalars['String']>
 }
 
+export type ChatThreatDetectedReponse = {
+  __typename?: 'ChatThreatDetectedReponse'
+  current_user?: Maybe<User>
+  group?: Maybe<Group>
+}
+
 export type CurrentUserGroupRoles = {
   __typename?: 'CurrentUserGroupRoles'
   roles?: Maybe<Array<Maybe<Scalars['String']>>>
@@ -492,6 +498,7 @@ export type Section = {
 export type Subscription = {
   __typename?: 'Subscription'
   chatAdded?: Maybe<UserChat>
+  chatThreatDetected?: Maybe<ChatThreatDetectedReponse>
   groupCreated?: Maybe<GroupCreatedResponse>
   groupRolesUpdated?: Maybe<GroupRolesUpdatedResponse>
   groupUpdate?: Maybe<Group>
@@ -769,6 +776,33 @@ export type ChatAddedSubscription = {
     receiver?: number | null
     message_type: MessageType
     createdAt: any
+  } | null
+}
+
+export type ChatThreatDetectedSubscriptionVariables = Exact<{
+  [key: string]: never
+}>
+
+export type ChatThreatDetectedSubscription = {
+  __typename?: 'Subscription'
+  chatThreatDetected?: {
+    __typename?: 'ChatThreatDetectedReponse'
+    group?: {
+      __typename?: 'Group'
+      id: number
+      group_name: string
+      group_picture: string
+      is_group: string
+      has_threat: boolean
+    } | null
+    current_user?: {
+      __typename?: 'User'
+      id: number
+      username: string
+      last_name: string
+      first_name: string
+      profile_img: string
+    } | null
   } | null
 }
 
@@ -2276,6 +2310,59 @@ export type ChatAddedSubscriptionHookResult = ReturnType<
 >
 export type ChatAddedSubscriptionResult =
   Apollo.SubscriptionResult<ChatAddedSubscription>
+export const ChatThreatDetectedDocument = gql`
+  subscription ChatThreatDetected {
+    chatThreatDetected {
+      group {
+        id
+        group_name
+        group_picture
+        is_group
+        has_threat
+      }
+      current_user {
+        id
+        username
+        last_name
+        first_name
+        profile_img
+      }
+    }
+  }
+`
+
+/**
+ * __useChatThreatDetectedSubscription__
+ *
+ * To run a query within a React component, call `useChatThreatDetectedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useChatThreatDetectedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChatThreatDetectedSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useChatThreatDetectedSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    ChatThreatDetectedSubscription,
+    ChatThreatDetectedSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSubscription<
+    ChatThreatDetectedSubscription,
+    ChatThreatDetectedSubscriptionVariables
+  >(ChatThreatDetectedDocument, options)
+}
+export type ChatThreatDetectedSubscriptionHookResult = ReturnType<
+  typeof useChatThreatDetectedSubscription
+>
+export type ChatThreatDetectedSubscriptionResult =
+  Apollo.SubscriptionResult<ChatThreatDetectedSubscription>
 export const ClearChatThreatDocument = gql`
   mutation ClearChatThreat($groupId: Int) {
     clearChatThreat(group_id: $groupId)

@@ -1,0 +1,18 @@
+subscription ChatThreatDetected {
+  chatThreatDetected {
+    group {
+      id
+      group_name
+      group_picture
+      is_group
+      has_threat
+    }
+    current_user {
+      id
+      username
+      last_name
+      first_name
+      profile_img
+    }
+  }
+}

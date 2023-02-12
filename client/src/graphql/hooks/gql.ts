@@ -23,6 +23,7 @@ const documents = {
     "query AdminLogs($limit: Int, $offset: Int) {\n  adminLogs(limit: $limit, offset: $offset) {\n    id\n    user_id\n    action_description\n    full_name\n    createdAt\n  }\n}": types.AdminLogsDocument,
     "mutation AdminUpdateUserProfile($userData: AdminUserProfileUpdateInput) {\n  adminUpdateUserProfile(userData: $userData) {\n    id\n    username\n    access_level\n    last_name\n    first_name\n    profile_img\n  }\n}": types.AdminUpdateUserProfileDocument,
     "subscription ChatAdded($user: Int) {\n  chatAdded(user: $user) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n    createdAt\n  }\n}": types.ChatAddedDocument,
+    "subscription ChatThreatDetected {\n  chatThreatDetected {\n    group {\n      id\n      group_name\n      group_picture\n      is_group\n      has_threat\n    }\n    current_user {\n      id\n      username\n      last_name\n      first_name\n      profile_img\n    }\n  }\n}": types.ChatThreatDetectedDocument,
     "mutation ClearChatThreat($groupId: Int) {\n  clearChatThreat(group_id: $groupId)\n}": types.ClearChatThreatDocument,
     "mutation CreateGroup($userId: [Int!]) {\n  createGroup(user_id: $userId) {\n    group_name\n    group_picture\n    id\n    is_group\n  }\n}": types.CreateGroupDocument,
     "mutation CreateSection($sectionName: String!) {\n  createSection(section_name: $sectionName) {\n    id\n    section_name\n    disabled\n  }\n}": types.CreateSectionDocument,
@@ -110,6 +111,10 @@ export function graphql(source: "mutation AdminUpdateUserProfile($userData: Admi
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "subscription ChatAdded($user: Int) {\n  chatAdded(user: $user) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n    createdAt\n  }\n}"): (typeof documents)["subscription ChatAdded($user: Int) {\n  chatAdded(user: $user) {\n    id\n    message\n    user_id\n    receiver\n    message_type\n    createdAt\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "subscription ChatThreatDetected {\n  chatThreatDetected {\n    group {\n      id\n      group_name\n      group_picture\n      is_group\n      has_threat\n    }\n    current_user {\n      id\n      username\n      last_name\n      first_name\n      profile_img\n    }\n  }\n}"): (typeof documents)["subscription ChatThreatDetected {\n  chatThreatDetected {\n    group {\n      id\n      group_name\n      group_picture\n      is_group\n      has_threat\n    }\n    current_user {\n      id\n      username\n      last_name\n      first_name\n      profile_img\n    }\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
