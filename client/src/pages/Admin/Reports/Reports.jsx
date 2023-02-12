@@ -11,17 +11,20 @@ const dummyHasThreatChats = [
     id: 1,
     groupName: 'Super idol',
     groupProfileUrl: 'http://localhost:4000/grouppfp/default-icon.png',
+    isGroup: 1,
   },
 
   {
     id: 2,
     groupName: 'Xue hua piao piao',
     groupProfileUrl: 'http://localhost:4000/grouppfp/default-icon.png',
+    isGroup: 1,
   },
   {
     id: 3,
     groupName: 'Ching cheng hani',
     groupProfileUrl: 'http://localhost:4000/grouppfp/default-icon.png',
+    isGroup: 1,
   },
 ]
 
@@ -64,7 +67,11 @@ export default function Reports() {
                   className="reports-potential-threats"
                 >
                   <Avatar src={groupChat.groupProfileUrl} size={24} />
+                  <span>{groupChat.id}</span>
                   <span>{groupChat.groupName}</span>
+                  <span>
+                    {groupChat.isGroup === 1 ? 'Group chat' : 'Private chat'}
+                  </span>
                 </Link>
               ))}
             </div>
