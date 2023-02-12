@@ -52,8 +52,15 @@
         color: var(--clr-neutral-100);
       }
 
-      .chat-message-message__text {
-        line-height: 1.5;
+      .chat-message-message__text-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3125rem;
+
+        .chat-message-message__text {
+          line-height: 1.5;
+          align-self: flex-end;
+        }
       }
 
       @media (max-width: 961px) {

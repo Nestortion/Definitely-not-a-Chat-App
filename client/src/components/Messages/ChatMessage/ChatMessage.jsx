@@ -133,19 +133,21 @@ export default function ChatMessage({
             {/* If type text */}
             {message_type === 'TEXT' && (
               <>
-                <span className="chat-message-message__text">{text}</span>
-                {hasUrl && (
-                  <p
-                    className="text-error-400"
-                    style={{
-                      backgroundColor: '#ffffff',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <MdWarningAmber style={{ display: 'inline-block' }} />{' '}
-                    Please be cautious when clicking on links
-                  </p>
-                )}
+                <div className="chat-message-message__text-container">
+                  <span className="chat-message-message__text">{text}</span>
+                  {hasUrl && (
+                    <p
+                      className="text-error-400"
+                      style={{
+                        backgroundColor: '#ffffff',
+                        textAlign: 'center',
+                      }}
+                    >
+                      <MdWarningAmber style={{ display: 'inline-block' }} />{' '}
+                      Please be cautious when clicking on links
+                    </p>
+                  )}
+                </div>
               </>
             )}
           </div>
