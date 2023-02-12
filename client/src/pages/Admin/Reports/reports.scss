@@ -6,44 +6,81 @@
       margin-bottom: 1rem;
     }
 
-    .reports-table-container {
-      display: flex;
-      flex-direction: column;
+    .reports-table-container-wrapper {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
       gap: 2rem;
 
-      .reports-table {
-        width: 100%;
-        overflow-x: auto;
+      @media (max-width: 667px) {
+        grid-template-columns: 1fr;
+      }
 
-        td,
-        th {
-          padding: 0.625rem;
-          border-bottom: 1px solid var(--clr-primary-400);
-          text-align: left;
-        }
+      .reports-potential-threats-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
 
-        tbody {
-          tr {
-            cursor: pointer;
+        .reports-potential-threats-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.3125rem;
+
+          .reports-potential-threats {
+            padding: 0.3125rem;
+            border-radius: 0.3125rem;
+
+            display: grid;
+            grid-template-columns: 2fr 10fr;
+            gap: 0.3125rem;
+            align-items: center;
 
             &:hover {
-              color: var(--clr-neutral-100);
               background-color: var(--clr-primary-400);
+              color: var(--clr-neutral-100);
             }
           }
+        }
+      }
 
-          .resolved {
-            background-color: var(--clr-secondary-400);
+      .reports-table-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        .reports-table {
+          width: 100%;
+          overflow-x: auto;
+
+          td,
+          th {
+            padding: 0.625rem;
+            border-bottom: 1px solid var(--clr-primary-400);
+            text-align: left;
           }
 
-          .pending {
-            background-color: var(--clr-error-400);
-          }
+          tbody {
+            tr {
+              cursor: pointer;
 
-          select {
-            padding: 0.3125rem;
-            border: 1px solid var(--clr-primary-400);
-            border-radius: 0.3125rem;
+              &:hover {
+                color: var(--clr-neutral-100);
+                background-color: var(--clr-primary-400);
+              }
+            }
+
+            .resolved {
+              background-color: var(--clr-secondary-400);
+            }
+
+            .pending {
+              background-color: var(--clr-error-400);
+            }
+
+            select {
+              padding: 0.3125rem;
+              border: 1px solid var(--clr-primary-400);
+              border-radius: 0.3125rem;
+            }
           }
         }
       }
