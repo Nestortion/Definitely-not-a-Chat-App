@@ -213,6 +213,11 @@ const typeDefs = `
     color: String
   }
 
+  type ChatThreatDetectedReponse{
+    current_user: User
+    group: Group
+  }
+
   input RegisterInput{
     username: String
     access_level: AccessLevel
@@ -314,8 +319,9 @@ const typeDefs = `
     chatAdded(user: Int): UserChat
     memberAdded(user: Int, group_id: Int): MemberAddedResponse
     memberRemoved(user: Int, group_id: Int): MemberRemovedResponse
-    groupRolesUpdated(user: Int, group_id: Int): GroupRolesUpdatedResponse
+    groupRolesUpdated(user: Int, group_id: Int) : GroupRolesUpdatedResponse
     memberRolesUpdated(user:Int, group_id: Int) : UpdateUserGroupRolesResponse
+    chatThreatDetected : ChatThreatDetectedReponse
   }
 
 `

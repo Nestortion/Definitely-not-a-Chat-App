@@ -451,6 +451,8 @@ const resolvers = {
       const userChats = await UserChats.findAll()
       const reports = await Reports.findAll()
 
+      const groupsWithThreat = groups.filter((group) => group.has_threat)
+
       const filterReports = reports.filter(
         (report) => report.is_resolved === false
       )
@@ -463,7 +465,7 @@ const resolvers = {
         userCount: users.length,
         groupCount: groups.length,
         userChatsCount: userChats.length,
-        pendingReportCount: filterReports.length,
+        pendingReportCount: filterReports.length + groupsWithThreat.length,
         latestAdminLog: adminLog,
       }
     },
@@ -692,6 +694,14 @@ const resolvers = {
         } else {
           if (message !== '') {
           }
+
+          const newChatFilter = new Filter({
+            list: filipinoBadWords.array,
+            placeHolder: '@@@!@!@',
+          })
+
+          const filterMessage = newChatFilter.clean(message)
+
           const userChat = await UserChats.create({
             message,
             user_id: user.user_id,
@@ -721,6 +731,21 @@ const resolvers = {
           pubsub.publish('CHAT_ADDED', {
             chatAdded: userChat.dataValues,
           })
+
+          if (filterMessage.includes('@@@!@!@')) {
+            await Groups.update(
+              { has_threat: true },
+              { where: { id: group.id } }
+            )
+
+            pubsub.publish('CHAT_THREAT_DETECTED', {
+              chatThreatDetected: {
+                current_user: actionUser,
+                group,
+              },
+            })
+          }
+
           return userChat
         }
       } else {
@@ -1812,6 +1837,16 @@ const resolvers = {
           if (userGroup) {
             return true
           }
+          return false
+        }
+      ),
+    },
+    chatThreatDetected: {
+      subscribe: withFilter(
+        (_, __, { pubsub }) => pubsub.asyncIterator('CHAT_THREAT_DETECTED'),
+        async (payload, variables) => {
+          if (payload.chatThreatDetected.current_user.access_level === 'ADMIN')
+            return true
           return false
         }
       ),
