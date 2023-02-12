@@ -1,10 +1,20 @@
 query Reports {
   reports {
-    id
-    user_id
-    group_id
-    report_reason
-    is_resolved
-    createdAt
+    reports {
+      id
+      user_id
+      group_id
+      report_reason
+      is_resolved
+      createdAt
+      date_resolved
+    }
+    chat_with_threat {
+      id
+      group_name
+      group_picture
+      is_group
+      has_threat
+    }
   }
 }

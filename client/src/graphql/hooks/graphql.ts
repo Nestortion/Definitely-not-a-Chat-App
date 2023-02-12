@@ -309,7 +309,7 @@ export type Query = {
   otherUser?: Maybe<User>
   report?: Maybe<ReportResponse>
   reportedChat?: Maybe<ReportedChatDetails>
-  reports?: Maybe<Array<Maybe<Report>>>
+  reports?: Maybe<ReportsAndThreats>
   sections?: Maybe<Array<Maybe<Section>>>
   systemStats?: Maybe<SystemStats>
   user?: Maybe<User>
@@ -454,6 +454,12 @@ export type ReportedChatDetails = {
   chat_messages?: Maybe<Array<Maybe<UserChat>>>
   group_data?: Maybe<Group>
   roleMembers?: Maybe<Array<Maybe<RoleMembers>>>
+}
+
+export type ReportsAndThreats = {
+  __typename?: 'ReportsAndThreats'
+  chat_with_threat?: Maybe<Array<Maybe<Group>>>
+  reports?: Maybe<Array<Maybe<Report>>>
 }
 
 export type RoleMembers = {
@@ -1318,15 +1324,27 @@ export type ReportsQueryVariables = Exact<{ [key: string]: never }>
 
 export type ReportsQuery = {
   __typename?: 'Query'
-  reports?: Array<{
-    __typename?: 'Report'
-    id: number
-    user_id: number
-    group_id: number
-    report_reason: string
-    is_resolved: boolean
-    createdAt: any
-  } | null> | null
+  reports?: {
+    __typename?: 'ReportsAndThreats'
+    reports?: Array<{
+      __typename?: 'Report'
+      id: number
+      user_id: number
+      group_id: number
+      report_reason: string
+      is_resolved: boolean
+      createdAt: any
+      date_resolved?: any | null
+    } | null> | null
+    chat_with_threat?: Array<{
+      __typename?: 'Group'
+      id: number
+      group_name: string
+      group_picture: string
+      is_group: string
+      has_threat: boolean
+    } | null> | null
+  } | null
 }
 
 export type SectionsQueryVariables = Exact<{ [key: string]: never }>
@@ -3739,12 +3757,22 @@ export type ReportedChatQueryResult = Apollo.QueryResult<
 export const ReportsDocument = gql`
   query Reports {
     reports {
-      id
-      user_id
-      group_id
-      report_reason
-      is_resolved
-      createdAt
+      reports {
+        id
+        user_id
+        group_id
+        report_reason
+        is_resolved
+        createdAt
+        date_resolved
+      }
+      chat_with_threat {
+        id
+        group_name
+        group_picture
+        is_group
+        has_threat
+      }
     }
   }
 `
