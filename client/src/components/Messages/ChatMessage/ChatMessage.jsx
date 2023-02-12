@@ -6,8 +6,15 @@ import ErrorText from '../../Error/ErrorText'
 import { useUserChatSenderQuery } from '../../../graphql/hooks/graphql'
 import { useEffect, useRef, useState } from 'react'
 import CustomImage from '../../UI/Image/CustomImage'
-import { MdDownload } from 'react-icons/md'
+import { MdDownload, MdWarningAmber } from 'react-icons/md'
 import SpawnModal from '../../UI/Modal/SpawnModal'
+
+function validURL(str) {
+  // yeah
+  var pattern =
+    /(([a-z]+:\/\/)?(([a-z0-9\-]+\.)+([a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|local|internal))(:[0-9]{1,5})?(\/[a-z0-9_\-\.~]+)*(\/([a-z0-9_\-\.]*)(\?[a-z0-9+_\-\.%=&amp;]*)?)?(#[a-zA-Z0-9!$&'()*+.=-_~:@/?]*)?)(\s+|$)/gi
+  return !!pattern.test(str)
+}
 
 export default function ChatMessage({
   text,
@@ -19,6 +26,7 @@ export default function ChatMessage({
 }) {
   const [shouldShowModal, setShouldShowModal] = useState(false)
   const messageDiv = useRef(null)
+  const [hasUrl, setHasUrl] = useState(false)
 
   const {
     data: userData,
@@ -28,6 +36,14 @@ export default function ChatMessage({
   // useEffect(() => {
   //   messageDiv.current?.scrollIntoView()
   // }, [text])
+
+  useEffect(() => {
+    if (message_type === 'TEXT' && validURL(text)) {
+      setHasUrl(true)
+    } else {
+      setHasUrl(false)
+    }
+  }, [])
 
   if (userLoading) return <LoadingSpinner>Loading</LoadingSpinner>
   if (userError) return <ErrorText>Error</ErrorText>
@@ -116,7 +132,21 @@ export default function ChatMessage({
 
             {/* If type text */}
             {message_type === 'TEXT' && (
-              <span className="chat-message-message__text">{text}</span>
+              <>
+                <span className="chat-message-message__text">{text}</span>
+                {hasUrl && (
+                  <p
+                    className="text-error-400"
+                    style={{
+                      backgroundColor: '#ffffff',
+                    }}
+                  >
+                    <MdWarningAmber style={{ display: 'inline-block' }} />{' '}
+                    Please be cautious when clicking on links from unknown
+                    sources
+                  </p>
+                )}
+              </>
             )}
           </div>
         </div>
