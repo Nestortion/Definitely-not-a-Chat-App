@@ -325,6 +325,11 @@ export type QueryAddMemberListArgs = {
   group_id?: InputMaybe<Scalars['Int']>
 }
 
+export type QueryAdminLogsArgs = {
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+}
+
 export type QueryCurrentUserGroupRolesArgs = {
   group_id?: InputMaybe<Scalars['Int']>
 }
@@ -702,7 +707,10 @@ export type AddUserGroupRoleMutation = {
   } | null
 }
 
-export type AdminLogsQueryVariables = Exact<{ [key: string]: never }>
+export type AdminLogsQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+}>
 
 export type AdminLogsQuery = {
   __typename?: 'Query'
@@ -2064,8 +2072,8 @@ export type AddUserGroupRoleMutationOptions = Apollo.BaseMutationOptions<
   AddUserGroupRoleMutationVariables
 >
 export const AdminLogsDocument = gql`
-  query AdminLogs {
-    adminLogs {
+  query AdminLogs($limit: Int, $offset: Int) {
+    adminLogs(limit: $limit, offset: $offset) {
       id
       user_id
       action_description
@@ -2087,6 +2095,8 @@ export const AdminLogsDocument = gql`
  * @example
  * const { data, loading, error } = useAdminLogsQuery({
  *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */

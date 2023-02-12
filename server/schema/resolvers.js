@@ -25,6 +25,7 @@ import Sections from '../models/Sections.js'
 import { randomColor } from 'randomcolor'
 import Filter from 'bad-words'
 import filipinoBadWords from 'filipino-badwords-list'
+import { rateLimitMiddleware } from '../auth/middlewares/rateLimitMiddleware.js'
 
 try {
   await createAssociation()
@@ -337,11 +338,13 @@ const resolvers = {
         return kvUsers
       }
     },
-    adminLogs: async (_, __, context) => {
+    adminLogs: async (_, { limit, offset }, context) => {
       const { data: user } = authMiddleware(context)
 
       const adminLogs = await AdminLogs.findAll({
         order: [['createdAt', 'DESC']],
+        limit,
+        offset,
       })
 
       return adminLogs
@@ -352,7 +355,7 @@ const resolvers = {
       const userLogs = await UserLogs.findAll({
         order: [['createdAt', 'DESC']],
         limit,
-        offset: offset * 10,
+        offset,
       })
 
       const filterWords = userLogs.map((userlog) => {
@@ -865,10 +868,17 @@ const resolvers = {
         userchat_id,
       })
     },
-    login: async (_, { username, password }, { req, res }) => {
+    login: async (_, { username, password }, context) => {
+      const rateLimitCheck = await rateLimitMiddleware(context)
+
       const user = await Users.findOne({
         where: { username },
       })
+      if (rateLimitCheck.limitReached === true) {
+        throw new GraphQLError(
+          'You have reached the limit of loggin in, please try again in 20 minutes'
+        )
+      }
 
       if (!user) {
         throw new GraphQLError('Username or password does not match')
@@ -884,7 +894,7 @@ const resolvers = {
         throw new GraphQLError('Username or password does not match')
       }
 
-      req.session.refresh_token = signRefreshToken(user)
+      context.req.session.refresh_token = signRefreshToken(user)
 
       const userSection = await Sections.findOne({
         where: { id: user.section_id },

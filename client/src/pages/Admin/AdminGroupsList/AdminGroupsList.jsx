@@ -31,7 +31,9 @@ export default function AdminGroupsList() {
     ;(() => {
       if (searchInput && searchInput.length > 0) {
         const filteredData = privateChats.filter((group) => {
-          return group.group_name.toLowerCase().includes(debounceValue)
+          return group.group_name
+            .toLowerCase()
+            .includes(debounceValue.toLowerCase())
         })
 
         setSearchDataPrivate(filteredData)
@@ -46,7 +48,9 @@ export default function AdminGroupsList() {
     ;(() => {
       if (searchInput && searchInput.length > 0) {
         const filteredData = groupChats.filter((group) => {
-          return group.group_name.toLowerCase().includes(debounceValue)
+          return group.group_name
+            .toLowerCase()
+            .includes(debounceValue.toLowerCase())
         })
 
         setSearchDataGroup(filteredData)
