@@ -1,7 +1,12 @@
 import './solo-group.scss'
 import { Link, useParams } from 'react-router-dom'
 import Avatar from '../../../../components/UI/Avatar/Avatar'
-import { useReportedChatQuery } from '../../../../graphql/hooks/graphql'
+import {
+  ReportedChatDocument,
+  ReportsDocument,
+  useClearChatThreatMutation,
+  useReportedChatQuery,
+} from '../../../../graphql/hooks/graphql'
 import LoadingSpinner from '../../../../components/Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../../../../components/Error/ErrorText'
 import { apiBasePath } from '../../../../data/config'
@@ -10,44 +15,10 @@ import Button from '../../../../components/UI/Button/Button'
 import SpawnModal from '../../../../components/UI/Modal/SpawnModal'
 import { toast } from 'react-toastify'
 
-const dummyGroupData = {
-  hasThreat: true,
-}
-
-const dummyGroupMessages = [
-  {
-    id: 1,
-    message: 'hello',
-    messageType: 'TEXT',
-    createdAt: '2023-01-30 10:36:55',
-    senderId: 1,
-    senderName: 'John Doe',
-    senderProfileUrl: 'http://localhost:4000/pfp/default-icon.png',
-  },
-  {
-    id: 2,
-    message: 'bobo mo po',
-    messageType: 'TEXT',
-    createdAt: '2023-01-30 10:36:55',
-    senderId: 1,
-    senderName: 'John Doe',
-    senderProfileUrl: 'http://localhost:4000/pfp/default-icon.png',
-  },
-  {
-    id: 3,
-    message: 'hello',
-    messageType: 'TEXT',
-    createdAt: '2023-01-30 10:36:55',
-    senderId: 1,
-    senderName: 'John Doe',
-    senderProfileUrl: 'http://localhost:4000/pfp/default-icon.png',
-  },
-]
-
 export default function SoloGroup() {
   const { groupId } = useParams()
   const notify = () =>
-    toast('Successfully set to inspected!', {
+    toast('Successfully marked chat as cleared!', {
       position: toast.POSITION.TOP_CENTER,
       style: {
         color: 'var(--clr-neutral-100)',
@@ -55,10 +26,8 @@ export default function SoloGroup() {
         fontSize: 'clamp(0.8rem, 1.3vw, 1.5rem)',
       },
     })
-  const [shouldShowMessages, setShouldShowMessages] = useState(
-    dummyGroupData.hasThreat
-  )
   const [shouldShowModal, setShouldShowModal] = useState(false)
+  const [clearChatThreat] = useClearChatThreatMutation()
 
   const {
     data: group,
@@ -70,13 +39,47 @@ export default function SoloGroup() {
     setShouldShowModal(false)
   }
 
-  const showModal = () => {
-    setShouldShowModal(true)
-  }
-
-  const handleSetToInspected = () => {
-    setShouldShowMessages(false)
+  const handleSetToInspected = async () => {
     console.log(`Set group: ${groupId} hasThreat to false`)
+    await clearChatThreat({
+      variables: { groupId: parseInt(groupId) },
+      update: (cache, { data }) => {
+        const { reportedChat } = cache.readQuery({
+          query: ReportedChatDocument,
+          variables: { groupId: parseInt(groupId) },
+        })
+
+        cache.writeQuery({
+          query: ReportedChatDocument,
+          variables: { groupId: parseInt(groupId) },
+          data: {
+            reportedChat: {
+              ...reportedChat,
+              group_data: {
+                ...reportedChat.group_data,
+                has_threat: data.clearChatThreat,
+              },
+            },
+          },
+        })
+
+        const { reports } = cache.readQuery({
+          query: ReportsDocument,
+        })
+
+        cache.writeQuery({
+          query: ReportsDocument,
+          data: {
+            reports: {
+              ...reports,
+              chat_with_threat: reports.chat_with_threat.filter(
+                (chat) => chat.id !== parseInt(groupId)
+              ),
+            },
+          },
+        })
+      },
+    })
     hideModal()
     notify()
   }
@@ -209,21 +212,33 @@ export default function SoloGroup() {
             </>
           )}
 
-          {shouldShowMessages && (
+          {group.reportedChat.group_data.has_threat && (
             <div className="solo-group__has-threat control-panel__card">
               <Button onClick={() => setShouldShowModal(true)}>
-                Set to inspected
+                Mark as Cleared
               </Button>
               <p className="fw-bold fs-500">Chat messages</p>
               <div className="solo-group__messages-container">
-                {dummyGroupMessages.map((message) => (
+                {group.reportedChat.chat_messages.map((message) => (
                   <div key={message.id} className="solo-group__message">
-                    <Avatar size={24} src={message.senderProfileUrl} />
+                    <Avatar
+                      size={24}
+                      src={`${apiBasePath}/pfp/${message.senderImage}`}
+                    />
                     <div className="solo-group__message-sender-info">
                       <span>{message.senderName}</span>
-                      <span>{message.createdAt}</span>
+                      <span>
+                        {Intl.DateTimeFormat('en-US', {
+                          dateStyle: 'short',
+                          timeStyle: 'short',
+                        }).format(new Date(message.createdAt))}
+                      </span>
                     </div>
-                    <span>{message.message}</span>
+                    <span>
+                      {message.message_type === 'TEXT'
+                        ? message.message
+                        : 'Sent a file/image'}
+                    </span>
                   </div>
                 ))}
               </div>

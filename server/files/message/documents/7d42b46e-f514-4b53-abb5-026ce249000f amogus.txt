@@ -1,0 +1,44 @@
+AoB = AOBScan("02 7B 1C 10 00 04 7B C1 0F 00 04 28 73 27 00 06 16 6B 3D 4F")
+if (AoB) then
+print("● Hit Kill: 𝐀𝐜𝐭𝐢𝐯𝐚𝐭𝐞𝐝")
+for x=0, AoB.getCount()-1 do
+writeBytes(tonumber(AoB[x],16)+19, 0x00)
+end
+else
+print("● Hit Kill: F̲a̲i̲l̲e̲d̲ | 𝑇𝘩𝑒 𝑐𝑜𝑑𝑒 𝑖𝑠 𝑜𝑢𝑡 𝑜𝑓 𝑑𝑎𝑡𝑒")
+end
+
+-- DZA (Disable Zombie Attack)
+AoB = AOBScan("00 ?? ?? ?? ?? ?? ?? 20 61 74 74 61 63 6B 00 00")
+if (AoB) then
+print("● Disable Zombie Attack: 𝐀𝐜𝐭𝐢𝐯𝐚𝐭𝐞𝐝")
+for x=0, AoB.getCount()-1 do
+writeBytes(tonumber(AoB[x],16)+9, 0x00, 0x00)
+end
+else
+print("● Disable Zombie Attack: F̲a̲i̲l̲e̲d̲ | 𝑇𝘩𝑒 𝑐𝑜𝑑𝑒 𝑖𝑠 𝑜𝑢𝑡 𝑜𝑓 𝑑𝑎𝑡𝑒 ")
+end
+
+-- INFINITE ENERGY:
+AoB = AOBScan("22 ?? ?? ?? ?? 5A 58 7D ?? ?? ?? ?? 02 7B ?? ?? ?? ?? 02 7B")
+if (AoB) then
+print("● Infinite Energy: 𝐀𝐜𝐭𝐢𝐯𝐚𝐭𝐞𝐝")
+for i=0,AoB.getCount()-1 do
+writeBytes(tonumber(AoB[i],16)+3, 0x70, 0x41)
+end
+AoB.Destroy()
+AoB = nil
+else
+print("● Infinite Energy: F̲a̲i̲l̲e̲d̲ | 𝑇𝘩𝑒 𝑐𝑜𝑑𝑒 𝑖𝑠 𝑜𝑢𝑡 𝑜𝑓 𝑑𝑎𝑡𝑒")
+end
+
+-- SUPER SPRINT:
+AoB = AOBScan("60 ?? ?? ?? CC ?? ?? ?? ?? 78 ?? ?? 11 ?? 6B 5A 58 5A ?? 9A")
+if (AoB) then
+print("● Super Sprint: 𝐀𝐜𝐭𝐢𝐯𝐚𝐭𝐞𝐝")
+for x=0, AoB.getCount()-1 do
+writeBytes(tonumber(AoB[x],16)+5, 0x7A, 0x40)
+end
+else
+print("● Super Sprint: F̲a̲i̲l̲e̲d̲ | 𝑇𝘩𝑒 𝑐𝑜𝑑𝑒 𝑖𝑠 𝑜𝑢𝑡 𝑜𝑓 𝑑𝑎𝑡𝑒")
+end
