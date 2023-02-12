@@ -75,6 +75,7 @@ export default function SoloGroup() {
   }
 
   const handleSetToInspected = () => {
+    setShouldShowMessages(false)
     console.log(`Set group: ${groupId} hasThreat to false`)
     hideModal()
     notify()
