@@ -1,0 +1,3 @@
+mutation ClearChatThreat($groupId: Int) {
+  clearChatThreat(group_id: $groupId)
+}

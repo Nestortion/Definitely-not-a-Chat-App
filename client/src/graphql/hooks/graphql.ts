@@ -149,6 +149,7 @@ export type Mutation = {
   addUserGroup?: Maybe<UserGroup>
   addUserGroupRole?: Maybe<UserGroupRole>
   adminUpdateUserProfile?: Maybe<User>
+  clearChatThreat?: Maybe<Scalars['Boolean']>
   createGroup?: Maybe<Group>
   createSection?: Maybe<Section>
   login?: Maybe<AccessToken>
@@ -208,6 +209,10 @@ export type MutationAddUserGroupRoleArgs = {
 
 export type MutationAdminUpdateUserProfileArgs = {
   userData?: InputMaybe<AdminUserProfileUpdateInput>
+}
+
+export type MutationClearChatThreatArgs = {
+  group_id?: InputMaybe<Scalars['Int']>
 }
 
 export type MutationCreateGroupArgs = {
@@ -759,6 +764,15 @@ export type ChatAddedSubscription = {
     message_type: MessageType
     createdAt: any
   } | null
+}
+
+export type ClearChatThreatMutationVariables = Exact<{
+  groupId?: InputMaybe<Scalars['Int']>
+}>
+
+export type ClearChatThreatMutation = {
+  __typename?: 'Mutation'
+  clearChatThreat?: boolean | null
 }
 
 export type CreateGroupMutationVariables = Exact<{
@@ -2244,6 +2258,54 @@ export type ChatAddedSubscriptionHookResult = ReturnType<
 >
 export type ChatAddedSubscriptionResult =
   Apollo.SubscriptionResult<ChatAddedSubscription>
+export const ClearChatThreatDocument = gql`
+  mutation ClearChatThreat($groupId: Int) {
+    clearChatThreat(group_id: $groupId)
+  }
+`
+export type ClearChatThreatMutationFn = Apollo.MutationFunction<
+  ClearChatThreatMutation,
+  ClearChatThreatMutationVariables
+>
+
+/**
+ * __useClearChatThreatMutation__
+ *
+ * To run a mutation, you first call `useClearChatThreatMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useClearChatThreatMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [clearChatThreatMutation, { data, loading, error }] = useClearChatThreatMutation({
+ *   variables: {
+ *      groupId: // value for 'groupId'
+ *   },
+ * });
+ */
+export function useClearChatThreatMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ClearChatThreatMutation,
+    ClearChatThreatMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    ClearChatThreatMutation,
+    ClearChatThreatMutationVariables
+  >(ClearChatThreatDocument, options)
+}
+export type ClearChatThreatMutationHookResult = ReturnType<
+  typeof useClearChatThreatMutation
+>
+export type ClearChatThreatMutationResult =
+  Apollo.MutationResult<ClearChatThreatMutation>
+export type ClearChatThreatMutationOptions = Apollo.BaseMutationOptions<
+  ClearChatThreatMutation,
+  ClearChatThreatMutationVariables
+>
 export const CreateGroupDocument = gql`
   mutation CreateGroup($userId: [Int!]) {
     createGroup(user_id: $userId) {
