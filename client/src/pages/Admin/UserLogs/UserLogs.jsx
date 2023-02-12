@@ -2,27 +2,12 @@ import LogEntry from '../../../components/LogEntry/LogEntry'
 import './user-logs.scss'
 import LoadingSpinner from '../../../components/Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../../../components/Error/ErrorText'
-import { useUserLogsQuery } from '../../../graphql/hooks/graphql'
+import {
+  useSectionsQuery,
+  useUserLogsQuery,
+} from '../../../graphql/hooks/graphql'
 import InfiniteScroll from 'react-infinite-scroller'
-import { useState } from 'react'
-
-const sections = [
-  {
-    id: 1,
-    name: 'Not Set',
-    disabled: 0,
-  },
-  {
-    id: 2,
-    name: 'BSIT 4-1',
-    disabled: 0,
-  },
-  {
-    id: 3,
-    name: 'DICT 3-1',
-    disabled: 1,
-  },
-]
+import { useEffect, useState } from 'react'
 
 export default function UserLogs() {
   const {
@@ -31,6 +16,15 @@ export default function UserLogs() {
     error: userLogsError,
     fetchMore,
   } = useUserLogsQuery({ variables: { limit: 20, offset: 0 } })
+
+  const {
+    data: sections,
+    loading: sectionsLoading,
+    error: sectionsError,
+  } = useSectionsQuery()
+
+  const [logsPerSection, setLogsPerSection] = useState([])
+  const [selectedSection, setSelectedSection] = useState('')
 
   const [hasMore, setHasMore] = useState(true)
   const loadMoreHandle = (page) => {
@@ -52,11 +46,20 @@ export default function UserLogs() {
   }
 
   const handleChange = (e) => {
-    console.log(e.target.value)
+    setSelectedSection(e.target.value)
   }
+
+  useEffect(() => {
+    const filterLogs = userLogs?.userLogs.filter(
+      (userlog) => userlog.section === selectedSection
+    )
+    setLogsPerSection(filterLogs)
+  }, [userLogs, selectedSection])
 
   if (userLogsLoading) return <LoadingSpinner />
   if (userLogsError) return <ErrorText>Something went wrong</ErrorText>
+  if (sectionsLoading) return <LoadingSpinner />
+  if (sectionsError) return <ErrorText>Something went wrong</ErrorText>
 
   return (
     <div className="user-logs">
@@ -66,9 +69,10 @@ export default function UserLogs() {
           Filter by section:{' '}
         </label>
         <select id="filter-logs" onChange={handleChange}>
-          {sections.map((section) => (
-            <option key={section.id} value={section.name}>
-              {section.name}
+          <option value={''}>{''}</option>
+          {sections.sections.map((section) => (
+            <option key={section.id} value={section.section_name}>
+              {section.section_name}
             </option>
           ))}
         </select>
@@ -81,19 +85,33 @@ export default function UserLogs() {
           loader={<LoadingSpinner key={0} />}
           threshold={50}
         >
-          {userLogs.userLogs.map((log, index) => (
-            <LogEntry
-              key={index}
-              createdAt={Intl.DateTimeFormat('en-US', {
-                dateStyle: 'medium',
-                timeStyle: 'short',
-              }).format(new Date(log.createdAt))}
-              actionDescription={log.action_description}
-              fullName={log.full_name}
-              section={log.section}
-              userId={log.user_id}
-            />
-          ))}
+          {selectedSection === ''
+            ? userLogs.userLogs.map((log, index) => (
+                <LogEntry
+                  key={index}
+                  createdAt={Intl.DateTimeFormat('en-US', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short',
+                  }).format(new Date(log.createdAt))}
+                  actionDescription={log.action_description}
+                  fullName={log.full_name}
+                  section={log.section}
+                  userId={log.user_id}
+                />
+              ))
+            : logsPerSection.map((log, index) => (
+                <LogEntry
+                  key={index}
+                  createdAt={Intl.DateTimeFormat('en-US', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short',
+                  }).format(new Date(log.createdAt))}
+                  actionDescription={log.action_description}
+                  fullName={log.full_name}
+                  section={log.section}
+                  userId={log.user_id}
+                />
+              ))}
         </InfiniteScroll>
       </div>
     </div>
