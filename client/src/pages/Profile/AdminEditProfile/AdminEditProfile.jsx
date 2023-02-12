@@ -162,17 +162,6 @@ export default function AdminEditProfile({ closeModal, profileData }) {
               />
             </div>
             <div className="profile-settings__input-container">
-              <label htmlFor="username">Username: </label>
-              <input
-                className="profile-settings-input"
-                type="text"
-                name="username"
-                onChange={handleChange}
-                id="username"
-                value={values.username}
-              />
-            </div>
-            <div className="profile-settings__input-container">
               <label htmlFor="password">Change password: </label>
               <input
                 className="profile-settings-input"
