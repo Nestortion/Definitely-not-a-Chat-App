@@ -88,7 +88,9 @@ export default function SoloGroup() {
       {shouldShowModal && (
         <SpawnModal title="Confirm" closeModal={hideModal}>
           <div className="confirm-modal">
-            <p className="fw-bold">Are you sure?</p>
+            <p className="fw-bold">
+              Are you sure? once set, this chat's messages will not be available
+            </p>
             <div className="confirm-modal__button-group">
               <Button onClick={handleSetToInspected}>Yes</Button>
               <Button onClick={hideModal} secondary>
