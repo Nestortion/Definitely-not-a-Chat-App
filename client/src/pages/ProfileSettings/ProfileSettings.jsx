@@ -70,9 +70,16 @@ export default function ProfileSettings() {
   const handleImageChange = (e) => {
     const validity = e.target.validity
     const validFiles = ['image/jpeg', 'image/png']
+    const MAX_FILE_SIZE = 2e7 // 20MB
     const uploadedFile = e.target.files[0]
 
-    if (!validFiles.includes(uploadedFile.type)) return
+    if (
+      !validFiles.includes(uploadedFile.type) ||
+      uploadedFile.size > MAX_FILE_SIZE
+    ) {
+      warn('Error: File too large')
+      return
+    }
     if (validity.valid) {
       setValues((prev) => ({
         ...prev,

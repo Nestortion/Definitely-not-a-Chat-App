@@ -21,6 +21,16 @@ export default function AdminEditProfile({ closeModal, profileData }) {
       },
     })
 
+  const warn = (text) =>
+    toast(text, {
+      position: toast.POSITION.TOP_CENTER,
+      style: {
+        color: 'var(--clr-neutral-100)',
+        backgroundColor: 'var(--clr-error-400)',
+        fontSize: 'clamp(0.8rem, 1.3vw, 1.5rem)',
+      },
+    })
+
   const initialState = {
     user_id: profileData.id,
     profileLink: `${apiBasePath}/pfp/${profileData.profile_img}`,
@@ -47,9 +57,16 @@ export default function AdminEditProfile({ closeModal, profileData }) {
   const handleImageChange = (e) => {
     const validity = e.target.validity
     const validFiles = ['image/jpeg', 'image/png']
+    const MAX_FILE_SIZE = 2e7 // 20MB
     const uploadedFile = e.target.files[0]
 
-    if (!validFiles.includes(uploadedFile.type)) return
+    if (
+      !validFiles.includes(uploadedFile.type) ||
+      uploadedFile.size > MAX_FILE_SIZE
+    ) {
+      warn('Error: File too large')
+      return
+    }
     if (validity.valid) {
       setValues((prev) => ({
         ...prev,

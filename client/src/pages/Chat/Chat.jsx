@@ -23,6 +23,7 @@ import ChatMessagesContainer from '../../components/Messages/ChatMessagesContain
 import SpawnModal from '../../components/UI/Modal/SpawnModal'
 import AddMembers from '../../components/SettingsButtons/AddMembers/AddMembers'
 import { useEffect } from 'react'
+import { toast } from 'react-toastify'
 
 export default function Chat() {
   const { chatId } = useParams()
@@ -35,6 +36,16 @@ export default function Chat() {
   const [fileInput, setFileInput] = useState(null)
   const [message, setMessage] = useState('')
   const [isModalShowing, setIsModalShowing] = useState(false)
+
+  const warn = (text) =>
+    toast(text, {
+      position: toast.POSITION.TOP_CENTER,
+      style: {
+        color: 'var(--clr-neutral-100)',
+        backgroundColor: 'var(--clr-error-400)',
+        fontSize: 'clamp(0.8rem, 1.3vw, 1.5rem)',
+      },
+    })
 
   const {
     data: otherUser,
@@ -99,6 +110,9 @@ export default function Chat() {
 
     if (validity.valid && file?.size < MAX_FILE_SIZE) {
       setFileInput(file)
+    } else {
+      warn('Error: File too large')
+      return
     }
   }
 
