@@ -5,7 +5,7 @@ import LoadingSpinner from '../../components/Loading/LoadingSpinner/LoadingSpinn
 import NavBar from '../../components/NavBar/NavBar'
 import SlidingMenu from '../../components/UI/SlidingMenu/SlidingMenu'
 import { apiBasePath } from '../../data/config'
-import { setAccessToken } from '../../graphql/authStore'
+import { getAccessToken, setAccessToken } from '../../graphql/authStore'
 import './admin.scss'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
