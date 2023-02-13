@@ -4,6 +4,7 @@ import Avatar from '../../../../components/UI/Avatar/Avatar'
 import { useEffect, useState } from 'react'
 import {
   ReportDocument,
+  SystemStatsDocument,
   useReportQuery,
   useUpdateReportStatusMutation,
 } from '../../../../graphql/hooks/graphql'
@@ -59,6 +60,22 @@ export default function Report() {
             },
           },
         })
+
+        const systemStatsData = cache.readQuery({ query: SystemStatsDocument })
+
+        if (systemStatsData) {
+          cache.writeQuery({
+            query: SystemStatsDocument,
+            data: {
+              systemStats: {
+                ...systemStatsData.systemStats,
+                pendingReportCount: currentStatus
+                  ? systemStatsData.systemStats.pendingReportCount - 1
+                  : systemStatsData.systemStats.pendingReportCount + 1,
+              },
+            },
+          })
+        }
       },
     })
   }
