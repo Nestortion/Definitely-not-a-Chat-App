@@ -738,10 +738,14 @@ const resolvers = {
               { where: { id: group.id } }
             )
 
+            const updatedGroupWithThreat = await Groups.findOne({
+              where: { id: group.id },
+            })
+
             pubsub.publish('CHAT_THREAT_DETECTED', {
               chatThreatDetected: {
                 current_user: actionUser,
-                group,
+                group: updatedGroupWithThreat,
               },
             })
           }
