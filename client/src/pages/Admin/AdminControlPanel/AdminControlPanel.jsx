@@ -65,6 +65,8 @@ export default function AdminControlPanel() {
   useEffect(() => {
     if (systemStats?.systemStats.pendingReportCount > 0) {
       setHasNotif(true)
+    } else {
+      setHasNotif(false)
     }
   }, [systemStats?.systemStats.pendingReportCount])
 

@@ -1,3 +1,3 @@
 import { atom } from 'jotai'
 
-export const hasNotifStore = atom(true)
+export const hasNotifStore = atom(false)

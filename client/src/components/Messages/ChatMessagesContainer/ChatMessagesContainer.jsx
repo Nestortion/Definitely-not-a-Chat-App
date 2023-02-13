@@ -92,7 +92,7 @@ export default function ChatMessagesContainer() {
             data: {
               systemStats: {
                 ...systemStatsData.systemStats,
-                pendingReportCount: !chatThreatIds.includes(
+                pendingReportCount: !chatThreatIds?.includes(
                   subscriptionData.data.chatThreatDetected.group.id
                 )
                   ? systemStatsData.systemStats.pendingReportCount + 1
