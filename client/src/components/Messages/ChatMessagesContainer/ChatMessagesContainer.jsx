@@ -73,10 +73,14 @@ export default function ChatMessagesContainer() {
             data: {
               reports: {
                 ...reportsData.reports,
-                chat_with_threat: [
-                  ...reportsData.reports.chat_with_threat,
-                  subscriptionData.data.chatThreatDetected.group,
-                ],
+                chat_with_threat: !chatThreatIds.includes(
+                  subscriptionData.data.chatThreatDetected.group.id
+                )
+                  ? [
+                      ...reportsData.reports.chat_with_threat,
+                      subscriptionData.data.chatThreatDetected.group,
+                    ]
+                  : [...reportsData.reports.chat_with_threat],
               },
             },
           })

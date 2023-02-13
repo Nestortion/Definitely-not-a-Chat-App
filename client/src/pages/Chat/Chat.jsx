@@ -43,10 +43,29 @@ export default function Chat() {
   } = useOtherUserQuery({ variables: { groupId: parseInt(chatId) } })
 
   const [sendMessage] = useAddUserChatMutation({
-    refetchQueries: [
-      { query: UserChatsDocument },
-      { query: ReportedChatDocument, variables: { groupId: parseInt(chatId) } },
-    ],
+    refetchQueries: [{ query: UserChatsDocument }],
+    update: (cache, { data }) => {
+      const reportedChatData = cache.readQuery({
+        query: ReportedChatDocument,
+        variables: { groupId: parseInt(chatId) },
+      })
+
+      if (reportedChatData) {
+        cache.writeQuery({
+          query: ReportedChatDocument,
+          variables: { groupId: parseInt(chatId) },
+          data: {
+            reportedChat: {
+              ...reportedChatData.reportedChat,
+              chat_messages: [
+                ...reportedChatData.reportedChat.chat_messages,
+                data.addUserChat,
+              ],
+            },
+          },
+        })
+      }
+    },
   })
   const {
     data: roles,
