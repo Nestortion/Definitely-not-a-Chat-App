@@ -5,6 +5,7 @@ import Avatar from '../../components/UI/Avatar/Avatar'
 import { useMediaQuery } from 'react-responsive'
 import {
   GroupUpdateDocument,
+  ReportedChatDocument,
   useAddUserChatMutation,
   useCurrentUserGroupRolesQuery,
   useGroupQuery,
@@ -42,7 +43,10 @@ export default function Chat() {
   } = useOtherUserQuery({ variables: { groupId: parseInt(chatId) } })
 
   const [sendMessage] = useAddUserChatMutation({
-    refetchQueries: [{ query: UserChatsDocument }],
+    refetchQueries: [
+      { query: UserChatsDocument },
+      { query: ReportedChatDocument, variables: { groupId: parseInt(chatId) } },
+    ],
   })
   const {
     data: roles,
