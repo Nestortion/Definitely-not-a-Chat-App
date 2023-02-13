@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.min.css'
 import { Provider } from 'jotai'
 import { useCurrentUserQuery } from '../../graphql/hooks/graphql'
 import ErrorText from '../../components/Error/ErrorText'
+import BlankWrapper from './BlankWrapper/BlankWrapper'
 
 export default function Admin() {
   const [menuShouldShow, setMenuShouldShow] = useState(false)
@@ -53,7 +54,9 @@ export default function Admin() {
       <NavBar />
       {menuShouldShow && <SlidingMenu closeMenu={closeMenu} />}
       <div className="admin-layout__main">
-        <Outlet context={{ openMenu, closeMenu, user }} />
+        <BlankWrapper>
+          <Outlet context={{ openMenu, closeMenu, user }} />
+        </BlankWrapper>
       </div>
       <AdminActions isOpen={menuShouldShow} openMenu={toggleMenu} />
       <ToastContainer />
