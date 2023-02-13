@@ -244,6 +244,11 @@ const cache = new InMemoryCache({
             return incoming
           },
         },
+        reportedChat: {
+          merge(existing, incoming) {
+            return incoming
+          },
+        },
       },
     },
   },
