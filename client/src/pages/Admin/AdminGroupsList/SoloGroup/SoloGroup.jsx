@@ -4,7 +4,9 @@ import Avatar from '../../../../components/UI/Avatar/Avatar'
 import {
   ReportedChatDocument,
   ReportsDocument,
+  SystemStatsDocument,
   useClearChatThreatMutation,
+  UserChatsDocument,
   useReportedChatQuery,
 } from '../../../../graphql/hooks/graphql'
 import LoadingSpinner from '../../../../components/Loading/LoadingSpinner/LoadingSpinner'
@@ -40,9 +42,9 @@ export default function SoloGroup() {
   }
 
   const handleSetToInspected = async () => {
-    console.log(`Set group: ${groupId} hasThreat to false`)
     await clearChatThreat({
       variables: { groupId: parseInt(groupId) },
+      refetchQueries: [{ query: UserChatsDocument }],
       update: (cache, { data }) => {
         const { reportedChat } = cache.readQuery({
           query: ReportedChatDocument,
@@ -78,6 +80,21 @@ export default function SoloGroup() {
             },
           },
         })
+
+        const systemStatsData = cache.readQuery({ query: SystemStatsDocument })
+
+        if (systemStatsData) {
+          cache.writeQuery({
+            query: SystemStatsDocument,
+            data: {
+              systemStats: {
+                ...systemStatsData.systemStats,
+                pendingReportCount:
+                  systemStatsData.systemStats.pendingReportCount - 1,
+              },
+            },
+          })
+        }
       },
     })
     hideModal()
