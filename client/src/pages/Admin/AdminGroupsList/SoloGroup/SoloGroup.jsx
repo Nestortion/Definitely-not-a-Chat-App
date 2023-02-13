@@ -46,42 +46,46 @@ export default function SoloGroup() {
       variables: { groupId: parseInt(groupId) },
       refetchQueries: [{ query: UserChatsDocument }],
       update: (cache, { data }) => {
-        const { reportedChat } = cache.readQuery({
+        const reportedChatData = cache.readQuery({
           query: ReportedChatDocument,
           variables: { groupId: parseInt(groupId) },
         })
 
-        cache.writeQuery({
-          query: ReportedChatDocument,
-          variables: { groupId: parseInt(groupId) },
-          data: {
-            reportedChat: {
-              ...reportedChat,
-              group_data: {
-                ...reportedChat.group_data,
-                has_threat: data.clearChatThreat,
-              },
-            },
-          },
-        })
-
-        const { reports } = cache.readQuery({
+        const reportsData = cache.readQuery({
           query: ReportsDocument,
-        })
-
-        cache.writeQuery({
-          query: ReportsDocument,
-          data: {
-            reports: {
-              ...reports,
-              chat_with_threat: reports.chat_with_threat.filter(
-                (chat) => chat.id !== parseInt(groupId)
-              ),
-            },
-          },
         })
 
         const systemStatsData = cache.readQuery({ query: SystemStatsDocument })
+
+        if (reportedChatData) {
+          cache.writeQuery({
+            query: ReportedChatDocument,
+            variables: { groupId: parseInt(groupId) },
+            data: {
+              reportedChat: {
+                ...reportedChatData.reportedChat,
+                group_data: {
+                  ...reportedChatData.reportedChat.group_data,
+                  has_threat: data.clearChatThreat,
+                },
+              },
+            },
+          })
+        }
+
+        if (reportsData) {
+          cache.writeQuery({
+            query: ReportsDocument,
+            data: {
+              reports: {
+                ...reportsData.reports,
+                chat_with_threat: reportsData.reports.chat_with_threat.filter(
+                  (chat) => chat.id !== parseInt(groupId)
+                ),
+              },
+            },
+          })
+        }
 
         if (systemStatsData) {
           cache.writeQuery({
@@ -253,7 +257,7 @@ export default function SoloGroup() {
                     </div>
                     <span>
                       {message.message_type === 'TEXT'
-                        ? message.message
+                        ? message.unfilteredMessage
                         : 'Sent a file/image'}
                     </span>
                   </div>
