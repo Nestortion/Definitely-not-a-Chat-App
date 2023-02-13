@@ -569,6 +569,7 @@ export type User = {
   disabled: Scalars['Boolean']
   first_name: Scalars['String']
   gender: Scalars['String']
+  hasNotif?: Maybe<Scalars['Boolean']>
   id: Scalars['Int']
   last_name: Scalars['String']
   password: Scalars['String']
@@ -870,6 +871,7 @@ export type CurrentUserQuery = {
     age: number
     gender: string
     birthdate: any
+    hasNotif?: boolean | null
     section: {
       __typename?: 'Section'
       id: number
@@ -2549,6 +2551,7 @@ export const CurrentUserDocument = gql`
         section_name
         disabled
       }
+      hasNotif
     }
   }
 `

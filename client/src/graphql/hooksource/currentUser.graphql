@@ -17,5 +17,6 @@ query CurrentUser {
       section_name
       disabled
     }
+    hasNotif
   }
 }
