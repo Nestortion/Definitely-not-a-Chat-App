@@ -1,5 +1,5 @@
-subscription ChatThreatDetected {
-  chatThreatDetected {
+subscription ChatThreatDetected($user: Int) {
+  chatThreatDetected(user: $user) {
     group {
       id
       group_name

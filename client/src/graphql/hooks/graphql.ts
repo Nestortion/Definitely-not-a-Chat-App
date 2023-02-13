@@ -511,6 +511,10 @@ export type SubscriptionChatAddedArgs = {
   user?: InputMaybe<Scalars['Int']>
 }
 
+export type SubscriptionChatThreatDetectedArgs = {
+  user?: InputMaybe<Scalars['Int']>
+}
+
 export type SubscriptionGroupCreatedArgs = {
   user?: InputMaybe<Scalars['Int']>
 }
@@ -784,7 +788,7 @@ export type ChatAddedSubscription = {
 }
 
 export type ChatThreatDetectedSubscriptionVariables = Exact<{
-  [key: string]: never
+  user?: InputMaybe<Scalars['Int']>
 }>
 
 export type ChatThreatDetectedSubscription = {
@@ -2319,8 +2323,8 @@ export type ChatAddedSubscriptionHookResult = ReturnType<
 export type ChatAddedSubscriptionResult =
   Apollo.SubscriptionResult<ChatAddedSubscription>
 export const ChatThreatDetectedDocument = gql`
-  subscription ChatThreatDetected {
-    chatThreatDetected {
+  subscription ChatThreatDetected($user: Int) {
+    chatThreatDetected(user: $user) {
       group {
         id
         group_name
@@ -2351,6 +2355,7 @@ export const ChatThreatDetectedDocument = gql`
  * @example
  * const { data, loading, error } = useChatThreatDetectedSubscription({
  *   variables: {
+ *      user: // value for 'user'
  *   },
  * });
  */
