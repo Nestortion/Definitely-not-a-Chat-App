@@ -19,6 +19,7 @@ const typeDefs = `
     gender: String!
     birthdate: Date!
     disabled: Boolean!
+    hasNotif: Boolean
   }
 
   enum AccessLevel {
