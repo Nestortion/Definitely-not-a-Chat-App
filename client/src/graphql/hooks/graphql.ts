@@ -582,6 +582,7 @@ export type UserChat = {
   message_type: MessageType
   receiver?: Maybe<Scalars['Int']>
   senderImage: Scalars['String']
+  unfilteredMessage?: Maybe<Scalars['String']>
   user_id: Scalars['Int']
 }
 
@@ -695,6 +696,9 @@ export type AddUserChatMutation = {
     message_type: MessageType
     receiver?: number | null
     user_id: number
+    createdAt: any
+    senderImage: string
+    unfilteredMessage?: string | null
   } | null
 }
 
@@ -1350,6 +1354,7 @@ export type ReportedChatQuery = {
       message_type: MessageType
       createdAt: any
       senderImage: string
+      unfilteredMessage?: string | null
     } | null> | null
   } | null
 }
@@ -1988,6 +1993,9 @@ export const AddUserChatDocument = gql`
       message_type
       receiver
       user_id
+      createdAt
+      senderImage
+      unfilteredMessage
     }
   }
 `
@@ -3786,6 +3794,7 @@ export const ReportedChatDocument = gql`
         message_type
         createdAt
         senderImage
+        unfilteredMessage
       }
     }
   }

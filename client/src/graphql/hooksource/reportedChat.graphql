@@ -38,6 +38,7 @@ query ReportedChat($groupId: Int!) {
       message_type
       createdAt
       senderImage
+      unfilteredMessage
     }
   }
 }
