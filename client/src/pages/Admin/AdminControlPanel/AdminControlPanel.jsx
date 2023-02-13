@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Avatar from '../../../components/UI/Avatar/Avatar'
 import './admin-control-panel.scss'
-import { MdArrowForwardIos, MdSettings } from 'react-icons/md'
+import { MdArrowForwardIos, MdSettings, MdWarning } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import GroupList from '../../../components/GroupList/GroupList'
 import {
@@ -91,6 +91,7 @@ export default function AdminControlPanel() {
             <p className="control-panel__top-heading">
               Pending Reports/Threats
             </p>
+            <p>{hasNotif && <MdWarning size={24} />}</p>
             <p className="control-panel__top-number fw-bold">
               {systemStats.systemStats.pendingReportCount}
             </p>
