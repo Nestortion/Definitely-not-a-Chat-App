@@ -67,29 +67,35 @@ export default function Reports() {
             <p className="fw-bold fs-500">Chats with potential threats</p>
 
             <div className="reports-potential-threats-list">
-              {reportsFetch.reports.chat_with_threat.map((groupChat) => (
-                <Link
-                  style={{
-                    textDecoration: 'none',
-                    width: '100%',
-                  }}
-                  to={`/admin/groups/${groupChat.id}`}
-                  key={groupChat.id}
-                  className="reports-potential-threats"
-                >
-                  <span>{groupChat.id}</span>
-                  <Avatar
-                    src={`${apiBasePath}/grouppfp/${groupChat.group_picture}`}
-                    size={24}
-                  />
-                  <span>{groupChat.group_name}</span>
-                  <span>
-                    {groupChat.is_group === 'true'
-                      ? 'Group chat'
-                      : 'Private chat'}
-                  </span>
-                </Link>
-              ))}
+              {reportsFetch.reports.chat_with_threat.length > 0 ? (
+                reportsFetch.reports.chat_with_threat.map(
+                  (groupChat, index) => (
+                    <Link
+                      style={{
+                        textDecoration: 'none',
+                        width: '100%',
+                      }}
+                      to={`/admin/groups/${groupChat.id}`}
+                      key={index}
+                      className="reports-potential-threats"
+                    >
+                      <span>{groupChat.id}</span>
+                      <Avatar
+                        src={`${apiBasePath}/grouppfp/${groupChat.group_picture}`}
+                        size={24}
+                      />
+                      <span>{groupChat.group_name}</span>
+                      <span>
+                        {groupChat.is_group === 'true'
+                          ? 'Group chat'
+                          : 'Private chat'}
+                      </span>
+                    </Link>
+                  )
+                )
+              ) : (
+                <h1>No threats at the moment!</h1>
+              )}
             </div>
           </div>
 
