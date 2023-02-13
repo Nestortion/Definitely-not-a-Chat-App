@@ -239,6 +239,11 @@ const cache = new InMemoryCache({
             return incoming
           },
         },
+        systemStats: {
+          merge(existing, incoming) {
+            return incoming
+          },
+        },
       },
     },
   },
