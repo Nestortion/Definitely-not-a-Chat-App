@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { Outlet } from 'react-router-dom'
 import AdminActions from '../../components/AdminActions/AdminActions'
 import LoadingSpinner from '../../components/Loading/LoadingSpinner/LoadingSpinner'
 import NavBar from '../../components/NavBar/NavBar'
@@ -29,11 +28,6 @@ export default function Admin() {
   const closeMenu = () => {
     setMenuShouldShow(false)
   }
-  const {
-    data: user,
-    loading: userLoading,
-    error: userError,
-  } = useCurrentUserQuery()
 
   useEffect(() => {
     fetch(`${apiBasePath}/refresh_token`, {
@@ -46,17 +40,13 @@ export default function Admin() {
     })
   }, [])
 
-  if (userLoading) return <LoadingSpinner />
-  if (userError) return <ErrorText>Something went wrong</ErrorText>
   if (loading) return <LoadingSpinner />
   return (
     <div className="admin-layout">
       <NavBar />
       {menuShouldShow && <SlidingMenu closeMenu={closeMenu} />}
       <div className="admin-layout__main">
-        <BlankWrapper>
-          <Outlet context={{ openMenu, closeMenu, user }} />
-        </BlankWrapper>
+        <BlankWrapper openMenu={openMenu} closeMenu={closeMenu} />
       </div>
       <AdminActions isOpen={menuShouldShow} openMenu={toggleMenu} />
       <ToastContainer />
