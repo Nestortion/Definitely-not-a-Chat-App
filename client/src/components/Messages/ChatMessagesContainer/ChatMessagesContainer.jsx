@@ -1,5 +1,8 @@
 import {
   ChatAddedDocument,
+  ChatThreatDetectedDocument,
+  ReportsDocument,
+  SystemStatsDocument,
   useCurrentUserQuery,
   useUserChatsLazyQuery,
   useUserChatsQuery,
@@ -16,7 +19,7 @@ import { MdClose } from 'react-icons/md'
 import { useParams } from 'react-router-dom'
 
 export default function ChatMessagesContainer() {
-  const [chatsQuery, { data: chatsFetch, subscribeToMore }] =
+  const [chatsQuery, { data: chatsFetch, subscribeToMore, client }] =
     useUserChatsLazyQuery()
 
   const { chatId } = useParams()
@@ -46,6 +49,53 @@ export default function ChatMessagesContainer() {
         let previousChats = prev.userChats
         return {
           userChats: [...previousChats, subscriptionData.data.chatAdded],
+        }
+      },
+    })
+
+    subscribeToMore({
+      document: ChatThreatDetectedDocument,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev
+
+        const systemStatsData = client.readQuery({ query: SystemStatsDocument })
+        const reportsData = client.readQuery({ query: ReportsDocument })
+
+        let chatThreatIds
+
+        if (reportsData) {
+          chatThreatIds = reportsData.reports.chat_with_threat.map(
+            (chat) => chat.id
+          )
+
+          client.writeQuery({
+            query: ReportsDocument,
+            data: {
+              reports: {
+                ...reportsData.reports,
+                chat_with_threat: [
+                  ...reportsData.reports.chat_with_threat,
+                  subscriptionData.data.chatThreatDetected.group,
+                ],
+              },
+            },
+          })
+        }
+
+        if (systemStatsData) {
+          client.writeQuery({
+            query: SystemStatsDocument,
+            data: {
+              systemStats: {
+                ...systemStatsData.systemStats,
+                pendingReportCount: !chatThreatIds.includes(
+                  subscriptionData.data.chatThreatDetected.group.id
+                )
+                  ? systemStatsData.systemStats.pendingReportCount + 1
+                  : systemStatsData.systemStats.pendingReportCount,
+              },
+            },
+          })
         }
       },
     })
