@@ -53,13 +53,9 @@ const resolvers = {
     hasNotif: async ({ access_level }) => {
       const hasThreat = await Groups.findAll({ where: { has_threat: true } })
 
-      const hasReport = await Reports.findAll()
+      const hasReport = await Reports.findAll({ where: { is_resolved: false } })
 
-      if (
-        access_level === 'ADMIN' &&
-        hasThreat.length > 0 &&
-        hasReport.length > 0
-      )
+      if (access_level === 'ADMIN' && hasThreat.length + hasReport.length > 0)
         return true
       return false
     },
