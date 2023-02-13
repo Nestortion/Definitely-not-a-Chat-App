@@ -56,15 +56,14 @@ const resolvers = {
       const user = await Users.findOne({ where: { id: user_id } })
       return user.profile_img
     },
+    message: ({ message }) => {
+      return filter.clean(message)
+    },
+    unfilteredMessage: ({ message }) => message,
   },
   GraphData: {
     color: () => {
       return randomColor({ luminosity: 'dark' })
-    },
-  },
-  ReportedChatDetails: {
-    chat_messages: async ({ group_data }) => {
-      return UserChats.findAll({ where: { receiver: group_data.id } })
     },
   },
   Upload: GraphQLUpload,
@@ -174,12 +173,7 @@ const resolvers = {
         where: { receiver: groupIds },
       })
 
-      const filteredUserChats = userChats.map((userchat) => {
-        userchat.message = filter.clean(userchat.message)
-        return userchat
-      })
-
-      return filteredUserChats
+      return userChats
     },
     groups: async (_, { limit, offset }, context) => {
       const { data: user } = authMiddleware(context)
@@ -309,8 +303,6 @@ const resolvers = {
           if (!latestchat) {
             return null
           }
-          latestchat.message
-          latestchat.message = filter.clean(latestchat.message)
           return latestchat
         })
         .filter((userchat) => userchat !== null)
@@ -560,10 +552,26 @@ const resolvers = {
         })
       )
 
+      const chat_messages = await UserChats.findAll({
+        where: { receiver: group_id },
+      })
+
+      const origChats = chat_messages.map((message) => {
+        return {
+          id: message.id,
+          message: message.message,
+          user_id: message.user_id,
+          receiver: message.receiver,
+          createdAt: message.createdAt,
+          message_type: message.message_type,
+        }
+      })
+
       return {
         group_data,
         allMembers,
         roleMembers,
+        chat_messages: origChats,
       }
     },
     sections: async (_, __, context) => {

@@ -35,6 +35,7 @@ const typeDefs = `
     message_type: MessageType!
     createdAt: DateTime!
     senderImage: String!
+    unfilteredMessage: String
   }
 
   enum MessageType {
