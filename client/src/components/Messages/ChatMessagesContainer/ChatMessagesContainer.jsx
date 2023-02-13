@@ -17,12 +17,15 @@ import { searchInput, isSearching } from '../../../App'
 import Button from '../../UI/Button/Button'
 import { MdClose } from 'react-icons/md'
 import { useParams } from 'react-router-dom'
+import { hasNotifStore } from '../../../store/notificationStore'
 
 export default function ChatMessagesContainer() {
   const [chatsQuery, { data: chatsFetch, subscribeToMore, client }] =
     useUserChatsLazyQuery()
 
   const { chatId } = useParams()
+
+  const [, setHasNotif] = useAtom(hasNotifStore)
 
   const {
     data: chatz,
@@ -55,9 +58,14 @@ export default function ChatMessagesContainer() {
 
     subscribeToMore({
       document: ChatThreatDetectedDocument,
+      variables: { user: user.currentUser.id },
       updateQuery: (prev, { subscriptionData }) => {
+        console.log('kek')
         if (!subscriptionData.data) return prev
 
+        setHasNotif(true)
+
+        console.log('yello')
         const systemStatsData = client.readQuery({ query: SystemStatsDocument })
         const reportsData = client.readQuery({ query: ReportsDocument })
 

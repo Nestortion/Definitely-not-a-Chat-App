@@ -16,6 +16,7 @@ export default function UserCard({
   first_name,
   showOnlyMiddle,
   user,
+  access_level,
 }) {
   const [userSettingsIsShowing, setUserSettingsIsShowing] = useState(false)
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
@@ -53,7 +54,7 @@ export default function UserCard({
             alt={`${first_name}'s profile pic`}
             size="48"
           />
-          {hasNotif && (
+          {access_level === 'ADMIN' && hasNotif && (
             <div className="user-card__has-notif">
               <MdWarning size={20} />
             </div>
