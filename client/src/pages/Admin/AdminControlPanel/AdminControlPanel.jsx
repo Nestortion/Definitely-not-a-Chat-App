@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Avatar from '../../../components/UI/Avatar/Avatar'
 import './admin-control-panel.scss'
 import { MdArrowForwardIos, MdSettings, MdWarning } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import GroupList from '../../../components/GroupList/GroupList'
 import {
+  ChatThreatDetectedDocument,
   useGraphDataQuery,
   useGroupListQuery,
   useSystemStatsQuery,
@@ -16,7 +17,7 @@ import { apiBasePath } from '../../../data/config'
 import { PieChart } from 'react-minimal-pie-chart'
 
 export default function AdminControlPanel() {
-  const [hasNotif, setHasNotif] = useState(true)
+  const [hasNotif, setHasNotif] = useState(false)
 
   const {
     data: graphData,
@@ -28,8 +29,8 @@ export default function AdminControlPanel() {
     data: systemStats,
     loading: systemStatsLoading,
     error: systemStatsError,
+    subscribeToMore,
   } = useSystemStatsQuery()
-  const [pendingReports] = useState(0)
 
   const {
     data: topFourUsers,
@@ -42,6 +43,28 @@ export default function AdminControlPanel() {
     loading: topFourGroupChatsLoading,
     error: topFourGroupChatsError,
   } = useGroupListQuery({ variables: { limit: 4 } })
+
+  useEffect(() => {
+    subscribeToMore({
+      document: ChatThreatDetectedDocument,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev
+
+        return {
+          systemStats: {
+            ...prev.systemStats,
+            pendingReportCount: prev.systemStats.pendingReportCount + 1,
+          },
+        }
+      },
+    })
+  }, [])
+
+  useEffect(() => {
+    if (systemStats?.systemStats.pendingReportCount > 0) {
+      setHasNotif(true)
+    }
+  }, [systemStats?.systemStats.pendingReportCount])
 
   if (graphDataLoading) return <LoadingSpinner />
   if (graphDataError) return <ErrorText>Something Went Wrong</ErrorText>
