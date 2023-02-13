@@ -67,6 +67,11 @@ export default function Reports() {
             <p className="fw-bold fs-500">Chats with potential threats</p>
 
             <div className="reports-potential-threats-list">
+              {reportsFetch.reports.chat_with_threat.length === 0 ? (
+                <div className="reports-potential-threats-none">
+                  <p>No potential threats</p>
+                </div>
+              ) : null}
               {reportsFetch.reports.chat_with_threat.map((groupChat) => (
                 <Link
                   style={{
