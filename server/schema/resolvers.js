@@ -1857,8 +1857,9 @@ const resolvers = {
       subscribe: withFilter(
         (_, __, { pubsub }) => pubsub.asyncIterator('CHAT_THREAT_DETECTED'),
         async (payload, variables) => {
-          if (payload.chatThreatDetected.current_user.access_level === 'ADMIN')
-            return true
+          const user = await Users.findOne({ where: { id: variables.user } })
+
+          if (user.access_level === 'ADMIN') return true
           return false
         }
       ),

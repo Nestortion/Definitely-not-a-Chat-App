@@ -322,7 +322,7 @@ const typeDefs = `
     memberRemoved(user: Int, group_id: Int): MemberRemovedResponse
     groupRolesUpdated(user: Int, group_id: Int) : GroupRolesUpdatedResponse
     memberRolesUpdated(user:Int, group_id: Int) : UpdateUserGroupRolesResponse
-    chatThreatDetected : ChatThreatDetectedReponse
+    chatThreatDetected(user:Int) : ChatThreatDetectedReponse
   }
 
 `
