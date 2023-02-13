@@ -9,6 +9,7 @@ import { setAccessToken } from '../../graphql/authStore'
 import './admin.scss'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
+import { Provider } from 'jotai'
 
 export default function Admin() {
   const [menuShouldShow, setMenuShouldShow] = useState(false)
@@ -39,14 +40,16 @@ export default function Admin() {
 
   if (loading) return <LoadingSpinner />
   return (
-    <div className="admin-layout">
-      <NavBar />
-      {menuShouldShow && <SlidingMenu closeMenu={closeMenu} />}
-      <div className="admin-layout__main">
-        <Outlet context={[openMenu, closeMenu]} />
+    <Provider>
+      <div className="admin-layout">
+        <NavBar />
+        {menuShouldShow && <SlidingMenu closeMenu={closeMenu} />}
+        <div className="admin-layout__main">
+          <Outlet context={[openMenu, closeMenu]} />
+        </div>
+        <AdminActions isOpen={menuShouldShow} openMenu={toggleMenu} />
+        <ToastContainer />
       </div>
-      <AdminActions isOpen={menuShouldShow} openMenu={toggleMenu} />
-      <ToastContainer />
-    </div>
+    </Provider>
   )
 }

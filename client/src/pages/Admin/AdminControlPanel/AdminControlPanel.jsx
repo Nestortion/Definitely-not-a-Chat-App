@@ -15,9 +15,11 @@ import LoadingSpinner from '../../../components/Loading/LoadingSpinner/LoadingSp
 import ErrorText from '../../../components/Error/ErrorText'
 import { apiBasePath } from '../../../data/config'
 import { PieChart } from 'react-minimal-pie-chart'
+import { useAtom } from 'jotai'
+import { hasNotifStore } from '../../../store/notificationStore'
 
 export default function AdminControlPanel() {
-  const [hasNotif, setHasNotif] = useState(false)
+  const [hasNotif, setHasNotif] = useAtom(hasNotifStore)
 
   const {
     data: graphData,
