@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import GroupList from '../../../components/GroupList/GroupList'
 import {
   ChatThreatDetectedDocument,
+  CurrentUserDocument,
   useGraphDataQuery,
   useGroupListQuery,
   useSystemStatsQuery,
@@ -15,13 +16,9 @@ import LoadingSpinner from '../../../components/Loading/LoadingSpinner/LoadingSp
 import ErrorText from '../../../components/Error/ErrorText'
 import { apiBasePath } from '../../../data/config'
 import { PieChart } from 'react-minimal-pie-chart'
-import { useAtom } from 'jotai'
-import { hasNotifStore } from '../../../store/notificationStore'
 import { useOutletContext } from 'react-router-dom'
 
 export default function AdminControlPanel() {
-  const [hasNotif, setHasNotif] = useAtom(hasNotifStore)
-
   const { user } = useOutletContext()
 
   const {
@@ -31,6 +28,7 @@ export default function AdminControlPanel() {
   } = useGraphDataQuery()
 
   const {
+    client,
     data: systemStats,
     loading: systemStatsLoading,
     error: systemStatsError,
@@ -42,6 +40,8 @@ export default function AdminControlPanel() {
     loading: topFourUsersLoading,
     error: topFourUsersError,
   } = useUsersQuery({ variables: { limit: 4 } })
+
+  const [hasNotif, setHasNotif] = useState(false)
 
   const {
     data: topFourGroupChats,
@@ -67,9 +67,29 @@ export default function AdminControlPanel() {
   }, [])
 
   useEffect(() => {
+    const { currentUser } = client.readQuery({ query: CurrentUserDocument })
+
     if (systemStats?.systemStats.pendingReportCount > 0) {
+      client.writeQuery({
+        query: CurrentUserDocument,
+        data: {
+          currentUser: {
+            ...currentUser,
+            hasNotif: true,
+          },
+        },
+      })
       setHasNotif(true)
     } else {
+      client.writeQuery({
+        query: CurrentUserDocument,
+        data: {
+          currentUser: {
+            ...currentUser,
+            hasNotif: false,
+          },
+        },
+      })
       setHasNotif(false)
     }
   }, [systemStats?.systemStats.pendingReportCount])

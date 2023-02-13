@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import Avatar from '../../../../components/UI/Avatar/Avatar'
 import { useEffect, useState } from 'react'
 import {
+  CurrentUserDocument,
   ReportDocument,
   SystemStatsDocument,
   useReportQuery,
@@ -23,7 +24,9 @@ export default function Report() {
   } = useReportQuery({ variables: { reportId: parseInt(reportId) } })
 
   const [currentStatus, setCurrentStatus] = useState(false)
-  const [updateReportStatus] = useUpdateReportStatusMutation()
+  const [updateReportStatus] = useUpdateReportStatusMutation({
+    refetchQueries: [{ query: CurrentUserDocument }],
+  })
 
   useEffect(() => {
     setCurrentStatus(report?.report?.report.is_resolved)
@@ -63,7 +66,32 @@ export default function Report() {
 
         const systemStatsData = cache.readQuery({ query: SystemStatsDocument })
 
+        // const { currentUser } = cache.readQuery({ query: CurrentUserDocument })
+
         if (systemStatsData) {
+          // console.log(systemStatsData.systemStats.pendingReportCount)
+          // if (systemStatsData.systemStats.pendingReportCount > 0) {
+          //   cache.writeQuery({
+          //     query: CurrentUserDocument,
+          //     data: {
+          //       currentUser: {
+          //         ...currentUser,
+          //         hasNotif: false,
+          //       },
+          //     },
+          //   })
+          // } else {
+          //   cache.writeQuery({
+          //     query: CurrentUserDocument,
+          //     data: {
+          //       currentUser: {
+          //         ...currentUser,
+          //         hasNotif: true,
+          //       },
+          //     },
+          //   })
+          // }
+
           cache.writeQuery({
             query: SystemStatsDocument,
             data: {
