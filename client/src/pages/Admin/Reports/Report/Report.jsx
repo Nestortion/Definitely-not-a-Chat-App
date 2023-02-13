@@ -66,32 +66,7 @@ export default function Report() {
 
         const systemStatsData = cache.readQuery({ query: SystemStatsDocument })
 
-        // const { currentUser } = cache.readQuery({ query: CurrentUserDocument })
-
         if (systemStatsData) {
-          // console.log(systemStatsData.systemStats.pendingReportCount)
-          // if (systemStatsData.systemStats.pendingReportCount > 0) {
-          //   cache.writeQuery({
-          //     query: CurrentUserDocument,
-          //     data: {
-          //       currentUser: {
-          //         ...currentUser,
-          //         hasNotif: false,
-          //       },
-          //     },
-          //   })
-          // } else {
-          //   cache.writeQuery({
-          //     query: CurrentUserDocument,
-          //     data: {
-          //       currentUser: {
-          //         ...currentUser,
-          //         hasNotif: true,
-          //       },
-          //     },
-          //   })
-          // }
-
           cache.writeQuery({
             query: SystemStatsDocument,
             data: {

@@ -2,6 +2,7 @@ import './solo-group.scss'
 import { Link, useParams } from 'react-router-dom'
 import Avatar from '../../../../components/UI/Avatar/Avatar'
 import {
+  CurrentUserDocument,
   ReportedChatDocument,
   ReportsDocument,
   SystemStatsDocument,
@@ -44,7 +45,10 @@ export default function SoloGroup() {
   const handleSetToInspected = async () => {
     await clearChatThreat({
       variables: { groupId: parseInt(groupId) },
-      refetchQueries: [{ query: UserChatsDocument }],
+      refetchQueries: [
+        { query: UserChatsDocument },
+        { query: CurrentUserDocument },
+      ],
       update: (cache, { data }) => {
         const reportedChatData = cache.readQuery({
           query: ReportedChatDocument,

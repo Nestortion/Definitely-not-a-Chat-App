@@ -80,6 +80,8 @@ export default function ChatMessagesContainer() {
             (chat) => chat.id
           )
 
+          console.log('hello')
+
           client.writeQuery({
             query: ReportsDocument,
             data: {

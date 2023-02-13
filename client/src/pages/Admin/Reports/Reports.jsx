@@ -2,6 +2,8 @@ import './reports.scss'
 import { Link, useNavigate, useOutletContext } from 'react-router-dom'
 import {
   ChatThreatDetectedDocument,
+  CurrentUserDocument,
+  SystemStatsDocument,
   useReportsQuery,
 } from '../../../graphql/hooks/graphql'
 import LoadingSpinner from '../../../components/Loading/LoadingSpinner/LoadingSpinner'
@@ -18,6 +20,7 @@ export default function Reports() {
   const { user } = useOutletContext()
 
   const {
+    client,
     data: reportsFetch,
     loading: reportsFetchLoading,
     error: reportsFetchError,
@@ -34,6 +37,19 @@ export default function Reports() {
       variables: { user: user.currentUser.id },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev
+
+        const { currentUser } = client.readQuery({ query: CurrentUserDocument })
+        client.refetchQueries({ include: [SystemStatsDocument] })
+
+        client.writeQuery({
+          query: CurrentUserDocument,
+          data: {
+            currentUser: {
+              ...currentUser,
+              hasNotif: true,
+            },
+          },
+        })
 
         const prevChatIds = prev.reports.chat_with_threat.map((chat) => chat.id)
 

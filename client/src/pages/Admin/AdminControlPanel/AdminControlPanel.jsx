@@ -7,6 +7,7 @@ import GroupList from '../../../components/GroupList/GroupList'
 import {
   ChatThreatDetectedDocument,
   CurrentUserDocument,
+  ReportsDocument,
   useGraphDataQuery,
   useGroupListQuery,
   useSystemStatsQuery,
@@ -56,6 +57,7 @@ export default function AdminControlPanel() {
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev
 
+        client.refetchQueries({ include: [ReportsDocument] })
         return {
           systemStats: {
             ...prev.systemStats,
