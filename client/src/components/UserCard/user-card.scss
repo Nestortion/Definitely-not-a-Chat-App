@@ -23,6 +23,17 @@
     gap: 0.5rem;
     cursor: pointer;
 
+    .user-card__image-container {
+      position: relative;
+
+      .user-card__has-notif {
+        color: red;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+
     span {
       max-width: 120px;
       overflow: hidden;

@@ -7,6 +7,7 @@ import { useLogoutMutation } from '../../graphql/hooks/graphql'
 import { setAccessToken } from '../../graphql/authStore'
 import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
+import { MdWarning } from 'react-icons/md'
 
 export default function UserCard({
   profile_img,
@@ -18,6 +19,7 @@ export default function UserCard({
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 961px)' })
   const [logout] = useLogoutMutation()
   const navigate = useNavigate()
+  const [hasNotif, setHasNotif] = useState(true)
 
   const toggleUserSettings = () => {
     setUserSettingsIsShowing((prev) => !prev)
@@ -43,11 +45,18 @@ export default function UserCard({
   return (
     <div className={`user-card ${userSettingsIsShowing && 'clicked'}`}>
       <div className="user-card__user-info" onClick={toggleUserSettings}>
-        <Avatar
-          src={`${apiBasePath}/pfp/${profile_img}`}
-          alt={`${first_name}'s profile pic`}
-          size="48"
-        />
+        <div className="user-card__image-container">
+          <Avatar
+            src={`${apiBasePath}/pfp/${profile_img}`}
+            alt={`${first_name}'s profile pic`}
+            size="48"
+          />
+          {hasNotif && (
+            <div className="user-card__has-notif">
+              <MdWarning size={20} />
+            </div>
+          )}
+        </div>
         <span className="fw-bold fs-400">{first_name}</span>
       </div>
       {userSettingsIsShowing && (
