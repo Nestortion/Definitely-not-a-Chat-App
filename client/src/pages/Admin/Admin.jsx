@@ -49,16 +49,14 @@ export default function Admin() {
   if (userError) return <ErrorText>Something went wrong</ErrorText>
   if (loading) return <LoadingSpinner />
   return (
-    <Provider>
-      <div className="admin-layout">
-        <NavBar />
-        {menuShouldShow && <SlidingMenu closeMenu={closeMenu} />}
-        <div className="admin-layout__main">
-          <Outlet context={{ openMenu, closeMenu, user }} />
-        </div>
-        <AdminActions isOpen={menuShouldShow} openMenu={toggleMenu} />
-        <ToastContainer />
+    <div className="admin-layout">
+      <NavBar />
+      {menuShouldShow && <SlidingMenu closeMenu={closeMenu} />}
+      <div className="admin-layout__main">
+        <Outlet context={{ openMenu, closeMenu, user }} />
       </div>
-    </Provider>
+      <AdminActions isOpen={menuShouldShow} openMenu={toggleMenu} />
+      <ToastContainer />
+    </div>
   )
 }

@@ -29,9 +29,5 @@ export default function App() {
 
   if (loading) return <LoadingSpinner />
 
-  return (
-    <Provider>
-      <Layout />
-    </Provider>
-  )
+  return <Layout />
 }

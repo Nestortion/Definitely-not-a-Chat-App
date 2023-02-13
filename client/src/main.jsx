@@ -37,6 +37,7 @@ import Report from './pages/Admin/Reports/Report/Report'
 import SoloGroup from './pages/Admin/AdminGroupsList/SoloGroup/SoloGroup'
 import Register from './pages/Admin/Register/Register'
 import Maintenance from './pages/Maintenance/Maintenance'
+import { Provider } from 'jotai'
 
 const router = createBrowserRouter([
   {
@@ -262,7 +263,9 @@ const client = new ApolloClient({
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <RouterProvider router={router} />
+      <Provider>
+        <RouterProvider router={router} />
+      </Provider>
     </ApolloProvider>
   </React.StrictMode>
 )
