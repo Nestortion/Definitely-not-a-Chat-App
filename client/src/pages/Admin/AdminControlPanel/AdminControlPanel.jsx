@@ -17,9 +17,12 @@ import { apiBasePath } from '../../../data/config'
 import { PieChart } from 'react-minimal-pie-chart'
 import { useAtom } from 'jotai'
 import { hasNotifStore } from '../../../store/notificationStore'
+import { useOutletContext } from 'react-router-dom'
 
 export default function AdminControlPanel() {
   const [hasNotif, setHasNotif] = useAtom(hasNotifStore)
+
+  const { user } = useOutletContext()
 
   const {
     data: graphData,
@@ -49,6 +52,7 @@ export default function AdminControlPanel() {
   useEffect(() => {
     subscribeToMore({
       document: ChatThreatDetectedDocument,
+      variables: { user: user.currentUser.id },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev
 

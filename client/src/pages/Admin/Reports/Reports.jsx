@@ -1,5 +1,5 @@
 import './reports.scss'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useOutletContext } from 'react-router-dom'
 import {
   ChatThreatDetectedDocument,
   useReportsQuery,
@@ -15,6 +15,8 @@ export default function Reports() {
   const resolvedTbodyRef = useRef()
   const pendingTbodyRef = useRef()
 
+  const { user } = useOutletContext()
+
   const {
     data: reportsFetch,
     loading: reportsFetchLoading,
@@ -29,6 +31,7 @@ export default function Reports() {
   useEffect(() => {
     subscribeToMore({
       document: ChatThreatDetectedDocument,
+      variables: { user: user.currentUser.id },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev
 

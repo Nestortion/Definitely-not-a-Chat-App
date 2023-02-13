@@ -10,6 +10,8 @@ import './admin.scss'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import { Provider } from 'jotai'
+import { useCurrentUserQuery } from '../../graphql/hooks/graphql'
+import ErrorText from '../../components/Error/ErrorText'
 
 export default function Admin() {
   const [menuShouldShow, setMenuShouldShow] = useState(false)
@@ -26,6 +28,11 @@ export default function Admin() {
   const closeMenu = () => {
     setMenuShouldShow(false)
   }
+  const {
+    data: user,
+    loading: userLoading,
+    error: userError,
+  } = useCurrentUserQuery()
 
   useEffect(() => {
     fetch(`${apiBasePath}/refresh_token`, {
@@ -38,6 +45,8 @@ export default function Admin() {
     })
   }, [])
 
+  if (userLoading) return <LoadingSpinner />
+  if (userError) return <ErrorText>Something went wrong</ErrorText>
   if (loading) return <LoadingSpinner />
   return (
     <Provider>
@@ -45,7 +54,7 @@ export default function Admin() {
         <NavBar />
         {menuShouldShow && <SlidingMenu closeMenu={closeMenu} />}
         <div className="admin-layout__main">
-          <Outlet context={[openMenu, closeMenu]} />
+          <Outlet context={{ openMenu, closeMenu, user }} />
         </div>
         <AdminActions isOpen={menuShouldShow} openMenu={toggleMenu} />
         <ToastContainer />
