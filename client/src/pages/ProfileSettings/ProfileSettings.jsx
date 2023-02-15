@@ -33,6 +33,7 @@ export default function ProfileSettings() {
       },
     })
 
+  const maxDate = new Date().toISOString().split('T')[0] // set maximum date to today
   const [modalShouldShow, setModalShouldShow] = useState(false)
   const [shouldDisable, setShouldDisable] = useState(false)
   const [passwordInput, setPasswordInput] = useState('')
@@ -289,6 +290,7 @@ export default function ProfileSettings() {
                 type="date"
                 name="birthdate"
                 onChange={handleChange}
+                max={maxDate}
                 id="birthdate"
                 value={values.birthdate}
               />

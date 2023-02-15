@@ -10,6 +10,8 @@ import LoadingSpinner from '../../../components/Loading/LoadingSpinner/LoadingSp
 import ErrorText from '../../../components/Error/ErrorText'
 
 export default function Register() {
+  const maxDate = new Date().toISOString().split('T')[0] // set maximum date to today
+
   const {
     data: sections,
     loading: sectionsLoading,
@@ -158,6 +160,7 @@ export default function Register() {
             type="date"
             id="birthdate"
             name="birthdate"
+            max={maxDate}
             required
           />
         </div>
