@@ -4,5 +4,6 @@ query Groups($userId: Int) {
     id
     group_picture
     is_group
+    pm_name
   }
 }

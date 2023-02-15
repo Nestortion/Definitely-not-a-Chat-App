@@ -85,6 +85,7 @@ export type Group = {
   has_threat: Scalars['Boolean']
   id: Scalars['Int']
   is_group: Scalars['String']
+  pm_name?: Maybe<Scalars['String']>
 }
 
 export type GroupCreatedResponse = {
@@ -1047,6 +1048,7 @@ export type GroupsQuery = {
     id: number
     group_picture: string
     is_group: string
+    pm_name?: string | null
   } | null> | null
 }
 
@@ -3107,6 +3109,7 @@ export const GroupsDocument = gql`
       id
       group_picture
       is_group
+      pm_name
     }
   }
 `
