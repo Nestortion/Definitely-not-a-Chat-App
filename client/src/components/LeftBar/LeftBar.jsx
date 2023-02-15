@@ -60,6 +60,9 @@ export default function LeftBar({ user, showOnlyMiddle }) {
     ;(() => {
       if (searchValue && searchValue.length > 0) {
         const filteredData = chat.groups.filter((group) => {
+          if (group.is_group === 'false') {
+            return group.pm_name.toLowerCase().includes(debounceValue)
+          }
           return group.group_name.toLowerCase().includes(debounceValue)
         })
 
