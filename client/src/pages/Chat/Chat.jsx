@@ -108,6 +108,13 @@ export default function Chat() {
   }) => {
     const MAX_FILE_SIZE = 2e7 // 20MB
 
+    // if (validity.valid && file?.mimetype < MAX_FILE_SIZE) {
+    //   setFileInput(file)
+    // } else {
+    //   warn('Error: File too large')
+    //   return
+    // }
+
     if (validity.valid && file?.size < MAX_FILE_SIZE) {
       setFileInput(file)
     } else {
@@ -122,6 +129,12 @@ export default function Chat() {
 
   const sendMessageHandle = (e) => {
     e.preventDefault()
+
+    if (fileInput?.type.includes('video')) {
+      warn('Error: Videos are Allowed! Please change your file!')
+      return
+    }
+
     if (fileInput && message) {
       sendMessage({
         variables: {
