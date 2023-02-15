@@ -122,11 +122,15 @@ export default function ChatListItem({
             ? title
             : `${otherUser.otherUser.first_name} ${otherUser.otherUser.last_name}`}
         </span>
-        <span className="latest-message fs-400">
-          <span>{latest[0] ? displayLatest(latest[0]) : null}</span>
+        <div className="latest-message fs-400">
+          <p className="latest-message-text">
+            {latest[0] ? displayLatest(latest[0]) : null}
+          </p>
           {latest[0] && ` ● `}
-          <span>{latest[0] && displayMessageAge(latest[0])}</span>
-        </span>
+          <p className="latest-message-time">
+            {latest[0] && displayMessageAge(latest[0])}
+          </p>
+        </div>
       </div>
     </NavLink>
   )
