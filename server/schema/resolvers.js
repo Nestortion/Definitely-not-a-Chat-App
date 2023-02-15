@@ -60,6 +60,22 @@ const resolvers = {
       return false
     },
   },
+  Group: {
+    pm_name: async ({ id }, __, context) => {
+      const { data: user } = authMiddleware(context)
+      const userGroup = await UserGroups.findAll({ where: { group_id: id } })
+
+      const otherUserId = userGroup.filter(
+        (usergroup) => usergroup.user_id !== user.user_id
+      )
+
+      const otherUser = await Users.findOne({
+        where: { id: otherUserId[0].user_id },
+      })
+
+      return `${otherUser.first_name} ${otherUser.last_name}`
+    },
+  },
   UserChat: {
     senderImage: async ({ user_id }) => {
       const user = await Users.findOne({ where: { id: user_id } })
