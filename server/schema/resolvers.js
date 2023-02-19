@@ -1096,8 +1096,6 @@ const resolvers = {
             where: { id: blame.section_id },
           })
 
-          console.log(blameSection.section_name)
-
           await UserLogs.create({
             full_name: `${blame.first_name} ${blame.last_name}`,
             section: `${blameSection.section_name}`,
