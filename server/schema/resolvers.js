@@ -1093,8 +1093,10 @@ const resolvers = {
           })
 
           const blameSection = await Sections.findOne({
-            where: { id: blame.id },
+            where: { id: blame.section_id },
           })
+
+          console.log(blameSection.section_name)
 
           await UserLogs.create({
             full_name: `${blame.first_name} ${blame.last_name}`,
@@ -1191,7 +1193,7 @@ const resolvers = {
         })
 
         const blameSection = await Sections.findOne({
-          where: { id: blame.id },
+          where: { id: blame.section_id },
         })
 
         await UserLogs.create({
@@ -1266,8 +1268,6 @@ const resolvers = {
     removeMember: async (_, { group_id, user_id }, context) => {
       const { pubsub, data: user } = authMiddleware(context)
 
-      console.log(user_id)
-
       const userGroup = await UserGroups.findOne({
         where: { group_id, user_id },
       })
@@ -1296,7 +1296,7 @@ const resolvers = {
       await UserGroups.destroy({ where: { group_id, user_id } })
 
       const blameSection = await Sections.findOne({
-        where: { id: blame.id },
+        where: { id: blame.section_id },
       })
 
       await UserLogs.create({
