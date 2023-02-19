@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Button from '../../../components/UI/Button/Button'
 import './register.scss'
 import {
@@ -8,8 +8,11 @@ import {
 import { toast } from 'react-toastify'
 import LoadingSpinner from '../../../components/Loading/LoadingSpinner/LoadingSpinner'
 import ErrorText from '../../../components/Error/ErrorText'
+import PasswordStrengthBar from 'react-password-strength-bar'
 
 export default function Register() {
+  const [shouldDisable, setShouldDisable] = useState(true)
+  const [passwordScore, setPasswordScore] = useState(0)
   const maxDate = new Date().toISOString().split('T')[0] // set maximum date to today
 
   const {
@@ -92,6 +95,19 @@ export default function Register() {
     handleReset()
   }
 
+  const handleOnChangeScore = (e) => {
+    setPasswordScore(e)
+    console.log(e)
+  }
+
+  useEffect(() => {
+    if (passwordScore <= 2) {
+      setShouldDisable(true)
+    } else {
+      setShouldDisable(false)
+    }
+  }, [userData.password])
+
   if (sectionsLoading) return <LoadingSpinner />
   if (sectionsError) return <ErrorText>Something went wrong</ErrorText>
 
@@ -149,6 +165,12 @@ export default function Register() {
             id="password"
             name="password"
             required
+          />
+        </div>
+        <div className="register__input-control password-strength">
+          <PasswordStrengthBar
+            password={userData.password}
+            onChangeScore={handleOnChangeScore}
           />
         </div>
 
@@ -228,7 +250,9 @@ export default function Register() {
         </div>
 
         <div className="register__button-group">
-          <Button>Submit</Button>
+          <Button is_default={shouldDisable} disabled={shouldDisable}>
+            Submit
+          </Button>
           <Button secondary type="reset" onClick={handleReset}>
             Clear
           </Button>
