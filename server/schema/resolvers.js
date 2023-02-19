@@ -61,19 +61,21 @@ const resolvers = {
     },
   },
   Group: {
-    pm_name: async ({ id }, __, context) => {
+    pm_name: async ({ is_group, id }, __, context) => {
       const { data: user } = authMiddleware(context)
       const userGroup = await UserGroups.findAll({ where: { group_id: id } })
 
-      const otherUserId = userGroup.filter(
-        (usergroup) => usergroup.user_id !== user.user_id
-      )
+      if (is_group === false) {
+        const otherUserId = userGroup.filter(
+          (usergroup) => usergroup.user_id !== user.user_id
+        )
 
-      const otherUser = await Users.findOne({
-        where: { id: otherUserId[0].user_id },
-      })
+        const otherUser = await Users.findOne({
+          where: { id: otherUserId[0].user_id },
+        })
 
-      return `${otherUser.first_name} ${otherUser.last_name}`
+        return `${otherUser.first_name} ${otherUser.last_name}`
+      }
     },
   },
   UserChat: {
@@ -207,7 +209,12 @@ const resolvers = {
         where: { user_id: user.user_id },
       })
 
+      // console.log(user.user_id)
+      // console.log(validation)
+
       const userGroupIds = validation.map((usergroup) => usergroup.id)
+
+      // console.log(userGroupIds)
 
       const userGroupRoles = await UserGroupRoles.findAll({
         where: { user_group_id: userGroupIds },
@@ -430,6 +437,7 @@ const resolvers = {
 
       const group = await Groups.findOne({ where: { id: group_id } })
 
+      if (group.is_group === true) return null
       const userGroup = await UserGroups.findAll({
         where: { group_id: group.id },
       })
@@ -1257,6 +1265,8 @@ const resolvers = {
     },
     removeMember: async (_, { group_id, user_id }, context) => {
       const { pubsub, data: user } = authMiddleware(context)
+
+      console.log(user_id)
 
       const userGroup = await UserGroups.findOne({
         where: { group_id, user_id },
