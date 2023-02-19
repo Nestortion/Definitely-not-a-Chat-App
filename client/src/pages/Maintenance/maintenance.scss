@@ -10,12 +10,16 @@
   }
 
   .maintenance__main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 2fr 10fr;
     gap: 2rem;
 
+    @media (max-width: 667px) {
+      grid-template-columns: 1fr;
+    }
+
     .maintenance__input-container {
+      height: min-content;
       display: grid;
       place-content: center;
       gap: 1rem;
