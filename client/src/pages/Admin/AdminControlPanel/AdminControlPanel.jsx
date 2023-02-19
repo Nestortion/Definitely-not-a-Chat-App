@@ -142,7 +142,7 @@ export default function AdminControlPanel() {
             }`}
           >
             <p className="control-panel__top-heading">
-              Pending Reports/Threats
+              Pending Reports/Profanity Alert
             </p>
             <p>{hasNotif && <MdWarning size={24} />}</p>
             <p className="control-panel__top-number fw-bold">
