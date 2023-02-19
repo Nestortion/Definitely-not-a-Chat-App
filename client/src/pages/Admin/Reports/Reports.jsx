@@ -83,7 +83,7 @@ export default function Reports() {
 
         <div className="reports-table-container-wrapper">
           <div className="reports-potential-threats-container control-panel__card">
-            <p className="fw-bold fs-500">Chats with potential threats</p>
+            <p className="fw-bold fs-500">Chats with profanity alerts</p>
 
             <div className="reports-potential-threats-list">
               {reportsFetch.reports.chat_with_threat.length === 0 ? (
