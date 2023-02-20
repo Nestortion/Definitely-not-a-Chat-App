@@ -36,7 +36,6 @@ export default function Chat() {
   const [fileInput, setFileInput] = useState(null)
   const [message, setMessage] = useState('')
   const [isModalShowing, setIsModalShowing] = useState(false)
-  const [isSending, setIsSending] = useState(false)
 
   const warn = (text) =>
     toast(text, {
@@ -54,31 +53,33 @@ export default function Chat() {
     error: otherUserError,
   } = useOtherUserQuery({ variables: { groupId: parseInt(chatId) } })
 
-  const [sendMessage] = useAddUserChatMutation({
-    refetchQueries: [{ query: UserChatsDocument }],
-    update: (cache, { data }) => {
-      const reportedChatData = cache.readQuery({
-        query: ReportedChatDocument,
-        variables: { groupId: parseInt(chatId) },
-      })
-
-      if (reportedChatData) {
-        cache.writeQuery({
+  const [sendMessage, { loading: sendMessageLoading }] = useAddUserChatMutation(
+    {
+      refetchQueries: [{ query: UserChatsDocument }],
+      update: (cache, { data }) => {
+        const reportedChatData = cache.readQuery({
           query: ReportedChatDocument,
           variables: { groupId: parseInt(chatId) },
-          data: {
-            reportedChat: {
-              ...reportedChatData.reportedChat,
-              chat_messages: [
-                ...reportedChatData.reportedChat.chat_messages,
-                data.addUserChat,
-              ],
-            },
-          },
         })
-      }
-    },
-  })
+
+        if (reportedChatData) {
+          cache.writeQuery({
+            query: ReportedChatDocument,
+            variables: { groupId: parseInt(chatId) },
+            data: {
+              reportedChat: {
+                ...reportedChatData.reportedChat,
+                chat_messages: [
+                  ...reportedChatData.reportedChat.chat_messages,
+                  data.addUserChat,
+                ],
+              },
+            },
+          })
+        }
+      },
+    }
+  )
   const {
     data: roles,
     loading: rolesLoading,
@@ -130,7 +131,6 @@ export default function Chat() {
 
   const sendMessageHandle = (e) => {
     e.preventDefault()
-    setIsSending(true)
     if (fileInput?.type.includes('video')) {
       warn('Error: Videos are not allowed! Please change your file!')
       return
@@ -142,16 +142,12 @@ export default function Chat() {
           file: fileInput,
           receiver: parseInt(chatId),
         },
-      }).then(() => {
-        setIsSending(false)
       })
       sendMessage({
         variables: {
           message: message,
           receiver: parseInt(chatId),
         },
-      }).then(() => {
-        setIsSending(false)
       })
     } else if (fileInput != null) {
       sendMessage({
@@ -159,8 +155,6 @@ export default function Chat() {
           file: fileInput,
           receiver: parseInt(chatId),
         },
-      }).then(() => {
-        setIsSending(false)
       })
     } else {
       if (message !== '') {
@@ -169,8 +163,6 @@ export default function Chat() {
             message: message,
             receiver: parseInt(chatId),
           },
-        }).then(() => {
-          setIsSending(false)
         })
       }
     }
@@ -258,7 +250,9 @@ export default function Chat() {
             onChange={messageChangeHandle}
             className="chat-box"
           />
-          <Button green={isSending}>{isSending ? 'Sending...' : 'Send'}</Button>
+          <Button green={sendMessageLoading}>
+            {sendMessageLoading ? 'Sending...' : 'Send'}
+          </Button>
         </form>
       </div>
     </div>
