@@ -36,7 +36,7 @@ export default function Chat() {
   const [fileInput, setFileInput] = useState(null)
   const [message, setMessage] = useState('')
   const [isModalShowing, setIsModalShowing] = useState(false)
-  const [isSending, setIsSending] = useState(true)
+  const [isSending, setIsSending] = useState(false)
 
   const warn = (text) =>
     toast(text, {
