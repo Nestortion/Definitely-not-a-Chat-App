@@ -36,6 +36,7 @@ export default function Chat() {
   const [fileInput, setFileInput] = useState(null)
   const [message, setMessage] = useState('')
   const [isModalShowing, setIsModalShowing] = useState(false)
+  const [isSending, setIsSending] = useState(true)
 
   const warn = (text) =>
     toast(text, {
@@ -129,9 +130,9 @@ export default function Chat() {
 
   const sendMessageHandle = (e) => {
     e.preventDefault()
-
+    setIsSending(true)
     if (fileInput?.type.includes('video')) {
-      warn('Error: Videos are Allowed! Please change your file!')
+      warn('Error: Videos are not allowed! Please change your file!')
       return
     }
 
@@ -141,12 +142,16 @@ export default function Chat() {
           file: fileInput,
           receiver: parseInt(chatId),
         },
+      }).then(() => {
+        setIsSending(false)
       })
       sendMessage({
         variables: {
           message: message,
           receiver: parseInt(chatId),
         },
+      }).then(() => {
+        setIsSending(false)
       })
     } else if (fileInput != null) {
       sendMessage({
@@ -154,6 +159,8 @@ export default function Chat() {
           file: fileInput,
           receiver: parseInt(chatId),
         },
+      }).then(() => {
+        setIsSending(false)
       })
     } else {
       if (message !== '') {
@@ -162,6 +169,8 @@ export default function Chat() {
             message: message,
             receiver: parseInt(chatId),
           },
+        }).then(() => {
+          setIsSending(false)
         })
       }
     }
@@ -249,7 +258,7 @@ export default function Chat() {
             onChange={messageChangeHandle}
             className="chat-box"
           />
-          <Button>Send</Button>
+          <Button green={isSending}>{isSending ? 'Sending...' : 'Send'}</Button>
         </form>
       </div>
     </div>
