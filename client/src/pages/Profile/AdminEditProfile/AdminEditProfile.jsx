@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { MdUpload } from 'react-icons/md'
 import Avatar from '../../../components/UI/Avatar/Avatar'
 import Button from '../../../components/UI/Button/Button'
@@ -8,8 +8,11 @@ import SpawnModal from '../../../components/UI/Modal/SpawnModal'
 import { apiBasePath } from '../../../data/config'
 import { useAdminUpdateUserProfileMutation } from '../../../graphql/hooks/graphql'
 import { useNavigate } from 'react-router-dom'
+import PasswordStrengthBar from 'react-password-strength-bar'
 
 export default function AdminEditProfile({ closeModal, profileData }) {
+  const [shouldDisable, setShouldDisable] = useState(true)
+  const [passwordScore, setPasswordScore] = useState(0)
   const navigate = useNavigate()
   const notify = (text, color) =>
     toast(text, {
@@ -117,6 +120,19 @@ export default function AdminEditProfile({ closeModal, profileData }) {
     setConfirmModalShouldShow(false)
   }
 
+  const handleOnChangeScore = (e) => {
+    setPasswordScore(e)
+    console.log(e)
+  }
+
+  useEffect(() => {
+    if (passwordScore <= 2 || values.password === '') {
+      setShouldDisable(true)
+    } else {
+      setShouldDisable(false)
+    }
+  }, [values.password])
+
   return (
     <>
       {confirmModalShouldShow && (
@@ -191,6 +207,13 @@ export default function AdminEditProfile({ closeModal, profileData }) {
             </div>
 
             <div className="profile-settings__input-container">
+              <PasswordStrengthBar
+                password={values.password}
+                onChangeScore={handleOnChangeScore}
+              />
+            </div>
+
+            <div className="profile-settings__input-container">
               <label htmlFor="accessLevel">Access Level: </label>
               <select
                 className="profile-settings-input"
@@ -205,7 +228,12 @@ export default function AdminEditProfile({ closeModal, profileData }) {
             </div>
 
             <div className="profile-settings__button-group">
-              <Button type="button" onClick={showConfirmModal}>
+              <Button
+                type="button"
+                onClick={showConfirmModal}
+                is_default={shouldDisable}
+                disabled={shouldDisable}
+              >
                 Save
               </Button>
               <Button type="button" secondary onClick={handleReset}>
